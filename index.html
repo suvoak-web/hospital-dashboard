@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hospital Dashboard — โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา</title>
+<title>โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
@@ -15,303 +15,193 @@
   --text: #1A2332;
   --muted: #64748B;
   --accent: #1D6FA4;
+  --accent-dark: #155a87;
   --accent-dim: rgba(29,111,164,0.08);
-  --accent-mid: rgba(29,111,164,0.18);
   --green: #16A34A; --green-dim: #F0FDF4; --green-border: #BBF7D0;
   --amber: #B45309; --amber-dim: #FFFBEB; --amber-border: #FDE68A;
   --red: #DC2626;   --red-dim: #FEF2F2;   --red-border: #FECACA;
-  --blue: #1D6FA4;  --blue-dim: #EFF6FF;  --blue-border: #BFDBFE;
-  --purple: #7C3AED;--purple-dim: #F5F3FF;--purple-border: #DDD6FE;
+  --blue-border: #BFDBFE;
+  --purple: #7C3AED; --purple-dim: #F5F3FF; --purple-border: #DDD6FE;
   --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
   --shadow: 0 4px 12px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.05);
   --shadow-md: 0 8px 24px rgba(0,0,0,.09), 0 2px 6px rgba(0,0,0,.05);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Sarabun', sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh; }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Sarabun', sans-serif;
-  font-size: 15px;
-  line-height: 1.6;
-  min-height: 100vh;
-}
-
-/* ── HEADER ── */
+/* HEADER */
 header {
   background: var(--accent);
   padding: 14px 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
   box-shadow: var(--shadow);
 }
-
 .header-left { display: flex; align-items: center; gap: 14px; }
-
 .logo-mark {
-  width: 38px; height: 38px;
+  width: 40px; height: 40px;
   background: rgba(255,255,255,0.2);
   border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 20px;
+  font-size: 22px;
   border: 1.5px solid rgba(255,255,255,0.3);
+  flex-shrink: 0;
 }
-
-.header-title { font-size: 15px; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
+.header-title { font-size: 15px; font-weight: 700; color: #fff; }
 .header-sub { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 1px; }
-
 .header-time { text-align: right; }
-#clock { color: #fff; font-size: 16px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; }
+#clock { color: #fff; font-size: 17px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; }
 #date-display { font-size: 11px; color: rgba(255,255,255,0.65); font-family: 'IBM Plex Mono', monospace; }
 
-/* ── NAV MENU ── */
+/* NAV */
 .nav-menu {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   padding: 0 28px;
-  display: flex;
-  align-items: center;
-  gap: 2px;
+  display: flex; align-items: center; gap: 2px;
   overflow-x: auto;
   box-shadow: var(--shadow-sm);
 }
-
 .nav-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  display: inline-flex; align-items: center; gap: 6px;
   padding: 11px 16px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--muted);
-  text-decoration: none;
+  font-size: 13px; font-weight: 600;
+  color: var(--muted); text-decoration: none;
   border-bottom: 2px solid transparent;
-  white-space: nowrap;
-  transition: all 0.15s;
+  white-space: nowrap; transition: all 0.15s;
 }
-
 .nav-item:hover { color: var(--accent); }
 .nav-item.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-/* ── PROVINCE BAR ── */
-.province-bar {
+/* MAIN */
+main { max-width: 1300px; margin: 0 auto; padding: 28px 28px 40px; display: flex; flex-direction: column; gap: 28px; }
+
+/* SECTION LABEL */
+.section-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* DASHBOARD CARDS */
+.dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 18px; }
+
+.dash-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 24px;
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  color: var(--text);
+  display: flex; flex-direction: column; gap: 14px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  border-top: 3px solid var(--accent);
+  position: relative;
+  overflow: hidden;
+}
+.dash-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+
+.dash-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.dash-icon { font-size: 28px; line-height: 1; }
+.dash-arrow {
+  width: 28px; height: 28px; border-radius: 8px;
   background: var(--accent-dim);
-  border-bottom: 1px solid var(--blue-border);
-  padding: 8px 28px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent); font-size: 14px; font-weight: 700;
+  flex-shrink: 0;
+}
+.dash-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.dash-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* MINI KPI inside dash card */
+.mini-kpi-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.mini-kpi {
+  flex: 1; min-width: 100px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.mini-kpi-label { font-size: 10px; color: var(--muted); font-weight: 600; margin-bottom: 3px; }
+.mini-kpi-value { font-size: 20px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; color: var(--accent); line-height: 1; }
+.mini-kpi-sub { font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+.mini-kpi.green .mini-kpi-value { color: var(--green); }
+.mini-kpi.red .mini-kpi-value   { color: var(--red); }
+.mini-kpi.amber .mini-kpi-value { color: var(--amber); }
+.mini-kpi.purple .mini-kpi-value{ color: var(--purple); }
+
+.dash-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 12px; color: var(--muted);
+}
+.dash-cta {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12px; font-weight: 700; color: var(--accent);
 }
 
-.province-label { font-size: 12px; color: var(--accent); font-weight: 600; white-space: nowrap; }
+/* WAIT TIME HIGHLIGHT */
+.wait-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.wait-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.wait-bar { height: 100%; border-radius: 3px; }
+.wait-label-left { font-size: 11px; color: var(--muted); width: 80px; flex-shrink: 0; }
+.wait-val { font-size: 11px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; width: 42px; text-align: right; }
 
-.province-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  border-radius: 20px;
-  border: 1px solid var(--blue-border);
+/* LINKS SECTION */
+.links-section { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 700px) { .links-section { grid-template-columns: 1fr; } }
+
+.link-group {
   background: var(--surface);
-  color: var(--accent);
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: 600;
-  transition: all 0.15s;
-  white-space: nowrap;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
   box-shadow: var(--shadow-sm);
 }
+.link-group-head {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+  display: flex; align-items: center; gap: 8px;
+}
+.link-group-title { font-size: 13px; font-weight: 700; color: var(--text); }
+.link-group-sub { font-size: 11px; color: var(--muted); }
 
-.province-link:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.link-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  text-decoration: none;
+  color: var(--text);
+  transition: background 0.12s;
+}
+.link-item:last-child { border-bottom: none; }
+.link-item:hover { background: var(--accent-dim); }
+.link-item:hover .link-name { color: var(--accent); }
 
-.province-link .dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
+.link-dot {
+  width: 8px; height: 8px; border-radius: 50%;
   background: var(--green);
+  flex-shrink: 0;
   animation: pulse 2s ease-in-out infinite;
 }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
 
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.link-name { font-size: 13px; font-weight: 600; flex: 1; }
+.link-desc { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.link-ext { font-size: 11px; color: var(--muted); flex-shrink: 0; }
 
-/* ── MAIN LAYOUT ── */
-main {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 24px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+/* RESPONSIVE */
+@media (max-width: 700px) {
+  .dash-grid { grid-template-columns: 1fr; }
+  main { padding: 16px; }
 }
-
-/* ── SECTION LABEL ── */
-.section-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.section-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-
-/* ── KPI GRID ── */
-.kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 14px;
-}
-
-.kpi-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 18px 20px;
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.15s, transform 0.15s;
-  border-top: 3px solid transparent;
-}
-
-.kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.kpi-card.teal  { border-top-color: #0D9488; }
-.kpi-card.amber { border-top-color: #D97706; }
-.kpi-card.red   { border-top-color: #DC2626; }
-.kpi-card.blue  { border-top-color: #1D6FA4; }
-.kpi-card.green { border-top-color: #16A34A; }
-.kpi-card.purple{ border-top-color: #7C3AED; }
-
-.kpi-label { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
-.kpi-value { font-size: 30px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; line-height: 1; color: var(--text); }
-.kpi-sub { font-size: 12px; color: var(--muted); margin-top: 8px; display: flex; align-items: center; gap: 5px; }
-
-.kpi-badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 700; }
-.badge-up   { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
-.badge-down { background: var(--red-dim);   color: var(--red);   border: 1px solid var(--red-border); }
-.badge-warn { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-border); }
-
-/* ── TWO COL ── */
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-@media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
-
-/* ── CARD ── */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: var(--shadow-sm);
-}
-
-.card-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-}
-
-/* ── BED STATUS ── */
-.bed-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; }
-
-.bed-ward {
-  text-align: center;
-  padding: 10px 6px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  font-size: 11px;
-  background: var(--surface);
-}
-
-.bed-ward.available { background: var(--green-dim); border-color: var(--green-border); }
-.bed-ward.partial   { background: var(--amber-dim); border-color: var(--amber-border); }
-.bed-ward.full      { background: var(--red-dim);   border-color: var(--red-border); }
-
-.bed-ward .ward-name { color: var(--muted); margin-bottom: 4px; font-size: 10px; font-weight: 600; }
-.bed-ward .bed-num { font-size: 20px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; }
-.bed-ward.available .bed-num { color: var(--green); }
-.bed-ward.partial   .bed-num { color: var(--amber); }
-.bed-ward.full      .bed-num { color: var(--red); }
-.bed-ward .bed-total { font-size: 10px; color: var(--muted); }
-
-/* ── BAR CHART ── */
-.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.bar-label { width: 120px; color: var(--muted); flex-shrink: 0; font-size: 12px; font-weight: 500; }
-.bar-track { flex: 1; height: 8px; background: var(--surface2); border-radius: 4px; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 4px; background: var(--accent); transition: width 1s cubic-bezier(0.4,0,0.2,1); }
-.bar-value { width: 36px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent); }
-
-/* ── WAIT TABLE ── */
-.wait-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.wait-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 0.05em; border-bottom: 2px solid var(--border); background: var(--surface2); }
-.wait-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
-.wait-table tr:last-child td { border-bottom: none; }
-.wait-table tr:hover td { background: var(--surface2); }
-
-.wait-pill { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; }
-.wait-ok   { background: var(--green-dim);  color: var(--green);  border: 1px solid var(--green-border); }
-.wait-warn { background: var(--amber-dim);  color: var(--amber);  border: 1px solid var(--amber-border); }
-.wait-crit { background: var(--red-dim);    color: var(--red);    border: 1px solid var(--red-border); }
-
-/* ── STAFF ── */
-.staff-row { display: flex; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--border); gap: 12px; }
-.staff-row:last-child { border-bottom: none; }
-.staff-icon { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; background: var(--accent-dim); border: 1px solid var(--blue-border); }
-.staff-info { flex: 1; }
-.staff-name { font-size: 13px; font-weight: 600; color: var(--text); }
-.staff-dept { font-size: 11px; color: var(--muted); }
-.staff-count { font-family: 'IBM Plex Mono', monospace; text-align: right; }
-.staff-count .on { color: var(--accent); font-size: 18px; font-weight: 700; }
-.staff-count .total { color: var(--muted); font-size: 11px; }
-
-/* ── FINANCE ── */
-.finance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.finance-card { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface2); }
-.finance-card.income   { background: var(--green-dim);  border-color: var(--green-border); }
-.finance-card.expense  { background: var(--red-dim);    border-color: var(--red-border); }
-.finance-card.receivable { background: var(--blue-dim); border-color: var(--blue-border); }
-.finance-card.payable  { background: var(--purple-dim); border-color: var(--purple-border); }
-.finance-card .fc-label { font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
-.finance-card .fc-amount { font-size: 20px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; }
-.finance-card.income   .fc-amount { color: var(--green); }
-.finance-card.expense  .fc-amount { color: var(--red); }
-.finance-card.receivable .fc-amount { color: var(--blue); }
-.finance-card.payable  .fc-amount { color: var(--purple); }
-.finance-card .fc-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
-
-/* ── TRANSFER TABLE ── */
-.transfer-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.transfer-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 0.05em; border-bottom: 2px solid var(--border); background: var(--surface2); }
-.transfer-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
-.transfer-table tr:last-child td { border-bottom: none; }
-.transfer-table tr:hover td { background: var(--surface2); }
-
-.amount-recv { color: var(--blue);   font-family: 'IBM Plex Mono', monospace; font-weight: 700; }
-.amount-pay  { color: var(--purple); font-family: 'IBM Plex Mono', monospace; font-weight: 700; }
-.status-pending { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-border); padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-.status-done    { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-
-/* ── FOOTER ── */
-footer { text-align: center; padding: 24px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); background: var(--surface); margin-top: 8px; }
-footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
-footer a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -321,7 +211,7 @@ footer a:hover { text-decoration: underline; }
     <div class="logo-mark">🏥</div>
     <div>
       <div class="header-title">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา</div>
-      <div class="header-sub">Hospital Dashboard — ระบบภาพรวม</div>
+      <div class="header-sub">ระบบติดตามข้อมูลโรงพยาบาล</div>
     </div>
   </div>
   <div class="header-time">
@@ -331,163 +221,187 @@ footer a:hover { text-decoration: underline; }
 </header>
 
 <nav class="nav-menu">
-  <a class="nav-item active" href="index.html">🏥 ภาพรวมโรงพยาบาล</a>
+  <a class="nav-item active" href="index.html">🏠 หน้าหลัก</a>
   <a class="nav-item" href="opwalkin.html">💰 พึงรับ-พึงจ่าย OP Walk-in</a>
   <a class="nav-item" href="compare.html">⏱ เปรียบเทียบระยะเวลารอคอย</a>
 </nav>
 
-<div class="province-bar">
-  <span class="province-label">🔗 ลิงก์จังหวัดนครราชสีมา</span>
-  <a class="province-link" href="https://apikorat.moph.go.th/home/dashboard" target="_blank" rel="noopener">
-    <span class="dot"></span>ตัวชี้วัด สาธารณสุข โคราช
-  </a>
-  <a class="province-link" href="https://www.r9health.net/servicetime/" target="_blank" rel="noopener">
-    <span class="dot"></span>ระยะเวลารอคอย R9
-  </a>
-</div>
-
 <main>
 
+  <!-- DASHBOARD SHORTCUTS -->
   <div>
-    <div class="section-label">ภาพรวมวันนี้</div>
-    <div class="kpi-grid">
-      <div class="kpi-card teal">
-        <div class="kpi-label">ผู้ป่วยนอก (OPD)</div>
-        <div class="kpi-value">324</div>
-        <div class="kpi-sub"><span class="kpi-badge badge-up">↑ 12%</span> เทียบเมื่อวาน</div>
-      </div>
-      <div class="kpi-card blue">
-        <div class="kpi-label">ผู้ป่วยใน (IPD)</div>
-        <div class="kpi-value">87</div>
-        <div class="kpi-sub"><span class="kpi-badge badge-warn">= 0%</span> คงที่</div>
-      </div>
-      <div class="kpi-card amber">
-        <div class="kpi-label">เตียงว่างทั้งหมด</div>
-        <div class="kpi-value">42</div>
-        <div class="kpi-sub">จากทั้งหมด 150 เตียง</div>
-      </div>
-      <div class="kpi-card green">
-        <div class="kpi-label">แพทย์ปฏิบัติงาน</div>
-        <div class="kpi-value">18</div>
-        <div class="kpi-sub">จาก 24 คน</div>
-      </div>
-      <div class="kpi-card purple">
-        <div class="kpi-label">รอคอยเฉลี่ย</div>
-        <div class="kpi-value">34<span style="font-size:16px;font-weight:400"> น.</span></div>
-        <div class="kpi-sub"><span class="kpi-badge badge-down">↑ 8 น.</span> จากเป้า 26 น.</div>
-      </div>
-      <div class="kpi-card red">
-        <div class="kpi-label">รอ Admit</div>
-        <div class="kpi-value">6</div>
-        <div class="kpi-sub"><span class="kpi-badge badge-down">↑ 2</span> รายที่รอเตียง</div>
-      </div>
-    </div>
-  </div>
+    <div class="section-label">Dashboard ที่พร้อมใช้งาน</div>
+    <div class="dash-grid">
 
-  <div class="two-col">
-    <div class="card">
-      <div class="card-title">
-        เตียงตามแผนก
-        <span style="font-size:11px;color:var(--muted);">อัปเดต 5 น. ที่แล้ว</span>
-      </div>
-      <div style="display:flex;gap:16px;margin-bottom:14px;font-size:12px;font-weight:600;">
-        <span style="color:var(--green)">● ว่าง</span>
-        <span style="color:var(--amber)">● บางส่วน</span>
-        <span style="color:var(--red)">● เต็ม</span>
-      </div>
-      <div class="bed-grid">
-        <div class="bed-ward available"><div class="ward-name">อายุรกรรม</div><div class="bed-num">12</div><div class="bed-total">/ 30</div></div>
-        <div class="bed-ward partial"><div class="ward-name">ศัลยกรรม</div><div class="bed-num">5</div><div class="bed-total">/ 25</div></div>
-        <div class="bed-ward full"><div class="ward-name">กุมารเวช</div><div class="bed-num">0</div><div class="bed-total">/ 20</div></div>
-        <div class="bed-ward available"><div class="ward-name">สูติกรรม</div><div class="bed-num">8</div><div class="bed-total">/ 20</div></div>
-        <div class="bed-ward partial"><div class="ward-name">ออร์โธ</div><div class="bed-num">3</div><div class="bed-total">/ 15</div></div>
-        <div class="bed-ward full"><div class="ward-name">ICU</div><div class="bed-num">0</div><div class="bed-total">/ 10</div></div>
-        <div class="bed-ward available"><div class="ward-name">หู คอ จมูก</div><div class="bed-num">9</div><div class="bed-total">/ 15</div></div>
-        <div class="bed-ward partial"><div class="ward-name">จิตเวช</div><div class="bed-num">5</div><div class="bed-total">/ 15</div></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">
-        ระยะเวลารอคอย (นาที)
-        <a href="https://www.r9health.net/servicetime/" target="_blank" rel="noopener" style="font-size:11px;color:var(--accent);text-decoration:none;font-weight:600;">ดูข้อมูลจังหวัด ↗</a>
-      </div>
-      <table class="wait-table">
-        <thead><tr><th>แผนก / บริการ</th><th>รอเฉลี่ย</th><th>สถานะ</th></tr></thead>
-        <tbody>
-          <tr><td>ห้องฉุกเฉิน</td><td><span class="wait-pill wait-ok">12 น.</span></td><td style="color:var(--green);font-size:12px;font-weight:600;">ปกติ</td></tr>
-          <tr><td>OPD ทั่วไป</td><td><span class="wait-pill wait-warn">38 น.</span></td><td style="color:var(--amber);font-size:12px;font-weight:600;">เฝ้าระวัง</td></tr>
-          <tr><td>อายุรกรรม</td><td><span class="wait-pill wait-warn">45 น.</span></td><td style="color:var(--amber);font-size:12px;font-weight:600;">เฝ้าระวัง</td></tr>
-          <tr><td>ศัลยกรรม</td><td><span class="wait-pill wait-ok">22 น.</span></td><td style="color:var(--green);font-size:12px;font-weight:600;">ปกติ</td></tr>
-          <tr><td>กุมารเวช</td><td><span class="wait-pill wait-crit">72 น.</span></td><td style="color:var(--red);font-size:12px;font-weight:600;">⚠ วิกฤต</td></tr>
-          <tr><td>ห้องยา</td><td><span class="wait-pill wait-warn">30 น.</span></td><td style="color:var(--amber);font-size:12px;font-weight:600;">เฝ้าระวัง</td></tr>
-          <tr><td>Lab / เจาะเลือด</td><td><span class="wait-pill wait-ok">18 น.</span></td><td style="color:var(--green);font-size:12px;font-weight:600;">ปกติ</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="two-col">
-    <div class="card">
-      <div class="card-title">บุคลากรวันนี้</div>
-      <div class="staff-row"><div class="staff-icon">👨‍⚕️</div><div class="staff-info"><div class="staff-name">แพทย์</div><div class="staff-dept">ทุกแผนก</div></div><div class="staff-count"><div class="on">18</div><div class="total">จาก 24</div></div></div>
-      <div class="staff-row"><div class="staff-icon">👩‍⚕️</div><div class="staff-info"><div class="staff-name">พยาบาล</div><div class="staff-dept">ทุกวอร์ด</div></div><div class="staff-count"><div class="on">62</div><div class="total">จาก 80</div></div></div>
-      <div class="staff-row"><div class="staff-icon">🔬</div><div class="staff-info"><div class="staff-name">นักเทคนิคการแพทย์</div><div class="staff-dept">Lab, Radiology</div></div><div class="staff-count"><div class="on">8</div><div class="total">จาก 12</div></div></div>
-      <div class="staff-row"><div class="staff-icon">💊</div><div class="staff-info"><div class="staff-name">เภสัชกร</div><div class="staff-dept">ห้องยา</div></div><div class="staff-count"><div class="on">5</div><div class="total">จาก 6</div></div></div>
-      <div class="staff-row"><div class="staff-icon">🦺</div><div class="staff-info"><div class="staff-name">เจ้าหน้าที่สนับสนุน</div><div class="staff-dept">Admin, X-Ray, อื่นๆ</div></div><div class="staff-count"><div class="on">24</div><div class="total">จาก 30</div></div></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">ผู้ป่วย OPD แยกตามแผนก (วันนี้)</div>
-      <div style="margin-top:4px;">
-        <div class="bar-row"><div class="bar-label">อายุรกรรม</div><div class="bar-track"><div class="bar-fill" style="width:82%"></div></div><div class="bar-value">82</div></div>
-        <div class="bar-row"><div class="bar-label">ศัลยกรรม</div><div class="bar-track"><div class="bar-fill" style="width:52%"></div></div><div class="bar-value">52</div></div>
-        <div class="bar-row"><div class="bar-label">กุมารเวช</div><div class="bar-track"><div class="bar-fill" style="width:65%"></div></div><div class="bar-value">65</div></div>
-        <div class="bar-row"><div class="bar-label">สูติกรรม</div><div class="bar-track"><div class="bar-fill" style="width:28%"></div></div><div class="bar-value">28</div></div>
-        <div class="bar-row"><div class="bar-label">หู คอ จมูก</div><div class="bar-track"><div class="bar-fill" style="width:34%"></div></div><div class="bar-value">34</div></div>
-        <div class="bar-row"><div class="bar-label">ออร์โธปิดิกส์</div><div class="bar-track"><div class="bar-fill" style="width:38%"></div></div><div class="bar-value">38</div></div>
-        <div class="bar-row"><div class="bar-label">จักษุ</div><div class="bar-track"><div class="bar-fill" style="width:25%"></div></div><div class="bar-value">25</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div>
-    <div class="section-label">การเงิน / งบประมาณ</div>
-    <div class="two-col">
-      <div class="card">
-        <div class="card-title">สรุปการเงิน (เดือนนี้)</div>
-        <div class="finance-grid">
-          <div class="finance-card income"><div class="fc-label">รายรับรวม</div><div class="fc-amount">8.4M</div><div class="fc-sub">บาท ตั้งเป้า 9.0M</div></div>
-          <div class="finance-card expense"><div class="fc-label">รายจ่ายรวม</div><div class="fc-amount">7.1M</div><div class="fc-sub">บาท ตั้งเป้า 7.5M</div></div>
-          <div class="finance-card receivable"><div class="fc-label">เงินพึงรับ (ค้างรับ)</div><div class="fc-amount">2.3M</div><div class="fc-sub">จาก รพ. อื่น / สิทธิ์ต่างๆ</div></div>
-          <div class="finance-card payable"><div class="fc-label">เงินพึงจ่าย (ค้างจ่าย)</div><div class="fc-amount">1.1M</div><div class="fc-sub">ค่าส่งต่อ / บริการ</div></div>
+      <!-- OP WALK-IN -->
+      <a class="dash-card" href="opwalkin.html">
+        <div class="dash-card-head">
+          <div class="dash-icon">💰</div>
+          <div class="dash-arrow">→</div>
         </div>
+        <div>
+          <div class="dash-title">พึงรับ — พึงจ่าย OP Walk-in</div>
+          <div class="dash-desc">ยอดเงินค่าบริการผู้ป่วยนอกข้ามหน่วยบริการ ภายในจังหวัดนครราชสีมา ต.ค.68 — ม.ค.69</div>
+        </div>
+        <div class="mini-kpi-row">
+          <div class="mini-kpi green">
+            <div class="mini-kpi-label">พึงรับรวม</div>
+            <div class="mini-kpi-value">770K</div>
+            <div class="mini-kpi-sub">บาท (4 เดือน)</div>
+          </div>
+          <div class="mini-kpi red">
+            <div class="mini-kpi-label">พึงจ่ายรวม</div>
+            <div class="mini-kpi-value">140K</div>
+            <div class="mini-kpi-sub">บาท (4 เดือน)</div>
+          </div>
+          <div class="mini-kpi">
+            <div class="mini-kpi-label">สุทธิ</div>
+            <div class="mini-kpi-value">630K</div>
+            <div class="mini-kpi-sub">บาท คงเหลือ</div>
+          </div>
+        </div>
+        <div class="dash-footer">
+          <span>ข้อมูล ต.ค. 2568 – ม.ค. 2569</span>
+          <span class="dash-cta">เปิด Dashboard →</span>
+        </div>
+      </a>
+
+      <!-- COMPARE WAIT TIME -->
+      <a class="dash-card" href="compare.html">
+        <div class="dash-card-head">
+          <div class="dash-icon">⏱</div>
+          <div class="dash-arrow">→</div>
+        </div>
+        <div>
+          <div class="dash-title">เปรียบเทียบระยะเวลารอคอย</div>
+          <div class="dash-desc">วิเคราะห์เวลารอคอยรายแผนก เปรียบเทียบกับโรงพยาบาลชุมชนทั้ง 33 แห่ง ในจังหวัดนครราชสีมา</div>
+        </div>
+        <div style="margin-top:4px;">
+          <div class="wait-row">
+            <div class="wait-label-left">รอคัดกรอง</div>
+            <div class="wait-bar-wrap"><div class="wait-bar" style="width:75%;background:#DC2626"></div></div>
+            <div class="wait-val" style="color:#DC2626">83.2 น.</div>
+          </div>
+          <div class="wait-row">
+            <div class="wait-label-left">รอพบแพทย์</div>
+            <div class="wait-bar-wrap"><div class="wait-bar" style="width:60%;background:#D97706"></div></div>
+            <div class="wait-val" style="color:#D97706">64.8 น.</div>
+          </div>
+          <div class="wait-row">
+            <div class="wait-label-left">รับยา</div>
+            <div class="wait-bar-wrap"><div class="wait-bar" style="width:20%;background:#16A34A"></div></div>
+            <div class="wait-val" style="color:#16A34A">20.2 น.</div>
+          </div>
+          <div class="wait-row">
+            <div class="wait-label-left">เวลารวม</div>
+            <div class="wait-bar-wrap"><div class="wait-bar" style="width:100%;background:#1D6FA4"></div></div>
+            <div class="wait-val" style="color:#1D6FA4">182 น.</div>
+          </div>
+        </div>
+        <div class="dash-footer">
+          <span>อันดับที่ 4 (เวลารวม) จาก 33 รพ.</span>
+          <span class="dash-cta">เปิด Dashboard →</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- EXTERNAL LINKS -->
+  <div>
+    <div class="section-label">ลิงก์ระบบภายนอก</div>
+    <div class="links-section">
+
+      <!-- ตัวชี้วัด -->
+      <div class="link-group">
+        <div class="link-group-head">
+          <span style="font-size:18px;">📊</span>
+          <div>
+            <div class="link-group-title">ติดตามตัวชี้วัด</div>
+            <div class="link-group-sub">KPI และผลงานโรงพยาบาล</div>
+          </div>
+        </div>
+        <a class="link-item" href="https://apikorat.moph.go.th/home/dashboard" target="_blank" rel="noopener">
+          <span class="link-dot"></span>
+          <div>
+            <div class="link-name">ตัวชี้วัดสาธารณสุข โคราช</div>
+            <div class="link-desc">apikorat.moph.go.th</div>
+          </div>
+          <span class="link-ext">↗</span>
+        </a>
+        <a class="link-item" href="https://hdc.moph.go.th/nma/public/main" target="_blank" rel="noopener">
+          <span class="link-dot"></span>
+          <div>
+            <div class="link-name">HDC นครราชสีมา</div>
+            <div class="link-desc">hdc.moph.go.th</div>
+          </div>
+          <span class="link-ext">↗</span>
+        </a>
+        <a class="link-item" href="https://rabado.net/mat/" target="_blank" rel="noopener">
+          <span class="link-dot"></span>
+          <div>
+            <div class="link-name">MAT Dashboard</div>
+            <div class="link-desc">rabado.net</div>
+          </div>
+          <span class="link-ext">↗</span>
+        </a>
+        <a class="link-item" href="https://apikorat.moph.go.th/drug-delivery/dashboard" target="_blank" rel="noopener">
+          <span class="link-dot"></span>
+          <div>
+            <div class="link-name">Drug Delivery Dashboard</div>
+            <div class="link-desc">apikorat.moph.go.th</div>
+          </div>
+          <span class="link-ext">↗</span>
+        </a>
+        <a class="link-item" href="https://www.r9health.net/servicetime/" target="_blank" rel="noopener">
+          <span class="link-dot"></span>
+          <div>
+            <div class="link-name">ระยะเวลารอคอย R9</div>
+            <div class="link-desc">r9health.net</div>
+          </div>
+          <span class="link-ext">↗</span>
+        </a>
       </div>
-      <div class="card">
-        <div class="card-title">เงินพึงรับ/จ่าย — ระหว่างโรงพยาบาล</div>
-        <table class="transfer-table">
-          <thead><tr><th>โรงพยาบาล</th><th>พึงรับ (บาท)</th><th>พึงจ่าย (บาท)</th><th>สถานะ</th></tr></thead>
-          <tbody>
-            <tr><td>รพ.มหาราช นครราชสีมา</td><td class="amount-recv">450,000</td><td class="amount-pay">—</td><td><span class="status-pending">รอเบิก</span></td></tr>
-            <tr><td>รพ.ชุมชน บัวใหญ่</td><td class="amount-recv">120,000</td><td class="amount-pay">—</td><td><span class="status-done">รับแล้ว</span></td></tr>
-            <tr><td>รพ.ปากช่องนานา</td><td class="amount-recv">—</td><td class="amount-pay">85,000</td><td><span class="status-pending">รอจ่าย</span></td></tr>
-            <tr><td>รพ.ชุมชน โนนสูง</td><td class="amount-recv">200,000</td><td class="amount-pay">—</td><td><span class="status-pending">รอเบิก</span></td></tr>
-            <tr><td>รพ.สีคิ้ว</td><td class="amount-recv">—</td><td class="amount-pay">55,000</td><td><span class="status-done">จ่ายแล้ว</span></td></tr>
-          </tbody>
-        </table>
+
+      <!-- ติดตามงาน -->
+      <div class="link-group">
+        <div class="link-group-head">
+          <span style="font-size:18px;">🔧</span>
+          <div>
+            <div class="link-group-title">ติดตามงานอื่นๆ</div>
+            <div class="link-group-sub">ระบบสนับสนุนการบริหาร</div>
+          </div>
+        </div>
+        <a class="link-item" href="https://smt.nhso.go.th/smtf/#/home/budget/summary" target="_blank" rel="noopener">
+          <span class="link-dot" style="background:#D97706"></span>
+          <div>
+            <div class="link-name">SMT งบประมาณ NHSO</div>
+            <div class="link-desc">smt.nhso.go.th</div>
+          </div>
+          <span class="link-ext">↗</span>
+        </a>
+        <a class="link-item" href="https://cmi.moph.go.th/" target="_blank" rel="noopener">
+          <span class="link-dot" style="background:#D97706"></span>
+          <div>
+            <div class="link-name">CMI กระทรวงสาธารณสุข</div>
+            <div class="link-desc">cmi.moph.go.th</div>
+          </div>
+          <span class="link-ext">↗</span>
+        </a>
+        <a class="link-item" href="https://mishos.nhso.go.th/mis_hos/#/dashboard" target="_blank" rel="noopener">
+          <span class="link-dot" style="background:#D97706"></span>
+          <div>
+            <div class="link-name">MIS HOS Dashboard NHSO</div>
+            <div class="link-desc">mishos.nhso.go.th</div>
+          </div>
+          <span class="link-ext">↗</span>
+        </a>
       </div>
+
     </div>
   </div>
 
 </main>
-
-<footer>
-  <p>โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา · ข้อมูลในหน้านี้เป็น <strong>ตัวอย่าง (Demo)</strong></p>
-  <p style="margin-top:4px;">ลิงก์จังหวัด:
-    <a href="https://apikorat.moph.go.th/home/dashboard" target="_blank">apikorat.moph.go.th</a> ·
-    <a href="https://www.r9health.net/servicetime/" target="_blank">r9health.net</a>
-  </p>
-</footer>
 
 <script>
 function updateClock() {
@@ -498,7 +412,8 @@ function updateClock() {
   const m = String(now.getMinutes()).padStart(2,'0');
   const s = String(now.getSeconds()).padStart(2,'0');
   document.getElementById('clock').textContent = `${h}:${m}:${s}`;
-  document.getElementById('date-display').textContent = `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()+543}`;
+  document.getElementById('date-display').textContent =
+    `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()+543}`;
 }
 setInterval(updateClock, 1000);
 updateClock();
