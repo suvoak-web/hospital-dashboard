@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์รายโรงพยาบาล — จ.นครราชสีมา 2569</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap');
+:root{
+  --bg:#F4F6F9;--surface:#FFFFFF;--surface2:#F0F3F7;--border:#E2E8F0;
+  --text:#1A2332;--muted:#64748B;
+  --c1:#0D9488;--c2:#1D6FA4;--c3:#D97706;--c4:#DC2626;--c5:#7C3AED;
+  --green:#16A34A;--danger:#DC2626;
+  --accent:#1D6FA4;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.06);
+  --shadow:0 4px 12px rgba(0,0,0,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Sarabun',sans-serif;font-size:14px;line-height:1.6;min-height:100vh}
+
+.header{background:#1D6FA4;border-bottom:none;padding:14px 26px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:44px;z-index:190;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.header h1{font-size:16px;font-weight:700;color:#fff}
+.header .sub{font-size:11.5px;color:rgba(255,255,255,0.75);margin-top:1px}
+.badge{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.35);border-radius:20px;padding:3px 11px;font-size:11px;color:#fff;font-weight:600}
+
+.layout{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 96px)}
+
+/* SIDEBAR */
+.sidebar{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;height:calc(100vh - 96px);position:sticky;top:96px;overflow:hidden}
+.sb-hd{padding:12px 14px 10px;border-bottom:1px solid var(--border)}
+.sb-hd h2{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.sb-row{display:flex;gap:5px;margin-bottom:7px}
+.sb-sel{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:5px 7px;color:var(--text);font-family:inherit;font-size:11px;outline:none}
+.sb-sel:focus{border-color:var(--c1)}
+.sb-search{position:relative}
+.sb-search input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:7px 10px 7px 28px;color:var(--text);font-family:inherit;font-size:12px;outline:none;transition:border-color .15s;box-shadow:inset 0 1px 3px rgba(0,0,0,.05)}
+.sb-search input:focus{border-color:var(--c1)}
+.sb-search::before{content:'🔍';position:absolute;left:8px;top:7px;font-size:11px;pointer-events:none}
+
+/* TYPE FILTER TABS */
+.type-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);background:#F8FAFC}
+.type-tab{flex:1;padding:7px 4px;text-align:center;font-size:10.5px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;border-top:none;border-left:none;border-right:none;background:none;font-family:inherit}
+.type-tab:hover{color:var(--text);background:rgba(29,111,164,.06)}
+.type-tab.active{color:var(--c1);border-bottom-color:var(--c1)}
+.type-tab.t-gen.active{color:var(--c2);border-bottom-color:var(--c2)}
+.type-tab.t-com.active{color:var(--c1);border-bottom-color:var(--c1)}
+.type-tab.t-all.active{color:var(--muted);border-bottom-color:var(--muted)}
+
+.h-list{flex:1;overflow-y:auto;padding:4px 0}
+.h-list::-webkit-scrollbar{width:3px}
+.h-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+.h-item{display:flex;align-items:center;gap:7px;padding:7px 12px;cursor:pointer;transition:background .1s}
+.h-item:hover{background:#EFF6FF}
+.h-item.primary{background:rgba(0,201,167,.1);border-left:3px solid var(--c1)}
+.h-item.compared{background:rgba(88,166,255,.08);border-left:3px solid var(--c2)}
+.h-item.peer-hl{border-left:2px solid rgba(247,183,49,.4)}
+.h-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.h-info{flex:1;min-width:0}
+.h-name{font-size:11.5px;font-weight:500;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.h-sub{font-size:9.5px;color:var(--muted);margin-top:1px}
+.h-right{text-align:right;flex-shrink:0}
+.h-time{font-size:11.5px;font-weight:700}
+.h-volbar{margin-top:2px;display:flex;align-items:center;gap:3px}
+.vbg{width:48px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.vfill{height:100%;border-radius:2px}
+.vtxt{font-size:9px;color:var(--muted)}
+.tag{font-size:8.5px;padding:1px 5px;border-radius:5px;font-weight:700;margin-left:3px;vertical-align:middle}
+.tp{background:rgba(0,201,167,.2);color:var(--c1)}
+.tc{background:rgba(88,166,255,.2);color:var(--c2)}
+.tpeer{background:rgba(247,183,49,.18);color:var(--c3)}
+
+/* GROUP COMPARE BUTTON */
+.grp-btn-bar{padding:8px 12px;border-top:1px solid var(--border);background:var(--surface)}
+.grp-btn{width:100%;padding:7px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;text-align:left;display:flex;align-items:center;justify-content:space-between}
+.grp-btn:hover{border-color:var(--c1);color:var(--c1)}
+.grp-btn.active{background:rgba(0,201,167,.1);border-color:var(--c1);color:var(--c1)}
+
+.cmp-bar{padding:10px 12px;border-top:1px solid var(--border);background:var(--surface2)}
+.cmp-bar-label{font-size:10px;color:var(--muted);margin-bottom:5px;font-weight:600}
+.cmp-tags{display:flex;flex-wrap:wrap;gap:4px}
+.ctag{display:flex;align-items:center;gap:3px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:2px 8px;font-size:10.5px}
+.ctag .rm{cursor:pointer;color:var(--muted);font-size:13px;line-height:1;margin-left:2px}
+.ctag .rm:hover{color:var(--danger)}
+.empty-cmp{font-size:10.5px;color:var(--muted);font-style:italic}
+
+/* CONTENT */
+.content{padding:20px 24px;overflow-y:auto;height:calc(100vh - 52px)}
+.content::-webkit-scrollbar{width:5px}
+.content::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* MODE TABS (top of content) */
+.mode-tabs{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+.mode-tab{padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit}
+.mode-tab:hover{border-color:var(--c1);color:var(--text)}
+.mode-tab.active{background:rgba(0,201,167,.12);border-color:var(--c1);color:var(--c1)}
+.mode-tab.active.blue{background:rgba(88,166,255,.12);border-color:var(--c2);color:var(--c2)}
+.mode-tab.active.yellow{background:rgba(247,183,49,.12);border-color:var(--c3);color:var(--c3)}
+
+/* HERO */
+.hero{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--c1),var(--c2))}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.hero-name{font-size:19px;font-weight:800;line-height:1.2}
+.hero-meta{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.meta-chip{font-size:10.5px;padding:2px 9px;border-radius:9px;border:1px solid var(--border);color:var(--muted)}
+.rank-num{font-size:42px;font-weight:800;line-height:1;color:var(--c1)}
+.rank-lbl{font-size:10px;color:var(--muted);margin-top:1px}
+.rtag{display:inline-flex;font-size:10px;padding:2px 8px;border-radius:9px;font-weight:700;margin-top:4px}
+.rtop{background:rgba(255,107,107,.15);color:var(--danger)}
+.rmid{background:rgba(247,183,49,.15);color:var(--c3)}
+.rlow{background:rgba(63,185,80,.15);color:var(--green)}
+
+.vol-strip{background:var(--surface2);border-radius:8px;padding:11px 14px;margin-top:12px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.vi{display:flex;flex-direction:column;gap:1px}
+.vi .vl{font-size:9.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.vi .vv{font-size:17px;font-weight:800;color:var(--c1)}
+.vi .vs{font-size:9.5px;color:var(--muted)}
+.vsep{width:1px;height:28px;background:var(--border)}
+.vrank{flex:1;min-width:180px}
+.vrank-lbl{font-size:9.5px;color:var(--muted);margin-bottom:3px}
+.vtrack{height:9px;background:var(--border);border-radius:5px;overflow:hidden}
+.vfill2{height:100%;border-radius:5px}
+.vdots{display:flex;justify-content:space-between;font-size:8.5px;color:var(--muted);margin-top:2px}
+
+.hero-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-top:12px}
+.hkpi{background:var(--surface2);border-radius:8px;padding:11px 13px;border-top:2px solid var(--border);position:relative}
+.hkpi.bn{border-top-color:var(--danger)}.hkpi.gd{border-top-color:var(--green)}
+.kl{font-size:9.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.kv{font-size:21px;font-weight:800;line-height:1}
+.ku{font-size:9.5px;font-weight:400;color:var(--muted)}
+.kd{font-size:9.5px;margin-top:2px}
+.ka{color:var(--danger)}.kb{color:var(--green)}.kn{color:var(--muted)}
+.kf{position:absolute;top:6px;right:7px;font-size:12px}
+
+.stitle{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.stitle::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.crow{display:grid;gap:12px;margin-bottom:16px}
+.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:1fr 1fr 1fr}
+.ccard{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px}
+.ccard h3{font-size:12.5px;font-weight:600;margin-bottom:2px}
+.cdesc{font-size:10.5px;color:var(--muted);margin-bottom:11px}
+
+/* FLOW */
+.flow{display:flex;gap:0;margin-top:8px;overflow-x:auto;padding-bottom:4px}
+.fs{flex:1;min-width:80px;text-align:center;position:relative}
+.fs:not(:last-child)::after{content:'›';position:absolute;right:-7px;top:50%;transform:translateY(-50%);color:var(--border);font-size:18px;z-index:1}
+.fb{margin:0 5px;border-radius:7px;padding:9px 5px;border:1px solid var(--border);height:100%}
+.fn{font-size:9px;color:var(--muted);margin-bottom:3px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+.fv{font-size:18px;font-weight:800;line-height:1}
+.fu{font-size:8.5px;color:var(--muted)}
+.fd{font-size:9px;margin-top:2px;font-weight:700}
+.fbar{height:3px;border-radius:2px;margin-top:5px;background:var(--border);overflow:hidden}
+.fbar-fill{height:100%;border-radius:2px}
+
+/* PEER */
+.peer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:7px;margin-top:9px}
+.peer-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 11px;cursor:pointer;transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.peer-card:hover{border-color:var(--c3);background:rgba(247,183,49,.05)}
+.peer-card.active{border-color:var(--c2);background:rgba(88,166,255,.07)}
+.pc-name{font-size:10.5px;font-weight:600;line-height:1.2;margin-bottom:3px}
+.pc-pts{font-size:9.5px;color:var(--muted)}
+.pc-time{font-size:15px;font-weight:800;margin-top:1px}
+.pc-vb{height:3px;border-radius:2px;margin-top:5px;background:var(--border);overflow:hidden}
+.pc-vf{height:100%;border-radius:2px;background:var(--c3)}
+
+/* GROUP COMPARE VIEW */
+.grp-header{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;box-shadow:var(--shadow-sm)}
+.grp-badge{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;border:1px solid}
+.grp-community{background:rgba(0,201,167,.1);color:var(--c1);border-color:var(--c1)}
+.grp-general{background:rgba(88,166,255,.1);color:var(--c2);border-color:var(--c2)}
+.grp-all{background:rgba(139,148,158,.1);color:var(--muted);border-color:var(--border)}
+.grp-stat{display:flex;gap:16px;flex-wrap:wrap;margin-left:auto}
+.gs{text-align:right}
+.gs-v{font-size:18px;font-weight:800}
+.gs-l{font-size:9.5px;color:var(--muted)}
+
+/* GROUP TABLE */
+.grp-table{width:100%;border-collapse:collapse;font-size:11.5px}
+.grp-table th{text-align:left;padding:7px 9px;background:#F0F3F7;color:var(--muted);font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.grp-table tr{border-bottom:1px solid var(--border)}
+.grp-table tr:last-child{border-bottom:none}
+.grp-table td{padding:7px 9px;vertical-align:middle}
+.grp-table tr.primary-row{background:#F0FDF9}
+.grp-table tr:hover{background:#EFF6FF}
+.tr-add{cursor:pointer}
+.tr-add:hover td:first-child{color:var(--c1)}
+
+/* COMPARE TABLE */
+.cmp-table{width:100%;border-collapse:collapse;font-size:11.5px}
+.cmp-table th{text-align:left;padding:7px 9px;background:#F0F3F7;color:var(--muted);font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.cmp-table tr{border-bottom:1px solid var(--border)}
+.cmp-table tr:last-child{border-bottom:none}
+.cmp-table td{padding:7px 9px;vertical-align:middle}
+.cmp-table tr.pr{background:rgba(0,201,167,.05)}
+.cmp-table tr.cr{background:#F8FAFF}
+.cmp-table tr.ar{background:rgba(247,183,49,.04)}
+.win{color:var(--green);font-weight:700}.lose{color:var(--danger);font-weight:700}.tie{color:var(--muted)}
+
+.insights{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px}
+.icard{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:13px 15px;border-left:3px solid var(--c1)}
+.icard.w{border-left-color:var(--danger)}.icard.ok{border-left-color:var(--green)}.icard.n{border-left-color:var(--c3)}
+.icon{font-size:15px;margin-bottom:4px}
+.ititle{font-size:11.5px;font-weight:700;margin-bottom:2px}
+.ibody{font-size:11px;color:var(--muted);line-height:1.55}
+.ibody strong{color:var(--text)}
+
+.no-cmp{text-align:center;padding:32px 20px;color:var(--muted)}
+.no-cmp .big{font-size:28px;margin-bottom:5px}
+
+/* PATIENT COUNT PER STEP */
+.data-notice{background:#FEF2F2;border:1px solid #FECACA;border-left:3px solid #DC2626;border-radius:8px;padding:9px 13px;font-size:10.5px;color:#64748B;line-height:1.6;margin-bottom:14px}
+.data-notice strong{color:#DC2626}
+.step-flow{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:6px;margin-top:8px}
+.sf-step{flex:1;min-width:88px;text-align:center;position:relative}
+.sf-step:not(:last-child)::after{content:'›';position:absolute;right:-8px;top:38%;transform:translateY(-50%);color:var(--border);font-size:18px;z-index:1}
+.sf-box{margin:0 5px;border-radius:8px;padding:10px 6px 8px;height:100%;display:flex;flex-direction:column;align-items:center;gap:2px}
+.sf-box.sf-full{border:1.5px solid #0D9488;background:#F0FDF9}
+.sf-box.sf-partial{border:1.5px solid #DC2626;background:#FEF2F2}
+.sf-box.sf-none{border:1px dashed #CBD5E1;background:#F8FAFC;opacity:.8}
+.sf-label{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.sf-count{font-size:17px;font-weight:800;line-height:1}
+.sf-unit{font-size:8.5px;color:var(--muted)}
+.sf-pct{font-size:9.5px;font-weight:700;margin-top:3px}
+.sf-pct.full{color:#00C9A7}.sf-pct.partial{color:#FF6B6B}.sf-pct.none{color:var(--muted)}
+.sf-bar{width:100%;height:3px;border-radius:2px;background:var(--border);overflow:hidden;margin-top:5px}
+.sf-bar-fill{height:100%;border-radius:2px}
+.sf-badge{font-size:8px;padding:1px 6px;border-radius:10px;font-weight:700;margin-top:3px}
+.sf-badge.full{background:rgba(0,201,167,.15);color:#00C9A7}
+.sf-badge.partial{background:rgba(255,107,107,.15);color:#FF6B6B}
+.sf-badge.none{background:var(--surface2);color:var(--muted)}
+.sf-legend{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap}
+.sf-leg-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)}
+.sf-leg-dot{width:9px;height:9px;border-radius:2px}
+
+/* LAB TABLE */
+.lab-table{width:100%;border-collapse:collapse;font-size:11.5px;margin-top:8px}
+.lab-table th{text-align:left;padding:6px 9px;background:#F0F3F7;color:var(--muted);font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.lab-table tr{border-bottom:1px solid var(--border)}
+.lab-table tr:last-child{border-bottom:none}
+.lab-table td{padding:6px 9px;vertical-align:middle}
+.lab-table tr.pri-lab{background:rgba(0,201,167,.06)}
+.lab-table tr:hover{background:#EFF6FF}
+.lab-pct-bar{display:flex;align-items:center;gap:6px}
+.lpb{width:60px;height:5px;border-radius:3px;background:var(--border);overflow:hidden;flex-shrink:0}
+.lpbf{height:100%;border-radius:3px}
+
+
+/* TREND VIEW */
+.trend-year-tabs{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap}
+.yr-tab{padding:5px 14px;border-radius:16px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;box-shadow:var(--shadow-sm)}
+.yr-tab.active{background:rgba(247,183,49,.12);border-color:var(--c3);color:var(--c3)}
+.trend-table{width:100%;border-collapse:collapse;font-size:11.5px}
+.trend-table th{text-align:left;padding:7px 9px;background:var(--surface2);color:var(--muted);font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.trend-table tr{border-bottom:1px solid var(--border)}
+.trend-table tr:last-child{border-bottom:none}
+.trend-table td{padding:7px 9px;vertical-align:middle}
+.trend-table tr.tr-pri{background:rgba(0,201,167,.06)}
+.yr-pill{display:inline-block;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:700}
+.yr-2566{background:rgba(188,140,255,.15);color:#BC8CFF}
+.yr-2567{background:rgba(88,166,255,.15);color:#58A6FF}
+.yr-2568{background:rgba(247,183,49,.15);color:#F7B731}
+.yr-2569{background:rgba(0,201,167,.15);color:#00C9A7}
+.trend-arrow-up{color:#FF6B6B;font-weight:700}
+.trend-arrow-dn{color:#3FB950;font-weight:700}
+.delta-cell{font-size:10px}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* ADD TO COMPARE BUTTON */
+.add-cmp-btn{background:var(--surface2);border:1px solid var(--border);border-radius:5px;color:var(--muted);font-size:9px;font-weight:700;padding:2px 6px;cursor:pointer;font-family:inherit;transition:all .12s;white-space:nowrap;display:block;width:100%;text-align:center}
+.add-cmp-btn:hover{border-color:var(--c2);color:var(--c2);background:rgba(88,166,255,.1)}
+.add-cmp-btn.rm-btn{border-color:rgba(255,107,107,.3);color:#FF6B6B}
+.add-cmp-btn.rm-btn:hover{background:rgba(255,107,107,.1)}
+.h-item.primary .add-cmp-btn{display:none}
+
+/* CLICK HINT in sidebar */
+.click-hint{font-size:9.5px;color:var(--muted);padding:5px 12px 2px;font-style:italic}
+
+/* SHARED NAV */
+.site-nav{background:#fff;border-bottom:1px solid #E2E8F0;padding:0 20px;display:flex;align-items:center;gap:2px;overflow-x:auto;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.site-nav a{display:inline-flex;align-items:center;gap:6px;padding:11px 16px;font-size:13px;font-weight:600;color:#64748B;text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;font-family:'Sarabun',sans-serif}
+.site-nav a:hover{color:#1D6FA4}
+.site-nav a.active{color:#1D6FA4;border-bottom-color:#1D6FA4}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html">🏥 ภาพรวมโรงพยาบาล</a>
+  <a href="opwalkin.html">💰 พึงรับ-พึงจ่าย OP Walk-in</a>
+  <a href="compare.html" class="active">⏱ เปรียบเทียบระยะเวลารอคอย</a>
+</nav>
+
+
+
+<div class="header">
+  <div>
+    <h1>🏥 วิเคราะห์ระยะเวลารอคอยรายโรงพยาบาล</h1>
+    <div class="sub">จังหวัดนครราชสีมา · ปีงบประมาณ 2569 · เปรียบเทียบรายโรงพยาบาลและรายกลุ่มประเภท</div>
+  </div>
+  <span class="badge">33 โรงพยาบาล</span>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sb-hd">
+      <h2>เลือกดูโรงพยาบาล</h2>
+      <div class="sb-row">
+        <select class="sb-sel" id="sbSort" onchange="renderSidebar()">
+          <option value="total">เวลารวม ↓</option>
+          <option value="patients">ผู้ป่วย ↓</option>
+          <option value="name">ชื่อ A-Z</option>
+          <option value="wait_doc">รอแพทย์ ↓</option>
+        </select>
+      </div>
+      <div class="sb-search"><input type="text" id="sbQ" placeholder="ค้นหา..." oninput="renderSidebar()"></div>
+    </div>
+    <!-- TYPE FILTER TABS -->
+    <div class="type-tabs">
+      <button class="type-tab t-all active" onclick="setTypeFilter('all',this)">ทั้งหมด</button>
+      <button class="type-tab t-gen" onclick="setTypeFilter('รพ.ทั่วไป',this)">รพ.ทั่วไป</button>
+      <button class="type-tab t-com" onclick="setTypeFilter('รพ.ชุมชน',this)">รพ.ชุมชน</button>
+    </div>
+    <div class="click-hint">คลิกชื่อ = ดูรายละเอียด &nbsp;·&nbsp; "+ เทียบ" = เปรียบเทียบ</div>
+    <div class="h-list" id="hList"></div>
+
+    <!-- GROUP COMPARE BUTTON -->
+    <div class="grp-btn-bar">
+      <button class="grp-btn" id="grpBtn" onclick="toggleGroupView()">
+        <span id="grpBtnTxt">📊 เปรียบเทียบตามกลุ่มประเภท</span>
+        <span id="grpBtnArrow">›</span>
+      </button>
+    </div>
+
+    <div class="cmp-bar">
+      <div class="cmp-bar-label">เปรียบเทียบ (สูงสุด 3 แห่ง) — กด "+ เทียบ" เพื่อเพิ่ม</div>
+      <div class="cmp-tags" id="cmpTags">
+        <span class="empty-cmp">กด "+ เทียบ" เพื่อเพิ่มการเปรียบเทียบ</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content" id="content"></div>
+</div>
+
+<script>
+const DATA=[
+  {name:"โรงพยาบาลวังน้ำเขียว",short:"วังน้ำเขียว",type:"รพ.ชุมชน",patients:17273,wait_screen:24.9,screen:23.9,wait_doc:52.5,doc:6.0,medicine:119.5,lab:110.9,total:207.7,vs_prev:-2.1,vs_prev_min:-4.4,peak:"07:00-07:59",peak_avg:216.9,lab_count:8028},
+  {name:"โรงพยาบาลโชคชัย",short:"โชคชัย",type:"รพ.ชุมชน",patients:37237,wait_screen:57.8,screen:11.6,wait_doc:72.5,doc:10.3,medicine:26.4,lab:92.3,total:193.6,vs_prev:3.5,vs_prev_min:6.5,peak:"06:00-06:59",peak_avg:252.1,lab_count:8727},
+  {name:"โรงพยาบาลคง",short:"คง",type:"รพ.ชุมชน",patients:35556,wait_screen:47.3,screen:7.5,wait_doc:94.7,doc:6.2,medicine:37.5,lab:91.1,total:183.7,vs_prev:13.8,vs_prev_min:22.3,peak:"07:00-07:59",peak_avg:175.6,lab_count:15484},
+  {name:"โรงพยาบาลพระทองคำ เฉลิมพระเกียรติ 80 พรรษา",short:"พระทองคำฯ",type:"รพ.ชุมชน",patients:24323,wait_screen:83.2,screen:4.2,wait_doc:64.8,doc:21.3,medicine:20.2,lab:115.2,total:182.5,vs_prev:-0.3,vs_prev_min:-0.5,peak:"05:00-05:59",peak_avg:243.9,lab_count:11149,xray_count:2},
+  {name:"โรงพยาบาลห้วยแถลง",short:"ห้วยแถลง",type:"รพ.ชุมชน",patients:30183,wait_screen:83.4,screen:14.4,wait_doc:53.8,doc:6.3,medicine:23.7,lab:122.3,total:182.5,vs_prev:4.8,vs_prev_min:8.4,peak:"06:00-06:59",peak_avg:164.3,lab_count:16527},
+  {name:"โรงพยาบาลบัวใหญ่",short:"บัวใหญ่",type:"รพ.ทั่วไป",patients:38302,wait_screen:55.5,screen:4.0,wait_doc:103.5,doc:7.8,medicine:15.8,lab:122.5,total:175.9,vs_prev:-2.3,vs_prev_min:-4.1,peak:"05:00-05:59",peak_avg:249.7,lab_count:10137},
+  {name:"โรงพยาบาลชุมพวง",short:"ชุมพวง",type:"รพ.ชุมชน",patients:35431,wait_screen:93.9,screen:5.1,wait_doc:96.8,doc:12.6,medicine:28.4,lab:168.1,total:170.9,vs_prev:7.4,vs_prev_min:11.8,peak:"05:00-05:59",peak_avg:295.6,lab_count:11444},
+  {name:"โรงพยาบาลครบุรี",short:"ครบุรี",type:"รพ.ชุมชน",patients:45966,wait_screen:76.4,screen:4.8,wait_doc:123.0,doc:9.3,medicine:6.0,lab:120.9,total:167.6,vs_prev:-0.6,vs_prev_min:-1.0,peak:"06:00-06:59",peak_avg:195.2,lab_count:14326},
+  {name:"โรงพยาบาลหลวงพ่อคูณ ปริสุทฺโธ",short:"หลวงพ่อคูณฯ",type:"รพ.ชุมชน",patients:46563,wait_screen:49.6,screen:5.5,wait_doc:82.8,doc:7.4,medicine:28.2,lab:85.2,total:165.2,vs_prev:-8.9,vs_prev_min:-16.2,peak:"05:00-05:59",peak_avg:313.3,lab_count:17641},
+  {name:"โรงพยาบาลปากช่องนานา",short:"ปากช่องนานา",type:"รพ.ทั่วไป",patients:94178,wait_screen:63.6,screen:3.2,wait_doc:87.2,doc:6.9,medicine:34.1,lab:132.4,total:162.1,vs_prev:5.3,vs_prev_min:8.2,peak:"05:00-05:59",peak_avg:263.5,lab_count:22645},
+  {name:"โรงพยาบาลพิมาย",short:"พิมาย",type:"รพ.ทั่วไป",patients:30029,wait_screen:62.8,screen:6.4,wait_doc:83.2,doc:10.7,medicine:120.0,lab:211.3,total:156.8,vs_prev:-6.8,vs_prev_min:-11.5,peak:"05:00-05:59",peak_avg:356.1,lab_count:6805},
+  {name:"โรงพยาบาลโนนไทย",short:"โนนไทย",type:"รพ.ชุมชน",patients:25723,wait_screen:71.3,screen:5.2,wait_doc:84.8,doc:4.8,medicine:8.0,lab:79.3,total:154.0,vs_prev:-3.3,vs_prev_min:-5.3,peak:"05:00-05:59",peak_avg:235.2,lab_count:10706},
+  {name:"โรงพยาบาลเทพรัตน์นครราชสีมา",short:"เทพรัตน์ นม.",type:"รพ.ทั่วไป",patients:80560,wait_screen:56.0,screen:4.1,wait_doc:82.5,doc:8.4,medicine:33.7,lab:123.6,total:150.9,vs_prev:-1.3,vs_prev_min:-1.9,peak:"05:00-05:59",peak_avg:353.1,lab_count:12220},
+  {name:"โรงพยาบาลสีคิ้ว",short:"สีคิ้ว",type:"รพ.ชุมชน",patients:59714,wait_screen:54.1,screen:6.1,wait_doc:88.6,doc:8.2,medicine:32.2,lab:159.3,total:150.8,vs_prev:-7.2,vs_prev_min:-11.7,peak:"06:00-06:59",peak_avg:203.4,lab_count:20795},
+  {name:"โรงพยาบาลขามสะแกแสง",short:"ขามสะแกแสง",type:"รพ.ชุมชน",patients:37346,wait_screen:68.6,screen:5.3,wait_doc:92.1,doc:7.3,medicine:5.2,lab:103.4,total:145.6,vs_prev:1.3,vs_prev_min:1.9,peak:"06:00-06:59",peak_avg:181.5,lab_count:12842},
+  {name:"โรงพยาบาลเทพารักษ์",short:"เทพารักษ์",type:"รพ.ชุมชน",patients:8985,wait_screen:36.1,screen:3.1,wait_doc:83.4,doc:29.0,medicine:190.6,lab:111.5,total:142.7,vs_prev:-0.1,vs_prev_min:-0.2,peak:"05:00-05:59",peak_avg:254.0,lab_count:3733},
+  {name:"โรงพยาบาลสูงเนิน",short:"สูงเนิน",type:"รพ.ชุมชน",patients:49756,wait_screen:35.0,screen:5.7,wait_doc:76.3,doc:4.8,medicine:24.3,lab:85.6,total:141.9,vs_prev:-6.9,vs_prev_min:-10.5,peak:"06:00-06:59",peak_avg:243.7,lab_count:14833},
+  {name:"โรงพยาบาลโนนสูง",short:"โนนสูง",type:"รพ.ชุมชน",patients:44771,wait_screen:56.6,screen:4.0,wait_doc:94.5,doc:5.2,medicine:3.0,lab:91.0,total:137.1,vs_prev:-0.1,vs_prev_min:-0.1,peak:"07:00-07:59",peak_avg:199.6,lab_count:11761},
+  {name:"โรงพยาบาลประทาย",short:"ประทาย",type:"รพ.ชุมชน",patients:23136,wait_screen:52.1,screen:9.0,wait_doc:57.9,doc:4.8,medicine:20.8,lab:96.1,total:136.9,vs_prev:-2.5,vs_prev_min:-3.5,peak:"06:00-06:59",peak_avg:187.3,lab_count:8677},
+  {name:"โรงพยาบาลปักธงชัย",short:"ปักธงชัย",type:"รพ.ชุมชน",patients:45476,wait_screen:68.9,screen:4.8,wait_doc:51.8,doc:14.3,medicine:65.5,lab:152.7,total:129.7,vs_prev:6.3,vs_prev_min:7.6,peak:"06:00-06:59",peak_avg:168.6,lab_count:16766},
+  {name:"โรงพยาบาลโนนแดง",short:"โนนแดง",type:"รพ.ชุมชน",patients:9517,wait_screen:38.7,screen:16.8,wait_doc:63.3,doc:6.5,medicine:26.3,lab:87.3,total:125.0,vs_prev:-4.0,vs_prev_min:-5.2,peak:"06:00-06:59",peak_avg:189.4,lab_count:3238},
+  {name:"โรงพยาบาลเฉลิมพระเกียรติ",short:"เฉลิมพระเกียรติ",type:"รพ.ชุมชน",patients:31063,wait_screen:69.6,screen:4.9,wait_doc:53.7,doc:4.0,medicine:50.0,lab:75.0,total:123.3,vs_prev:3.6,vs_prev_min:4.3,peak:"05:00-05:59",peak_avg:269.5,lab_count:10742},
+  {name:"โรงพยาบาลบ้านเหลื่อม",short:"บ้านเหลื่อม",type:"รพ.ชุมชน",patients:14442,wait_screen:59.8,screen:16.4,wait_doc:56.1,doc:4.2,medicine:44.0,lab:92.8,total:123.0,vs_prev:-8.4,vs_prev_min:-11.2,peak:"05:00-05:59",peak_avg:238.8,lab_count:5960},
+  {name:"โรงพยาบาลเสิงสาง",short:"เสิงสาง",type:"รพ.ชุมชน",patients:23072,wait_screen:68.7,screen:4.3,wait_doc:52.9,doc:4.2,medicine:16.8,lab:164.3,total:116.3,vs_prev:1.0,vs_prev_min:1.2,peak:"06:00-06:59",peak_avg:138.6,lab_count:9536},
+  {name:"โรงพยาบาลเฉลิมพระเกียรติสมเด็จย่า 100 ปี",short:"สมเด็จย่าฯ",type:"รพ.ชุมชน",patients:12504,wait_screen:32.4,screen:3.5,wait_doc:94.2,doc:6.8,medicine:0.0,lab:73.3,total:115.6,vs_prev:12.6,vs_prev_min:13.0,peak:"05:00-05:59",peak_avg:244.0,lab_count:4190},
+  {name:"โรงพยาบาลหนองบุญมาก",short:"หนองบุญมาก",type:"รพ.ชุมชน",patients:27833,wait_screen:42.5,screen:4.4,wait_doc:69.6,doc:4.7,medicine:0.0,lab:94.3,total:105.3,vs_prev:-3.8,vs_prev_min:-4.2,peak:"08:00-08:59",peak_avg:105.6,lab_count:9287},
+  {name:"โรงพยาบาลขามทะเลสอ",short:"ขามทะเลสอ",type:"รพ.ชุมชน",patients:10557,wait_screen:20.3,screen:6.2,wait_doc:69.3,doc:4.6,medicine:23.6,lab:75.2,total:104.0,vs_prev:-21.6,vs_prev_min:-28.6,peak:"05:00-05:59",peak_avg:317.3,lab_count:3869},
+  {name:"โรงพยาบาลลำทะเมนชัย",short:"ลำทะเมนชัย",type:"รพ.ชุมชน",patients:12600,wait_screen:16.8,screen:2.9,wait_doc:73.9,doc:10.7,medicine:12.8,lab:56.0,total:95.5,vs_prev:10.9,vs_prev_min:9.3,peak:"05:00-05:59",peak_avg:193.6,lab_count:6202},
+  {name:"โรงพยาบาลมกุฏคีรีวัน",short:"มกุฏคีรีวัน",type:"รพ.ชุมชน",patients:13160,wait_screen:27.1,screen:2.9,wait_doc:64.7,doc:5.8,medicine:14.8,lab:163.2,total:91.8,vs_prev:32.7,vs_prev_min:22.6,peak:"05:00-05:59",peak_avg:361.2,lab_count:1599},
+  {name:"โรงพยาบาลแก้งสนามนาง",short:"แก้งสนามนาง",type:"รพ.ชุมชน",patients:15771,wait_screen:35.2,screen:10.5,wait_doc:54.6,doc:5.1,medicine:26.8,lab:77.7,total:86.9,vs_prev:-1.4,vs_prev_min:-1.3,peak:"07:00-07:59",peak_avg:131.7,lab_count:7074},
+  {name:"โรงพยาบาลจักราช",short:"จักราช",type:"รพ.ชุมชน",patients:76,wait_screen:32.1,screen:10.8,wait_doc:75.7,doc:7.1,medicine:30.8,lab:null,total:84.5,vs_prev:11.9,vs_prev_min:9.0,peak:"07:00-07:59",peak_avg:169.8,lab_count:0},
+  {name:"โรงพยาบาลบัวลาย",short:"บัวลาย",type:"รพ.ชุมชน",patients:2304,wait_screen:46.3,screen:4.6,wait_doc:41.4,doc:8.0,medicine:0.0,lab:62.0,total:80.8,vs_prev:-25.8,vs_prev_min:-28.1,peak:"07:00-07:59",peak_avg:139.5,lab_count:406},
+  {name:"โรงพยาบาลสีดา",short:"สีดา",type:"รพ.ชุมชน",patients:82,wait_screen:14.3,screen:3.2,wait_doc:64.3,doc:2.1,medicine:13.7,lab:69.2,total:71.6,vs_prev:12.1,vs_prev_min:7.7,peak:"07:00-07:59",peak_avg:132.8,lab_count:14},
+];
+
+
+const HIST = {
+  "โรงพยาบาลบัวใหญ่":{"2566":{patients:54572,wait_screen:57.7,screen:3.8,wait_doc:98.2,doc:6.8,medicine:13.6,lab:91.0,lab_count:10361,total:159.3},"2567":{patients:137494,wait_screen:68.4,screen:4.0,wait_doc:72.7,doc:10.7,medicine:16.1,lab:110.6,lab_count:39989,total:162.3},"2568":{patients:119289,wait_screen:67.9,screen:4.2,wait_doc:92.0,doc:6.8,medicine:17.8,lab:118.6,lab_count:35636,total:179.9}},
+  "โรงพยาบาลปากช่องนานา":{"2566":{patients:57557,wait_screen:81.3,screen:3.6,wait_doc:82.3,doc:13.7,medicine:5.3,lab:134.2,lab_count:10385,total:123.7},"2567":{patients:228605,wait_screen:66.2,screen:3.4,wait_doc:82.0,doc:11.4,medicine:28.0,lab:127.9,lab_count:58357,total:144.3},"2568":{patients:233736,wait_screen:64.6,screen:3.1,wait_doc:86.6,doc:8.5,medicine:22.7,lab:126.8,lab_count:60902,total:153.9}},
+  "โรงพยาบาลพิมาย":{"2566":{patients:70571,wait_screen:80.3,screen:7.8,wait_doc:94.3,doc:9.2,medicine:64.8,lab:142.6,lab_count:16790,total:203.2},"2567":{patients:89834,wait_screen:78.6,screen:6.9,wait_doc:89.9,doc:10.6,medicine:99.3,lab:142.8,lab_count:17221,total:195.6},"2568":{patients:83927,wait_screen:69.6,screen:6.5,wait_doc:83.5,doc:12.8,medicine:60.0,lab:179.4,lab_count:16523,total:168.3}},
+  "โรงพยาบาลเทพรัตน์นครราชสีมา":{"2566":{patients:129182,wait_screen:76.2,screen:4.9,wait_doc:71.3,doc:11.9,medicine:22.5,lab:146.4,lab_count:19614,total:144.4},"2567":{patients:218939,wait_screen:58.2,screen:5.0,wait_doc:74.8,doc:11.0,medicine:24.6,lab:142.3,lab_count:36469,total:153.1},"2568":{patients:231660,wait_screen:54.0,screen:4.4,wait_doc:84.4,doc:10.7,medicine:34.3,lab:128.1,lab_count:39102,total:152.8}},
+  "โรงพยาบาลขามทะเลสอ":{"2566":{patients:16806,wait_screen:13.1,screen:3.2,wait_doc:78.4,doc:3.9,medicine:32.6,lab:53.6,lab_count:4861,total:135.1},"2567":{patients:29980,wait_screen:16.3,screen:4.0,wait_doc:76.3,doc:4.6,medicine:36.9,lab:97.5,lab_count:10328,total:136.0},"2568":{patients:37125,wait_screen:20.5,screen:3.3,wait_doc:77.5,doc:4.8,medicine:34.4,lab:63.3,lab_count:12524,total:132.6}},
+  "โรงพยาบาลขามสะแกแสง":{"2566":{patients:31871,wait_screen:58.4,screen:4.4,wait_doc:58.7,doc:7.7,medicine:17.0,lab:81.8,lab_count:7967,total:102.8},"2567":{patients:47438,wait_screen:57.2,screen:4.7,wait_doc:73.4,doc:7.9,medicine:0,lab:88.1,lab_count:12579,total:110.3},"2568":{patients:57524,wait_screen:72.2,screen:5.8,wait_doc:87.9,doc:7.2,medicine:0,lab:101.1,lab_count:19470,total:143.7}},
+  "โรงพยาบาลคง":{"2566":{patients:33711,wait_screen:27.6,screen:3.7,wait_doc:68.5,doc:5.5,medicine:26.1,lab:60.6,lab_count:13830,total:131.7},"2567":{patients:53961,wait_screen:34.1,screen:3.7,wait_doc:73.8,doc:4.8,medicine:31.3,lab:66.8,lab_count:23310,total:145.6},"2568":{patients:55679,wait_screen:35.3,screen:4.5,wait_doc:81.6,doc:5.9,medicine:29.4,lab:73.1,lab_count:23345,total:161.4}},
+  "โรงพยาบาลครบุรี":{"2566":{patients:81866,wait_screen:64.1,screen:4.6,wait_doc:90.4,doc:7.1,medicine:155.7,lab:145.6,lab_count:21843,total:150.0},"2567":{patients:105551,wait_screen:64.8,screen:5.3,wait_doc:109.9,doc:8.1,medicine:104.6,lab:145.5,lab_count:32742,total:157.8},"2568":{patients:122672,wait_screen:75.4,screen:5.1,wait_doc:114.8,doc:8.6,medicine:44.8,lab:131.1,lab_count:35921,total:168.6}},
+  "โรงพยาบาลจักราช":{"2566":{patients:11936,wait_screen:35.8,screen:5.1,wait_doc:52.5,doc:4.2,medicine:20.6,lab:75.8,lab_count:1422,total:81.6},"2567":{patients:11425,wait_screen:43.6,screen:6.3,wait_doc:64.9,doc:4.2,medicine:24.0,lab:77.2,lab_count:1489,total:83.5},"2568":{patients:5067,wait_screen:34.4,screen:4.1,wait_doc:52.4,doc:3.4,medicine:46.7,lab:40.5,lab_count:35,total:75.5}},
+  "โรงพยาบาลชุมพวง":{"2566":{patients:50487,wait_screen:74.2,screen:6.7,wait_doc:74.0,doc:5.6,medicine:0,lab:134.3,lab_count:16943,total:150.9},"2567":{patients:69116,wait_screen:73.1,screen:5.8,wait_doc:63.8,doc:5.1,medicine:36.4,lab:126.0,lab_count:25620,total:135.7},"2568":{patients:76228,wait_screen:75.7,screen:5.0,wait_doc:68.7,doc:4.5,medicine:27.9,lab:117.5,lab_count:27029,total:159.1}},
+  "โรงพยาบาลบัวลาย":{"2566":{patients:11659,wait_screen:71.4,screen:4.9,wait_doc:70.8,doc:8.0,medicine:6.0,lab:87.6,lab_count:5802,total:139.3},"2567":{patients:10259,wait_screen:58.3,screen:4.7,wait_doc:77.0,doc:8.2,medicine:0,lab:80.6,lab_count:3967,total:121.8},"2568":{patients:11118,wait_screen:44.1,screen:4.0,wait_doc:74.1,doc:6.7,medicine:0,lab:61.5,lab_count:4731,total:109.0}},
+  "โรงพยาบาลบ้านเหลื่อม":{"2566":{patients:28890,wait_screen:61.9,screen:13.2,wait_doc:47.8,doc:5.8,medicine:0,lab:76.7,lab_count:10232,total:123.4},"2567":{patients:37324,wait_screen:56.3,screen:11.3,wait_doc:48.9,doc:8.4,medicine:107.5,lab:85.1,lab_count:13063,total:128.2},"2568":{patients:41842,wait_screen:59.5,screen:11.4,wait_doc:51.5,doc:5.6,medicine:144.0,lab:98.3,lab_count:14275,total:134.2}},
+  "โรงพยาบาลประทาย":{"2566":{patients:49509,wait_screen:46.2,screen:14.4,wait_doc:43.1,doc:4.7,medicine:48.4,lab:63.5,lab_count:20302,total:104.9},"2567":{patients:76534,wait_screen:46.2,screen:17.0,wait_doc:56.0,doc:3.9,medicine:75.0,lab:70.7,lab_count:33614,total:122.7},"2568":{patients:64525,wait_screen:53.4,screen:11.2,wait_doc:67.0,doc:4.8,medicine:29.1,lab:88.5,lab_count:25835,total:140.4}},
+  "โรงพยาบาลปักธงชัย":{"2566":{patients:86994,wait_screen:43.2,screen:6.9,wait_doc:57.7,doc:7.1,medicine:35.3,lab:156.9,lab_count:14815,total:120.1},"2567":{patients:127755,wait_screen:51.4,screen:6.0,wait_doc:56.2,doc:7.3,medicine:46.9,lab:147.5,lab_count:30597,total:121.3},"2568":{patients:127827,wait_screen:66.6,screen:5.2,wait_doc:46.7,doc:12.1,medicine:35.6,lab:148.2,lab_count:42756,total:122.0}},
+  "โรงพยาบาลพระทองคำ เฉลิมพระเกียรติ 80 พรรษา":{"2566":{patients:25953,wait_screen:95.0,screen:3.4,wait_doc:64.1,doc:22.7,medicine:21.7,lab:126.5,lab_count:10698,total:193.4},"2567":{patients:33401,wait_screen:102.5,screen:3.8,wait_doc:61.9,doc:25.9,medicine:20.9,lab:122.0,lab_count:15947,total:204.6},"2568":{patients:44775,wait_screen:86.3,screen:3.7,wait_doc:66.6,doc:17.4,medicine:18.7,lab:110.7,lab_count:18493,total:183.0}},
+  "โรงพยาบาลมกุฏคีรีวัน":{"2566":{patients:9063,wait_screen:16.1,screen:2.4,wait_doc:35.5,doc:5.9,medicine:19.4,lab:null,lab_count:null,total:66.2},"2567":{patients:19276,wait_screen:23.0,screen:2.7,wait_doc:43.9,doc:6.0,medicine:11.3,lab:413.8,lab_count:66,total:70.7},"2568":{patients:22912,wait_screen:23.9,screen:3.3,wait_doc:42.9,doc:6.7,medicine:11.8,lab:114.8,lab_count:1478,total:69.2}},
+  "โรงพยาบาลลำทะเมนชัย":{"2566":{patients:26567,wait_screen:15.8,screen:3.1,wait_doc:58.9,doc:18.1,medicine:15.6,lab:76.3,lab_count:12120,total:92.8},"2567":{patients:38419,wait_screen:22.3,screen:3.0,wait_doc:65.1,doc:13.9,medicine:12.8,lab:55.3,lab_count:17146,total:91.1},"2568":{patients:36106,wait_screen:19.5,screen:3.0,wait_doc:62.3,doc:9.4,medicine:12.9,lab:57.0,lab_count:15877,total:86.1}},
+  "โรงพยาบาลวังน้ำเขียว":{"2566":{patients:34822,wait_screen:27.9,screen:19.9,wait_doc:37.3,doc:6.7,medicine:98.6,lab:51.0,lab_count:12940,total:188.1},"2567":{patients:49706,wait_screen:26.2,screen:18.9,wait_doc:34.4,doc:6.2,medicine:117.8,lab:58.7,lab_count:18019,total:202.2},"2568":{patients:55494,wait_screen:28.4,screen:19.2,wait_doc:43.8,doc:6.1,medicine:126.8,lab:80.8,lab_count:19643,total:212.1}},
+  "โรงพยาบาลสีคิ้ว":{"2566":{patients:77842,wait_screen:50.7,screen:6.0,wait_doc:81.9,doc:9.3,medicine:129.0,lab:140.4,lab_count:23585,total:130.8},"2567":{patients:103579,wait_screen:53.8,screen:6.2,wait_doc:85.5,doc:10.1,medicine:41.3,lab:146.1,lab_count:31058,total:149.3},"2568":{patients:110538,wait_screen:58.0,screen:6.2,wait_doc:88.8,doc:8.9,medicine:35.3,lab:168.6,lab_count:36388,total:162.4}},
+  "โรงพยาบาลสีดา":{"2566":{patients:196,wait_screen:16.3,screen:2.9,wait_doc:92.2,doc:4.5,medicine:0,lab:49.4,lab_count:40,total:90.6},"2567":{patients:265,wait_screen:16.0,screen:2.5,wait_doc:83.1,doc:2.9,medicine:0,lab:95.3,lab_count:71,total:93.5},"2568":{patients:163,wait_screen:17.2,screen:3.0,wait_doc:54.5,doc:6.5,medicine:0,lab:56.2,lab_count:31,total:63.9}},
+  "โรงพยาบาลสูงเนิน":{"2566":{patients:73769,wait_screen:29.0,screen:9.6,wait_doc:67.5,doc:4.7,medicine:17.8,lab:92.0,lab_count:24804,total:111.8},"2567":{patients:77886,wait_screen:33.2,screen:12.3,wait_doc:73.2,doc:4.5,medicine:23.8,lab:104.4,lab_count:30893,total:146.7},"2568":{patients:92508,wait_screen:34.8,screen:5.5,wait_doc:85.3,doc:5.0,medicine:21.6,lab:86.6,lab_count:29889,total:152.4}},
+  "โรงพยาบาลหนองบุญมาก":{"2566":{patients:54694,wait_screen:42.1,screen:4.1,wait_doc:59.6,doc:5.2,medicine:222.0,lab:81.5,lab_count:15290,total:95.9},"2567":{patients:73057,wait_screen:37.6,screen:4.3,wait_doc:62.0,doc:6.1,medicine:1.9,lab:68.2,lab_count:23921,total:96.5},"2568":{patients:78985,wait_screen:41.5,screen:4.7,wait_doc:74.7,doc:5.1,medicine:0,lab:78.0,lab_count:24009,total:109.5}},
+  "โรงพยาบาลหลวงพ่อคูณ ปริสุทฺโธ":{"2566":{patients:100276,wait_screen:54.8,screen:5.2,wait_doc:91.2,doc:10.5,medicine:26.5,lab:104.7,lab_count:15139,total:169.2},"2567":{patients:138584,wait_screen:53.2,screen:5.3,wait_doc:87.5,doc:11.2,medicine:23.5,lab:105.4,lab_count:8064,total:170.1},"2568":{patients:146097,wait_screen:56.0,screen:5.7,wait_doc:93.0,doc:10.6,medicine:26.2,lab:88.6,lab_count:44307,total:181.4}},
+  "โรงพยาบาลห้วยแถลง":{"2566":{patients:60381,wait_screen:70.9,screen:7.9,wait_doc:50.0,doc:6.8,medicine:22.5,lab:103.2,lab_count:23790,total:153.9},"2567":{patients:81862,wait_screen:71.1,screen:9.5,wait_doc:51.5,doc:6.0,medicine:25.5,lab:91.2,lab_count:28008,total:155.2},"2568":{patients:85795,wait_screen:74.6,screen:9.0,wait_doc:66.0,doc:7.1,medicine:25.5,lab:101.8,lab_count:34831,total:174.1}},
+  "โรงพยาบาลเฉลิมพระเกียรติ":{"2566":{patients:33450,wait_screen:61.4,screen:4.7,wait_doc:43.2,doc:6.2,medicine:113.5,lab:67.7,lab_count:9882,total:108.8},"2567":{patients:50846,wait_screen:61.9,screen:4.8,wait_doc:45.9,doc:5.4,medicine:160.9,lab:66.9,lab_count:14382,total:111.8},"2568":{patients:52033,wait_screen:60.8,screen:4.8,wait_doc:57.8,doc:4.2,medicine:7.7,lab:77.5,lab_count:16005,total:119.1}},
+  "โรงพยาบาลเฉลิมพระเกียรติสมเด็จย่า 100 ปี":{"2566":{patients:22700,wait_screen:32.1,screen:3.1,wait_doc:62.9,doc:7.1,medicine:0,lab:105.7,lab_count:7002,total:90.8},"2567":{patients:33430,wait_screen:31.7,screen:3.2,wait_doc:65.3,doc:7.3,medicine:256.0,lab:79.2,lab_count:10604,total:91.8},"2568":{patients:36673,wait_screen:35.9,screen:3.2,wait_doc:70.8,doc:7.0,medicine:12.0,lab:75.1,lab_count:11062,total:102.6}},
+  "โรงพยาบาลเทพารักษ์":{"2566":{patients:16159,wait_screen:32.3,screen:3.3,wait_doc:78.3,doc:17.7,medicine:65.4,lab:95.5,lab_count:5107,total:119.4},"2567":{patients:19301,wait_screen:39.8,screen:3.6,wait_doc:93.6,doc:20.0,medicine:184.3,lab:79.1,lab_count:7734,total:151.5},"2568":{patients:27337,wait_screen:36.5,screen:3.0,wait_doc:85.1,doc:16.9,medicine:168.7,lab:79.6,lab_count:9268,total:142.9}},
+  "โรงพยาบาลเสิงสาง":{"2566":{patients:42050,wait_screen:29.4,screen:3.6,wait_doc:67.2,doc:4.9,medicine:79.3,lab:112.4,lab_count:13213,total:122.5},"2567":{patients:70798,wait_screen:54.2,screen:4.2,wait_doc:57.6,doc:5.3,medicine:86.2,lab:120.1,lab_count:25379,total:116.0},"2568":{patients:73916,wait_screen:60.2,screen:4.3,wait_doc:59.4,doc:5.4,medicine:16.2,lab:125.3,lab_count:28052,total:115.1}},
+  "โรงพยาบาลแก้งสนามนาง":{"2566":{patients:31973,wait_screen:34.8,screen:13.3,wait_doc:66.9,doc:7.6,medicine:11.0,lab:84.5,lab_count:12948,total:105.4},"2567":{patients:43633,wait_screen:34.6,screen:11.2,wait_doc:56.9,doc:5.5,medicine:14.0,lab:86.2,lab_count:18573,total:91.4},"2568":{patients:46063,wait_screen:31.7,screen:12.0,wait_doc:65.3,doc:6.9,medicine:22.6,lab:82.3,lab_count:19755,total:88.2}},
+  "โรงพยาบาลโชคชัย":{"2566":{patients:65789,wait_screen:44.8,screen:11.0,wait_doc:91.1,doc:12.0,medicine:16.4,lab:112.5,lab_count:16136,total:120.9},"2567":{patients:89827,wait_screen:56.2,screen:11.1,wait_doc:88.3,doc:11.7,medicine:39.8,lab:110.3,lab_count:27374,total:164.0},"2568":{patients:103763,wait_screen:60.7,screen:11.8,wait_doc:80.7,doc:11.8,medicine:29.3,lab:115.0,lab_count:27499,total:187.2}},
+  "โรงพยาบาลโนนสูง":{"2566":{patients:75653,wait_screen:36.8,screen:5.4,wait_doc:84.6,doc:5.9,medicine:0,lab:75.8,lab_count:29924,total:117.3},"2567":{patients:140467,wait_screen:54.7,screen:4.6,wait_doc:95.2,doc:4.8,medicine:19.8,lab:82.2,lab_count:42190,total:125.1},"2568":{patients:131698,wait_screen:50.6,screen:4.4,wait_doc:96.3,doc:4.7,medicine:24.6,lab:70.2,lab_count:35720,total:137.3}},
+  "โรงพยาบาลโนนแดง":{"2566":{patients:17987,wait_screen:37.3,screen:16.7,wait_doc:69.1,doc:6.0,medicine:106.0,lab:92.8,lab_count:8130,total:122.1},"2567":{patients:23522,wait_screen:38.2,screen:22.8,wait_doc:70.0,doc:6.1,medicine:42.1,lab:97.2,lab_count:10481,total:134.3},"2568":{patients:27011,wait_screen:39.3,screen:19.8,wait_doc:67.0,doc:5.6,medicine:28.0,lab:84.1,lab_count:10337,total:130.2}},
+  "โรงพยาบาลโนนไทย":{"2566":{patients:48374,wait_screen:74.9,screen:4.7,wait_doc:62.3,doc:5.3,medicine:0,lab:70.0,lab_count:18028,total:131.0},"2567":{patients:76383,wait_screen:81.9,screen:5.4,wait_doc:75.5,doc:5.4,medicine:48.0,lab:75.1,lab_count:31063,total:155.9},"2568":{patients:75695,wait_screen:73.4,screen:5.7,wait_doc:89.3,doc:4.9,medicine:8.0,lab:72.3,lab_count:28979,total:159.3}}
+};
+const YEARS_ALL = [2566,2567,2568,2569];
+
+const AVG={wait_screen:51.5,screen:6.9,wait_doc:74.6,doc:8.0,medicine:33.4,lab:108.3,total:138.2,patients:Math.round(DATA.reduce((a,b)=>a+b.patients,0)/DATA.length)};
+const MAX_PTS=Math.max(...DATA.map(d=>d.patients));
+const RANK_MAP={};[...DATA].sort((a,b)=>b.total-a.total).forEach((d,i)=>RANK_MAP[d.name]=i+1);
+
+// group stats
+function grpStat(arr,field){
+  const vs=arr.map(d=>d[field]).filter(v=>v!=null&&v>0);
+  return{avg:+(vs.reduce((a,b)=>a+b,0)/vs.length).toFixed(1),min:+Math.min(...vs).toFixed(1),max:+Math.max(...vs).toFixed(1),count:arr.length};
+}
+const GRP={
+  'รพ.ชุมชน':DATA.filter(d=>d.type==='รพ.ชุมชน'),
+  'รพ.ทั่วไป':DATA.filter(d=>d.type==='รพ.ทั่วไป'),
+  'ทั้งหมด':DATA,
+};
+const GRP_COLORS={'รพ.ชุมชน':'#00C9A7','รพ.ทั่วไป':'#58A6FF','ทั้งหมด':'#8B949E'};
+const GRP_BADGE={'รพ.ชุมชน':'grp-community','รพ.ทั่วไป':'grp-general','ทั้งหมด':'grp-all'};
+
+let primary=DATA.find(d=>d.name.includes('พระทองคำ'));
+let compareList=[];
+let typeFilter='all';
+let groupView=false;
+let charts={};
+
+const COLORS={
+  primary:{line:'#00C9A7',fill:'rgba(0,201,167,.15)'},
+  compare0:{line:'#58A6FF',fill:'rgba(88,166,255,.12)'},
+  compare1:{line:'#F7B731',fill:'rgba(247,183,49,.12)'},
+  compare2:{line:'#BC8CFF',fill:'rgba(188,140,255,.12)'},
+  avg:{line:'#8B949E',fill:'rgba(139,148,158,.07)'},
+};
+function getTC(v){return v>165?'#FF6B6B':v>130?'#F7B731':v>100?'#58A6FF':'#3FB950'}
+function getPeers(h){const lo=h.patients*.7,hi=h.patients*1.3;return DATA.filter(d=>d.name!==h.name&&d.patients>=lo&&d.patients<=hi).sort((a,b)=>Math.abs(a.patients-h.patients)-Math.abs(b.patients-h.patients)).slice(0,8);}
+function avg(arr){return arr.length?+(arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(1):0;}
+
+// ─ TYPE FILTER ─
+function setTypeFilter(t,el){
+  typeFilter=t;
+  document.querySelectorAll('.type-tab').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderSidebar();
+}
+
+// ─ SIDEBAR ─
+function renderSidebar(){
+  const q=document.getElementById('sbQ').value.toLowerCase();
+  const sort=document.getElementById('sbSort').value;
+  const peers=getPeers(primary).map(d=>d.name);
+  let list=[...DATA];
+  if(typeFilter!=='all') list=list.filter(d=>d.type===typeFilter);
+  list=list.filter(d=>d.name.toLowerCase().includes(q)||d.short.toLowerCase().includes(q));
+  if(sort==='total') list.sort((a,b)=>b.total-a.total);
+  else if(sort==='patients') list.sort((a,b)=>b.patients-a.patients);
+  else if(sort==='name') list.sort((a,b)=>a.short.localeCompare(b.short,'th'));
+  else if(sort==='wait_doc') list.sort((a,b)=>b.wait_doc-a.wait_doc);
+
+  document.getElementById('hList').innerHTML=list.map(d=>{
+    const isPri=d.name===primary.name;
+    const isCmp=compareList.some(c=>c.name===d.name);
+    const isPeer=!isPri&&!isCmp&&peers.includes(d.name);
+    const cls=isPri?'primary':isCmp?'compared':isPeer?'peer-hl':'';
+    const dotC=isPri?'#00C9A7':isCmp?'#58A6FF':isPeer?'#F7B731':getTC(d.total);
+    const tag=isPri?`<span class="tag tp">หลัก</span>`:isCmp?`<span class="tag tc">เทียบ</span>`:isPeer?`<span class="tag tpeer">Peer</span>`:'';
+    const vp=Math.round((d.patients/MAX_PTS)*100);
+    const esc=d.name.replace(/'/g,"\\'");
+    const cmpAction=!isPri&&!isCmp?`<button class="add-cmp-btn" onclick="event.stopPropagation();addToCompare('${esc}')" title="เพิ่มเพื่อเปรียบเทียบ">+ เทียบ</button>`:'';
+    const rmBtn=isCmp?`<button class="add-cmp-btn rm-btn" onclick="event.stopPropagation();rmCmp('${esc}')" title="ยกเลิกเปรียบเทียบ">✕</button>`:'';
+    return`<div class="h-item ${cls}" onclick="handleClick('${esc}')">
+      <div class="h-dot" style="background:${dotC}"></div>
+      <div class="h-info">
+        <div class="h-name">${d.short}${tag}</div>
+        <div class="h-sub">${d.type} · #${RANK_MAP[d.name]}</div>
+      </div>
+      <div class="h-right">
+        <div class="h-time" style="color:${getTC(d.total)}">${d.total}</div>
+        <div class="h-volbar"><div class="vbg"><div class="vfill" style="width:${vp}%;background:${dotC}"></div></div><span class="vtxt">${(d.patients/1000).toFixed(0)}k</span></div>
+        <div style="margin-top:3px">${cmpAction}${rmBtn}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const tags=document.getElementById('cmpTags');
+  if(compareList.length===0){tags.innerHTML=`<span class="empty-cmp">คลิกชื่อโรงพยาบาลเพื่อเพิ่ม</span>`;}
+  else{tags.innerHTML=compareList.map((d,i)=>`<div class="ctag"><div style="width:7px;height:7px;border-radius:50%;background:${Object.values(COLORS)[i+1].line}"></div><span>${d.short}</span><span class="rm" onclick="rmCmp('${d.name.replace(/'/g,"\\'")}')">×</span></div>`).join('');}
+}
+
+function handleClick(n){
+  const d=DATA.find(h=>h.name===n);
+  if(d.name===primary.name) return;
+  if(compareList.some(c=>c.name===n)){rmCmp(n);return;}
+  // single-click = set as primary, preserve compare list (remove if was there)
+  compareList=compareList.filter(c=>c.name!==n);
+  primary=d;
+  groupView=false;
+  document.getElementById('grpBtn').classList.remove('active');
+  document.getElementById('grpBtnTxt').textContent='📊 เปรียบเทียบตามกลุ่มประเภท';
+  renderSidebar();renderMain();
+}
+function addToCompare(n){
+  if(compareList.some(c=>c.name===n)){rmCmp(n);return;}
+  if(compareList.length>=3) return;
+  const d=DATA.find(h=>h.name===n);
+  if(d.name===primary.name) return;
+  compareList.push(d);
+  groupView=false;
+  renderSidebar();renderMain();
+}
+function rmCmp(n){compareList=compareList.filter(c=>c.name!==n);renderSidebar();renderMain();}
+function addPeer(n){if(compareList.length>=3)return;if(compareList.some(c=>c.name===n))return;compareList.push(DATA.find(h=>h.name===n));renderSidebar();renderMain();}
+
+function toggleGroupView(){
+  groupView=!groupView;
+  compareList=[];
+  document.getElementById('grpBtn').classList.toggle('active',groupView);
+  document.getElementById('grpBtnTxt').textContent=groupView?'← กลับดูรายโรงพยาบาล':'📊 เปรียบเทียบตามกลุ่มประเภท';
+  renderSidebar();
+  if(groupView) renderGroupView();
+  else renderMain();
+}
+
+// ─ GROUP VIEW ─
+function renderGroupView(){
+  destroyAll();
+  const fields=['wait_screen','screen','wait_doc','doc','medicine','lab','total'];
+  const labels=['รอคัดกรอง','คัดกรอง','รอพบแพทย์','พบแพทย์','รับยา','Lab','เวลารวม'];
+  const groups=['รพ.ชุมชน','รพ.ทั่วไป','ทั้งหมด'];
+
+  // stats per group per field
+  const stats={};
+  groups.forEach(g=>{stats[g]={};fields.forEach(f=>{const vs=GRP[g].map(d=>d[f]).filter(v=>v!=null&&v>0);stats[g][f]={avg:avg(vs),min:+Math.min(...vs).toFixed(1),max:+Math.max(...vs).toFixed(1)};});});
+
+  // find primary's group
+  const priGrp=primary.type;
+  const priGrpStat=stats[priGrp];
+
+  // summary cards per group
+  const grpCards=groups.map(g=>{
+    const s=stats[g];const grp=GRP[g];
+    const bc=GRP_BADGE[g];const col=GRP_COLORS[g];
+    const totalPts=grp.reduce((a,b)=>a+b.patients,0);
+    return`<div class="ccard" style="border-top:3px solid ${col}">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span class="grp-badge ${bc}">${g}</span>
+        <span style="font-size:11px;color:var(--muted)">${grp.length} แห่ง</span>
+        <span style="font-size:11px;color:var(--muted);margin-left:auto">${(totalPts/1000).toFixed(0)}k ครั้ง/ปี</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        ${fields.filter(f=>f!=='screen'&&f!=='doc').map(f=>{
+          const fi=fields.indexOf(f);
+          const isTotal=f==='total';
+          return`<div style="background:var(--surface2);border-radius:6px;padding:8px 10px">
+            <div style="font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px">${labels[fi]}</div>
+            <div style="font-size:17px;font-weight:800;color:${col}">${s[f].avg} <span style="font-size:9.5px;font-weight:400;color:var(--muted)">น.</span></div>
+            <div style="font-size:9px;color:var(--muted);margin-top:1px">min ${s[f].min} · max ${s[f].max}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  // build datasets for bar chart
+  const barDatasets=groups.map((g,i)=>({
+    label:g,
+    data:fields.slice(0,6).map(f=>stats[g][f].avg),
+    backgroundColor:[`rgba(0,201,167,.75)`,`rgba(88,166,255,.75)`,`rgba(139,148,158,.55)`][i],
+    borderColor:[`#00C9A7`,`#58A6FF`,`#8B949E`][i],
+    borderWidth:1,borderRadius:4
+  }));
+
+  // scatter: all hospitals colored by type
+  const typeColorMap={'รพ.ชุมชน':'rgba(0,201,167,.7)','รพ.ทั่วไป':'rgba(88,166,255,.7)'};
+  const typeBorderMap={'รพ.ชุมชน':'#00C9A7','รพ.ทั่วไป':'#58A6FF'};
+
+  // table rows per group
+  function makeGrpTableRows(grpArr, grpLabel, col){
+    const sorted=[...grpArr].sort((a,b)=>b.total-a.total);
+    return sorted.map(d=>{
+      const isPri=d.name===primary.name;
+      return`<tr class="${isPri?'primary-row':''} tr-add" onclick="selectAndClose('${d.name.replace(/'/g,"\\'")}')">
+        <td><span style="display:inline-flex;align-items:center;gap:5px">
+          ${isPri?`<span style="width:7px;height:7px;border-radius:50%;background:var(--c1);display:inline-block"></span>`:`<span style="font-size:10px;color:var(--muted)">#${RANK_MAP[d.name]}</span>`}
+          <span style="font-weight:${isPri?700:400}">${d.short}</span>
+          ${isPri?`<span class="tag tp">ของคุณ</span>`:''}
+        </span></td>
+        <td style="text-align:right;font-size:9.5px;color:var(--muted)">${(d.patients/1000).toFixed(0)}k</td>
+        ${fields.map(f=>{
+          const val=d[f];const gv=stats[grpLabel][f].avg;
+          if(val==null) return`<td style="text-align:right;color:var(--muted)">-</td>`;
+          const c=val>gv*1.2?'#FF6B6B':val<gv*0.8?'#3FB950':'#E6EDF3';
+          return`<td style="text-align:right;color:${c};font-weight:${isPri?700:400}">${val}</td>`;
+        }).join('')}
+      </tr>`;
+    }).join('');
+  }
+
+  document.getElementById('content').innerHTML=`
+  <!-- MODE INDICATOR -->
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+    <div class="mode-tab active yellow" style="cursor:default">📊 มุมมอง: เปรียบเทียบกลุ่มประเภท</div>
+    <div style="font-size:11px;color:var(--muted)">คลิกแถวในตารางเพื่อดูรายละเอียดโรงพยาบาลนั้น หรือกด ← ในแถบซ้ายเพื่อกลับ</div>
+  </div>
+
+  <div class="stitle">📋 สรุปเปรียบเทียบกลุ่ม — ค่าเฉลี่ยแต่ละตัวชี้วัด</div>
+  <div class="crow c3" style="margin-bottom:16px">${grpCards}</div>
+
+  <div class="stitle">📊 Bar Chart เปรียบเทียบเฉลี่ยแต่ละขั้นตอน</div>
+  <div class="crow c2" style="margin-bottom:16px">
+    <div class="ccard">
+      <h3>ค่าเฉลี่ยแต่ละขั้นตอน แยกตามกลุ่ม</h3>
+      <div class="cdesc">เขียว = รพ.ชุมชน · น้ำเงิน = รพ.ทั่วไป · เทา = ทั้งหมด</div>
+      <div style="height:260px"><canvas id="cGrpBar"></canvas></div>
+    </div>
+    <div class="ccard">
+      <h3>Scatter — ผู้ป่วย vs เวลารวม แยกสีตามประเภท</h3>
+      <div class="cdesc"><span style="color:var(--c1)">●</span> รพ.ชุมชน &nbsp;<span style="color:var(--c2)">●</span> รพ.ทั่วไป &nbsp;วงโต = คนไข้มาก</div>
+      <div style="height:260px"><canvas id="cGrpScatter"></canvas></div>
+    </div>
+  </div>
+
+  <div class="stitle">📋 ตารางรายละเอียด — รพ.ชุมชน (${GRP['รพ.ชุมชน'].length} แห่ง)</div>
+  <div class="ccard" style="margin-bottom:14px">
+    <div class="cdesc">สีแดง = สูงกว่าค่าเฉลี่ยกลุ่ม · สีเขียว = ต่ำกว่าค่าเฉลี่ยกลุ่ม · คลิกแถวเพื่อดูรายละเอียด</div>
+    <div style="overflow-x:auto;margin-top:8px">
+      <table class="grp-table">
+        <thead><tr><th>โรงพยาบาล</th><th style="text-align:right">ผู้ป่วย</th>${labels.map(l=>`<th style="text-align:right">${l}</th>`).join('')}</tr></thead>
+        <tbody>${makeGrpTableRows(GRP['รพ.ชุมชน'],'รพ.ชุมชน','#00C9A7')}</tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="stitle">📋 ตารางรายละเอียด — รพ.ทั่วไป (${GRP['รพ.ทั่วไป'].length} แห่ง)</div>
+  <div class="ccard">
+    <div class="cdesc">สีแดง = สูงกว่าค่าเฉลี่ยกลุ่ม · สีเขียว = ต่ำกว่าค่าเฉลี่ยกลุ่ม · คลิกแถวเพื่อดูรายละเอียด</div>
+    <div style="overflow-x:auto;margin-top:8px">
+      <table class="grp-table">
+        <thead><tr><th>โรงพยาบาล</th><th style="text-align:right">ผู้ป่วย</th>${labels.map(l=>`<th style="text-align:right">${l}</th>`).join('')}</tr></thead>
+        <tbody>${makeGrpTableRows(GRP['รพ.ทั่วไป'],'รพ.ทั่วไป','#58A6FF')}</tbody>
+      </table>
+    </div>
+  </div>
+  `;
+
+  setTimeout(()=>{
+    // bar chart
+    const ctx1=document.getElementById('cGrpBar');
+    if(ctx1){charts.grpbar=new Chart(ctx1,{type:'bar',data:{labels:labels.slice(0,6),datasets:barDatasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8B949E',font:{size:10},boxWidth:9}}},scales:{x:{grid:{color:'#30363D'},ticks:{color:'#8B949E',font:{size:10}}},y:{grid:{color:'#30363D'},ticks:{color:'#8B949E',font:{size:10}},title:{display:true,text:'นาที',color:'#8B949E',font:{size:9}}}}}})}
+    // scatter
+    const ctx2=document.getElementById('cGrpScatter');
+    if(ctx2){
+      const ds=Object.keys(typeColorMap).map(t=>({
+        label:t,
+        data:DATA.filter(d=>d.type===t).map(d=>({x:d.patients,y:d.total,r:Math.max(4,Math.sqrt(d.patients/MAX_PTS)*22),name:d.short,isPri:d.name===primary.name})),
+        backgroundColor:d=>d.raw.isPri?'rgba(255,215,0,.9)':typeColorMap[t],
+        borderColor:d=>d.raw.isPri?'#FFD700':typeBorderMap[t],borderWidth:d=>d.raw.isPri?3:1,
+      }));
+      // mark primary specially
+      const priDS={label:primary.short+' (ของคุณ)',data:[{x:primary.patients,y:primary.total,r:10,name:primary.short}],backgroundColor:'#FFD700',borderColor:'#FFD700',borderWidth:2};
+      charts.grpscatter=new Chart(ctx2,{type:'bubble',data:{datasets:[...ds,priDS]},options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{labels:{color:'#8B949E',font:{size:10},boxWidth:9}},tooltip:{callbacks:{label:c=>`${c.raw.name}: ${c.raw.x.toLocaleString()} ผู้ป่วย · ${c.raw.y} น.`}}},
+        scales:{x:{title:{display:true,text:'จำนวนผู้ป่วย (ครั้ง/ปี)',color:'#8B949E',font:{size:10}},grid:{color:'#30363D'},ticks:{color:'#8B949E',font:{size:10},callback:v=>v>=1000?`${(v/1000).toFixed(0)}k`:v}},y:{title:{display:true,text:'เวลารวม (น.)',color:'#8B949E',font:{size:10}},grid:{color:'#30363D'},ticks:{color:'#8B949E',font:{size:10}}}}}});
+    }
+  },60);
+}
+
+function selectAndClose(name){
+  primary=DATA.find(d=>d.name===name);
+  groupView=false;compareList=[];
+  document.getElementById('grpBtn').classList.remove('active');
+  document.getElementById('grpBtnTxt').textContent='📊 เปรียบเทียบตามกลุ่มประเภท';
+  renderSidebar();renderMain();
+}
+
+// ─ INDIVIDUAL VIEW ─
+function renderMain(){
+  destroyAll();
+  const h=primary;
+  const rank=RANK_MAP[h.name];
+  const rc=rank<=5?'rtop':rank<=15?'rmid':'rlow';
+  const rl=rank<=5?'⚠ เวลาสูง':rank<=15?'⚡ ปานกลาง':'✓ ดีกว่าเฉลี่ย';
+  const tc=h.vs_prev>0?'#FF6B6B':'#3FB950';
+  const ts=h.vs_prev>0?'+':'';
+  const ta=h.vs_prev>0?'▲':'▼';
+  const peers=getPeers(h);
+  const peerAvg=peers.length?avg(peers.map(d=>d.total)):null;
+  const ptRank=[...DATA].sort((a,b)=>b.patients-a.patients).findIndex(d=>d.name===h.name)+1;
+  const ptPct=Math.round((h.patients/MAX_PTS)*100);
+
+  // group avg for primary's group
+  const myGrp=GRP[h.type];
+  const myGrpAvgTotal=avg(myGrp.map(d=>d.total));
+  const myGrpAvgPts=Math.round(myGrp.reduce((a,b)=>a+b.patients,0)/myGrp.length);
+
+  const kpis=[
+    {l:'รอคัดกรอง',v:h.wait_screen,a:AVG.wait_screen,f:h.wait_screen>AVG.wait_screen*1.3?'bn':h.wait_screen<AVG.wait_screen*0.7?'gd':''},
+    {l:'รอพบแพทย์',v:h.wait_doc,a:AVG.wait_doc,f:h.wait_doc>AVG.wait_doc*1.3?'bn':h.wait_doc<AVG.wait_doc*0.7?'gd':''},
+    {l:'รับยา',v:h.medicine,a:AVG.medicine,f:h.medicine>AVG.medicine*1.3?'bn':h.medicine<AVG.medicine*0.7?'gd':''},
+    {l:'Lab',v:h.lab??null,a:AVG.lab,f:h.lab>AVG.lab*1.3?'bn':h.lab&&h.lab<AVG.lab*0.7?'gd':''},
+    {l:'เวลารวม',v:h.total,a:AVG.total,f:h.total>AVG.total*1.2?'bn':h.total<AVG.total*0.9?'gd':''},
+  ];
+  const kHtml=kpis.map(k=>{const d=k.v!=null?(k.v-k.a).toFixed(1):null;const dc=d>0?'ka':d<0?'kb':'kn';const fi=k.f==='bn'?'🔴':k.f==='gd'?'✅':'';
+  return`<div class="hkpi ${k.f}">${fi?`<div class="kf">${fi}</div>`:''}
+    <div class="kl">${k.l}</div>
+    <div class="kv" style="color:${k.f==='bn'?'#FF6B6B':k.f==='gd'?'#3FB950':'#E6EDF3'}">${k.v??'-'}<span class="ku"> น.</span></div>
+    ${d?`<div class="kd ${dc}">${d>0?'+':''}${d} จากเฉลี่ย</div>`:''}
+  </div>`;}).join('');
+
+  const bks=[];
+  if(h.wait_screen>AVG.wait_screen)bks.push({f:'รอคัดกรอง',v:h.wait_screen,a:AVG.wait_screen});
+  if(h.wait_doc>AVG.wait_doc)bks.push({f:'รอพบแพทย์',v:h.wait_doc,a:AVG.wait_doc});
+  if(h.medicine>AVG.medicine)bks.push({f:'รับยา',v:h.medicine,a:AVG.medicine});
+  if(h.lab&&h.lab>AVG.lab)bks.push({f:'Lab',v:h.lab,a:AVG.lab});
+  bks.sort((a,b)=>(b.v-b.a)-(a.v-a.a));
+
+  const i1=bks.length>0?`<div class="icard w"><div class="icon">🔴</div><div class="ititle">คอขวด: ${bks[0].f}</div><div class="ibody">ใช้เวลา <strong>${bks[0].v} น.</strong> — สูงกว่าเฉลี่ย ${(bks[0].v-bks[0].a).toFixed(1)} น.</div></div>`:`<div class="icard ok"><div class="icon">✅</div><div class="ititle">ไม่มีคอขวด</div><div class="ibody">ทุกขั้นตอนต่ำกว่าค่าเฉลี่ยจังหวัด</div></div>`;
+  const i2=`<div class="icard ${h.vs_prev>0?'w':'ok'}"><div class="icon">${h.vs_prev>0?'📈':'📉'}</div><div class="ititle">ปีก่อน ${ts}${h.vs_prev}%</div><div class="ibody">เวลาเปลี่ยน <strong style="color:${tc}">${ts}${h.vs_prev_min} น.</strong> · พีค ${h.peak} เฉลี่ย ${h.peak_avg} น.</div></div>`;
+  const i3=`<div class="icard n"><div class="icon">🏷</div><div class="ititle">กลุ่ม ${h.type}</div><div class="ibody">เฉลี่ย${h.type}: <strong>${myGrpAvgTotal} น.</strong> · ${h.total>myGrpAvgTotal?`<span style="color:var(--danger)">สูงกว่ากลุ่ม +${(h.total-myGrpAvgTotal).toFixed(1)} น.</span>`:`<span style="color:var(--green)">ต่ำกว่ากลุ่ม ${(h.total-myGrpAvgTotal).toFixed(1)} น.</span>`}</div></div>`;
+
+  const phases=[{n:'รอคัดกรอง',v:h.wait_screen,a:AVG.wait_screen,m:100},{n:'คัดกรอง',v:h.screen,a:AVG.screen,m:25},{n:'รอพบแพทย์',v:h.wait_doc,a:AVG.wait_doc,m:130},{n:'พบแพทย์',v:h.doc,a:AVG.doc,m:30},{n:'รับยา',v:h.medicine,a:AVG.medicine,m:200},{n:'Lab',v:h.lab??0,a:AVG.lab,m:220}];
+  const flowHtml=phases.map(p=>{const pct=Math.min(100,(p.v/p.m)*100);const c=p.v>p.a*1.3?'#FF6B6B':p.v<p.a*0.7?'#3FB950':'#F7B731';const d=(p.v-p.a).toFixed(1);
+  return`<div class="fs"><div class="fb" style="border-color:${c}"><div class="fn">${p.n}</div><div class="fv" style="color:${c}">${p.v||'-'}</div><div class="fu">นาที</div><div class="fd" style="color:${d>0?'#FF6B6B':'#3FB950'}">${p.v?(d>0?'+':'')+d+' จากเฉลี่ย':''}</div><div class="fbar"><div class="fbar-fill" style="width:${pct}%;background:${c}"></div></div></div></div>`;}).join('');
+
+  const peerHtml=peers.length===0?`<p style="color:var(--muted);font-size:12px">ไม่มีโรงพยาบาลผู้ป่วยใกล้เคียง</p>`:
+    `<div class="peer-grid">${peers.map(p=>{const isC=compareList.some(c=>c.name===p.name);const vp=Math.round((p.patients/Math.max(...peers.map(x=>x.patients)))*100);const dt=(p.total-h.total).toFixed(1);
+    return`<div class="peer-card ${isC?'active':''}" onclick="addPeer('${p.name.replace(/'/g,"\\'")}')">
+      <div class="pc-name">${p.short}</div><div class="pc-pts">👥 ${(p.patients/1000).toFixed(1)}k ครั้ง</div>
+      <div class="pc-time" style="color:${getTC(p.total)}">${p.total}<span style="font-size:9.5px;font-weight:400;color:${parseFloat(dt)>0?'#FF6B6B':'#3FB950'}"> (${parseFloat(dt)>0?'+':''}${dt})</span></div>
+      <div class="pc-vb"><div class="pc-vf" style="width:${vp}%"></div></div>
+    </div>`;}).join('')}</div>`;
+
+  const cmpSec=compareList.length>0?renderCmpSection():`<div class="no-cmp"><div class="big">🔄</div><p style="font-weight:600;color:var(--text)">เลือกโรงพยาบาลเพื่อเปรียบเทียบ</p><p style="font-size:11.5px;margin-top:4px">คลิก Peer ด้านบน หรือเลือกจากแถบซ้าย</p></div>`;
+
+  document.getElementById('content').innerHTML=`
+  <div class="mode-tabs">
+    <div class="mode-tab active" style="cursor:default">🏥 รายละเอียดโรงพยาบาล</div>
+    <div class="mode-tab" onclick="toggleGroupView()" style="cursor:pointer">📊 เปรียบเทียบกลุ่ม →</div>
+    <div class="mode-tab" onclick="toggleTrendView()" style="cursor:pointer">📈 แนวโน้ม 4 ปี →</div>
+  </div>
+  <div class="hero">
+    <div class="hero-top">
+      <div><div class="hero-name">${h.name}</div>
+        <div class="hero-meta">
+          <span class="meta-chip">📍 ${h.type}</span>
+          <span class="meta-chip">👥 ${h.patients.toLocaleString()} ครั้ง/ปี · อันดับ #${ptRank}</span>
+          <span class="meta-chip">⏰ พีค: ${h.peak}</span>
+          <span class="meta-chip" style="color:${tc}">${ta} ปีก่อน ${ts}${h.vs_prev}%</span>
+        </div>
+      </div>
+      <div style="text-align:right"><div class="rank-num">#${rank}</div><div class="rank-lbl">อันดับเวลารวม</div><div><span class="rtag ${rc}">${rl}</span></div></div>
+    </div>
+    <div class="vol-strip">
+      <div class="vi"><div class="vl">ผู้ป่วย/ปี</div><div class="vv">${(h.patients/1000).toFixed(1)}<span style="font-size:12px;font-weight:400;color:var(--muted)">k</span></div><div class="vs">อันดับ #${ptRank}</div></div>
+      <div class="vsep"></div>
+      <div class="vi"><div class="vl">เฉลี่ย${h.type}</div><div class="vv" style="color:${GRP_COLORS[h.type]}">${myGrpAvgTotal}<span style="font-size:12px;font-weight:400;color:var(--muted)"> น.</span></div><div class="vs">${myGrp.length} โรงพยาบาล</div></div>
+      <div class="vsep"></div>
+      <div class="vi"><div class="vl">Peer เฉลี่ย (±30%)</div><div class="vv" style="color:${peerAvg&&h.total>peerAvg?'#FF6B6B':'#3FB950'}">${peerAvg??'-'}<span style="font-size:12px;font-weight:400;color:var(--muted)"> น.</span></div><div class="vs">${peers.length} โรงพยาบาล</div></div>
+      <div class="vsep"></div>
+      <div class="vrank"><div class="vrank-lbl">ปริมาณผู้ป่วยเทียบกับทุกโรงพยาบาล (${ptPct}%)</div><div class="vtrack"><div class="vfill2" style="width:${ptPct}%;background:var(--c1)"></div></div><div class="vdots"><span>น้อย</span><span>เฉลี่ย</span><span>มาก</span></div></div>
+    </div>
+    <div class="hero-kpis">${kHtml}</div>
+  </div>
+  <div class="stitle">💡 ข้อค้นพบสำคัญ</div>
+  <div class="insights">${i1}${i2}${i3}</div>
+  <div class="stitle">🔄 Flow เส้นทางผู้ป่วย</div>
+  <div class="ccard" style="margin-bottom:16px"><h3>ระยะเวลาแต่ละขั้นตอน vs ค่าเฉลี่ยจังหวัด</h3><div class="cdesc">สีแดง=เกินเฉลี่ย · สีเขียว=ต่ำกว่าเฉลี่ย</div><div class="flow">${flowHtml}</div></div>
+  <div class="stitle">📈 วิเคราะห์เชิงลึก</div>
+  <div class="crow c2" style="margin-bottom:16px">
+    <div class="ccard"><h3>Radar เทียบเฉลี่ยจังหวัด</h3><div class="cdesc">พื้นที่กว้าง = ใช้เวลามาก</div><div style="height:250px"><canvas id="cRadar"></canvas></div></div>
+    <div class="ccard"><h3>Scatter ผู้ป่วย vs เวลารวม</h3><div class="cdesc"><span style="color:var(--c1)">●</span>${h.short} &nbsp;· วงใหญ่ = Lab นาน</div><div style="height:250px"><canvas id="cScatter"></canvas></div></div>
+  </div>
+  <div class="stitle">👥 จำนวนผู้รับบริการแต่ละจุดบริการ</div>
+  <div class="ccard" style="margin-bottom:16px" id="patientFlowCard"></div>
+
+  <div class="stitle">👥 Peer Group — จำนวนผู้ป่วยใกล้เคียง (±30%)</div>
+  <div class="ccard" style="margin-bottom:16px"><h3>คลิกเพื่อเพิ่มเข้าเปรียบเทียบ</h3><div class="cdesc">ตัวเลขในวงเล็บ = ส่วนต่างเวลารวมกับ ${h.short}</div>${peerHtml}${peers.length>0?`<div style="margin-top:12px;height:180px"><canvas id="cPeerBar"></canvas></div>`:''}</div>
+
+  <div class="stitle">📈 แนวโน้ม 4 ปี (2566–2569)</div>
+  <div class="ccard" style="margin-bottom:16px">
+    <h3>เวลารวม Weighted — ย้อนหลัง 4 ปี</h3>
+    <div class="cdesc">เส้นสีเขียว = ${h.short} · เส้นเทา = ค่าเฉลี่ยจังหวัด</div>
+    <div style="height:220px"><canvas id="cTrend4"></canvas></div>
+  </div>
+  <div class="ccard" style="margin-bottom:16px">
+    <h3>Stacked Bar — สัดส่วนเวลาแต่ละขั้นตอน แยกปี</h3>
+    <div class="cdesc">เห็นได้ว่าขั้นตอนไหนดีขึ้นหรือแย่ลงในแต่ละปี</div>
+    <div style="height:200px"><canvas id="cStack4"></canvas></div>
+  </div>
+  <div class="ccard">
+    <h3>ตารางเปรียบเทียบ 4 ปี — ${h.short}</h3>
+    <div class="cdesc">ตัวเลขในวงเล็บ = เปลี่ยนแปลงจากปีก่อน</div>
+    <div style="overflow-x:auto;margin-top:8px" id="trend4Table"></div>
+  </div>
+  <div class="stitle">🔄 เปรียบเทียบรายโรงพยาบาล</div>
+  <div id="cmpSec">${cmpSec}</div>
+  `;
+  setTimeout(()=>{renderRadar();renderScatter();renderPatientFlow(h);renderTrend4(h);if(peers.length>0)renderPeerBar(peers);if(compareList.length>0)renderCmpCharts();},120);
+}
+
+function renderPatientFlow(h){
+  const card=document.getElementById('patientFlowCard');
+  if(!card)return;
+  const labPct=h.lab_count?Math.round(h.lab_count/h.patients*100):0;
+  const steps=[
+    {n:'รอคัดกรอง',count:h.patients,type:'full',note:'ทุกราย'},
+    {n:'คัดกรอง',count:h.patients,type:'full',note:'ทุกราย'},
+    {n:'รอพบแพทย์',count:h.patients,type:'full',note:'ทุกราย'},
+    {n:'พบแพทย์',count:h.patients,type:'full',note:'ทุกราย'},
+    {n:'รับยา',count:h.patients,type:'full',note:'ทุกราย'},
+    {n:'Lab',count:h.lab_count||0,type:h.lab_count?'partial':'none',note:h.lab_count?`${labPct}% ของทั้งหมด`:'ไม่มีข้อมูล'},
+    {n:'X-Ray',count:h.xray_count||0,type:h.xray_count?'partial':'none',note:h.xray_count?`${h.xray_count} ราย`:'ไม่มีข้อมูล'},
+  ];
+  const maxCount=h.patients;
+  const flowHtml=steps.map((s,i)=>{
+    const pct=s.count?Math.round(s.count/maxCount*100):0;
+    const barC=s.type==='full'?'#00C9A7':s.type==='partial'?'#FF6B6B':'var(--border)';
+    const countTxt=s.count>0?s.count.toLocaleString():'—';
+    const cls=`sf-box sf-${s.type}`;
+    return`<div class="sf-step">
+      <div class="${cls}">
+        <div class="sf-label">${s.n}</div>
+        <div class="sf-count" style="color:${s.type==='full'?'#00C9A7':s.type==='partial'?'#FF6B6B':'var(--muted)'}">${countTxt}</div>
+        <div class="sf-unit">ราย/ปี</div>
+        ${s.count>0?`<div class="sf-pct ${s.type}">${pct}%</div>`:`<div class="sf-pct none">—</div>`}
+        <div class="sf-bar"><div class="sf-bar-fill" style="width:${pct}%;background:${barC}"></div></div>
+        <div class="sf-badge ${s.type}">${s.note}</div>
+      </div>
+    </div>${i<steps.length-1?'<div style="color:var(--border);font-size:18px;padding:0 2px;display:flex;align-items:center;margin-top:-8px">›</div>':''}`;
+  }).join('');
+
+  // Lab table: all hospitals sorted by lab%
+  const sorted=[...DATA].filter(d=>d.patients>0).sort((a,b)=>{
+    const pa=a.lab_count?a.lab_count/a.patients:0;
+    const pb=b.lab_count?b.lab_count/b.patients:0;
+    return pb-pa;
+  });
+  const maxLab=Math.max(...DATA.filter(d=>d.lab_count).map(d=>d.lab_count));
+  const tableRows=sorted.map(d=>{
+    const lp=d.lab_count?Math.round(d.lab_count/d.patients*100):null;
+    const isPri=d.name===h.name;
+    const barW=d.lab_count?Math.round((d.lab_count/maxLab)*100):0;
+    const barC=lp>=50?'#FF6B6B':lp>=35?'#F7B731':'#00C9A7';
+    return`<tr class="${isPri?'pri-lab':''}">
+      <td style="font-weight:${isPri?700:400};white-space:nowrap">${d.short}${isPri?` <span style="font-size:8.5px;background:rgba(0,201,167,.2);color:#00C9A7;padding:1px 5px;border-radius:4px;font-weight:700">ของคุณ</span>`:''}</td>
+      <td style="text-align:right;color:var(--muted)">${(d.patients/1000).toFixed(1)}k</td>
+      <td style="text-align:right">${d.lab_count?d.lab_count.toLocaleString():'<span style="color:var(--muted)">—</span>'}</td>
+      <td style="text-align:right;color:${lp!=null?(lp>=50?'#FF6B6B':lp>=35?'#F7B731':'#00C9A7'):'var(--muted)'};font-weight:${isPri?700:400}">${lp!=null?lp+'%':'—'}</td>
+      <td>
+        <div class="lab-pct-bar">
+          <div class="lpb"><div class="lpbf" style="width:${barW}%;background:${barC}"></div></div>
+          <span style="font-size:9.5px;color:var(--muted)">${d.xray_count?`X-Ray: ${d.xray_count}`:''}</span>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  card.innerHTML=`
+    <h3>จำนวนผู้รับบริการจริงแต่ละจุด — ${h.short}</h3>
+    <div class="cdesc">ข้อมูลที่มีในระบบรายงานปี 2569</div>
+    <div class="data-notice"><strong>ข้อสำคัญ:</strong> ระบบรายงานบันทึกจำนวนผู้ป่วยรวม (ครั้ง/ปี) เป็นฐานให้ทุกขั้นตอนตั้งแต่คัดกรอง→รับยา — <strong>ไม่มีการแยกนับแต่ละจุดบริการ</strong> มีเพียง <strong>Lab</strong> เท่านั้นที่บันทึกจำนวนรายแยกไว้ ขั้นตอนอื่นจึงใช้ตัวเลขผู้ป่วยรวมแทน</div>
+    <div class="step-flow">${flowHtml}</div>
+    <div class="sf-legend">
+      <div class="sf-leg-item"><div class="sf-leg-dot" style="background:#00C9A7"></div>ข้อมูลครบ — ผู้ป่วยทุกราย</div>
+      <div class="sf-leg-item"><div class="sf-leg-dot" style="background:#FF6B6B"></div>ทราบจำนวนเฉพาะผู้ถูกส่งต่อ</div>
+      <div class="sf-leg-item"><div class="sf-leg-dot" style="background:var(--border)"></div>ไม่มีข้อมูลแยกจำนวน</div>
+    </div>
+    <div style="margin-top:18px">
+      <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">% ผู้ป่วยที่ทำ Lab — เปรียบเทียบทุกโรงพยาบาล (เรียงสูงสุด→ต่ำสุด)</div>
+      <div style="overflow-x:auto">
+        <table class="lab-table">
+          <thead><tr>
+            <th>โรงพยาบาล</th>
+            <th style="text-align:right">ผู้ป่วยรวม</th>
+            <th style="text-align:right">Lab (ราย)</th>
+            <th style="text-align:right">% ทำ Lab</th>
+            <th>สัดส่วน</th>
+          </tr></thead>
+          <tbody>${tableRows}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+
+function getHistTotal(name,yr){
+  const h=HIST[name];
+  if(!h||!h[yr]||h[yr].total==null)return null;
+  return h[yr].total;
+}
+function getHistField(name,yr,field){
+  const h=HIST[name];
+  if(!h||!h[yr]||h[yr][field]==null)return null;
+  return h[yr][field];
+}
+
+function calcJvAvg(yr){
+  if(yr===2569) return AVG.total;
+  const vals=DATA.map(d=>getHistTotal(d.name,yr)).filter(v=>v!=null);
+  return vals.length?+(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):null;
+}
+
+function renderTrend4(h){
+  if(charts.trend4){charts.trend4.destroy();delete charts.trend4;}
+  if(charts.stack4){charts.stack4.destroy();delete charts.stack4;}
+  const ctx=document.getElementById('cTrend4');if(!ctx){console.error('cTrend4 not found');return;}
+  const priTotals=YEARS_ALL.map(yr=>yr===2569?h.total:getHistTotal(h.name,yr));
+  const jvTotals=YEARS_ALL.map(yr=>calcJvAvg(yr));
+  charts.trend4=new Chart(ctx,{type:'line',data:{labels:YEARS_ALL.map(y=>'ปี '+y),datasets:[
+    {label:h.short,data:priTotals,borderColor:'#00C9A7',backgroundColor:'rgba(0,201,167,.1)',borderWidth:2.5,pointRadius:5,pointBackgroundColor:'#00C9A7',tension:.3,fill:true},
+    {label:'ค่าเฉลี่ยจังหวัด',data:jvTotals,borderColor:'#8B949E',backgroundColor:'rgba(139,148,158,.05)',borderWidth:1.5,pointRadius:3,borderDash:[5,3],tension:.3,fill:false}
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:'#8B949E',font:{size:10},boxWidth:9}}},
+    scales:{x:{grid:{color:'#30363D'},ticks:{color:'#8B949E',font:{size:10}}},
+      y:{grid:{color:'#30363D'},ticks:{color:'#8B949E',font:{size:10}},title:{display:true,text:'นาที',color:'#8B949E',font:{size:9}}}}}});
+
+  // stacked bar
+  if(charts.stack4){charts.stack4.destroy();delete charts.stack4;}
+  const ctx2=document.getElementById('cStack4');if(!ctx2)return;
+  const flds=['wait_screen','wait_doc','medicine','lab'];
+  const fColors=['rgba(88,166,255,.8)','rgba(188,140,255,.8)','rgba(0,201,167,.8)','rgba(247,183,49,.8)'];
+  const fLabels=['รอคัดกรอง','รอพบแพทย์','รับยา','Lab'];
+  const ds=flds.map((f,i)=>({label:fLabels[i],data:YEARS_ALL.map(yr=>{
+    if(yr===2569) return h[f]??0;
+    return getHistField(h.name,yr,f)??0;
+  }),backgroundColor:fColors[i],borderWidth:0,borderRadius:2}));
+  charts.stack4=new Chart(ctx2,{type:'bar',data:{labels:YEARS_ALL.map(y=>'ปี '+y),datasets:ds},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8B949E',font:{size:10},boxWidth:9}}},
+      scales:{x:{stacked:true,grid:{color:'#30363D'},ticks:{color:'#8B949E',font:{size:10}}},
+        y:{stacked:true,grid:{color:'#30363D'},ticks:{color:'#8B949E',font:{size:10}},title:{display:true,text:'นาที',color:'#8B949E',font:{size:9}}}}}});
+
+  // table
+  const tbl=document.getElementById('trend4Table');if(!tbl)return;
+  const fields2=['patients','wait_screen','screen','wait_doc','doc','medicine','lab','total'];
+  const labels2=['ผู้ป่วย','รอคัดกรอง','คัดกรอง','รอพบแพทย์','พบแพทย์','รับยา','Lab','เวลารวม'];
+  const yrColors=['yr-2566','yr-2567','yr-2568','yr-2569'];
+  let rows='';
+  YEARS_ALL.forEach((yr,yi)=>{
+    const d=yr===2569?h:((HIST[h.name]||{})[yr]||null);
+    if(!d){rows+=`<tr><td><span class="yr-pill ${yrColors[yi]}">ปี ${yr}</span></td>${fields2.map(()=>'<td style="text-align:right;color:var(--muted)">—</td>').join('')}</tr>`;return;}
+    const cells=fields2.map((f,fi)=>{
+      const val=d[f];
+      if(val==null)return`<td style="text-align:right;color:var(--muted)">—</td>`;
+      // delta from prev year
+      const prevYr=YEARS_ALL[yi-1];
+      let deltaHtml='';
+      if(yi>0){
+        const prevD=prevYr===2569?h:((HIST[h.name]||{})[prevYr]||null);
+        if(prevD&&prevD[f]!=null){
+          const delta=(val-prevD[f]);
+          const isPts=f==='patients';
+          if(!isPts){
+            const cls=delta>0?'trend-arrow-up':'trend-arrow-dn';
+            const sign=delta>0?'▲':'▼';
+            deltaHtml=`<span class="delta-cell ${cls}"> ${sign}${Math.abs(delta).toFixed(1)}</span>`;
+          }
+        }
+      }
+      const fmtVal=f==='patients'?(val/1000).toFixed(1)+'k':val;
+      return`<td style="text-align:right">${fmtVal}${deltaHtml}</td>`;
+    }).join('');
+    rows+=`<tr><td><span class="yr-pill ${yrColors[yi]}">ปี ${yr}</span></td>${cells}</tr>`;
+  });
+  tbl.innerHTML=`<table class="trend-table"><thead><tr><th>ปี</th>${labels2.map(l=>`<th style="text-align:right">${l}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function toggleTrendView(){
+  groupView=false;compareList=[];
+  document.getElementById('grpBtn').classList.remove('active');
+  document.getElementById('grpBtnTxt').textContent='📊 เปรียบเทียบตามกลุ่มประเภท';
+  renderSidebar();
+  // scroll to trend section after render
+  renderMain();
+  setTimeout(()=>{
+    const el=document.querySelector('#cTrend4');
+    if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  },200);
+}
+
+function renderCmpSection(){
+  const all=[primary,...compareList];
+  const avgRow={...AVG,name:'ค่าเฉลี่ยจังหวัด',short:'ค่าเฉลี่ย',type:'ทั้งจังหวัด',patients:AVG.patients,total:AVG.total};
+  const fields=['patients','wait_screen','screen','wait_doc','doc','medicine','lab','total'];
+  const labels=['ผู้ป่วย/ปี','รอคัดกรอง','คัดกรอง','รอพบแพทย์','พบแพทย์','รับยา','Lab','เวลารวม'];
+  const rows=[...all,avgRow].map((h,ri)=>{
+    const rc=ri===0?'pr':ri===all.length?'ar':'cr';
+    const dc=ri===0?'#00C9A7':ri===all.length?'#8B949E':Object.values(COLORS)[ri].line;
+    const cells=fields.map(f=>{const val=h[f];if(val==null||val===undefined)return`<td style="text-align:right;color:var(--muted)">-</td>`;
+      if(ri===0||ri===all.length)return`<td style="text-align:right;font-weight:${ri===0?700:400}">${f==='patients'?val.toLocaleString():val}</td>`;
+      const pv=primary[f]??AVG[f];
+      if(f==='patients'){const d=val-pv;const p=((d/pv)*100).toFixed(0);return`<td style="text-align:right">${val.toLocaleString()}<span style="font-size:9px;color:var(--muted);margin-left:2px">(${d>0?'+':''}${p}%)</span></td>`;}
+      const better=val<pv;const cls=better?'win':val>pv?'lose':'tie';const d=(val-pv).toFixed(1);
+      return`<td style="text-align:right"><span class="${cls}">${val}</span><span style="font-size:9px;color:var(--muted);margin-left:2px">(${d>0?'+':''}${d})</span></td>`;
+    }).join('');
+    return`<tr class="${rc}"><td><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:${dc};display:inline-block;flex-shrink:0"></span>${h.short||h.name}</span></td><td><span style="font-size:9.5px;color:var(--muted)">${h.type}</span></td>${cells}</tr>`;
+  }).join('');
+  return`
+  <div class="crow c2" style="margin-bottom:14px">
+    <div class="ccard"><h3>Radar เปรียบเทียบ</h3><div class="cdesc">ซ้อนทับทุกโรงพยาบาลที่เลือก</div><div style="height:250px"><canvas id="cRdrCmp"></canvas></div></div>
+    <div class="ccard"><h3>Scatter — เปรียบเทียบผู้ป่วย vs เวลารวม</h3><div class="cdesc">มองเห็นว่าในปริมาณคนไข้เท่ากัน ใครใช้เวลานานกว่า</div><div style="height:250px"><canvas id="cSctCmp"></canvas></div></div>
+  </div>
+  <div class="ccard" style="margin-bottom:14px"><h3>Bar เวลารวม + จำนวนผู้ป่วย</h3><div class="cdesc">แกนซ้าย = เวลา (น.) · แกนขวา = ผู้ป่วย</div><div style="height:170px"><canvas id="cBarCmp"></canvas></div></div>
+  <div class="ccard"><h3>ตารางเปรียบเทียบละเอียด</h3><div class="cdesc">สีเขียว = ดีกว่า ${primary.short} · สีแดง = แย่กว่า</div>
+    <div style="overflow-x:auto;margin-top:8px"><table class="cmp-table"><thead><tr><th>โรงพยาบาล</th><th>ประเภท</th>${labels.map(l=>`<th style="text-align:right">${l}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>
+  </div>`;
+}
+
+// ─ CHARTS ─
+function destroyAll(){Object.values(charts).forEach(c=>c&&c.destroy());charts={};}
+const RL=['รอคัดกรอง','คัดกรอง','รอพบแพทย์','พบแพทย์','รับยา','Lab'];
+const RM=[100,25,130,30,200,220];
+function rd(h){return[h.wait_screen,h.screen,h.wait_doc,h.doc,h.medicine,h.lab??0].map((v,i)=>+(v/RM[i]*100).toFixed(1));}
+const RO={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8B949E',font:{size:10},padding:8,boxWidth:9}}},scales:{r:{angleLines:{color:'#30363D'},grid:{color:'#30363D'},pointLabels:{color:'#8B949E',font:{size:10}},ticks:{color:'#8B949E',backdropColor:'transparent',font:{size:9}},suggestedMax:100}}};
+
+function renderRadar(){const ctx=document.getElementById('cRadar');if(!ctx)return;charts.radar=new Chart(ctx,{type:'radar',data:{labels:RL,datasets:[{label:primary.short,data:rd(primary),borderColor:'#00C9A7',backgroundColor:'rgba(0,201,167,.15)',borderWidth:2,pointBackgroundColor:'#00C9A7',pointRadius:4},{label:'ค่าเฉลี่ย',data:rd(AVG),borderColor:'#8B949E',backgroundColor:'rgba(139,148,158,.07)',borderWidth:1,borderDash:[5,3],pointRadius:2,pointBackgroundColor:'#8B949E'}]},options:{...RO}});}
+
+function renderScatter(){const ctx=document.getElementById('cScatter');if(!ctx)return;const ml=Math.max(...DATA.filter(d=>d.lab).map(d=>d.lab));charts.scatter=new Chart(ctx,{type:'bubble',data:{datasets:[{label:'อื่นๆ',data:DATA.filter(d=>d.name!==primary.name).map(d=>({x:d.patients,y:d.total,r:Math.max(4,Math.sqrt((d.lab||50)/ml)*17),name:d.short})),backgroundColor:'rgba(139,148,158,.22)',borderColor:'rgba(139,148,158,.45)',borderWidth:1},{label:primary.short,data:[{x:primary.patients,y:primary.total,r:Math.max(6,Math.sqrt((primary.lab||50)/ml)*17),name:primary.short}],backgroundColor:'rgba(0,201,167,.75)',borderColor:'#00C9A7',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8B949E',font:{size:10},boxWidth:9}},tooltip:{callbacks:{label:c=>`${c.raw.name}: ${c.raw.x.toLocaleString()} ผู้ป่วย · ${c.raw.y} น.`}}},scales:{x:{title:{display:true,text:'จำนวนผู้ป่วย (ครั้ง/ปี)',color:'#8B949E',font:{size:10}},grid:{color:'#30363D'},ticks:{color:'#8B949E',font:{size:10},callback:v=>v>=1000?`${(v/1000).toFixed(0)}k`:v}},y:{title:{display:true,text:'เวลารวม (น.)',color:'#8B949E',font:{size:10}},grid:{color:'#30363D'},ticks:{color:'#8B949E',font:{size:10}}}}}})}
+
+function renderPeerBar(peers){const ctx=document.getElementById('cPeerBar');if(!ctx)return;const all=[primary,...peers].sort((a,b)=>b.total-a.total);charts.peerbar=new Chart(ctx,{type:'bar',data:{labels:all.map(d=>d.short),datasets:[{label:'เวลารวม (น.)',data:all.map(d=>d.total),backgroundColor:all.map(d=>d.name===primary.name?'rgba(0,201,167,.85)':'rgba(247,183,49,.55)'),borderColor:all.map(d=>d.name===primary.name?'#00C9A7':'#F7B731'),borderWidth:1,borderRadius:4,yAxisID:'y'},{label:'ผู้ป่วย',data:all.map(d=>d.patients),backgroundColor:'rgba(88,166,255,.2)',borderColor:'rgba(88,166,255,.55)',borderWidth:1,borderRadius:4,yAxisID:'y2'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8B949E',font:{size:10},boxWidth:9}}},scales:{x:{grid:{color:'#30363D'},ticks:{color:'#E6EDF3',font:{size:10}}},y:{position:'left',grid:{color:'#30363D'},ticks:{color:'#8B949E',font:{size:10}},title:{display:true,text:'เวลา (น.)',color:'#8B949E',font:{size:9}}},y2:{position:'right',grid:{drawOnChartArea:false},ticks:{color:'#58A6FF',font:{size:10},callback:v=>v>=1000?`${(v/1000).toFixed(0)}k`:v},title:{display:true,text:'ผู้ป่วย',color:'#58A6FF',font:{size:9}}}}}})}
+
+function renderCmpCharts(){
+  const all=[primary,...compareList];
+  // radar
+  const rCtx=document.getElementById('cRdrCmp');if(rCtx){const ds=[...all.map((h,i)=>({label:h.short,data:rd(h),borderColor:Object.values(COLORS)[i].line,backgroundColor:Object.values(COLORS)[i].fill,borderWidth:i===0?3:2,pointRadius:i===0?5:3,pointBackgroundColor:Object.values(COLORS)[i].line})),{label:'ค่าเฉลี่ย',data:rd(AVG),borderColor:'#8B949E',backgroundColor:'rgba(139,148,158,.05)',borderWidth:1,borderDash:[5,3],pointRadius:2,pointBackgroundColor:'#8B949E'}];charts.rdrcmp=new Chart(rCtx,{type:'radar',data:{labels:RL,datasets:ds},options:{...RO}});}
+  // scatter
+  const sCtx=document.getElementById('cSctCmp');if(sCtx){const ml=Math.max(...DATA.filter(d=>d.lab).map(d=>d.lab));const hl=new Set(all.map(d=>d.name));const grey=DATA.filter(d=>!hl.has(d.name));charts.sctcmp=new Chart(sCtx,{type:'bubble',data:{datasets:[{label:'อื่นๆ',data:grey.map(d=>({x:d.patients,y:d.total,r:4,name:d.short})),backgroundColor:'rgba(139,148,158,.18)',borderColor:'rgba(139,148,158,.35)',borderWidth:1},...all.map((h,i)=>({label:h.short,data:[{x:h.patients,y:h.total,r:Math.max(6,Math.sqrt((h.lab||50)/ml)*17),name:h.short}],backgroundColor:Object.values(COLORS)[i].line.replace(')',',0.75)').replace('rgb','rgba'),borderColor:Object.values(COLORS)[i].line,borderWidth:2}))]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8B949E',font:{size:10},boxWidth:9}},tooltip:{callbacks:{label:c=>`${c.raw.name}: ${c.raw.x.toLocaleString()} ผู้ป่วย · ${c.raw.y} น.`}}},scales:{x:{title:{display:true,text:'จำนวนผู้ป่วย (ครั้ง/ปี)',color:'#8B949E',font:{size:10}},grid:{color:'#30363D'},ticks:{color:'#8B949E',font:{size:10},callback:v=>v>=1000?`${(v/1000).toFixed(0)}k`:v}},y:{title:{display:true,text:'เวลารวม (น.)',color:'#8B949E',font:{size:10}},grid:{color:'#30363D'},ticks:{color:'#8B949E',font:{size:10}}}}}})}
+  // bar
+  const bCtx=document.getElementById('cBarCmp');if(bCtx){const aw=[...all,{short:'ค่าเฉลี่ย',total:AVG.total,patients:AVG.patients}];charts.barcmp=new Chart(bCtx,{type:'bar',data:{labels:aw.map(h=>h.short),datasets:[{label:'เวลารวม (น.)',data:aw.map(h=>h.total),backgroundColor:aw.map((_,i)=>i<all.length?Object.values(COLORS)[i].line.replace(')',',0.8)').replace('rgb','rgba'):'rgba(139,148,158,.4)'),borderColor:aw.map((_,i)=>i<all.length?Object.values(COLORS)[i].line:'#8B949E'),borderWidth:1,borderRadius:5,yAxisID:'y'},{label:'ผู้ป่วย',data:aw.map(h=>h.patients),backgroundColor:'rgba(88,166,255,.18)',borderColor:'rgba(88,166,255,.5)',borderWidth:1,borderRadius:5,yAxisID:'y2'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8B949E',font:{size:10},boxWidth:9}}},scales:{x:{grid:{color:'#30363D'},ticks:{color:'#E6EDF3',font:{size:11}}},y:{position:'left',grid:{color:'#30363D'},ticks:{color:'#8B949E',font:{size:10}},title:{display:true,text:'เวลา (น.)',color:'#8B949E',font:{size:9}}},y2:{position:'right',grid:{drawOnChartArea:false},ticks:{color:'#58A6FF',font:{size:10},callback:v=>v>=1000?`${(v/1000).toFixed(0)}k`:v},title:{display:true,text:'ผู้ป่วย',color:'#58A6FF',font:{size:9}}}}}})}
+}
+
+renderSidebar();renderMain();
+</script>
+</body>
+</html>
