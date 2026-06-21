@@ -19,12 +19,11 @@
   --accent-dim: rgba(29,111,164,0.08);
   --green: #16A34A; --green-dim: #F0FDF4; --green-border: #BBF7D0;
   --amber: #B45309; --amber-dim: #FFFBEB; --amber-border: #FDE68A;
-  --red: #DC2626;   --red-dim: #FEF2F2;   --red-border: #FECACA;
-  --blue-border: #BFDBFE;
+  --red: #DC2626; --red-dim: #FEF2F2; --red-border: #FECACA;
   --purple: #7C3AED; --purple-dim: #F5F3FF; --purple-border: #DDD6FE;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
-  --shadow: 0 4px 12px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.05);
-  --shadow-md: 0 8px 24px rgba(0,0,0,.09), 0 2px 6px rgba(0,0,0,.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.06);
+  --shadow: 0 4px 12px rgba(0,0,0,.07);
+  --shadow-md: 0 8px 24px rgba(0,0,0,.09);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,9 +32,9 @@ body { background: var(--bg); color: var(--text); font-family: 'Sarabun', sans-s
 /* HEADER */
 header {
   background: var(--accent);
-  padding: 14px 28px;
+  padding: 14px 20px;
   display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 100;
+  position: sticky; top: 0; z-index: 200;
   box-shadow: var(--shadow);
 }
 .header-left { display: flex; align-items: center; gap: 14px; }
@@ -50,189 +49,112 @@ header {
 }
 .header-title { font-size: 15px; font-weight: 700; color: #fff; }
 .header-sub { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 1px; }
-.header-time { text-align: right; }
 #clock { color: #fff; font-size: 17px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; }
-#date-display { font-size: 11px; color: rgba(255,255,255,0.65); font-family: 'IBM Plex Mono', monospace; }
 
-/* NAV */
-.nav-menu {
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  left: 0; top: 70px; bottom: 0;
+  width: 260px;
   background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 0 28px;
-  display: flex; align-items: center; gap: 2px;
-  overflow-x: auto;
-  box-shadow: var(--shadow-sm);
+  border-right: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease;
+  z-index: 150;
+  overflow-y: auto;
+  padding-top: 20px;
 }
+.sidebar.collapsed { transform: translateX(-100%); }
+
 .nav-item {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 11px 16px;
-  font-size: 13px; font-weight: 600;
-  color: var(--muted); text-decoration: none;
-  border-bottom: 2px solid transparent;
-  white-space: nowrap; transition: all 0.15s;
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 24px;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 8px;
+  margin: 4px 12px;
+  transition: all 0.2s;
 }
-.nav-item:hover { color: var(--accent); }
-.nav-item.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-/* MAIN */
-main { max-width: 1300px; margin: 0 auto; padding: 28px 28px 40px; display: flex; flex-direction: column; gap: 28px; }
-
-/* SECTION LABEL */
-.section-label {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--muted);
-  margin-bottom: 14px;
-  display: flex; align-items: center; gap: 10px;
+.nav-item:hover, .nav-item.active {
+  background: var(--accent-dim);
+  color: var(--accent);
 }
+
+/* MAIN CONTENT */
+.main-content {
+  margin-left: 260px;
+  padding: 20px;
+  max-width: 1300px;
+  transition: margin-left 0.3s;
+}
+@media (max-width: 992px) {
+  .main-content { margin-left: 0; }
+}
+
+/* ส่วนที่เหลือ (CSS เดิมของคุณ) */
+.section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
 .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-/* DASHBOARD CARDS */
 .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 18px; }
-
 .dash-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 22px 24px;
-  box-shadow: var(--shadow-sm);
-  text-decoration: none;
-  color: var(--text);
-  display: flex; flex-direction: column; gap: 14px;
-  transition: box-shadow 0.2s, transform 0.2s;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 22px 24px; box-shadow: var(--shadow-sm); text-decoration: none; color: var(--text);
+  display: flex; flex-direction: column; gap: 14px; transition: box-shadow 0.2s, transform 0.2s;
   border-top: 3px solid var(--accent);
-  position: relative;
-  overflow: hidden;
 }
 .dash-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
-
 .dash-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
 .dash-icon { font-size: 28px; line-height: 1; }
-.dash-arrow {
-  width: 28px; height: 28px; border-radius: 8px;
-  background: var(--accent-dim);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--accent); font-size: 14px; font-weight: 700;
-  flex-shrink: 0;
-}
+.dash-arrow { width: 28px; height: 28px; border-radius: 8px; background: var(--accent-dim); display: flex; align-items: center; justify-content: center; color: var(--accent); font-size: 14px; font-weight: 700; }
 .dash-title { font-size: 15px; font-weight: 700; color: var(--text); }
 .dash-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
-/* MINI KPI inside dash card */
 .mini-kpi-row { display: flex; gap: 10px; flex-wrap: wrap; }
-.mini-kpi {
-  flex: 1; min-width: 100px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px 12px;
-}
+.mini-kpi { flex: 1; min-width: 100px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
 .mini-kpi-label { font-size: 10px; color: var(--muted); font-weight: 600; margin-bottom: 3px; }
-.mini-kpi-value { font-size: 20px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; color: var(--accent); line-height: 1; }
-.mini-kpi-sub { font-size: 10px; color: var(--muted); margin-top: 3px; }
-
+.mini-kpi-value { font-size: 20px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; line-height: 1; }
 .mini-kpi.green .mini-kpi-value { color: var(--green); }
-.mini-kpi.red .mini-kpi-value   { color: var(--red); }
+.mini-kpi.red .mini-kpi-value { color: var(--red); }
 .mini-kpi.amber .mini-kpi-value { color: var(--amber); }
-.mini-kpi.purple .mini-kpi-value{ color: var(--purple); }
+.mini-kpi.purple .mini-kpi-value { color: var(--purple); }
 
-.dash-footer {
-  display: flex; align-items: center; justify-content: space-between;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
-  font-size: 12px; color: var(--muted);
-}
-.dash-cta {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-size: 12px; font-weight: 700; color: var(--accent);
-}
+.dash-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); }
+.dash-cta { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: var(--accent); }
 
-/* WAIT TIME HIGHLIGHT */
-.wait-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-.wait-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
-.wait-bar { height: 100%; border-radius: 3px; }
-.wait-label-left { font-size: 11px; color: var(--muted); width: 80px; flex-shrink: 0; }
-.wait-val { font-size: 11px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; width: 42px; text-align: right; }
-
-/* LINKS SECTION */
 .links-section { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-@media (max-width: 700px) { .links-section { grid-template-columns: 1fr; } }
-
-.link-group {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-}
-.link-group-head {
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface2);
-  display: flex; align-items: center; gap: 8px;
-}
-.link-group-title { font-size: 13px; font-weight: 700; color: var(--text); }
-.link-group-sub { font-size: 11px; color: var(--muted); }
-
-.link-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 18px;
-  border-bottom: 1px solid var(--border);
-  text-decoration: none;
-  color: var(--text);
-  transition: background 0.12s;
-}
-.link-item:last-child { border-bottom: none; }
-.link-item:hover { background: var(--accent-dim); }
-.link-item:hover .link-name { color: var(--accent); }
-
-.link-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--green);
-  flex-shrink: 0;
-  animation: pulse 2s ease-in-out infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
-
-.link-name { font-size: 13px; font-weight: 600; flex: 1; }
-.link-desc { font-size: 11px; color: var(--muted); margin-top: 1px; }
-.link-ext { font-size: 11px; color: var(--muted); flex-shrink: 0; }
-
-/* RESPONSIVE */
-@media (max-width: 700px) {
-  .dash-grid { grid-template-columns: 1fr; }
-  main { padding: 16px; }
-}
+@media (max-width: 700px) { .links-section { grid-template-columns: 1fr; } .dash-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 
 <header>
   <div class="header-left">
+    <button onclick="toggleSidebar()" style="background:none;border:none;color:white;font-size:28px;cursor:pointer;margin-right:8px;">☰</button>
     <div class="logo-mark">🏥</div>
     <div>
       <div class="header-title">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา</div>
       <div class="header-sub">ระบบติดตามข้อมูลโรงพยาบาล</div>
     </div>
   </div>
-  <div class="header-time">
-    <div id="clock">--:--:--</div>
-    <div id="date-display"></div>
-  </div>
+  <div id="clock">--:--:--</div>
 </header>
 
-<nav class="nav-menu">
-  <a class="nav-item active" href="index.html">🏠 หน้าหลัก</a>
-  <a class="nav-item" href="opwalkin.html">💰 พึงรับ-พึงจ่าย OP Walk-in</a>
-  <a class="nav-item" href="compare.html">⏱ เปรียบเทียบระยะเวลารอคอย</a>
-</nav>
+<!-- SIDEBAR -->
+<aside id="sidebar" class="sidebar">
+  <a href="index.html" class="nav-item active">🏠 หน้าหลัก</a>
+  <a href="kpi_dashboard.html" class="nav-item">📊 KPI Dashboard</a>
+  <a href="opwalkin.html" class="nav-item">💰 พึงรับ-พึงจ่าย OP Walk-in</a>
+  <a href="compare.html" class="nav-item">⏱ เปรียบเทียบระยะเวลารอคอย</a>
+</aside>
 
+<!-- MAIN CONTENT -->
+<div class="main-content">
 <main>
-
   <!-- DASHBOARD SHORTCUTS -->
   <div>
     <div class="section-label">Dashboard ที่พร้อมใช้งาน</div>
     <div class="dash-grid">
-
       <!-- OP WALK-IN -->
       <a class="dash-card" href="opwalkin.html">
         <div class="dash-card-head">
@@ -244,21 +166,9 @@ main { max-width: 1300px; margin: 0 auto; padding: 28px 28px 40px; display: flex
           <div class="dash-desc">ยอดเงินค่าบริการผู้ป่วยนอกข้ามหน่วยบริการ ภายในจังหวัดนครราชสีมา ต.ค.68 — ม.ค.69</div>
         </div>
         <div class="mini-kpi-row">
-          <div class="mini-kpi green">
-            <div class="mini-kpi-label">พึงรับรวม</div>
-            <div class="mini-kpi-value">770K</div>
-            <div class="mini-kpi-sub">บาท (4 เดือน)</div>
-          </div>
-          <div class="mini-kpi red">
-            <div class="mini-kpi-label">พึงจ่ายรวม</div>
-            <div class="mini-kpi-value">140K</div>
-            <div class="mini-kpi-sub">บาท (4 เดือน)</div>
-          </div>
-          <div class="mini-kpi">
-            <div class="mini-kpi-label">สุทธิ</div>
-            <div class="mini-kpi-value">630K</div>
-            <div class="mini-kpi-sub">บาท คงเหลือ</div>
-          </div>
+          <div class="mini-kpi green"><div class="mini-kpi-label">พึงรับรวม</div><div class="mini-kpi-value">770K</div><div class="mini-kpi-sub">บาท (4 เดือน)</div></div>
+          <div class="mini-kpi red"><div class="mini-kpi-label">พึงจ่ายรวม</div><div class="mini-kpi-value">140K</div><div class="mini-kpi-sub">บาท (4 เดือน)</div></div>
+          <div class="mini-kpi"><div class="mini-kpi-label">สุทธิ</div><div class="mini-kpi-value">630K</div><div class="mini-kpi-sub">บาท คงเหลือ</div></div>
         </div>
         <div class="dash-footer">
           <span>ข้อมูล ต.ค. 2568 – ม.ค. 2569</span>
@@ -274,40 +184,24 @@ main { max-width: 1300px; margin: 0 auto; padding: 28px 28px 40px; display: flex
         </div>
         <div>
           <div class="dash-title">เปรียบเทียบระยะเวลารอคอย</div>
-          <div class="dash-desc">วิเคราะห์เวลารอคอยรายแผนก เปรียบเทียบกับโรงพยาบาลชุมชนทั้ง 33 แห่ง ในจังหวัดนครราชสีมา</div>
+          <div class="dash-desc">วิเคราะห์เวลารอคอยรายแผนก เปรียบเทียบกับโรงพยาบาลชุมชนทั้ง 33 แห่ง</div>
         </div>
         <div style="margin-top:4px;">
-          <div class="wait-row">
-            <div class="wait-label-left">รอคัดกรอง</div>
-            <div class="wait-bar-wrap"><div class="wait-bar" style="width:75%;background:#DC2626"></div></div>
-            <div class="wait-val" style="color:#DC2626">83.2 น.</div>
-          </div>
-          <div class="wait-row">
-            <div class="wait-label-left">รอพบแพทย์</div>
-            <div class="wait-bar-wrap"><div class="wait-bar" style="width:60%;background:#D97706"></div></div>
-            <div class="wait-val" style="color:#D97706">64.8 น.</div>
-          </div>
-          <div class="wait-row">
-            <div class="wait-label-left">รับยา</div>
-            <div class="wait-bar-wrap"><div class="wait-bar" style="width:20%;background:#16A34A"></div></div>
-            <div class="wait-val" style="color:#16A34A">20.2 น.</div>
-          </div>
-          <div class="wait-row">
-            <div class="wait-label-left">เวลารวม</div>
-            <div class="wait-bar-wrap"><div class="wait-bar" style="width:100%;background:#1D6FA4"></div></div>
-            <div class="wait-val" style="color:#1D6FA4">182 น.</div>
-          </div>
+          <div class="wait-row"><div class="wait-label-left">รอคัดกรอง</div><div class="wait-bar-wrap"><div class="wait-bar" style="width:75%;background:#DC2626"></div></div><div class="wait-val" style="color:#DC2626">83.2 น.</div></div>
+          <div class="wait-row"><div class="wait-label-left">รอพบแพทย์</div><div class="wait-bar-wrap"><div class="wait-bar" style="width:60%;background:#D97706"></div></div><div class="wait-val" style="color:#D97706">64.8 น.</div></div>
+          <div class="wait-row"><div class="wait-label-left">รับยา</div><div class="wait-bar-wrap"><div class="wait-bar" style="width:20%;background:#16A34A"></div></div><div class="wait-val" style="color:#16A34A">20.2 น.</div></div>
+          <div class="wait-row"><div class="wait-label-left">เวลารวม</div><div class="wait-bar-wrap"><div class="wait-bar" style="width:100%;background:#1D6FA4"></div></div><div class="wait-val" style="color:#1D6FA4">182 น.</div></div>
         </div>
         <div class="dash-footer">
           <span>อันดับที่ 4 (เวลารวม) จาก 33 รพ.</span>
           <span class="dash-cta">เปิด Dashboard →</span>
         </div>
-      </a>      
-      
-            <!-- KPI DASHBOARD -->
+      </a>
+
+      <!-- KPI DASHBOARD -->
       <a class="dash-card" href="kpi_dashboard.html">
         <div class="dash-card-head">
-          <div class="dash-icon" style="color: #7C3AED;">📊</div>
+          <div class="dash-icon" style="color:#7C3AED;">📊</div>
           <div class="dash-arrow">→</div>
         </div>
         <div>
@@ -315,32 +209,22 @@ main { max-width: 1300px; margin: 0 auto; padding: 28px 28px 40px; display: flex
           <div class="dash-desc">วิเคราะห์ตัวชี้วัด 43 แฟ้ม ปี 2569 — แยกกลุ่มงาน + Chart</div>
         </div>
         <div class="mini-kpi-row">
-          <div class="mini-kpi red">
-            <div class="mini-kpi-label">ไม่ผ่านทั้งหมด</div>
-            <div class="mini-kpi-value">64</div>
-            <div class="mini-kpi-sub">ตัวชี้วัด</div>
-          </div>
-          <div class="mini-kpi amber">
-            <div class="mini-kpi-label">วิกฤต</div>
-            <div class="mini-kpi-value">29</div>
-            <div class="mini-kpi-sub">เร่งด่วน</div>
-          </div>
+          <div class="mini-kpi red"><div class="mini-kpi-label">ไม่ผ่านทั้งหมด</div><div class="mini-kpi-value">64</div><div class="mini-kpi-sub">ตัวชี้วัด</div></div>
+          <div class="mini-kpi amber"><div class="mini-kpi-label">วิกฤต</div><div class="mini-kpi-value">29</div><div class="mini-kpi-sub">เร่งด่วน</div></div>
         </div>
         <div class="dash-footer">
           <span>ข้อมูลปีงบ 2569</span>
           <span class="dash-cta">เปิด KPI Dashboard →</span>
         </div>
       </a>
-
     </div>
   </div>
 
-  <!-- EXTERNAL LINKS -->
+  <!-- EXTERNAL LINKS (เดิมทั้งหมด) -->
   <div>
     <div class="section-label">ลิงก์ระบบภายนอก</div>
     <div class="links-section">
-
-      <!-- ตัวชี้วัด -->
+       <!-- ตัวชี้วัด -->
       <div class="link-group">
         <div class="link-group-head">
           <span style="font-size:18px;">📊</span>
@@ -425,26 +309,28 @@ main { max-width: 1300px; margin: 0 auto; padding: 28px 28px 40px; display: flex
           <span class="link-ext">↗</span>
         </a>
       </div>
-
     </div>
   </div>
-
 </main>
+</div>
 
 <script>
+// Clock
 function updateClock() {
   const now = new Date();
-  const days = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
-  const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
   const h = String(now.getHours()).padStart(2,'0');
   const m = String(now.getMinutes()).padStart(2,'0');
-  const s = String(now.getSeconds()).padStart(2,'0');
-  document.getElementById('clock').textContent = `${h}:${m}:${s}`;
-  document.getElementById('date-display').textContent =
-    `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()+543}`;
+  document.getElementById('clock').textContent = `${h}:${m}`;
 }
-setInterval(updateClock, 1000);
+setInterval(updateClock, 10000);
 updateClock();
+
+// Toggle Sidebar
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('collapsed');
+}
 </script>
+</body>
+</html>
 </body>
 </html>
