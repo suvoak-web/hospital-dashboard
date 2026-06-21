@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิเคราะห์แนวโน้มการเงิน รพช.พระทองคำ</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Sarabun',sans-serif;background:#f8f8f7;color:#1a1917;padding:16px;font-size:14px;}
+.card{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;border:0.5px solid #e0dfd9;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px;}
+.kpi{background:#f4f3f0;border-radius:8px;padding:12px;}
+.kpi .lb{font-size:11px;color:#888;margin-bottom:3px;}
+.kpi .vl{font-size:20px;font-weight:600;}
+.kpi .sb{font-size:11px;color:#888;margin-top:3px;}
+.nb{font-size:12px;padding:5px 12px;border:0.5px solid #ddd;border-radius:6px;background:transparent;cursor:pointer;color:#666;}
+.nb.on{background:#1a1917;color:#fff;border-color:#1a1917;font-weight:500;}
+.nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.tp{display:none;}.tp.on{display:block;}
+.sc{font-size:13px;font-weight:600;margin-bottom:8px;color:#1a1917;}
+.lg{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px;font-size:12px;color:#666;}
+.ls{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:3px;vertical-align:middle;}
+.warn{background:#fff0ef;border-radius:8px;padding:10px 14px;font-size:12px;color:#c0392b;margin-bottom:12px;border-left:3px solid #e24b4a;}
+.info{background:#eff6ff;border-radius:8px;padding:10px 14px;font-size:12px;color:#1a5fa5;margin-bottom:12px;border-left:3px solid #378add;}
+.ok{background:#effaf5;border-radius:8px;padding:10px 14px;font-size:12px;color:#167a4a;margin-bottom:12px;border-left:3px solid #1d9e75;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{text-align:left;padding:6px;color:#888;font-weight:500;border-bottom:0.5px solid #eee;}
+td{padding:6px;border-bottom:0.5px solid #f0f0ee;}
+th:not(:first-child),td:not(:first-child){text-align:right;}
+input[type=range]{width:100%;margin:4px 0;}
+label{font-size:12px;color:#666;}
+h1{font-size:15px;font-weight:600;margin-bottom:2px;}
+.sub-h{font-size:11px;color:#888;margin-bottom:12px;}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h1>วิเคราะห์แนวโน้มการเงิน — รพช.พระทองคำ (22456)</h1>
+  <p class="sub-h">ฐานข้อมูล STM สปสช ปีงบ 2566–2569 · ทรัพย์สุทธิปัจจุบัน 15.0M บาท</p>
+
+  <div class="nav">
+    <button class="nb on" onclick="sw('ov',this)">ภาพรวม</button>
+    <button class="nb" onclick="sw('proj',this)">Projection</button>
+    <button class="nb" onclick="sw('sim',this)">จำลอง Scenario</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div id="tp-ov" class="tp on">
+    <div class="kpi-grid">
+      <div class="kpi"><p class="lb">รายรับเฉลี่ย 3 ปี</p><p class="vl">107.7M</p><p class="sb">ปี 2566–2568</p></div>
+      <div class="kpi"><p class="lb">ประมาณการปี 2569 (เต็มปี)</p><p class="vl" style="color:#1d9e75;">~100.5M</p><p class="sb">OP ครบ + est. Q4</p></div>
+      <div class="kpi"><p class="lb">OP แนวโน้ม 4 ปี</p><p class="vl" style="color:#e24b4a;">-19.3%</p><p class="sb">27.2M→21.9M (66→69)</p></div>
+      <div class="kpi"><p class="lb">ทรัพย์สุทธิปัจจุบัน</p><p class="vl" style="color:#ef9f27;">15.0M</p><p class="sb">หลังหักหนี้สิน</p></div>
+    </div>
+
+    <div class="warn">⚠️ <strong>สัญญาณเตือน:</strong> ถ้ารายจ่ายโต 10%/ปี และรายรับโตเพียง 0–2% — ทรัพย์สุทธิ 15M จะหมดภายใน <strong>2–3 ปี</strong></div>
+
+    <p class="sc">รายรับจริง 4 ปี + ประมาณการ (ล้านบาท)</p>
+    <div class="lg">
+      <span><span class="ls" style="background:#534AB7;"></span>รายรับจริง (STM)</span>
+      <span><span class="ls" style="background:#1d9e75;"></span>แนวโน้มรายรับ (+2%/ปี)</span>
+      <span><span class="ls" style="background:#e24b4a;"></span>แนวโน้มรายจ่าย (+10%/ปี)</span>
+    </div>
+    <div style="position:relative;height:220px;margin-bottom:16px;">
+      <canvas id="c-ov"></canvas>
+    </div>
+
+    <p class="sc">OP ลดลงต่อเนื่อง 4 ปี</p>
+    <div style="position:relative;height:140px;margin-bottom:12px;">
+      <canvas id="c-op"></canvas>
+    </div>
+    <div class="info">ℹ️ <strong>OP ลดลง 3 ปีติด (-19.3%)</strong> — เป็นสัญญาณสำคัญ เพราะ OP เป็นกองทุนหลักที่โรงพยาบาลพัฒนาได้ผ่านจำนวนผู้รับบริการและคุณภาพการส่งข้อมูล</div>
+  </div>
+
+  <!-- PROJECTION -->
+  <div id="tp-proj" class="tp">
+    <p class="sc">ประมาณการ Equity (ทรัพย์สุทธิ) 5 ปีข้างหน้า — 3 Scenarios</p>
+    <div class="lg">
+      <span><span class="ls" style="background:#1d9e75;"></span>Optimistic Rev+3%</span>
+      <span><span class="ls" style="background:#ef9f27;"></span>Base Rev+2%</span>
+      <span><span class="ls" style="background:#e24b4a;"></span>Pessimistic Rev+0%</span>
+      <span><span class="ls" style="background:#888;"></span>จุดวิกฤต Equity=0</span>
+    </div>
+    <div style="position:relative;height:230px;margin-bottom:12px;">
+      <canvas id="c-eq"></canvas>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;">
+      <div class="kpi" style="border-top:3px solid #1d9e75;">
+        <p class="lb">Optimistic (Rev+3%)</p>
+        <p class="vl" style="font-size:14px;color:#1d9e75;">เงินหมดปีที่ 3</p>
+        <p class="sb">ปีงบ 2572</p>
+      </div>
+      <div class="kpi" style="border-top:3px solid #ef9f27;">
+        <p class="lb">Base Case (Rev+2%)</p>
+        <p class="vl" style="font-size:14px;color:#ef9f27;">เงินหมดปีที่ 2</p>
+        <p class="sb">ปีงบ 2571</p>
+      </div>
+      <div class="kpi" style="border-top:3px solid #e24b4a;">
+        <p class="lb">Pessimistic (Rev+0%)</p>
+        <p class="vl" style="font-size:14px;color:#e24b4a;">เงินหมดปีที่ 1–2</p>
+        <p class="sb">ปีงบ 2570–71</p>
+      </div>
+    </div>
+
+    <p class="sc">รายละเอียด — Base Case (Rev+2%, Exp+10%, Exp=100% ของรายรับ)</p>
+    <table><thead><tr>
+      <th>ปีงบ</th><th>รายรับ</th><th>รายจ่าย</th><th>ส่วนต่าง</th><th>Equity</th>
+    </tr></thead><tbody id="tb-proj"></tbody></table>
+    <p style="font-size:11px;color:#888;margin-top:6px;">* รายจ่ายฐาน = 100.5M (เท่ารายรับปี 2569)</p>
+  </div>
+
+  <!-- SIMULATION -->
+  <div id="tp-sim" class="tp">
+    <p class="sc">จำลอง Scenario ด้วยตัวเอง</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px;">
+      <div>
+        <label>อัตราเติบโตรายรับ: <strong id="rv-val">2</strong>% /ปี</label>
+        <input type="range" id="rv-sl" min="-5" max="10" value="2" step="1" oninput="updateSim()">
+      </div>
+      <div>
+        <label>อัตราเติบโตรายจ่าย: <strong id="ex-val">10</strong>% /ปี</label>
+        <input type="range" id="ex-sl" min="0" max="20" value="10" step="1" oninput="updateSim()">
+      </div>
+      <div>
+        <label>รายจ่ายฐาน (% ของรายรับ): <strong id="ep-val">100</strong>%</label>
+        <input type="range" id="ep-sl" min="80" max="115" value="100" step="1" oninput="updateSim()">
+      </div>
+      <div>
+        <label>ทรัพย์สุทธิเริ่มต้น: <strong id="eq-val">15</strong>M บาท</label>
+        <input type="range" id="eq-sl" min="5" max="50" value="15" step="1" oninput="updateSim()">
+      </div>
+    </div>
+    <div id="sim-result" class="info" style="margin-bottom:10px;"></div>
+    <div style="position:relative;height:220px;margin-bottom:12px;">
+      <canvas id="c-sim"></canvas>
+    </div>
+    <table><thead><tr>
+      <th>ปีงบ</th><th>รายรับ</th><th>รายจ่าย</th><th>ส่วนต่าง</th><th>Equity</th>
+    </tr></thead><tbody id="tb-sim"></tbody></table>
+
+    <div style="margin-top:12px;padding:12px;background:#f4f3f0;border-radius:8px;font-size:12px;">
+      <p style="font-weight:600;margin-bottom:6px;">💡 เงื่อนไขที่ทำให้ รพ. ยั่งยืน</p>
+      <p style="color:#666;">ถ้าต้องการ Equity ไม่ติดลบใน 5 ปี — <strong>รายจ่ายต้องโตไม่เกิน ~2–3%/ปี</strong> หรือ <strong>รายรับต้องโตทัน Exp growth</strong> ซึ่งต้องเพิ่มทั้งปริมาณผู้ป่วยและประสิทธิภาพการส่งข้อมูล REP</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const REV_BASE=100.49, EQ_NOW=15.0;
+let charts={};
+function dc(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
+function fmtM(n){return n.toFixed(2)+'M';}
+
+function sw(name,btn){
+  document.querySelectorAll('.tp').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tp-'+name).classList.add('on');
+  btn.classList.add('on');
+  if(name==='ov')rOv();
+  if(name==='proj')rProj();
+  if(name==='sim')rSim();
+}
+
+function rOv(){
+  dc('ov');dc('op');
+  const OP=[27.18,24.54,24.91,21.94];
+  charts['op']=new Chart(document.getElementById('c-op'),{
+    type:'bar',
+    data:{labels:['2566','2567','2568','2569\n(ครบแล้ว)'],
+      datasets:[{data:OP,backgroundColor:['#534AB7','#534AB7','#534AB7','#D85A30'],borderRadius:4,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>` OP: ${ctx.parsed.y.toFixed(2)}M`}}},
+      scales:{x:{grid:{display:false}},y:{min:18,ticks:{callback:v=>v+'M'}}}}
+  });
+
+  const histRev=[109.56,113.59,100.00,95.49];
+  const futRev=[null,null,null,95.49,REV_BASE*1.02,REV_BASE*1.02**2,REV_BASE*1.02**3];
+  const futExp=[null,null,null,REV_BASE,REV_BASE*1.10,REV_BASE*1.10**2,REV_BASE*1.10**3];
+  const histData=[...histRev,null,null,null];
+  charts['ov']=new Chart(document.getElementById('c-ov'),{
+    type:'line',
+    data:{labels:['2566','2567','2568','2569\n(9เดือน)','2570','2571','2572'],datasets:[
+      {label:'รายรับจริง',data:histData,borderColor:'#534AB7',borderWidth:2.5,pointRadius:[4,4,4,4,0,0,0],fill:false,tension:0.3},
+      {label:'รายรับประมาณ',data:futRev,borderColor:'#1d9e75',borderWidth:2,borderDash:[5,4],pointRadius:4,fill:false,tension:0.3},
+      {label:'รายจ่ายประมาณ',data:futExp,borderColor:'#e24b4a',borderWidth:2,borderDash:[3,3],pointRadius:4,fill:false,tension:0.3},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>ctx.parsed.y?` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}M`:''}}},
+      scales:{x:{grid:{display:false}},y:{min:85,ticks:{callback:v=>v+'M'}}}}
+  });
+}
+
+function calc(rg,eg,ep,eq0){
+  let r=REV_BASE,e=REV_BASE*ep/100,eq=eq0,rows=[];
+  for(let i=1;i<=7;i++){
+    r*=(1+rg/100);e*=(1+eg/100);
+    const s=r-e;eq+=s;
+    rows.push({yr:2569+i,r,e,s,eq});
+    if(eq<-60)break;
+  }
+  return rows;
+}
+
+function rProj(){
+  dc('eq');
+  const s1=calc(3,10,100,EQ_NOW),s2=calc(2,10,100,EQ_NOW),s3=calc(0,10,100,EQ_NOW);
+  const labs=s2.map(r=>''+r.yr);
+  charts['eq']=new Chart(document.getElementById('c-eq'),{
+    type:'line',
+    data:{labels:labs,datasets:[
+      {label:'Rev+3%',data:s1.map(r=>+r.eq.toFixed(2)),borderColor:'#1d9e75',borderWidth:2,pointRadius:4,fill:false,tension:0.3},
+      {label:'Rev+2%',data:s2.map(r=>+r.eq.toFixed(2)),borderColor:'#ef9f27',borderWidth:2,borderDash:[5,3],pointRadius:4,fill:false,tension:0.3},
+      {label:'Rev+0%',data:s3.map(r=>+r.eq.toFixed(2)),borderColor:'#e24b4a',borderWidth:2,borderDash:[2,2],pointRadius:4,fill:false,tension:0.3},
+      {label:'Zero',data:Array(labs.length).fill(0),borderColor:'#888',borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}M`}}},
+      scales:{x:{grid:{display:false}},y:{ticks:{callback:v=>v+'M'}}}}
+  });
+  const ec=v=>v>=10?'#167a4a':v>=0?'#b7680a':'#c0392b';
+  document.getElementById('tb-proj').innerHTML=s2.map(r=>`<tr>
+    <td>ปีงบ ${r.yr}</td>
+    <td style="color:#1d9e75;">${fmtM(r.r)}</td>
+    <td style="color:#e24b4a;">${fmtM(r.e)}</td>
+    <td style="color:${r.s>=0?'#167a4a':'#c0392b'};">${(r.s>=0?'+':'')+r.s.toFixed(2)}M</td>
+    <td style="font-weight:600;color:${ec(r.eq)};">${fmtM(r.eq)}</td>
+  </tr>`).join('');
+}
+
+function rSim(){updateSim();}
+function updateSim(){
+  const rv=+document.getElementById('rv-sl').value;
+  const ex=+document.getElementById('ex-sl').value;
+  const ep=+document.getElementById('ep-sl').value;
+  const eq0=+document.getElementById('eq-sl').value;
+  document.getElementById('rv-val').textContent=rv;
+  document.getElementById('ex-val').textContent=ex;
+  document.getElementById('ep-val').textContent=ep;
+  document.getElementById('eq-val').textContent=eq0;
+
+  const rows=calc(rv,ex,ep,eq0);
+  const labs=rows.map(r=>''+r.yr);
+  dc('sim');
+  charts['sim']=new Chart(document.getElementById('c-sim'),{
+    type:'line',
+    data:{labels:labs,datasets:[
+      {label:'รายรับ',data:rows.map(r=>+r.r.toFixed(2)),borderColor:'#1d9e75',borderWidth:2,pointRadius:3,fill:false,tension:0.3},
+      {label:'รายจ่าย',data:rows.map(r=>+r.e.toFixed(2)),borderColor:'#e24b4a',borderWidth:2,borderDash:[4,3],pointRadius:3,fill:false,tension:0.3},
+      {label:'Equity',data:rows.map(r=>+r.eq.toFixed(2)),borderColor:'#534AB7',backgroundColor:'rgba(83,74,183,0.08)',borderWidth:2.5,pointRadius:4,fill:true,tension:0.3},
+      {label:'Zero',data:Array(labs.length).fill(0),borderColor:'#888',borderWidth:1,borderDash:[5,3],pointRadius:0,fill:false},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}M`}}},
+      scales:{x:{grid:{display:false}},y:{ticks:{callback:v=>v+'M'}}}}
+  });
+  const crisis=rows.find(r=>r.eq<0);
+  const el=document.getElementById('sim-result');
+  if(crisis){
+    el.className='warn';
+    el.innerHTML=`⚠️ <strong>Equity จะติดลบในปีงบ ${crisis.yr}</strong> (อีก ${crisis.yr-2569} ปี) — ต้องการแผนแก้ไขเร่งด่วน`;
+  }else{
+    el.className='ok';
+    el.innerHTML=`✅ <strong>Scenario นี้ยั่งยืนได้</strong> — Equity ปีงบ ${rows[rows.length-1].yr} = ${fmtM(rows[rows.length-1].eq)}`;
+  }
+  const ec=v=>v>=10?'#167a4a':v>=0?'#b7680a':'#c0392b';
+  document.getElementById('tb-sim').innerHTML=rows.map(r=>`<tr>
+    <td>${r.yr}</td>
+    <td style="color:#1d9e75;">${fmtM(r.r)}</td>
+    <td style="color:#e24b4a;">${fmtM(r.e)}</td>
+    <td style="color:${r.s>=0?'#167a4a':'#c0392b'};">${(r.s>=0?'+':'')+r.s.toFixed(2)}M</td>
+    <td style="font-weight:600;color:${ec(r.eq)};">${fmtM(r.eq)}</td>
+  </tr>`).join('');
+}
+
+rOv();
+</script>
+</body>
+</html>
