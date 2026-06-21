@@ -112,22 +112,9 @@ td.nm{font-weight:600}
   .kpi-row{grid-template-columns:repeat(2,1fr)}
   .hosp-select{min-width:200px}
 }
-/* SHARED NAV */
-.site-nav{background:#fff;border-bottom:1px solid #E2E8F0;padding:0 20px;display:flex;align-items:center;gap:2px;overflow-x:auto;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.site-nav a{display:inline-flex;align-items:center;gap:6px;padding:11px 16px;font-size:13px;font-weight:600;color:#64748B;text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;font-family:'Sarabun',sans-serif}
-.site-nav a:hover{color:#1D6FA4}
-.site-nav a.active{color:#1D6FA4;border-bottom-color:#1D6FA4}
-/* HOSP HEADER OVERRIDE */
-header{box-shadow:0 4px 12px rgba(0,0,0,.1)}
 </style>
 </head>
 <body>
-
-<nav class="site-nav">
-  <a href="index.html">🏥 ภาพรวมโรงพยาบาล</a>
-  <a href="opwalkin.html" class="active">💰 พึงรับ-พึงจ่าย OP Walk-in</a>
-  <a href="compare.html">⏱ เปรียบเทียบระยะเวลารอคอย</a>
-</nav>
 
 <header>
   <div class="hdr">
@@ -460,7 +447,19 @@ function toast(msg, ms=3000) {
 function buildHospDropdown() {
   const sel = document.getElementById("hospSelect");
   sel.innerHTML = "";
-  const names = Object.keys(ALL_DATA).sort();
+  const aliasValues = new Set(Object.values(HOSP_ALIASES)); // canonical names
+  const aliasKeys   = new Set(Object.keys(HOSP_ALIASES));   // names to hide
+
+  const names = Object.keys(ALL_DATA)
+    .filter(n => {
+      // Remove if it's an alias key (e.g. "รพ.จิตเวชนครราชสีมา" → hidden, canonical kept)
+      if (aliasKeys.has(n)) return false;
+      // Remove if all months have zero payable AND zero receivable (no real data)
+      const months = Object.values(ALL_DATA[n] || {});
+      return months.some(m => (m.payable||0) > 0 || (m.receivable||0) > 0);
+    })
+    .sort();
+
   names.forEach(n => {
     const o = document.createElement("option");
     o.value = n;
@@ -596,7 +595,7 @@ function renderTopCharts(hosp) {
   // Aggregate receivable detail
   const recMap = {};
   months.forEach(m => {
-    Object.entries(m.rd||{}).forEach(([h,v])=>{ recMap[h]=(recMap[h]||0)+v; });
+    Object.entries(m.rd||{}).forEach(([h,v])=>{ const c=resolveHospName(h); recMap[c]=(recMap[c]||0)+v; });
   });
   const topRec = Object.entries(recMap).filter(e=>e[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,10);
   
@@ -620,7 +619,7 @@ function renderTopCharts(hosp) {
   // Aggregate payable detail
   const payMap = {};
   months.forEach(m => {
-    Object.entries(m.pd||{}).forEach(([h,v])=>{ payMap[h]=(payMap[h]||0)+v; });
+    Object.entries(m.pd||{}).forEach(([h,v])=>{ const c=resolveHospName(h); payMap[c]=(payMap[c]||0)+v; });
   });
   const topPay = Object.entries(payMap).filter(e=>e[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,10);
 
@@ -648,22 +647,32 @@ function renderRecTable() {
   const months = getAllMonthsForHosp(hosp);
   const srch = (document.getElementById("recSrch")?.value||"").toLowerCase();
   
-  // Collect all payer hospitals
-  const allPayers = new Set();
-  months.forEach(m=>Object.keys(m.rd||{}).forEach(h=>allPayers.add(h)));
-  
-  let rows = "", total = 0;
-  [...allPayers].filter(h=>!srch||h.toLowerCase().includes(srch)).sort().forEach(payer=>{
-    const vals = months.map(m=>(m.rd||{})[payer]||0);
-    const sum = vals.reduce((s,v)=>s+v,0);
-    if(sum===0) return;
-    total+=sum;
-    rows+=`<tr>
-      <td class="nm">${payer}</td>
-      ${vals.map(v=>`<td class="r">${v>0?fmt(v):"-"}</td>`).join("")}
-      <td class="r" style="font-weight:700;color:var(--green)">${fmt(sum)}</td>
-    </tr>`;
+  // Aggregate rd values with alias resolution
+  const payerTotals = {};
+  const payerByMonth = {};
+  months.forEach((m, mi) => {
+    Object.entries(m.rd||{}).forEach(([h,v]) => {
+      const canonical = resolveHospName(h);
+      payerTotals[canonical] = (payerTotals[canonical]||0) + v;
+      if (!payerByMonth[canonical]) payerByMonth[canonical] = months.map(()=>0);
+      payerByMonth[canonical][mi] += v;
+    });
   });
+
+  let rows = "", total = 0;
+  Object.entries(payerTotals)
+    .filter(([h]) => !srch || h.toLowerCase().includes(srch))
+    .sort((a,b) => a[0].localeCompare(b[0], 'th'))
+    .forEach(([payer, sum]) => {
+      if(sum===0) return;
+      total+=sum;
+      const vals = payerByMonth[payer];
+      rows+=`<tr>
+        <td class="nm">${payer}</td>
+        ${vals.map(v=>`<td class="r">${v>0?fmt(v):"-"}</td>`).join("")}
+        <td class="r" style="font-weight:700;color:var(--green)">${fmt(sum)}</td>
+      </tr>`;
+    });
   
   document.getElementById("recBody").innerHTML = rows||`<tr><td colspan="6" class="empty">ไม่พบข้อมูล</td></tr>`;
   const el = document.getElementById("recTotal");
@@ -676,7 +685,7 @@ function renderRecChart() {
 
   // Aggregate total per payer across all months
   const totals = {};
-  months.forEach(m=>Object.entries(m.rd||{}).forEach(([h,v])=>{ totals[h]=(totals[h]||0)+v; }));
+  months.forEach(m=>Object.entries(m.rd||{}).forEach(([h,v])=>{ const c=resolveHospName(h); totals[c]=(totals[c]||0)+v; }));
 
   // Sort by total desc, take top 15
   const payerList = Object.entries(totals)
@@ -716,21 +725,32 @@ function renderPayTable() {
   const months = getAllMonthsForHosp(hosp);
   const srch = (document.getElementById("paySrch")?.value||"").toLowerCase();
   
-  const allBillers = new Set();
-  months.forEach(m=>Object.keys(m.pd||{}).forEach(h=>allBillers.add(h)));
-  
-  let rows="", total=0;
-  [...allBillers].filter(h=>!srch||h.toLowerCase().includes(srch)).sort().forEach(biller=>{
-    const vals=months.map(m=>(m.pd||{})[biller]||0);
-    const sum=vals.reduce((s,v)=>s+v,0);
-    if(sum===0) return;
-    total+=sum;
-    rows+=`<tr>
-      <td class="nm">${biller}</td>
-      ${vals.map(v=>`<td class="r">${v>0?fmt(v):"-"}</td>`).join("")}
-      <td class="r" style="font-weight:700;color:var(--red)">${fmt(sum)}</td>
-    </tr>`;
+  // Aggregate pd values with alias resolution
+  const billerTotals = {};
+  const billerByMonth = {};
+  months.forEach((m, mi) => {
+    Object.entries(m.pd||{}).forEach(([h,v]) => {
+      const canonical = resolveHospName(h);
+      billerTotals[canonical] = (billerTotals[canonical]||0) + v;
+      if (!billerByMonth[canonical]) billerByMonth[canonical] = months.map(()=>0);
+      billerByMonth[canonical][mi] += v;
+    });
   });
+
+  let rows="", total=0;
+  Object.entries(billerTotals)
+    .filter(([h]) => !srch || h.toLowerCase().includes(srch))
+    .sort((a,b) => a[0].localeCompare(b[0], 'th'))
+    .forEach(([biller, sum]) => {
+      if(sum===0) return;
+      total+=sum;
+      const vals = billerByMonth[biller];
+      rows+=`<tr>
+        <td class="nm">${biller}</td>
+        ${vals.map(v=>`<td class="r">${v>0?fmt(v):"-"}</td>`).join("")}
+        <td class="r" style="font-weight:700;color:var(--red)">${fmt(sum)}</td>
+      </tr>`;
+    });
   
   document.getElementById("payBody").innerHTML = rows||`<tr><td colspan="6" class="empty">ไม่พบข้อมูล</td></tr>`;
   const el=document.getElementById("payTotal");
@@ -743,7 +763,7 @@ function renderPayChart() {
 
   // Aggregate total per biller across all months, sort desc
   const totals={};
-  months.forEach(m=>Object.entries(m.pd||{}).forEach(([h,v])=>{ totals[h]=(totals[h]||0)+v; }));
+  months.forEach(m=>Object.entries(m.pd||{}).forEach(([h,v])=>{ const c=resolveHospName(h); totals[c]=(totals[c]||0)+v; }));
   const sorted=Object.entries(totals).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);
 
   // Two charts: (1) horizontal bar — total per biller; (2) stacked bar by month for top billers
@@ -780,7 +800,7 @@ function renderPayChartMonthly() {
   const hosp=state.currentHosp;
   const months=getAllMonthsForHosp(hosp);
   const totals={};
-  months.forEach(m=>Object.entries(m.pd||{}).forEach(([h,v])=>{ totals[h]=(totals[h]||0)+v; }));
+  months.forEach(m=>Object.entries(m.pd||{}).forEach(([h,v])=>{ const c=resolveHospName(h); totals[c]=(totals[c]||0)+v; }));
   // Top 12 by total for monthly stacked
   const top12=Object.entries(totals).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,12).map(([h])=>h);
   const colors=["#8B0000","#C0392B","#E74C3C","#FF6B6B","#FF8C69","#CD853F","#DAA520","#9370DB","#4169E1","#20B2AA","#2E8B57","#556B2F"];
@@ -907,21 +927,34 @@ function renderImport() {
 // ══ COMPARE TAB ══
 let cmpSelected = null;
 
+// Hospital name aliases — any variant maps to the canonical name
+const HOSP_ALIASES = {
+  "รพ.พระทองคำ": "รพ.พระทองคำเฉลิมพระเกียรติ 80 พรรษา",
+  "รพ.พระทองคำเฉลิมพระเกียรติ": "รพ.พระทองคำเฉลิมพระเกียรติ 80 พรรษา",
+  "รพ.จิตเวชนครราชสีมา": "รพ.จิตเวชนครราชสีมาราชนครินทร์",
+};
+
+function resolveHospName(name) {
+  return HOSP_ALIASES[name] || name;
+}
+
 function buildCounterparts(hosp) {
   const months = getAllMonthsForHosp(hosp);
   const cp = {};
   months.forEach(m => {
     // rec_from: counterpart paid TO us (appears in our rd)
     Object.entries(m.rd||{}).forEach(([h,v]) => {
-      if (!cp[h]) cp[h] = {};
-      if (!cp[h][m.key||m.month]) cp[h][m.key||m.month] = {rec:0, pay:0, month:m.month};
-      cp[h][m.key||m.month].rec += v;
+      const canonical = resolveHospName(h);
+      if (!cp[canonical]) cp[canonical] = {};
+      if (!cp[canonical][m.key||m.month]) cp[canonical][m.key||m.month] = {rec:0, pay:0, month:m.month};
+      cp[canonical][m.key||m.month].rec += v;
     });
     // pay_to: we paid TO counterpart (appears in our pd)
     Object.entries(m.pd||{}).forEach(([h,v]) => {
-      if (!cp[h]) cp[h] = {};
-      if (!cp[h][m.key||m.month]) cp[h][m.key||m.month] = {rec:0, pay:0, month:m.month};
-      cp[h][m.key||m.month].pay += v;
+      const canonical = resolveHospName(h);
+      if (!cp[canonical]) cp[canonical] = {};
+      if (!cp[canonical][m.key||m.month]) cp[canonical][m.key||m.month] = {rec:0, pay:0, month:m.month};
+      cp[canonical][m.key||m.month].pay += v;
     });
   });
   return cp;
