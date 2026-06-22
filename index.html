@@ -136,59 +136,77 @@ header { background: var(--accent); padding: 14px 20px; display: flex; align-ite
 <div class="main-content">
   <div class="section-label">DASHBOARD ที่พร้อมใช้งาน</div>
   <div class="dash-grid">
-    <!-- การ์ดใหญ่ -->
-    <a class="dash-card" href="opwalkin.html">
-      <div style="display:flex;gap:12px;align-items:start;">
-        <div style="font-size:32px;">💰</div>
-        <div style="flex:1;">
-          <div style="font-size:17px;font-weight:700;">พึงรับ — พึงจ่าย OP Walk-in</div>
-          <div style="color:var(--muted);margin:8px 0 16px;">ยอดเงินค่าบริการผู้ป่วยนอก</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-            <div style="background:#f0fdf4;padding:12px;border-radius:10px;text-align:center;">
-              <div style="font-size:22px;font-weight:700;color:#16A34A;">770K</div>
-              <div style="font-size:12px;color:#166534;">พึงรับ</div>
-            </div>
-            <div style="background:#fef2f2;padding:12px;border-radius:10px;text-align:center;">
-              <div style="font-size:22px;font-weight:700;color:#DC2626;">140K</div>
-              <div style="font-size:12px;color:#991B1B;">พึงจ่าย</div>
-            </div>
+  <!-- 1. พึงรับ - พึงจ่าย -->
+  <a class="dash-card" href="opwalkin.html" style="border-top: 4px solid #16A34A;">
+    <div style="display:flex; gap:20px; align-items:start;">
+      <div style="font-size:48px; line-height:1;">💰</div>
+      <div style="flex:1;">
+        <div style="font-size:18px; font-weight:700; margin-bottom:12px;">พึงรับ — พึงจ่าย OP Walk-in</div>
+        <div style="display:flex; gap:24px;">
+          <div>
+            <div style="font-size:13px; color:#166534;">พึงรับรวม</div>
+            <div style="font-size:32px; font-weight:700; color:#16A34A;" id="receive-amount">770K</div>
+            <div style="font-size:13px; color:#166534;">บาท (4 เดือน)</div>
+          </div>
+          <div>
+            <div style="font-size:13px; color:#991B1B;">พึงจ่ายรวม</div>
+            <div style="font-size:32px; font-weight:700; color:#DC2626;" id="pay-amount">140K</div>
+            <div style="font-size:13px; color:#991B1B;">บาท (4 เดือน)</div>
+          </div>
+        </div>
+        <div style="margin-top:16px; padding-top:12px; border-top:1px solid #eee;">
+          <span style="font-size:15px; font-weight:700; color:#1D6FA4;">สุทธิ 630K บาท</span>
+        </div>
+      </div>
+    </div>
+  </a>
+
+  <!-- 2. ระยะเวลารอคอย -->
+  <a class="dash-card" href="compare.html" style="border-top: 4px solid #D97706;">
+    <div style="display:flex; gap:20px; align-items:start;">
+      <div style="font-size:48px; line-height:1;">⏱</div>
+      <div style="flex:1;">
+        <div style="font-size:18px; font-weight:700;">เปรียบเทียบระยะเวลารอคอย</div>
+        <div style="margin-top:12px; font-size:15px; color:var(--muted);">อันดับที่ 4 จาก 33 รพ.ชุมชน</div>
+        <div style="margin-top:16px;">
+          <div style="display:flex; justify-content:space-between; font-size:13px;">
+            <span>เวลารวม</span>
+            <span style="font-weight:700; color:#1D6FA4;">182 นาที</span>
           </div>
         </div>
       </div>
-    </a>
+    </div>
+  </a>
 
-    <a class="dash-card" href="compare.html">
-      <div style="display:flex;gap:12px;align-items:start;">
-        <div style="font-size:32px;">⏱</div>
-        <div style="flex:1;">
-          <div style="font-size:17px;font-weight:700;">เปรียบเทียบระยะเวลารอคอย</div>
-          <div style="color:var(--muted);margin-top:8px;">อันดับที่ 4 จาก 33 รพ.ชุมชน</div>
+  <!-- 3. KPI -->
+  <a class="dash-card" href="kpi_dashboard.html" style="border-top: 4px solid #DC2626;">
+    <div style="display:flex; gap:20px; align-items:start;">
+      <div style="font-size:48px; line-height:1;">📊</div>
+      <div style="flex:1;">
+        <div style="font-size:18px; font-weight:700;">ตัวชี้วัด KPI</div>
+        <div style="margin-top:8px;">
+          <span id="kpi-bad" style="font-size:42px; font-weight:700; color:#DC2626;">64</span>
+          <span style="font-size:15px; color:#991B1B;">ตัวชี้วัดไม่ผ่าน</span>
+        </div>
+        <div style="margin-top:8px; font-size:13px; color:#666;">ปีงบประมาณ 2569</div>
+      </div>
+    </div>
+  </a>
+
+  <!-- 4. Finance Projection -->
+  <a class="dash-card" href="fin_projection.html" style="border-top: 4px solid #1D6FA4;">
+    <div style="display:flex; gap:20px; align-items:start;">
+      <div style="font-size:48px; line-height:1;">📈</div>
+      <div style="flex:1;">
+        <div style="font-size:18px; font-weight:700;">แนวโน้มการเงิน</div>
+        <div style="margin-top:12px;">
+          <div style="font-size:32px; font-weight:700; color:#1D6FA4;" id="equity-value">15.0M</div>
+          <div style="font-size:14px; color:#166534;">ทรัพย์สุทธิ (บาท)</div>
         </div>
       </div>
-    </a>
-
-    <a class="dash-card" href="kpi_dashboard.html">
-      <div style="display:flex;gap:12px;align-items:start;">
-        <div style="font-size:32px;">📊</div>
-        <div style="flex:1;">
-          <div style="font-size:17px;font-weight:700;">ตัวชี้วัด KPI</div>
-          <div style="margin-top:12px;">
-            <span style="background:#fee2e2;padding:4px 12px;border-radius:9999px;color:#DC2626;font-weight:600;">64 ตัวชี้วัดไม่ผ่าน</span>
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <a class="dash-card" href="fin_projection.html">
-      <div style="display:flex;gap:12px;align-items:start;">
-        <div style="font-size:32px;">📈</div>
-        <div style="flex:1;">
-          <div style="font-size:17px;font-weight:700;">แนวโน้มการเงิน</div>
-          <div style="color:var(--muted);margin-top:8px;">ทรัพย์สุทธิ 15.0M บาท</div>
-        </div>
-      </div>
-    </a>
-  </div>
+    </div>
+  </a>
+</div>
 
   <!-- ลิงก์ภายนอก -->
   <div class="section-label" style="margin-top:40px;">ลิงก์ระบบภายนอก</div>
