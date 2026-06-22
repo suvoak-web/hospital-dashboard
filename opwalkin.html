@@ -516,6 +516,16 @@ function renderAll() {
   renderOverviewChart(months);
   renderNetChart(months);
   renderTopCharts(hosp);
+
+   // === อัพเดทช่วงเดือนที่มุมขวาบน ===
+  if (months.length > 0) {
+    const first = months[0].month || "ต.ค.2568";
+    const lastMonth = months[months.length-1].month || "ม.ค.2569";
+    const periodText = `${first}–${lastMonth}`;
+    
+    const badge = document.getElementById('periodBadge');
+    if (badge) badge.textContent = periodText;
+  }
 }
 
 function renderKPIs(months) {
@@ -544,17 +554,6 @@ function renderKPIs(months) {
     monthCount: months.length,
     updatedAt: new Date().toISOString()
   }));
-
-  // === อัพเดทช่วงเดือนที่มุมขวาบน ===
-  if (months.length > 0) {
-    const first = months[0].month || "ต.ค.2568";
-    const lastMonth = months[months.length-1].month || "ม.ค.2569";
-    const periodText = `${first}–${lastMonth}`;
-    
-    const badge = document.getElementById('periodBadge');
-    if (badge) badge.textContent = periodText;
-  }
-}
 }
 // อัพเดทช่วงเดือนอัตโนมัติ
 function updatePeriodBadge(months) {
