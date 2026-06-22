@@ -327,7 +327,13 @@ function toggleDropdown(el) {
   <script>
 // ดึงข้อมูลจาก opwalkin.html
 function loadOPData() {
-  const data = JSON.parse(localStorage.getItem('opData') || '{}');
+  let data = JSON.parse(localStorage.getItem('opData') || '{}');
+  
+  if (data.receivable === undefined) {
+    // ถ้ายังไม่มีข้อมูล ให้รอสักครู่แล้วโหลดใหม่
+    setTimeout(loadOPData, 800);
+    return;
+  }
   
   if (data.receivable !== undefined) {
     document.getElementById('receive-amount').textContent = 
@@ -338,17 +344,17 @@ function loadOPData() {
       Math.round(data.payable / 1000) + 'K';
   }
   
-  // อัพเดทจำนวนเดือนอัตโนมัติ
   const monthCount = data.monthCount || 0;
   const periodText = monthCount > 0 ? `(${monthCount} เดือน)` : "(ทุกเดือน)";
   
   document.getElementById('receive-period').textContent = periodText;
   document.getElementById('pay-period').textContent = periodText;
 }
-}
 
-// เรียกใช้เมื่อโหลดหน้า
-window.addEventListener('load', loadOPData);
+// เรียกใช้
+window.addEventListener('load', () => {
+  setTimeout(loadOPData, 300);   // รอเล็กน้อย
+});
 </script>
 </body>
 </html>
