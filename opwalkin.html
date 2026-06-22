@@ -36,16 +36,19 @@ header{background:linear-gradient(135deg,#0D2455 0%,#1A4FA0 60%,#1E6BB8 100%);po
 .hosp-select option{background:#1A4FA0;color:#fff}
 .my-badge{background:#FFD700;color:#1A2B4A;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap}
 
-/* MAIN */
-main, .main, .content, #main {
-  margin-left: 280px !important;   /* เพิ่มจาก 260 เป็น 280 */
-  padding: 20px 30px !important;
-  max-width: 1400px;
+/* MAIN - ปรับให้ไม่ทับ Sidebar */
+main, .main, .content, #main, .container, .page-content {
+  margin-left: 280px !important;
+  padding: 24px 32px !important;
+  max-width: 1450px;
+  box-sizing: border-box;
 }
 
-@media (min-width: 993px) {
-  main {
-    margin-left: 260px;   /* มี Sidebar */
+/* สำหรับหน้าจอเล็ก (มือถือ) */
+@media (max-width: 992px) {
+  main, .main, .content, #main, .container, .page-content {
+    margin-left: 0 !important;
+    padding: 16px !important;
   }
 }
 
