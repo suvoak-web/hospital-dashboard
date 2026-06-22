@@ -543,6 +543,16 @@ function renderKPIs(months) {
     outstanding: outstanding,
     monthCount: months.length,           // ← สำคัญ
     updatedAt: new Date().toISOString()
+     
+      // === อัพเดทช่วงเดือนที่มุมขวาบน ===
+  if (months.length > 0) {
+    const first = months[0].month || "ต.ค.2568";
+    const last = months[months.length-1].month || "ม.ค.2569";
+    const periodText = `${first}–${last}`;
+    
+    const badge = document.getElementById('periodBadge');
+    if (badge) badge.textContent = periodText;
+  }
   }));
 }
 // อัพเดทช่วงเดือนอัตโนมัติ
