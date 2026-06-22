@@ -326,5 +326,23 @@ function toggleDropdown(el) {
   content.style.display = content.style.display === 'block' ? 'none' : 'block';
 }
 </script>
+  <script>
+// ดึงข้อมูลจาก opwalkin.html
+function loadOPData() {
+  const data = JSON.parse(localStorage.getItem('opData') || '{}');
+  
+  if (data.receivable) {
+    document.getElementById('receive-amount').textContent = 
+      Math.round(data.receivable / 1000) + 'K';
+  }
+  if (data.payable) {
+    document.getElementById('pay-amount').textContent = 
+      Math.round(data.payable / 1000) + 'K';
+  }
+}
+
+// เรียกใช้เมื่อโหลดหน้า
+window.addEventListener('load', loadOPData);
+</script>
 </body>
 </html>
