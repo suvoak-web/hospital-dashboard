@@ -137,29 +137,27 @@ header { background: var(--accent); padding: 14px 20px; display: flex; align-ite
   <div class="section-label">DASHBOARD ที่พร้อมใช้งาน</div>
   <div class="dash-grid">
   <!-- 1. พึงรับ - พึงจ่าย -->
-  <a class="dash-card" href="opwalkin.html" style="border-top: 4px solid #16A34A;">
-    <div style="display:flex; gap:20px; align-items:start;">
-      <div style="font-size:48px; line-height:1;">💰</div>
-      <div style="flex:1;">
-        <div style="font-size:18px; font-weight:700; margin-bottom:12px;">พึงรับ — พึงจ่าย OP Walk-in</div>
-        <div style="display:flex; gap:24px;">
-          <div>
-            <div style="font-size:13px; color:#166534;">พึงรับรวม</div>
-            <div style="font-size:32px; font-weight:700; color:#16A34A;" id="receive-amount">770K</div>
-            <div style="font-size:13px; color:#166534;">บาท (4 เดือน)</div>
-          </div>
-          <div>
-            <div style="font-size:13px; color:#991B1B;">พึงจ่ายรวม</div>
-            <div style="font-size:32px; font-weight:700; color:#DC2626;" id="pay-amount">140K</div>
-            <div style="font-size:13px; color:#991B1B;">บาท (4 เดือน)</div>
-          </div>
+  <div class="dash-card" href="opwalkin.html" style="border-top: 4px solid #16A34A;">
+  <div style="display:flex; gap:20px; align-items:start;">
+    <div style="font-size:48px; line-height:1;">💰</div>
+    <div style="flex:1;">
+      <div style="font-size:18px; font-weight:700; margin-bottom:12px;">พึงรับ — พึงจ่าย OP Walk-in</div>
+      
+      <div style="display:flex; gap:24px;">
+        <div>
+          <div style="font-size:13px; color:#166534;">พึงรับรวม</div>
+          <div style="font-size:32px; font-weight:700; color:#16A34A;" id="receive-amount">0K</div>
+          <div style="font-size:13px; color:#166534;" id="receive-period">ทุกเดือน</div>
         </div>
-        <div style="margin-top:16px; padding-top:12px; border-top:1px solid #eee;">
-          <span style="font-size:15px; font-weight:700; color:#1D6FA4;">สุทธิ 630K บาท</span>
+        <div>
+          <div style="font-size:13px; color:#991B1B;">พึงจ่ายรวม</div>
+          <div style="font-size:32px; font-weight:700; color:#DC2626;" id="pay-amount">0K</div>
+          <div style="font-size:13px; color:#991B1B;" id="pay-period">ทุกเดือน</div>
         </div>
       </div>
     </div>
-  </a>
+  </div>
+</div>
 
   <!-- 2. ระยะเวลารอคอย -->
   <a class="dash-card" href="compare.html" style="border-top: 4px solid #D97706;">
