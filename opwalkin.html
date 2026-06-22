@@ -595,7 +595,7 @@ function renderTopCharts(hosp) {
   // Aggregate receivable detail
   const recMap = {};
   months.forEach(m => {
-    Object.entries(m.rd||{}).forEach(([h,v])=>{ const c=resolveHospName(h); recMap[c]=(recMap[c]||0)+v; });
+    Object.entries(m.rd||{}).forEach(([h,v])=>{ if(h.startsWith("รวม")) return; const c=resolveHospName(h); recMap[c]=(recMap[c]||0)+v; });
   });
   const topRec = Object.entries(recMap).filter(e=>e[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,10);
   
