@@ -511,21 +511,25 @@ const baseOpts = {
 function renderAll() {
   const hosp = state.currentHosp;
   const months = getAllMonthsForHosp(hosp);
+  
+  // เรียงตามลำดับเดิม
   renderKPIs(months);
   renderSumTable(months);
   renderOverviewChart(months);
   renderNetChart(months);
   renderTopCharts(hosp);
 
-   // === อัพเดทช่วงเดือนที่มุมขวาบน ===
-  if (months.length > 0) {
-    const first = months[0].month || "ต.ค.2568";
-    const lastMonth = months[months.length-1].month || "ม.ค.2569";
-    const periodText = `${first}–${lastMonth}`;
-    
-    const badge = document.getElementById('periodBadge');
-    if (badge) badge.textContent = periodText;
-  }
+  // === อัพเดทช่วงเดือนแยก (ปลอดภัย) ===
+  setTimeout(() => {
+    if (months && months.length > 0) {
+      const first = months[0].month || "ต.ค.2568";
+      const last = months[months.length-1].month || "ม.ค.2569";
+      const badge = document.getElementById('periodBadge');
+      if (badge) {
+        badge.textContent = `${first}–${last}`;
+      }
+    }
+  }, 100);
 }
 
 function renderKPIs(months) {
