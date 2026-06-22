@@ -129,19 +129,48 @@ td.nm{font-weight:600}
 }
 </style>
   <style>
-/* Sidebar Style */
-.sidebar { width: 270px !important; }
-main, .main { margin-left: 295px !important; }
-  position: fixed; left: 0; top: 70px; bottom: 0; width: 260px;
-  background: white; border-right: 1px solid #E2E8F0;
-  overflow-y: auto; padding: 20px 0; z-index: 150;
+/* SIDEBAR STYLE */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 85px;
+  bottom: 0;
+  width: 270px;
+  background: white;
+  border-right: 1px solid #E2E8F0;
+  overflow-y: auto;
+  padding: 20px 0;
+  z-index: 150;
 }
+
 .nav-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px 24px; color: #64748B; text-decoration: none;
-  font-weight: 600; margin: 4px 12px; border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  color: #64748B;
+  text-decoration: none;
+  font-weight: 600;
+  margin: 4px 12px;
+  border-radius: 8px;
 }
-.nav-item.active, .nav-item:hover { background: #E0F2FE; color: #1D6FA4; }
+.nav-item.active, .nav-item:hover {
+  background: #E0F2FE;
+  color: #1D6FA4;
+}
+
+/* MAIN CONTENT */
+main, .main, .content, #main {
+  margin-left: 290px !important;
+  padding: 20px 32px !important;
+  max-width: 1450px;
+}
+
+/* มือถือ */
+@media (max-width: 992px) {
+  .sidebar { display: none; }
+  main, .main, .content { margin-left: 0 !important; }
+}
 </style>
 </head>
 <body>
