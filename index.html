@@ -329,14 +329,20 @@ function toggleDropdown(el) {
 function loadOPData() {
   const data = JSON.parse(localStorage.getItem('opData') || '{}');
   
-  if (data.receivable) {
+  if (data.receivable !== undefined) {
     document.getElementById('receive-amount').textContent = 
       Math.round(data.receivable / 1000) + 'K';
   }
-  if (data.payable) {
+  if (data.payable !== undefined) {
     document.getElementById('pay-amount').textContent = 
       Math.round(data.payable / 1000) + 'K';
   }
+  
+  // อัพเดทจำนวนเดือน (สมมติจากข้อมูลที่มี)
+  const monthCount = 7; // หรือดึงจาก localStorage ถ้ามี
+  document.getElementById('receive-period').textContent = `(${monthCount} เดือน)`;
+  document.getElementById('pay-period').textContent = `(${monthCount} เดือน)`;
+}
 }
 
 // เรียกใช้เมื่อโหลดหน้า
