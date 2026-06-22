@@ -545,7 +545,19 @@ function renderKPIs(months) {
     updatedAt: new Date().toISOString()
   }));
 }
+// อัพเดทช่วงเดือนอัตโนมัติ
+function updatePeriodBadge(months) {
+  if (!months || months.length === 0) return;
+  
+  const firstMonth = months[0].month || "ต.ค.2568";
+  const lastMonth = months[months.length-1].month || "ม.ค.2569";
+  
+  document.getElementById('periodBadge').textContent = `${firstMonth}–${lastMonth}`;
+}
 
+// เรียกใช้ใน renderKPIs หรือ renderAll
+updatePeriodBadge(months);
+  
 function renderSumTable(months) {
   const pmByMon = {};
   state.payments.filter(p=>p.hosp===state.currentHosp).forEach(p=>{
