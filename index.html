@@ -338,10 +338,9 @@ function loadOPData() {
       Math.round(data.payable / 1000) + 'K';
   }
   
-  // คำนวณจำนวนเดือน (สมมติจากข้อมูลที่มี)
-  // คุณสามารถปรับให้ดึงจาก opwalkin.html ได้ถ้ามีข้อมูล months.length
-  const monthCount = 7;   // ← เปลี่ยนตัวเลขนี้ตามข้อมูลจริงของคุณ
-  const periodText = `(${monthCount} เดือน)`;
+  // อัพเดทจำนวนเดือนอัตโนมัติ
+  const monthCount = data.monthCount || 0;
+  const periodText = monthCount > 0 ? `(${monthCount} เดือน)` : "(ทุกเดือน)";
   
   document.getElementById('receive-period').textContent = periodText;
   document.getElementById('pay-period').textContent = periodText;
