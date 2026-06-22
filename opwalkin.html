@@ -533,7 +533,7 @@ function renderKPIs(months) {
     {cls:"done",lbl:"ตามจ่ายแล้ว",val:fmt(paidPay),sub:`คงค้าง: ${fmt(outstanding)} บาท`},
   ].map(c=>`<div class="kpi ${c.cls}"><div class="kpi-lbl">${c.lbl}</div><div class="kpi-val">${c.val}</div><div class="kpi-sub">${c.sub}</div></div>`).join("");
 
-   // === บันทึกข้อมูลสำหรับ index.html (รวมจำนวนเดือน) ===
+  // === บันทึกข้อมูลสำหรับ index.html ===
   localStorage.setItem('opData', JSON.stringify({
     receivable: totalRec,
     payable: totalPay,
@@ -541,19 +541,20 @@ function renderKPIs(months) {
     lastReceivable: last.receivable || 0,
     lastPayable: last.payable || 0,
     outstanding: outstanding,
-    monthCount: months.length,           // ← สำคัญ
+    monthCount: months.length,
     updatedAt: new Date().toISOString()
-     
-      // === อัพเดทช่วงเดือนที่มุมขวาบน ===
+  }));
+
+  // === อัพเดทช่วงเดือนที่มุมขวาบน ===
   if (months.length > 0) {
     const first = months[0].month || "ต.ค.2568";
-    const last = months[months.length-1].month || "ม.ค.2569";
-    const periodText = `${first}–${last}`;
+    const lastMonth = months[months.length-1].month || "ม.ค.2569";
+    const periodText = `${first}–${lastMonth}`;
     
     const badge = document.getElementById('periodBadge');
     if (badge) badge.textContent = periodText;
   }
-  }));
+}
 }
 // อัพเดทช่วงเดือนอัตโนมัติ
 function updatePeriodBadge(months) {
