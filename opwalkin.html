@@ -43,11 +43,6 @@ header{background:linear-gradient(135deg,#0D2455 0%,#1A4FA0 60%,#1E6BB8 100%);po
   width: 265px !important;
 }
 
-main, .main, .content, #main, .container {
-  margin-left: 295px !important;   /* เพิ่มจาก 280 เป็น 295 */
-  padding: 24px 32px !important;
-}
-
 /* มือถือ */
 @media (max-width: 992px) {
   .sidebar { display: none; }
@@ -176,6 +171,14 @@ main, .main, .content, #main {
 <body>
 
 <header>
+  <!-- TOP NAV BAR -->
+<nav style="background:white; border-bottom:1px solid #E2E8F0; padding:12px 20px; display:flex; gap:8px; flex-wrap:wrap; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+  <a href="index.html" style="padding:8px 16px; color:#1D6FA4; font-weight:600; text-decoration:none; border-radius:8px; background:#E0F2FE;">🏠 หน้าหลัก</a>
+  <a href="kpi_dashboard.html" style="padding:8px 16px; color:#64748B; font-weight:600; text-decoration:none; border-radius:8px;">📊 KPI Dashboard</a>
+  <a href="fin_projection.html" style="padding:8px 16px; color:#64748B; font-weight:600; text-decoration:none; border-radius:8px;">💵 Finance Projection</a>
+  <a href="opwalkin.html" style="padding:8px 16px; color:#1D6FA4; font-weight:600; text-decoration:none; border-radius:8px; background:#E0F2FE;">💰 พึงรับ-พึงจ่าย</a>
+  <a href="compare.html" style="padding:8px 16px; color:#64748B; font-weight:600; text-decoration:none; border-radius:8px;">⏱ ระยะเวลารอคอย</a>
+</nav>
   <div class="hdr">
     <div class="hdr-icon">🏥</div>
     <div class="hdr-title">
