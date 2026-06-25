@@ -6,7 +6,6 @@
 <title>โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
-
 :root {
   --bg: #F4F6F9;
   --surface: #FFFFFF;
@@ -20,44 +19,36 @@
   --red: #DC2626;
   --purple: #7C3AED;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: var(--text); font-family: 'Sarabun', sans-serif; font-size: 15px; line-height: 1.6; }
-
-/* HEADER & SIDEBAR (เหมือนเดิม) */
+/* HEADER & SIDEBAR */
 header { background: var(--accent); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; }
 .logo-mark { width: 40px; height: 40px; background: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
-
 .sidebar {
   position: fixed; left: 0; top: 70px; bottom: 0; width: 260px;
   background: var(--surface); border-right: 1px solid var(--border);
   overflow-y: auto; padding: 20px 0; z-index: 150;
 }
 .sidebar.collapsed { transform: translateX(-100%); }
-
 .nav-item {
   display: flex; align-items: center; gap: 12px;
   padding: 12px 24px; color: var(--muted); text-decoration: none;
   font-weight: 600; margin: 4px 12px; border-radius: 8px;
 }
 .nav-item.active, .nav-item:hover { background: var(--accent-dim); color: var(--accent); }
-
 /* MAIN */
 .main-content { margin-left: 260px; padding: 24px 28px; }
 .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px; }
-
 .dash-card {
   background: white; border: 1px solid var(--border); border-radius: 14px;
   padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.06);
   text-decoration: none; color: var(--text); transition: all 0.2s;
 }
 .dash-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
-
 .section-label {
   font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
 }
-
 /* Links */
 .links-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .link-group {
@@ -78,19 +69,18 @@ header { background: var(--accent); padding: 14px 20px; display: flex; align-ite
 </style>
 </head>
 <body>
-
 <header style="background: #1D6FA4; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
   <div style="display:flex; align-items:center; gap: 16px;">
     <button onclick="toggleSidebar()" style="background:none; border:none; color:white; font-size: 28px; cursor:pointer; padding: 4px;">☰</button>
-    
+   
     <div class="logo-mark" style="width:48px; height:48px; background:rgba(255,255,255,0.25); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0;">🏥</div>
-    
+   
     <div>
       <div style="color:white; font-size:17px; font-weight:700; line-height:1.2;">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา</div>
       <div style="color:rgba(255,255,255,0.85); font-size:13px;">ระบบติดตามข้อมูลโรงพยาบาล</div>
     </div>
   </div>
-  
+ 
   <div style="text-align:right; color:white;">
     <div id="clock" style="font-size:22px; font-weight:700; font-family:'IBM Plex Mono', monospace;"></div>
     <div id="date-display" style="font-size:13px; opacity:0.9;"></div>
@@ -101,13 +91,14 @@ header { background: var(--accent); padding: 14px 20px; display: flex; align-ite
 <aside id="sidebar" class="sidebar">
   <a href="index.html" class="nav-item active">🏠 หน้าหลัก</a>
   <a href="kpi_dashboard.html" class="nav-item">📊 KPI Dashboard</a>
-  <a href="fin_projection.html" class="nav-item">💵 Finance Projection</a>
+  <a href="finance-dashboard.html" class="nav-item">💰 KPI การเงิน</a>
+  <a href="fin_projection.html" class="nav-item">📈 Finance Projection</a>
   <a href="opwalkin.html" class="nav-item">💰 พึงรับ-พึงจ่าย</a>
   <a href="compare.html" class="nav-item">⏱ ระยะเวลารอคอย</a>
-
+  
   <!-- Dropdown ลิงก์ภายนอก -->
   <div style="margin: 20px 12px 10px; padding-left: 12px; font-size: 13px; color: var(--muted); font-weight: 600;">🔗 ลิงก์ระบบภายนอก</div>
-  
+ 
   <div class="dropdown">
     <a href="#" onclick="toggleDropdown(this)" style="display:flex;align-items:center;gap:12px;padding:12px 24px;color:var(--muted);font-weight:600;">
       📊 ติดตามตัวชี้วัด <span style="margin-left:auto;">▼</span>
@@ -120,91 +111,80 @@ header { background: var(--accent); padding: 14px 20px; display: flex; align-ite
       <a href="https://www.r9health.net/servicetime/" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">ระยะเวลารอคอย R9</a>
     </div>
   </div>
-
-  <div class="dropdown">
-    <a href="#" onclick="toggleDropdown(this)" style="display:flex;align-items:center;gap:12px;padding:12px 24px;color:var(--muted);font-weight:600;">
-      🔧 ติดตามงานอื่นๆ <span style="margin-left:auto;">▼</span>
-    </a>
-    <div class="dropdown-content" style="display:none;padding-left:40px;">
-      <a href="https://smt.nhso.go.th/smtf/#/home/budget/summary" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">SMT งบประมาณ NHSO</a>
-      <a href="https://cmi.moph.go.th/" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">CMI กระทรวงสาธารณสุข</a>
-      <a href="https://mishos.nhso.go.th/mis_hos/#/dashboard" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">MIS HOS Dashboard</a>
-    </div>
-  </div>
 </aside>
 
 <div class="main-content">
   <div class="section-label">DASHBOARD ที่พร้อมใช้งาน</div>
   <div class="dash-grid">
-  <!-- 1. พึงรับ - พึงจ่าย -->
-  <!-- การ์ด OP Walk-in -->
-<a class="dash-card" href="opwalkin.html" style="border-top: 4px solid #16A34A;">
-  <div style="display:flex; gap:20px; align-items:start;">
-    <div style="font-size:48px; line-height:1;">💰</div>
-    <div style="flex:1;">
-      <div style="font-size:18px; font-weight:700; margin-bottom:12px;">พึงรับ — พึงจ่าย OP Walk-in</div>
-      <div style="display:flex; gap:24px;">
-        <div>
-          <div style="font-size:13px; color:#166534;">พึงรับรวม</div>
-          <div style="font-size:32px; font-weight:700; color:#16A34A;" id="receive-amount">0K</div>
-          <div style="font-size:13px; color:#166534;" id="receive-period">(0 เดือน)</div>
-        </div>
-        <div>
-          <div style="font-size:13px; color:#991B1B;">พึงจ่ายรวม</div>
-          <div style="font-size:32px; font-weight:700; color:#DC2626;" id="pay-amount">0K</div>
-          <div style="font-size:13px; color:#991B1B;" id="pay-period">(0 เดือน)</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</a>
-
-  <!-- 2. ระยะเวลารอคอย -->
-  <a class="dash-card" href="compare.html" style="border-top: 4px solid #D97706;">
-    <div style="display:flex; gap:20px; align-items:start;">
-      <div style="font-size:48px; line-height:1;">⏱</div>
-      <div style="flex:1;">
-        <div style="font-size:18px; font-weight:700;">เปรียบเทียบระยะเวลารอคอย</div>
-        <div style="margin-top:12px; font-size:15px; color:var(--muted);">อันดับที่ 4 จาก 33 รพ.ชุมชน</div>
-        <div style="margin-top:16px;">
-          <div style="display:flex; justify-content:space-between; font-size:13px;">
-            <span>เวลารวม</span>
-            <span style="font-weight:700; color:#1D6FA4;">182 นาที</span>
+    
+    <!-- การเงิน Dashboard (ใหม่) -->
+    <a class="dash-card" href="finance-dashboard.html" style="border-top: 4px solid #1D6FA4;">
+      <div style="display:flex; gap:20px; align-items:start;">
+        <div style="font-size:48px; line-height:1;">📊</div>
+        <div style="flex:1;">
+          <div style="font-size:18px; font-weight:700; margin-bottom:12px; color:#1D6FA4;">KPI การเงิน ปี 2569</div>
+          <div style="font-size:15px; color:var(--muted); margin-bottom:12px;">รายรับ-รายจ่าย • ขาดดุล • ความเสี่ยง</div>
+          <div style="display:flex; gap:16px; font-size:14px;">
+            <div><span style="color:#16A34A;">76.99M</span> <small>รายรับ</small></div>
+            <div><span style="color:#DC2626;">82.80M</span> <small>รายจ่าย</small></div>
           </div>
         </div>
       </div>
-    </div>
-  </a>
+    </a>
 
-  <!-- 3. KPI -->
-  <a class="dash-card" href="kpi_dashboard.html" style="border-top: 4px solid #DC2626;">
-    <div style="display:flex; gap:20px; align-items:start;">
-      <div style="font-size:48px; line-height:1;">📊</div>
-      <div style="flex:1;">
-        <div style="font-size:18px; font-weight:700;">ตัวชี้วัด KPI</div>
-        <div style="margin-top:8px;">
-          <span id="kpi-bad" style="font-size:42px; font-weight:700; color:#DC2626;">64</span>
-          <span style="font-size:15px; color:#991B1B;">ตัวชี้วัดไม่ผ่าน</span>
-        </div>
-        <div style="margin-top:8px; font-size:13px; color:#666;">ปีงบประมาณ 2569</div>
-      </div>
-    </div>
-  </a>
-
-  <!-- 4. Finance Projection -->
-  <a class="dash-card" href="fin_projection.html" style="border-top: 4px solid #1D6FA4;">
-    <div style="display:flex; gap:20px; align-items:start;">
-      <div style="font-size:48px; line-height:1;">📈</div>
-      <div style="flex:1;">
-        <div style="font-size:18px; font-weight:700;">แนวโน้มการเงิน</div>
-        <div style="margin-top:12px;">
-          <div style="font-size:32px; font-weight:700; color:#1D6FA4;" id="equity-value">15.0M</div>
-          <div style="font-size:14px; color:#166534;">ทรัพย์สุทธิ (บาท)</div>
+    <!-- การ์ดเดิมที่คุณมี -->
+    <a class="dash-card" href="opwalkin.html" style="border-top: 4px solid #16A34A;">
+      <div style="display:flex; gap:20px; align-items:start;">
+        <div style="font-size:48px; line-height:1;">💰</div>
+        <div style="flex:1;">
+          <div style="font-size:18px; font-weight:700; margin-bottom:12px;">พึงรับ — พึงจ่าย OP Walk-in</div>
+          <div style="display:flex; gap:24px;">
+            <div>
+              <div style="font-size:13px; color:#166534;">พึงรับรวม</div>
+              <div style="font-size:32px; font-weight:700; color:#16A34A;" id="receive-amount">0K</div>
+              <div style="font-size:13px; color:#166534;" id="receive-period">(0 เดือน)</div>
+            </div>
+            <div>
+              <div style="font-size:13px; color:#991B1B;">พึงจ่ายรวม</div>
+              <div style="font-size:32px; font-weight:700; color:#DC2626;" id="pay-amount">0K</div>
+              <div style="font-size:13px; color:#991B1B;" id="pay-period">(0 เดือน)</div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </a>
-</div>
+    </a>
+
+    <a class="dash-card" href="compare.html" style="border-top: 4px solid #D97706;">
+      <div style="display:flex; gap:20px; align-items:start;">
+        <div style="font-size:48px; line-height:1;">⏱</div>
+        <div style="flex:1;">
+          <div style="font-size:18px; font-weight:700;">เปรียบเทียบระยะเวลารอคอย</div>
+          <div style="margin-top:12px; font-size:15px; color:var(--muted);">อันดับที่ 4 จาก 33 รพ.ชุมชน</div>
+          <div style="margin-top:16px;">
+            <div style="display:flex; justify-content:space-between; font-size:13px;">
+              <span>เวลารวม</span>
+              <span style="font-weight:700; color:#1D6FA4;">182 นาที</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <a class="dash-card" href="kpi_dashboard.html" style="border-top: 4px solid #DC2626;">
+      <div style="display:flex; gap:20px; align-items:start;">
+        <div style="font-size:48px; line-height:1;">📊</div>
+        <div style="flex:1;">
+          <div style="font-size:18px; font-weight:700;">ตัวชี้วัด KPI</div>
+          <div style="margin-top:8px;">
+            <span id="kpi-bad" style="font-size:42px; font-weight:700; color:#DC2626;">64</span>
+            <span style="font-size:15px; color:#991B1B;">ตัวชี้วัดไม่ผ่าน</span>
+          </div>
+          <div style="margin-top:8px; font-size:13px; color:#666;">ปีงบประมาณ 2569</div>
+        </div>
+      </div>
+    </a>
+
+  </div>
 
   <!-- ลิงก์ภายนอก -->
   <div class="section-label" style="margin-top:40px;">ลิงก์ระบบภายนอก</div>
@@ -298,19 +278,19 @@ header { background: var(--accent); padding: 14px 20px; display: flex; align-ite
   </div>
 </div>
 
+
 <script>
+// โค้ดเดิมของคุณ (Clock, Sidebar, Dropdown)
 function updateClock() {
   const now = new Date();
   const days = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
   const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
-  
-  // เวลา
+ 
   const h = String(now.getHours()).padStart(2,'0');
   const m = String(now.getMinutes()).padStart(2,'0');
   document.getElementById('clock').textContent = `${h}:${m}`;
-  
-  // วันที่
-  document.getElementById('date-display').textContent = 
+ 
+  document.getElementById('date-display').textContent =
     `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()+543}`;
 }
 setInterval(updateClock, 10000);
@@ -323,38 +303,18 @@ function toggleDropdown(el) {
   const content = el.nextElementSibling;
   content.style.display = content.style.display === 'block' ? 'none' : 'block';
 }
-</script>
-  <script>
-// ดึงข้อมูลจาก opwalkin.html
+
+// โหลดข้อมูล OP Walk-in
 function loadOPData() {
   let data = JSON.parse(localStorage.getItem('opData') || '{}');
-  
-  if (data.receivable === undefined) {
-    // ถ้ายังไม่มีข้อมูล ให้รอสักครู่แล้วโหลดใหม่
-    setTimeout(loadOPData, 800);
-    return;
-  }
-  
   if (data.receivable !== undefined) {
-    document.getElementById('receive-amount').textContent = 
-      Math.round(data.receivable / 1000) + 'K';
+    document.getElementById('receive-amount').textContent = Math.round(data.receivable / 1000) + 'K';
   }
   if (data.payable !== undefined) {
-    document.getElementById('pay-amount').textContent = 
-      Math.round(data.payable / 1000) + 'K';
+    document.getElementById('pay-amount').textContent = Math.round(data.payable / 1000) + 'K';
   }
-  
-  const monthCount = data.monthCount || 0;
-  const periodText = monthCount > 0 ? `(${monthCount} เดือน)` : "(ทุกเดือน)";
-  
-  document.getElementById('receive-period').textContent = periodText;
-  document.getElementById('pay-period').textContent = periodText;
 }
-
-// เรียกใช้
-window.addEventListener('load', () => {
-  setTimeout(loadOPData, 300);   // รอเล็กน้อย
-});
+window.addEventListener('load', () => setTimeout(loadOPData, 300));
 </script>
 </body>
 </html>
