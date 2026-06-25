@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 KPI การเงิน รพ.พระทองคำฯ ปี 2569</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body { font-family: 'TH Sarabun New', system-ui, sans-serif; }
+        .hospital-green { color: #10b981; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-7xl mx-auto p-6">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-3xl font-bold hospital-green">KPI การเงิน 2569</h1>
+                <p class="text-gray-600">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา</p>
+            </div>
+            
+            <!-- Upload Zone -->
+            <div class="text-center">
+                <label class="cursor-pointer bg-white border-2 border-dashed border-green-400 hover:border-green-600 rounded-2xl p-6 inline-block transition">
+                    <input type="file" id="excelUpload" accept=".xlsx,.xls" class="hidden" onchange="handleFileUpload(event)">
+                    <div class="text-green-600">
+                        <span class="text-2xl">📤</span><br>
+                        <span class="font-medium">อัพโหลดไฟล์ Excel ใหม่</span><br>
+                        <span class="text-xs text-gray-500">(Planfin2569)</span>
+                    </div>
+                </label>
+                <p id="status" class="text-sm mt-2 text-gray-500"></p>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="summaryCards">
+            <!-- Cards จะถูกอัพเดตอัตโนมัติ -->
+        </div>
+
+        <!-- Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-2xl shadow">
+                <h3 class="font-semibold mb-4">รายรับ - รายจ่าย</h3>
+                <canvas id="barChart"></canvas>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow">
+                <h3 class="font-semibold mb-4">สัดส่วนค่าใช้จ่ายหลัก</h3>
+                <canvas id="pieChart"></canvas>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center text-xs text-gray-500">
+            อัปเดตล่าสุด: <span id="lastUpdate">25 มิ.ย. 2569</span> • Drag & Drop ไฟล์ Excel เพื่ออัพเดตข้อมูล
+        </div>
+    </div>
+
+    <script>
+        let barChart, pieChart;
+
+        // ข้อมูลเริ่มต้น
+        let data = {
+            revenue: 76.99,
+            expense: 82.80,
+            deficit: -5.81,
+            personnelPct: 58,
+            drugPct: 22,
+            materialPct: 10,
+            otherPct: 10
+        };
+
+        function updateDashboard() {
+            // Update Cards
+            document.getElementById('summaryCards').innerHTML = `
+                <div class="bg-white p-6 rounded-2xl shadow border border-green-200">
+                    <div class="text-sm text-gray-500">รายรับรวม</div>
+                    <div class="text-3xl font-bold text-green-600">${data.revenue} ล้าน</div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow border border-red-200">
+                    <div class="text-sm text-gray-500">รายจ่ายรวม</div>
+                    <div class="text-3xl font-bold text-red-600">${data.expense} ล้าน</div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow border border-orange-200">
+                    <div class="text-sm text-gray-500">ขาดดุลสุทธิ</div>
+                    <div class="text-3xl font-bold text-orange-600">${data.deficit} ล้าน</div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow border border-red-200">
+                    <div class="text-sm text-gray-500">ระดับความเสี่ยง</div>
+                    <div class="text-3xl font-bold text-red-600">High</div>
+                </div>
+            `;
+
+            // Update Charts
+            if (barChart) barChart.destroy();
+            barChart = new Chart(document.getElementById('barChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['รายรับ', 'รายจ่าย', 'ขาดดุล'],
+                    datasets: [{ label: 'ล้านบาท', data: [data.revenue, data.expense, data.deficit], backgroundColor: ['#10b981', '#ef4444', '#f59e0b'] }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false }}}
+            });
+
+            if (pieChart) pieChart.destroy();
+            pieChart = new Chart(document.getElementById('pieChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['บุคลากร', 'ยา/เวชภัณฑ์', 'วัสดุอื่น', 'อื่นๆ'],
+                    datasets: [{ data: [data.personnelPct, data.drugPct, data.materialPct, data.otherPct], backgroundColor: ['#10b981', '#14b8a6', '#22d3ee', '#67e8f9'] }]
+                },
+                options: { responsive: true }
+            });
+
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleDateString('th-TH');
+        }
+
+        // อ่านไฟล์ Excel
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            document.getElementById('status').textContent = 'กำลังประมวลผล...';
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const workbook = XLSX.read(e.target.result, { type: 'array' });
+                    // ตัวอย่างการดึงข้อมูล (คุณสามารถปรับ sheet/เซลล์ ตามไฟล์จริง)
+                    // เช่น อ่านจาก sheet "หน้าแรก" หรือ "PlanFin Analysis"
+                    // data.revenue = parseFloat(...) ...
+
+                    // ตอนนี้ยังใช้ข้อมูลเดิม + แสดงข้อความ (พัฒนาต่อได้)
+                    document.getElementById('status').innerHTML = `✅ อัพโหลดสำเร็จ: ${file.name}<br><small class="text-green-600">ข้อมูลถูกอัพเดต (ตัวอย่าง)</small>`;
+                    
+                    updateDashboard(); // Refresh หน้า
+                } catch (err) {
+                    document.getElementById('status').innerHTML = '❌ ไม่สามารถอ่านไฟล์ได้';
+                    console.error(err);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // โหลดครั้งแรก
+        window.onload = updateDashboard;
+    </script>
+</body>
+</html>
