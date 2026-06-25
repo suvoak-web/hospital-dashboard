@@ -26,7 +26,7 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
 .sidebar.collapsed { transform: translateX(-100%); }
 .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 24px; color: var(--muted); text-decoration: none; font-weight: 600; margin: 4px 12px; border-radius: 8px; }
 .nav-item.active, .nav-item:hover { background: var(--accent-dim); color: var(--accent); }
-.main-content { margin-left: 260px; padding: 24px 28px; }
+.main-content { margin-left: 260px; padding: 24px 28px; min-height: 100vh; }
 .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
 .dash-card {
   background: white; border: 1px solid var(--border); border-radius: 14px;
@@ -62,9 +62,13 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
   <a href="opwalkin.html" class="nav-item">💰 พึงรับ-พึงจ่าย</a>
   <a href="compare.html" class="nav-item">⏱ ระยะเวลารอคอย</a>
 
-  <div style="margin: 24px 12px 10px; padding-left: 12px; font-size: 13px; color: var(--muted); font-weight: 600;">🔗 ลิงก์ระบบภายนอก</div>
+  <!-- ลิงก์ระบบภายนอก -->
+  <div style="margin: 24px 12px 8px; padding-left: 12px; font-size: 13px; color: var(--muted); font-weight: 600;">🔗 ลิงก์ระบบภายนอก</div>
+  
   <div class="dropdown">
-    <a href="#" onclick="toggleDropdown(this)" style="display:flex;align-items:center;gap:12px;padding:12px 24px;color:var(--muted);font-weight:600;">📊 ติดตามตัวชี้วัด <span style="margin-left:auto;">▼</span></a>
+    <a href="#" onclick="toggleDropdown(this)" style="display:flex;align-items:center;gap:12px;padding:12px 24px;color:var(--muted);font-weight:600;">
+      📊 ติดตามตัวชี้วัด <span style="margin-left:auto;">▼</span>
+    </a>
     <div class="dropdown-content" style="display:none;padding-left:40px;">
       <a href="https://apikorat.moph.go.th/home/dashboard" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">ตัวชี้วัดสาธารณสุข โคราช</a>
       <a href="https://hdc.moph.go.th/nma/public/main" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">HDC นครราชสีมา</a>
@@ -73,12 +77,22 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
       <a href="https://www.r9health.net/servicetime/" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">ระยะเวลารอคอย R9</a>
     </div>
   </div>
+
+  <div class="dropdown">
+    <a href="#" onclick="toggleDropdown(this)" style="display:flex;align-items:center;gap:12px;padding:12px 24px;color:var(--muted);font-weight:600;">
+      🔧 ติดตามงานอื่นๆ <span style="margin-left:auto;">▼</span>
+    </a>
+    <div class="dropdown-content" style="display:none;padding-left:40px;">
+      <a href="https://smt.nhso.go.th/smtf/#/home/budget/summary" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">SMT งบประมาณ NHSO</a>
+      <a href="https://cmi.moph.go.th/" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">CMI กระทรวงสาธารณสุข</a>
+      <a href="https://mishos.nhso.go.th/mis_hos/#/dashboard" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">MIS HOS Dashboard</a>
+    </div>
+  </div>
 </aside>
 
 <div class="main-content">
   <div class="section-label">DASHBOARD ที่พร้อมใช้งาน</div>
   <div class="dash-grid">
-
     <!-- 1. KPI การเงิน -->
     <a class="dash-card" href="finance-dashboard.html" style="border-top: 5px solid #1D6FA4;">
       <div style="display:flex; gap:16px;">
@@ -101,14 +115,8 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
         <div style="flex:1;">
           <div style="font-size:17px; font-weight:700;">พึงรับ — พึงจ่าย OP Walk-in</div>
           <div style="margin-top:12px; display:flex; gap:24px;">
-            <div>
-              <div style="color:#166534; font-size:13px;">พึงรับรวม</div>
-              <div style="font-size:28px; font-weight:700; color:#16A34A;" id="receive-amount">691K</div>
-            </div>
-            <div>
-              <div style="color:#991B1B; font-size:13px;">พึงจ่ายรวม</div>
-              <div style="font-size:28px; font-weight:700; color:#DC2626;" id="pay-amount">2.64M</div>
-            </div>
+            <div><div style="color:#166534; font-size:13px;">พึงรับรวม</div><div style="font-size:28px; font-weight:700; color:#16A34A;" id="receive-amount">691K</div></div>
+            <div><div style="color:#991B1B; font-size:13px;">พึงจ่ายรวม</div><div style="font-size:28px; font-weight:700; color:#DC2626;" id="pay-amount">2.64M</div></div>
           </div>
         </div>
       </div>
@@ -121,14 +129,12 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
         <div style="flex:1;">
           <div style="font-size:17px; font-weight:700;">เปรียบเทียบระยะเวลารอคอย</div>
           <div style="margin-top:8px; font-size:14px; color:var(--muted);">อันดับที่ 4 จาก 33 รพ.ชุมชน</div>
-          <div style="margin-top:12px; font-size:15px;">
-            เวลารวม <span style="font-weight:700; color:#1D6FA4;">182 นาที</span>
-          </div>
+          <div style="margin-top:12px; font-size:15px;">เวลารวม <span style="font-weight:700; color:#1D6FA4;">182 นาที</span></div>
         </div>
       </div>
     </a>
 
-    <!-- 4. KPI ทั่วไป -->
+    <!-- 4. KPI -->
     <a class="dash-card" href="kpi_dashboard.html" style="border-top: 5px solid #DC2626;">
       <div style="display:flex; gap:16px;">
         <div style="font-size:42px;">📊</div>
@@ -143,7 +149,7 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
       </div>
     </a>
 
-    <!-- 5. Finance Projection -->
+    <!-- 5. แนวโน้มการเงิน -->
     <a class="dash-card" href="fin_projection.html" style="border-top: 5px solid #1D6FA4;">
       <div style="display:flex; gap:16px;">
         <div style="font-size:42px;">📈</div>
@@ -161,7 +167,7 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
 </div>
 
 <script>
-// Clock, Sidebar, Dropdown (เหมือนเดิม)
+// Clock + Functions
 function updateClock() {
   const now = new Date();
   const h = String(now.getHours()).padStart(2,'0');
