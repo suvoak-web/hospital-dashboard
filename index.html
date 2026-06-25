@@ -49,23 +49,6 @@ header { background: var(--accent); padding: 14px 20px; display: flex; align-ite
   font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
 }
-/* Links */
-.links-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.link-group {
-  background: white; border: 1px solid var(--border); border-radius: 14px;
-  overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-.link-group-head {
-  padding: 16px 20px; background: #f8f9fa; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 10px; font-weight: 600;
-}
-.link-item {
-  padding: 14px 20px; display: flex; align-items: center; gap: 12px;
-  text-decoration: none; color: var(--text); border-bottom: 1px solid var(--border);
-}
-.link-item:last-child { border-bottom: none; }
-.link-item:hover { background: var(--accent-dim); }
-.link-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
 </style>
 </head>
 <body>
@@ -91,13 +74,13 @@ header { background: var(--accent); padding: 14px 20px; display: flex; align-ite
 <aside id="sidebar" class="sidebar">
   <a href="index.html" class="nav-item active">🏠 หน้าหลัก</a>
   <a href="kpi_dashboard.html" class="nav-item">📊 KPI Dashboard</a>
-  <a href="fin_dashboard.html" class="nav-item">💰 KPI การเงิน</a>
+  <a href="finance-dashboard.html" class="nav-item">💰 KPI การเงิน</a>
   <a href="fin_projection.html" class="nav-item">📈 Finance Projection</a>
   <a href="opwalkin.html" class="nav-item">💰 พึงรับ-พึงจ่าย</a>
   <a href="compare.html" class="nav-item">⏱ ระยะเวลารอคอย</a>
-  
-  <!-- Dropdown ลิงก์ภายนอก -->
-  <div style="margin: 20px 12px 10px; padding-left: 12px; font-size: 13px; color: var(--muted); font-weight: 600;">🔗 ลิงก์ระบบภายนอก</div>
+
+  <!-- ลิงก์ระบบภายนอก -->
+  <div style="margin: 24px 12px 10px; padding-left: 12px; font-size: 13px; color: var(--muted); font-weight: 600;">🔗 ลิงก์ระบบภายนอก</div>
  
   <div class="dropdown">
     <a href="#" onclick="toggleDropdown(this)" style="display:flex;align-items:center;gap:12px;padding:12px 24px;color:var(--muted);font-weight:600;">
@@ -111,14 +94,25 @@ header { background: var(--accent); padding: 14px 20px; display: flex; align-ite
       <a href="https://www.r9health.net/servicetime/" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">ระยะเวลารอคอย R9</a>
     </div>
   </div>
+
+  <div class="dropdown">
+    <a href="#" onclick="toggleDropdown(this)" style="display:flex;align-items:center;gap:12px;padding:12px 24px;color:var(--muted);font-weight:600;">
+      🔧 ติดตามงานอื่นๆ <span style="margin-left:auto;">▼</span>
+    </a>
+    <div class="dropdown-content" style="display:none;padding-left:40px;">
+      <a href="https://smt.nhso.go.th/smtf/#/home/budget/summary" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">SMT งบประมาณ NHSO</a>
+      <a href="https://cmi.moph.go.th/" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">CMI กระทรวงสาธารณสุข</a>
+      <a href="https://mishos.nhso.go.th/mis_hos/#/dashboard" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">MIS HOS Dashboard</a>
+    </div>
+  </div>
 </aside>
 
 <div class="main-content">
   <div class="section-label">DASHBOARD ที่พร้อมใช้งาน</div>
   <div class="dash-grid">
     
-    <!-- การเงิน Dashboard (ใหม่) -->
-    <a class="dash-card" href="fin_dashboard.html" style="border-top: 4px solid #1D6FA4;">
+    <!-- KPI การเงิน -->
+    <a class="dash-card" href="finance-dashboard.html" style="border-top: 4px solid #1D6FA4;">
       <div style="display:flex; gap:20px; align-items:start;">
         <div style="font-size:48px; line-height:1;">📊</div>
         <div style="flex:1;">
@@ -132,7 +126,7 @@ header { background: var(--accent); padding: 14px 20px; display: flex; align-ite
       </div>
     </a>
 
-    <!-- การ์ดเดิมที่คุณมี -->
+    <!-- การ์ดเดิม -->
     <a class="dash-card" href="opwalkin.html" style="border-top: 4px solid #16A34A;">
       <div style="display:flex; gap:20px; align-items:start;">
         <div style="font-size:48px; line-height:1;">💰</div>
@@ -185,102 +179,10 @@ header { background: var(--accent); padding: 14px 20px; display: flex; align-ite
     </a>
 
   </div>
-
-  <!-- ลิงก์ภายนอก -->
-  <div class="section-label" style="margin-top:40px;">ลิงก์ระบบภายนอก</div>
-  <div class="links-section">
-     <!-- ตัวชี้วัด -->
-      <div class="link-group">
-        <div class="link-group-head">
-          <span style="font-size:18px;">📊</span>
-          <div>
-            <div class="link-group-title">ติดตามตัวชี้วัด</div>
-            <div class="link-group-sub">KPI และผลงานโรงพยาบาล</div>
-          </div>
-        </div>
-        <a class="link-item" href="https://apikorat.moph.go.th/home/dashboard" target="_blank" rel="noopener">
-          <span class="link-dot"></span>
-          <div>
-            <div class="link-name">ตัวชี้วัดสาธารณสุข โคราช</div>
-            <div class="link-desc">apikorat.moph.go.th</div>
-          </div>
-          <span class="link-ext">↗</span>
-        </a>
-        <a class="link-item" href="https://hdc.moph.go.th/nma/public/main" target="_blank" rel="noopener">
-          <span class="link-dot"></span>
-          <div>
-            <div class="link-name">HDC นครราชสีมา</div>
-            <div class="link-desc">hdc.moph.go.th</div>
-          </div>
-          <span class="link-ext">↗</span>
-        </a>
-        <a class="link-item" href="https://rabado.net/mat/" target="_blank" rel="noopener">
-          <span class="link-dot"></span>
-          <div>
-            <div class="link-name">MAT Dashboard</div>
-            <div class="link-desc">rabado.net</div>
-          </div>
-          <span class="link-ext">↗</span>
-        </a>
-        <a class="link-item" href="https://apikorat.moph.go.th/drug-delivery/dashboard" target="_blank" rel="noopener">
-          <span class="link-dot"></span>
-          <div>
-            <div class="link-name">Drug Delivery Dashboard</div>
-            <div class="link-desc">apikorat.moph.go.th</div>
-          </div>
-          <span class="link-ext">↗</span>
-        </a>
-        <a class="link-item" href="https://www.r9health.net/servicetime/" target="_blank" rel="noopener">
-          <span class="link-dot"></span>
-          <div>
-            <div class="link-name">ระยะเวลารอคอย R9</div>
-            <div class="link-desc">r9health.net</div>
-          </div>
-          <span class="link-ext">↗</span>
-        </a>
-      </div>
-
-      <!-- ติดตามงาน -->
-      <div class="link-group">
-        <div class="link-group-head">
-          <span style="font-size:18px;">🔧</span>
-          <div>
-            <div class="link-group-title">ติดตามงานอื่นๆ</div>
-            <div class="link-group-sub">ระบบสนับสนุนการบริหาร</div>
-          </div>
-        </div>
-        <a class="link-item" href="https://smt.nhso.go.th/smtf/#/home/budget/summary" target="_blank" rel="noopener">
-          <span class="link-dot" style="background:#D97706"></span>
-          <div>
-            <div class="link-name">SMT งบประมาณ NHSO</div>
-            <div class="link-desc">smt.nhso.go.th</div>
-          </div>
-          <span class="link-ext">↗</span>
-        </a>
-        <a class="link-item" href="https://cmi.moph.go.th/" target="_blank" rel="noopener">
-          <span class="link-dot" style="background:#D97706"></span>
-          <div>
-            <div class="link-name">CMI กระทรวงสาธารณสุข</div>
-            <div class="link-desc">cmi.moph.go.th</div>
-          </div>
-          <span class="link-ext">↗</span>
-        </a>
-        <a class="link-item" href="https://mishos.nhso.go.th/mis_hos/#/dashboard" target="_blank" rel="noopener">
-          <span class="link-dot" style="background:#D97706"></span>
-          <div>
-            <div class="link-name">MIS HOS Dashboard NHSO</div>
-            <div class="link-desc">mishos.nhso.go.th</div>
-          </div>
-          <span class="link-ext">↗</span>
-        </a>
-      </div>
-    </div>
-  </div>
 </div>
 
-
 <script>
-// โค้ดเดิมของคุณ (Clock, Sidebar, Dropdown)
+// Clock + Sidebar + Dropdown
 function updateClock() {
   const now = new Date();
   const days = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
@@ -304,15 +206,11 @@ function toggleDropdown(el) {
   content.style.display = content.style.display === 'block' ? 'none' : 'block';
 }
 
-// โหลดข้อมูล OP Walk-in
+// โหลดข้อมูล OP
 function loadOPData() {
   let data = JSON.parse(localStorage.getItem('opData') || '{}');
-  if (data.receivable !== undefined) {
-    document.getElementById('receive-amount').textContent = Math.round(data.receivable / 1000) + 'K';
-  }
-  if (data.payable !== undefined) {
-    document.getElementById('pay-amount').textContent = Math.round(data.payable / 1000) + 'K';
-  }
+  if (data.receivable !== undefined) document.getElementById('receive-amount').textContent = Math.round(data.receivable / 1000) + 'K';
+  if (data.payable !== undefined) document.getElementById('pay-amount').textContent = Math.round(data.payable / 1000) + 'K';
 }
 window.addEventListener('load', () => setTimeout(loadOPData, 300));
 </script>
