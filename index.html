@@ -26,7 +26,7 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
 .sidebar.collapsed { transform: translateX(-100%); }
 .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 24px; color: var(--muted); text-decoration: none; font-weight: 600; margin: 4px 12px; border-radius: 8px; }
 .nav-item.active, .nav-item:hover { background: var(--accent-dim); color: var(--accent); }
-.main-content { margin-left: 260px; padding: 24px 28px; min-height: 100vh; }
+.main-content { margin-left: 260px; padding: 24px 28px; }
 .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
 .dash-card {
   background: white; border: 1px solid var(--border); border-radius: 14px;
@@ -62,7 +62,6 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
   <a href="opwalkin.html" class="nav-item">💰 พึงรับ-พึงจ่าย</a>
   <a href="compare.html" class="nav-item">⏱ ระยะเวลารอคอย</a>
 
-  <!-- ลิงก์ระบบภายนอก -->
   <div style="margin: 24px 12px 8px; padding-left: 12px; font-size: 13px; color: var(--muted); font-weight: 600;">🔗 ลิงก์ระบบภายนอก</div>
   
   <div class="dropdown">
@@ -162,7 +161,26 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
         </div>
       </div>
     </a>
+  </div>
 
+  <!-- ===== ลิงก์ระบบภายนอก ด้านล่าง ===== -->
+  <div class="section-label" style="margin-top:40px;">ลิงก์ระบบภายนอก</div>
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap:20px;">
+    <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px;">
+      <div style="font-weight:700; margin-bottom:12px; color:var(--accent);">📊 ติดตามตัวชี้วัด</div>
+      <a href="https://apikorat.moph.go.th/home/dashboard" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">ตัวชี้วัดสาธารณสุข โคราช</a>
+      <a href="https://hdc.moph.go.th/nma/public/main" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">HDC นครราชสีมา</a>
+      <a href="https://rabado.net/mat/" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">MAT Dashboard</a>
+      <a href="https://apikorat.moph.go.th/drug-delivery/dashboard" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">Drug Delivery Dashboard</a>
+      <a href="https://www.r9health.net/servicetime/" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">ระยะเวลารอคอย R9</a>
+    </div>
+
+    <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px;">
+      <div style="font-weight:700; margin-bottom:12px; color:var(--accent);">🔧 ติดตามงานอื่นๆ</div>
+      <a href="https://smt.nhso.go.th/smtf/#/home/budget/summary" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">SMT งบประมาณ NHSO</a>
+      <a href="https://cmi.moph.go.th/" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">CMI กระทรวงสาธารณสุข</a>
+      <a href="https://mishos.nhso.go.th/mis_hos/#/dashboard" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">MIS HOS Dashboard</a>
+    </div>
   </div>
 </div>
 
