@@ -118,12 +118,24 @@ td.nm{font-weight:600}
 .top-nav a{display:flex;align-items:center;gap:5px;padding:11px 15px;font-size:.82rem;font-weight:600;color:#555;text-decoration:none;border-bottom:3px solid transparent;white-space:nowrap;transition:all .18s;font-family:inherit}
 .top-nav a:hover{color:#1A4FA0;background:#f0f5ff}
 .top-nav a.active{color:#1A4FA0;border-bottom:3px solid #1A4FA0;background:#f5f8ff}
+  .top-nav{display:flex;align-items:center;background:#fff;border-bottom:2px solid #e8eef6;padding:0 16px;position:sticky;top:0;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,.07);flex-wrap:wrap}
+.top-nav a{display:flex;align-items:center;gap:5px;padding:11px 15px;font-size:.82rem;font-weight:600;color:#555;text-decoration:none;border-bottom:3px solid transparent;white-space:nowrap;transition:all .18s}
+.top-nav a:hover{color:#1A4FA0;background:#f0f5ff}
+.top-nav a.active{color:#1A4FA0;border-bottom:3px solid #1A4FA0;background:#f5f8ff}
 
 </style>
 </head>
 <body>
 
 <nav class="top-nav">
+  <a href="index.html">🏠 หน้าหลัก</a>
+  <a href="kpi_dashboard.html">📊 KPI Dashboard</a>
+  <a href="fin_dashboard.html">💹 KPI การเงิน</a>
+  <a href="fin_projection.html">📈 Finance Projection</a>
+  <a href="opwalkin.html" class="active">🔥 พึงรับ-พึงจ่าย</a>
+  <a href="compare.html">⏱️ ระยะเวลารอคอย</a>
+</nav>
+  <nav class="top-nav">
   <a href="index.html">🏠 หน้าหลัก</a>
   <a href="kpi_dashboard.html">📊 KPI Dashboard</a>
   <a href="fin_dashboard.html">💹 KPI การเงิน</a>
