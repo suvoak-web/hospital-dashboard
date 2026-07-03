@@ -123,7 +123,7 @@ td.nm{font-weight:600}
       <h1>Dashboard พึงรับ-พึงจ่าย · OP Walk-in ข้าม CUP</h1>
       <p>บริการผู้ป่วยนอก ข้ามหน่วยบริการ ภายในจังหวัดนครราชสีมา</p>
     </div>
-    <span id="periodBadge" style="background:rgba(255,215,0,.2);border:1px solid rgba(255,215,0,.4);color:#FFD700;font-size:.75rem;font-weight:700;padding:4px 12px;border-radius:20px">ต.ค.2568–ม.ค.2569</span>
+    <span id="periodBadge" style="background:rgba(255,215,0,.2);border:1px solid rgba(255,215,0,.4);color:#FFD700;font-size:.75rem;font-weight:700;padding:4px 12px;border-radius:20px"></span>
   </div>
   <div class="hosp-bar">
     <div class="hosp-bar-inner">
@@ -519,7 +519,7 @@ function renderKPIs(months) {
   const totalRec = months.reduce((s,m)=>s+m.receivable,0);
   const totalPay = months.reduce((s,m)=>s+m.payable,0);
   const net = totalRec - totalPay;
-  const paidPay = state.payments.filter(p=>p.hosp===state.currentHosp&&p.type==="payable").reduce((s,p)=>s+p.amount,0);
+  const paidPay = getPaidFromCells(state.currentHosp) + state.payments.filter(p=>p.hosp===state.currentHosp&&p.type==="payable").reduce((s,p)=>s+p.amount,0);
   const outstanding = Math.max(0, totalPay - paidPay);
   const last = months[months.length-1] || {};
 
@@ -536,6 +536,19 @@ function renderSumTable(months) {
   state.payments.filter(p=>p.hosp===state.currentHosp).forEach(p=>{
     if(!pmByMon[p.month]) pmByMon[p.month]={payable:0,receivable:0};
     pmByMon[p.month][p.type]+=p.amount;
+  });
+  // Add paid-from-cells per month
+  const _cells = (state.paidCells||{})[state.currentHosp] || {};
+  const _hosp = state.currentHosp;
+  getAllMonthsForHosp(_hosp).forEach(m=>{
+    Object.entries(m.pd||{}).forEach(([h,v])=>{
+      const c=resolveHospName(h);
+      const key=c+"|||"+m.month;
+      if(_cells[key] && v>0){
+        if(!pmByMon[m.month]) pmByMon[m.month]={payable:0,receivable:0};
+        pmByMon[m.month].payable += v;
+      }
+    });
   });
   document.getElementById("sumBody").innerHTML = months.map(m=>{
     const pm = pmByMon[m.month]||{};
@@ -719,42 +732,107 @@ function renderRecChart() {
   });
 }
 
+// ══ PAID TRACKING (per biller per month) ══
+function getPaidCells() {
+  if (!state.paidCells) state.paidCells = {};
+  if (!state.paidCells[state.currentHosp]) state.paidCells[state.currentHosp] = {};
+  return state.paidCells[state.currentHosp];
+}
+function togglePaid(biller, monthLabel) {
+  const cells = getPaidCells();
+  const key = biller + "|||" + monthLabel;
+  if (cells[key]) delete cells[key]; else cells[key] = true;
+  save();
+  renderPayTable();
+  renderKPIs(getAllMonthsForHosp(state.currentHosp));
+  renderSumTable(getAllMonthsForHosp(state.currentHosp));
+}
+function isPaid(biller, monthLabel) {
+  return !!getPaidCells()[biller + "|||" + monthLabel];
+}
+function getPaidFromCells(hosp) {
+  const cells = (state.paidCells||{})[hosp] || {};
+  const months = getAllMonthsForHosp(hosp);
+  const billerByMonth = {};
+  months.forEach((m) => {
+    Object.entries(m.pd||{}).forEach(([h,v]) => {
+      const c = resolveHospName(h);
+      if (!billerByMonth[c]) billerByMonth[c] = {};
+      billerByMonth[c][m.month] = (billerByMonth[c][m.month]||0) + v;
+    });
+  });
+  let total = 0;
+  Object.keys(cells).forEach(key => {
+    const parts = key.split("|||");
+    const biller = parts[0], monthLabel = parts[1];
+    total += (billerByMonth[biller]||{})[monthLabel] || 0;
+  });
+  return total;
+}
+
 // ══ PAYABLE TABLE ══
 function renderPayTable() {
   const hosp = state.currentHosp;
   const months = getAllMonthsForHosp(hosp);
   const srch = (document.getElementById("paySrch")?.value||"").toLowerCase();
-  
-  // Aggregate pd values with alias resolution
+
   const billerTotals = {};
   const billerByMonth = {};
-  months.forEach((m, mi) => {
+  months.forEach((m) => {
     Object.entries(m.pd||{}).forEach(([h,v]) => {
       const canonical = resolveHospName(h);
       billerTotals[canonical] = (billerTotals[canonical]||0) + v;
-      if (!billerByMonth[canonical]) billerByMonth[canonical] = months.map(()=>0);
-      billerByMonth[canonical][mi] += v;
+      if (!billerByMonth[canonical]) billerByMonth[canonical] = months.map(mm=>({val:0,month:mm.month}));
+      const idx = months.findIndex(mm=>mm.month===m.month);
+      if(idx>=0) billerByMonth[canonical][idx].val += v;
     });
   });
 
-  let rows="", total=0;
+  let rows="", total=0, paidTotal=0;
   Object.entries(billerTotals)
     .filter(([h]) => !srch || h.toLowerCase().includes(srch))
     .sort((a,b) => a[0].localeCompare(b[0], 'th'))
     .forEach(([biller, sum]) => {
       if(sum===0) return;
-      total+=sum;
-      const vals = billerByMonth[biller];
-      rows+=`<tr>
-        <td class="nm">${biller}</td>
-        ${vals.map(v=>`<td class="r">${v>0?fmt(v):"-"}</td>`).join("")}
-        <td class="r" style="font-weight:700;color:var(--red)">${fmt(sum)}</td>
-      </tr>`;
+      total += sum;
+      const cells = billerByMonth[biller];
+      let billerPaid = 0;
+      cells.forEach(c=>{ if(c.val>0 && isPaid(biller, c.month)) billerPaid += c.val; });
+      paidTotal += billerPaid;
+      const allPaid = billerPaid >= sum && sum > 0;
+      const partPaid = billerPaid > 0 && billerPaid < sum;
+      const rowBg = allPaid ? "background:rgba(39,174,96,.08)" : "";
+      const statusBadge = allPaid
+        ? '<span style="color:var(--green);font-size:.72rem;margin-left:4px">✅ ครบแล้ว</span>'
+        : partPaid
+        ? '<span style="color:#e67e22;font-size:.72rem;margin-left:4px">\u23F3 '+fmt(billerPaid)+' บาท</span>'
+        : "";
+      const cellsHtml = cells.map(c => {
+        if(c.val <= 0) return '<td class="r">-</td>';
+        const paid = isPaid(biller, c.month);
+        const b = biller.replace(/\\/g,"\\\\").replace(/"/g,'\\"');
+        const mn = c.month.replace(/\\/g,"\\\\").replace(/"/g,'\\"');
+        return '<td class="r" style="vertical-align:top;padding-top:6px">'
+          + '<div style="font-size:.85rem;'+(paid?'color:var(--green);text-decoration:line-through;opacity:.6':'')+'">'
+          + fmt(c.val)+'</div>'
+          + '<button onclick=\'togglePaid("'+b+'","'+mn+'")\'  '
+          + 'style="margin-top:3px;font-size:.62rem;padding:1px 5px;border-radius:8px;'
+          + 'border:1px solid '+(paid?'var(--green)':'#ccc')+';'
+          + 'background:'+(paid?'rgba(39,174,96,.15)':'#f8f8f8')+';'
+          + 'color:'+(paid?'var(--green)':'#999')+';cursor:pointer">'
+          + (paid ? '\u2713 จ่ายแล้ว' : '+ บันทึกจ่าย')
+          + '</button></td>';
+      }).join("");
+      rows += '<tr style="'+rowBg+'">'
+        + '<td class="nm">'+biller+statusBadge+'</td>'
+        + cellsHtml
+        + '<td class="r" style="font-weight:700;color:'+(allPaid?'var(--green)':'var(--red)')+'">'+fmt(sum)+'</td>'
+        + '</tr>';
     });
-  
-  document.getElementById("payBody").innerHTML = rows||`<tr><td colspan="9" class="empty">ไม่พบข้อมูล</td></tr>`;
+
+  document.getElementById("payBody").innerHTML = rows||'<tr><td colspan="9" class="empty">ไม่พบข้อมูล</td></tr>';
   const el=document.getElementById("payTotal");
-  if(el) el.textContent=`รวมพึงจ่าย: ${fmt(total)} บาท`;
+  if(el) el.textContent="รวมพึงจ่าย: "+fmt(total)+" บาท  |  จ่ายแล้ว: "+fmt(paidTotal)+" บาท  |  คงค้าง: "+fmt(total-paidTotal)+" บาท";
 }
 
 function renderPayChart() {
@@ -1188,6 +1266,10 @@ function migrateState() {
 // ══ INIT ══
 function init() {
   migrateState();
+  // Set period badge dynamically from actual data range
+  const _first = MONTHS_LBL[0].replace(/ /g,"").replace("2568","68").replace("2569","69");
+  const _last  = MONTHS_LBL[MONTHS_LBL.length-1].replace(/ /g,"").replace("2568","68").replace("2569","69");
+  document.getElementById("periodBadge").textContent = _first + "–" + _last;
   buildHospDropdown();
   document.getElementById("myBadge").style.display = state.currentHosp===MY_HOSP?"":"none";
   document.getElementById("pDt").valueAsDate = new Date();
