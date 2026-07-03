@@ -114,24 +114,22 @@ td.nm{font-weight:600}
 }
 
 /* ══ TOP NAV ══ */
-.top-nav{display:flex;align-items:center;gap:0;background:#fff;border-bottom:2px solid #e8eef6;padding:0 16px;position:sticky;top:0;z-index:300;box-shadow:0 2px 8px rgba(0,0,0,.07)}
-.top-nav a{display:flex;align-items:center;gap:6px;padding:12px 16px;font-size:.82rem;font-weight:600;color:#555;text-decoration:none;border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s}
+.top-nav{display:flex;align-items:center;gap:0;background:#fff;border-bottom:2px solid #e8eef6;padding:0 16px;position:sticky;top:0;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,.07);flex-wrap:wrap}
+.top-nav a{display:flex;align-items:center;gap:5px;padding:11px 15px;font-size:.82rem;font-weight:600;color:#555;text-decoration:none;border-bottom:3px solid transparent;white-space:nowrap;transition:all .18s;font-family:inherit}
 .top-nav a:hover{color:#1A4FA0;background:#f0f5ff}
 .top-nav a.active{color:#1A4FA0;border-bottom:3px solid #1A4FA0;background:#f5f8ff}
-.top-nav a span.nav-icon{font-size:1rem}
-@media(max-width:600px){.top-nav a{padding:10px 10px;font-size:.75rem}.top-nav a .nav-lbl{display:none}}
 
 </style>
 </head>
 <body>
 
 <nav class="top-nav">
-  <a href="index.html"><span>🏠</span>หน้าหลัก</a>
-  <a href="kpi_dashboard.html"><span>📊</span>KPI Dashboard</a>
-  <a href="fin_dashboard.html"><span>💹</span>KPI การเงิน</a>
-  <a href="fin_projection.html"><span>📈</span>Finance Projection</a>
-  <a href="opwalkin.html" class="active"><span>🔥</span>พึงรับ-พึงจ่าย</a>
-  <a href="compare.html"><span>⏱️</span>ระยะเวลารอคอย</a>
+  <a href="index.html">🏠 หน้าหลัก</a>
+  <a href="kpi_dashboard.html">📊 KPI Dashboard</a>
+  <a href="fin_dashboard.html">💹 KPI การเงิน</a>
+  <a href="fin_projection.html">📈 Finance Projection</a>
+  <a href="opwalkin.html" class="active">🔥 พึงรับ-พึงจ่าย</a>
+  <a href="compare.html">⏱️ ระยะเวลารอคอย</a>
 </nav>
 <header>
   <div class="hdr">
