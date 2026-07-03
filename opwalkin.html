@@ -110,9 +110,19 @@ main{max-width:1440px;margin:0 auto;padding:18px 16px 40px}
     <button class="tab" onclick="switchTab('payment')">📝 บันทึกการชำระ</button>
     <button class="tab" onclick="switchTab('import')">📂 เพิ่มข้อมูลใหม่</button>
   </div>
-
-  <!-- เนื้อหาที่เหลือ (tabs content) คงเดิมทั้งหมดจากไฟล์ v3 -->
-  <!-- ... (คุณสามารถ copy ส่วนที่เหลือจาก v3 ลงตรงนี้) ... -->
+ <button class="btn btn-p" onclick="addMonth()">+ เพิ่มเดือน</button>
+    </div>
+    <div class="card">
+      <div class="card-ttl"><div class="dot" style="background:var(--blue)"></div>ข้อมูลทั้งหมดในระบบ</div>
+      <div class="sdiv"></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>เดือน</th><th class="r">พึงรับ</th><th class="r">พึงจ่าย</th><th class="r">ยอดสุทธิ</th><th>แหล่ง</th><th></th></tr></thead>
+          <tbody id="impBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </main>
 
 <div class="toast" id="toast"></div>
