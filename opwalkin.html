@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -114,20 +115,24 @@ td.nm{font-weight:600}
 }
 
 /* ══ TOP NAV ══ */
-.top-nav{display:flex;align-items:center;background:#fff;border-bottom:2px solid #e8eef6;padding:0 16px;position:sticky;top:0;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,.07);flex-wrap:wrap}
-.top-nav a{display:flex;align-items:center;gap:5px;padding:11px 15px;font-size:.82rem;font-weight:600;color:#555;text-decoration:none;border-bottom:3px solid transparent;white-space:nowrap;transition:all .18s}
+.top-nav{display:flex;align-items:center;gap:0;background:#fff;border-bottom:2px solid #e8eef6;padding:0 16px;position:sticky;top:0;z-index:300;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.top-nav a{display:flex;align-items:center;gap:6px;padding:12px 16px;font-size:.82rem;font-weight:600;color:#555;text-decoration:none;border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s}
 .top-nav a:hover{color:#1A4FA0;background:#f0f5ff}
 .top-nav a.active{color:#1A4FA0;border-bottom:3px solid #1A4FA0;background:#f5f8ff}
+.top-nav a span.nav-icon{font-size:1rem}
+@media(max-width:600px){.top-nav a{padding:10px 10px;font-size:.75rem}.top-nav a .nav-lbl{display:none}}
+
 </style>
 </head>
 <body>
+
 <nav class="top-nav">
-  <a href="index.html">🏠 หน้าหลัก</a>
-  <a href="kpi_dashboard.html">📊 KPI Dashboard</a>
-  <a href="fin_dashboard.html">💹 KPI การเงิน</a>
-  <a href="fin_projection.html">📈 Finance Projection</a>
-  <a href="opwalkin.html" class="active">🔥 พึงรับ-พึงจ่าย</a>
-  <a href="compare.html">⏱️ ระยะเวลารอคอย</a>
+  <a href="index.html"><span>🏠</span>หน้าหลัก</a>
+  <a href="kpi_dashboard.html"><span>📊</span>KPI Dashboard</a>
+  <a href="fin_dashboard.html"><span>💹</span>KPI การเงิน</a>
+  <a href="fin_projection.html"><span>📈</span>Finance Projection</a>
+  <a href="opwalkin.html" class="active"><span>🔥</span>พึงรับ-พึงจ่าย</a>
+  <a href="compare.html"><span>⏱️</span>ระยะเวลารอคอย</a>
 </nav>
 <header>
   <div class="hdr">
@@ -191,7 +196,7 @@ td.nm{font-weight:600}
         <table>
           <thead><tr>
             <th>เดือน</th><th class="r">พึงรับ (บาท)</th><th class="r">พึงจ่าย (บาท)</th>
-            <th class="r">ยอดสุทธิ (บาท)</th><th class="r">ตามจ่ายแล้ว</th><th class="r">คงค้าง</th><th>สถานะ</th>
+            <th class="r">ยอดสุทธิ (บาท)</th><th class="r">ตามจ่ายแล้ว</th><th class="r">คงค้าง</th><th>สถานะจ่าย</th><th>สถานะรับ</th>
           </tr></thead>
           <tbody id="sumBody"></tbody>
         </table>
@@ -541,6 +546,7 @@ function renderKPIs(months) {
     {cls:"pay",lbl:"พึงจ่ายรวม (ทุกเดือน)",val:fmt(totalPay),sub:`เดือนล่าสุด: ${fmt(last.payable||0)} บาท`},
     {cls:"net",lbl:"ยอดสุทธิสะสม",val:fmt(net),sub:net>=0?"▲ รับมากกว่าจ่าย":"▼ จ่ายมากกว่ารับ"},
     {cls:"done",lbl:"ตามจ่ายแล้ว",val:fmt(paidPay),sub:`คงค้าง: ${fmt(outstanding)} บาท`},
+    {cls:"rec",lbl:"รับชำระแล้ว",val:fmt(getRecFromCells(state.currentHosp)),sub:`คงค้าง: ${fmt(Math.max(0,totalRec-getRecFromCells(state.currentHosp)))} บาท`},
   ].map(c=>`<div class="kpi ${c.cls}"><div class="kpi-lbl">${c.lbl}</div><div class="kpi-val">${c.val}</div><div class="kpi-sub">${c.sub}</div></div>`).join("");
 }
 
@@ -568,8 +574,20 @@ function renderSumTable(months) {
     const pp = pm.payable||0;
     const net = m.receivable-m.payable;
     const out = Math.max(0, m.payable-pp);
-    const st = pp>=m.payable&&m.payable>0?"✅ ครบ":pp>0?"⏳ บางส่วน":"🔴 ยังไม่ชำระ";
-    const sc = pp>=m.payable&&m.payable>0?"pg":pp>0?"py":"pr";
+    // Payable status
+    const stPay = pp>=m.payable&&m.payable>0?"✅ จ่ายครบ":pp>0?"⏳ จ่ายบางส่วน":"🔴 ยังไม่จ่าย";
+    const scPay = pp>=m.payable&&m.payable>0?"pg":pp>0?"py":"pr";
+    // Receivable status from recCells
+    const _rc = (state.recCells||{})[state.currentHosp] || {};
+    let recGot = 0;
+    getAllMonthsForHosp(state.currentHosp).filter(mm=>mm.month===m.month).forEach(mm=>{
+      Object.entries(mm.rd||{}).forEach(([h,v])=>{
+        const c=resolveHospName(h);
+        if(_rc[c+"|||"+mm.month] && v>0) recGot += v;
+      });
+    });
+    const stRec = recGot>=m.receivable&&m.receivable>0?"✅ รับครบ":recGot>0?"⏳ รับบางส่วน":m.receivable>0?"⬜ ยังไม่รับ":"—";
+    const scRec = recGot>=m.receivable&&m.receivable>0?"pg":recGot>0?"py":"pr2";
     return `<tr>
       <td class="nm">${m.month}</td>
       <td class="r" style="color:var(--green)">${fmt(m.receivable)}</td>
@@ -577,7 +595,8 @@ function renderSumTable(months) {
       <td class="r ${net>=0?"pos":"neg"}">${fmt(net)}</td>
       <td class="r" style="color:var(--gold)">${fmt(pp)}</td>
       <td class="r">${fmt(out)}</td>
-      <td><span class="pill ${sc}">${st}</span></td>
+      <td><span class="pill ${scPay}">${stPay}</span></td>
+      <td><span class="pill ${scRec}">${stRec}</span></td>
     </tr>`;
   }).join("");
 }
@@ -672,37 +691,64 @@ function renderRecTable() {
   const hosp = state.currentHosp;
   const months = getAllMonthsForHosp(hosp);
   const srch = (document.getElementById("recSrch")?.value||"").toLowerCase();
-  
-  // Aggregate rd values with alias resolution
+
   const payerTotals = {};
   const payerByMonth = {};
-  months.forEach((m, mi) => {
+  months.forEach((m) => {
     Object.entries(m.rd||{}).forEach(([h,v]) => {
       const canonical = resolveHospName(h);
       payerTotals[canonical] = (payerTotals[canonical]||0) + v;
-      if (!payerByMonth[canonical]) payerByMonth[canonical] = months.map(()=>0);
-      payerByMonth[canonical][mi] += v;
+      if (!payerByMonth[canonical]) payerByMonth[canonical] = months.map(mm=>({val:0,month:mm.month}));
+      const idx = months.findIndex(mm=>mm.month===m.month);
+      if(idx>=0) payerByMonth[canonical][idx].val += v;
     });
   });
 
-  let rows = "", total = 0;
+  let rows="", total=0, recTotal=0;
   Object.entries(payerTotals)
     .filter(([h]) => !srch || h.toLowerCase().includes(srch))
     .sort((a,b) => a[0].localeCompare(b[0], 'th'))
     .forEach(([payer, sum]) => {
       if(sum===0) return;
-      total+=sum;
-      const vals = payerByMonth[payer];
-      rows+=`<tr>
-        <td class="nm">${payer}</td>
-        ${vals.map(v=>`<td class="r">${v>0?fmt(v):"-"}</td>`).join("")}
-        <td class="r" style="font-weight:700;color:var(--green)">${fmt(sum)}</td>
-      </tr>`;
+      total += sum;
+      const cells = payerByMonth[payer];
+      let payerRec = 0;
+      cells.forEach(c=>{ if(c.val>0 && isRec(payer, c.month)) payerRec += c.val; });
+      recTotal += payerRec;
+      const allRec = payerRec >= sum && sum > 0;
+      const partRec = payerRec > 0 && payerRec < sum;
+      const rowBg = allRec ? "background:rgba(39,174,96,.08)" : "";
+      const statusBadge = allRec
+        ? '<span style="color:var(--green);font-size:.72rem;margin-left:4px">✅ รับครบ</span>'
+        : partRec
+        ? '<span style="color:#e67e22;font-size:.72rem;margin-left:4px">\u23F3 '+fmt(payerRec)+' บาท</span>'
+        : "";
+      const cellsHtml = cells.map(c => {
+        if(c.val <= 0) return '<td class="r">-</td>';
+        const rec = isRec(payer, c.month);
+        const p = payer.replace(/\\/g,"\\\\").replace(/"/g,'\\"');
+        const mn = c.month.replace(/\\/g,"\\\\").replace(/"/g,'\\"');
+        return '<td class="r" style="vertical-align:top;padding-top:6px">'
+          + '<div style="font-size:.85rem;'+(rec?'color:var(--green);text-decoration:line-through;opacity:.6':'')+'">'
+          + fmt(c.val)+'</div>'
+          + '<button onclick=\'toggleRec("'+p+'","'+mn+'")\'  '
+          + 'style="margin-top:3px;font-size:.62rem;padding:1px 5px;border-radius:8px;'
+          + 'border:1px solid '+(rec?'var(--green)':'#ccc')+';'
+          + 'background:'+(rec?'rgba(39,174,96,.15)':'#f8f8f8')+';'
+          + 'color:'+(rec?'var(--green)':'#999')+';cursor:pointer">'
+          + (rec ? '\u2713 รับแล้ว' : '+ บันทึกรับ')
+          + '</button></td>';
+      }).join("");
+      rows += '<tr style="'+rowBg+'">'
+        + '<td class="nm">'+payer+statusBadge+'</td>'
+        + cellsHtml
+        + '<td class="r" style="font-weight:700;color:'+(allRec?'var(--green)':'var(--blue, #1A4FA0)')+'">'+fmt(sum)+'</td>'
+        + '</tr>';
     });
-  
-  document.getElementById("recBody").innerHTML = rows||`<tr><td colspan="9" class="empty">ไม่พบข้อมูล</td></tr>`;
-  const el = document.getElementById("recTotal");
-  if(el) el.textContent = `รวมพึงรับ: ${fmt(total)} บาท`;
+
+  document.getElementById("recBody").innerHTML = rows||'<tr><td colspan="9" class="empty">ไม่พบข้อมูล</td></tr>';
+  const el=document.getElementById("recTotal");
+  if(el) el.textContent="รวมพึงรับ: "+fmt(total)+" บาท  |  รับแล้ว: "+fmt(recTotal)+" บาท  |  คงค้าง: "+fmt(total-recTotal)+" บาท";
 }
 
 function renderRecChart() {
@@ -743,6 +789,44 @@ function renderRecChart() {
       }
     }
   });
+}
+
+// ══ RECEIVED TRACKING (per payer per month) ══
+function getRecCells() {
+  if (!state.recCells) state.recCells = {};
+  if (!state.recCells[state.currentHosp]) state.recCells[state.currentHosp] = {};
+  return state.recCells[state.currentHosp];
+}
+function toggleRec(payer, monthLabel) {
+  const cells = getRecCells();
+  const key = payer + "|||" + monthLabel;
+  if (cells[key]) delete cells[key]; else cells[key] = true;
+  save();
+  renderRecTable();
+  renderKPIs(getAllMonthsForHosp(state.currentHosp));
+  renderSumTable(getAllMonthsForHosp(state.currentHosp));
+}
+function isRec(payer, monthLabel) {
+  return !!getRecCells()[payer + "|||" + monthLabel];
+}
+function getRecFromCells(hosp) {
+  const cells = (state.recCells||{})[hosp] || {};
+  const months = getAllMonthsForHosp(hosp);
+  const payerByMonth = {};
+  months.forEach((m) => {
+    Object.entries(m.rd||{}).forEach(([h,v]) => {
+      const c = resolveHospName(h);
+      if (!payerByMonth[c]) payerByMonth[c] = {};
+      payerByMonth[c][m.month] = (payerByMonth[c][m.month]||0) + v;
+    });
+  });
+  let total = 0;
+  Object.keys(cells).forEach(key => {
+    const parts = key.split("|||");
+    const payer = parts[0], monthLabel = parts[1];
+    total += (payerByMonth[payer]||{})[monthLabel] || 0;
+  });
+  return total;
 }
 
 // ══ PAID TRACKING (per biller per month) ══
