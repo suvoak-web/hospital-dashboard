@@ -16,14 +16,14 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:'Sarabun',sans-serif;font-size:14px;line-height:1.6;min-height:100vh}
 
-.topnav{background:#0D1117;border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:300;height:44px}
-.topnav-brand{font-size:13px;font-weight:700;color:var(--text);margin-right:24px;white-space:nowrap;display:flex;align-items:center;gap:7px}
+
+
 .topnav-brand img{width:22px;height:22px;border-radius:5px;object-fit:cover}
-.nav-links{display:flex;align-items:center;gap:0;flex:1}
-.nav-link{padding:0 15px;height:44px;display:flex;align-items:center;font-size:12.5px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;gap:6px;text-decoration:none;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit}
+
+
 .nav-link:hover{color:var(--text);background:rgba(255,255,255,.04)}
 .nav-link.active{color:var(--c1);border-bottom-color:var(--c1)}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+
 .nav-date{font-size:11px;color:var(--muted)}
 
 .header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;position:sticky;top:53px;z-index:200;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
@@ -294,18 +294,27 @@ body{background:var(--bg);color:var(--text);font-family:'Sarabun',sans-serif;fon
 
 /* CLICK HINT in sidebar */
 .click-hint{font-size:9.5px;color:var(--muted);padding:5px 12px 2px;font-style:italic}
+
+/* ══ TOP NAV (shared) ══ */
+.top-nav{display:flex;align-items:center;gap:0;background:#fff;border-bottom:2px solid #e8eef6;padding:0 16px;position:sticky;top:0;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,.07);flex-wrap:wrap}
+.top-nav a{display:flex;align-items:center;gap:5px;padding:11px 15px;font-size:.82rem;font-weight:600;color:#555;text-decoration:none;border-bottom:3px solid transparent;white-space:nowrap;transition:all .18s;font-family:inherit}
+.top-nav a:hover{color:#1A4FA0;background:#f0f5ff}
+.top-nav a.active{color:#1A4FA0;border-bottom:3px solid #1A4FA0;background:#f5f8ff}
+
 </style>
 </head>
 <body>
+<nav class="top-nav">
+  <a href="index.html"><span>🏠</span>หน้าหลัก</a>
+  <a href="kpi_dashboard.html"><span>📊</span>KPI Dashboard</a>
+  <a href="fin_dashboard.html"><span>💹</span>KPI การเงิน</a>
+  <a href="fin_projection.html"><span>📈</span>Finance Projection</a>
+  <a href="opwalkin.html"><span>🔥</span>พึงรับ-พึงจ่าย</a>
+  <a href="compare.html" class="active"><span>⏱️</span>ระยะเวลารอคอย</a>
+</nav>
 
 <!-- === TOP NAV BAR (ใส่ตรงนี้) === -->
-<nav style="background:white; border-bottom:1px solid #E2E8F0; padding:12px 24px; display:flex; gap:8px; flex-wrap:wrap; box-shadow:0 2px 8px rgba(0,0,0,0.06); z-index:100; position:sticky; top:0;">
-  <a href="index.html" style="padding:10px 18px; color:#64748B; font-weight:600; text-decoration:none; border-radius:8px; transition:0.2s;">🏠 หน้าหลัก</a>
-  <a href="kpi_dashboard.html" style="padding:10px 18px; color:#64748B; font-weight:600; text-decoration:none; border-radius:8px; transition:0.2s;">📊 KPI Dashboard</a>
-  <a href="fin_projection.html" style="padding:10px 18px; color:#64748B; font-weight:600; text-decoration:none; border-radius:8px; transition:0.2s;">💵 Finance Projection</a>
-  <a href="opwalkin.html" style="padding:10px 18px; color:#64748B; font-weight:600; text-decoration:none; border-radius:8px; transition:0.2s;">💰 พึงรับ-พึงจ่าย</a>
-  <a href="compare.html" style="padding:10px 18px; color:#1D6FA4; font-weight:700; text-decoration:none; border-radius:8px; background:#E0F2FE;">⏱ ระยะเวลารอคอย</a>
-</nav>
+
 
 <!-- HOSPITAL HEADER BAR -->
 <div class="header">
