@@ -1188,6 +1188,10 @@ function migrateState() {
 // ══ INIT ══
 function init() {
   migrateState();
+  // Set period badge dynamically from actual data range
+  const _first = MONTHS_LBL[0].replace(/ /g,"").replace("2568","68").replace("2569","69");
+  const _last  = MONTHS_LBL[MONTHS_LBL.length-1].replace(/ /g,"").replace("2568","68").replace("2569","69");
+  document.getElementById("periodBadge").textContent = _first + "–" + _last;
   buildHospDropdown();
   document.getElementById("myBadge").style.display = state.currentHosp===MY_HOSP?"":"none";
   document.getElementById("pDt").valueAsDate = new Date();
