@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard มูลค่าเบิกยาและเวชภัณฑ์ รพ.สต. | ประมาณการงบ 2570+</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#1e293b; --panel2:#243449; --line:#334155;
+    --txt:#e2e8f0; --muted:#94a3b8; --accent:#38bdf8; --good:#34d399;
+    --warn:#fbbf24; --bad:#f87171; --purple:#a78bfa;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI","Sarabun","Noto Sans Thai",Tahoma,sans-serif;
+    background:var(--bg);color:var(--txt);line-height:1.5}
+  .wrap{max-width:1180px;margin:0 auto;padding:24px 18px 60px}
+  header h1{font-size:1.55rem;margin:0 0 4px}
+  header p{color:var(--muted);margin:0 0 6px;font-size:.92rem}
+  .note{background:#422006;border:1px solid #854d0e;color:#fde68a;
+    padding:10px 14px;border-radius:10px;font-size:.85rem;margin:14px 0}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:18px 0}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .card .lbl{color:var(--muted);font-size:.78rem;margin-bottom:6px}
+  .card .val{font-size:1.5rem;font-weight:700}
+  .card .sub{font-size:.75rem;color:var(--muted);margin-top:4px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+  @media(max-width:800px){.grid{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .panel h2{font-size:1rem;margin:0 0 12px;font-weight:600}
+  .panel h2 span{color:var(--muted);font-weight:400;font-size:.8rem}
+  canvas{max-width:100%}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}
+  .controls button{background:var(--panel2);color:var(--txt);border:1px solid var(--line);
+    padding:7px 13px;border-radius:20px;cursor:pointer;font-size:.82rem}
+  .controls button.active{background:var(--accent);color:#06263a;border-color:var(--accent);font-weight:600}
+  table{width:100%;border-collapse:collapse;font-size:.83rem}
+  th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line)}
+  th:first-child,td:first-child{text-align:left}
+  thead th{color:var(--muted);font-weight:600;position:sticky;top:0;background:var(--panel)}
+  tbody tr:hover{background:var(--panel2)}
+  .tbl-wrap{overflow-x:auto}
+  .sc-same{color:var(--muted)} .sc-up{color:var(--good)} .sc-dn{color:var(--bad)}
+  .legend-pill{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px}
+  footer{color:var(--muted);font-size:.78rem;margin-top:30px;text-align:center}
+  .full{grid-column:1/-1}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Dashboard มูลค่าเบิกยาและเวชภัณฑ์ รพ.สต.</h1>
+  <p>สรุปการใช้ตามมูลค่ารายแห่ง ปีงบ 2560–2568 และประมาณการงบประมาณปี 2570 เป็นต้นไป (5 สถานการณ์)</p>
+</header>
+
+<div class="note">
+  <b>หมายเหตุสำคัญ:</b> รพ.สต. ถ่ายโอนไป อบจ. ตั้งแต่ปีงบ 2566 &nbsp;•&nbsp;
+  ตั้งแต่ปี 2566 เป็นต้นไปเป็น "มูลค่ายืม" (ปี 2566 = ช่วง ต.ค.65–ธ.ค.66 รวม 15 เดือน) &nbsp;•&nbsp;
+  มูลค่ายารวมวัคซีนที่สนับสนุนด้วย &nbsp;•&nbsp;
+  <b>ฐานประมาณการใช้ค่าเฉลี่ยปี 2560–2565</b> (ช่วงก่อนถ่ายโอน = การใช้จริงเต็มปี)
+</div>
+
+<div class="cards" id="cards"></div>
+
+<div class="grid">
+  <div class="panel">
+    <h2>แนวโน้มมูลค่าเบิกรวมรายแห่ง <span>ปีงบ 2560–2568 (บาท)</span></h2>
+    <canvas id="trend" height="220"></canvas>
+  </div>
+  <div class="panel">
+    <h2>สัดส่วนตามฐานเฉลี่ย 2560–2565 <span>รายแห่ง</span></h2>
+    <canvas id="share" height="220"></canvas>
+  </div>
+  <div class="panel">
+    <h2>โครงสร้างตามหมวด <span>ยา / วัสดุเภสัชกรรม / วัสดุการแพทย์ (บาท)</span></h2>
+    <canvas id="cat" height="220"></canvas>
+  </div>
+  <div class="panel">
+    <h2>ฐานเฉลี่ยรายแห่ง <span>เฉลี่ย 2560–2565 (บาท)</span></h2>
+    <canvas id="basebar" height="220"></canvas>
+  </div>
+
+  <div class="panel full">
+    <h2>ประมาณการงบประมาณ ปี 2570–2574 <span>รวมทั้ง 5 แห่ง — 5 สถานการณ์ (บาท)</span></h2>
+    <canvas id="proj" height="150"></canvas>
+  </div>
+
+  <div class="panel full">
+    <h2>ตารางประมาณการรายแห่ง <span>เลือกสถานการณ์</span></h2>
+    <div class="controls" id="scenBtns"></div>
+    <div class="tbl-wrap"><table id="projTbl"></table></div>
+  </div>
+</div>
+
+<footer>
+  จัดทำโดยระบบวิเคราะห์ทรัพยากร • ข้อมูลต้นทาง: ไฟล์มูลค่าเบิกของโรงพยาบาล •
+  ฐานประมาณการ = ค่าเฉลี่ยปีงบ 2560–2565
+</footer>
+</div>
+
+<script>
+const DATA = {"years": [2560, 2561, 2562, 2563, 2564, 2565, 2566, 2567, 2568], "stations": ["รพ.สต.พังเทียม", "รพ.สต.ทัพรั้ง", "รพ.สต.มาบกราด", "รพ.สต.ทำนบพัฒนา", "รพ.สต.หนองหอย"], "med": {"รพ.สต.พังเทียม": [179351.4, 250514.53999999998, 216386.99, 232737.22999999998, 302454.8, 481450.39, 506179.6499999999, 148928.89, 115081.44], "รพ.สต.ทัพรั้ง": [458538.9199999999, 676061.1499999999, 532771.0599999999, 467533.23, 574733.11, 735176.65, 1210260.98, 426562.31999999995, 253243.12], "รพ.สต.มาบกราด": [155576.24999999997, 222417.71, 185882.40999999997, 195336.93, 221603.66, 275511.91, 280952.58, 156997.34, 83573.01000000001], "รพ.สต.ทำนบพัฒนา": [160925.62, 235664.12999999995, 228434.40999999997, 220606.34999999998, 236004.59999999998, 316117.59, 420727.24000000005, 118109.61000000002, 73934.84000000001], "รพ.สต.หนองหอย": [160294.78999999998, 192000.09999999998, 179881.92, 167362.3, 170244.00999999998, 280213.84, 260053.13000000003, 113476.48, 76855.22]}, "pharm": {"รพ.สต.พังเทียม": [41371.8, 44315.52999999999, 35729.35999999999, 3323.72, 2780.0, 5350.0, 8610.0, 110.0, 0.0], "รพ.สต.ทัพรั้ง": [96238.81, 119987.62999999999, 95363.94, 9834.220000000001, 14885.76, 17145.0, 11685.0, 4720.0, 0.0], "รพ.สต.มาบกราด": [47796.43000000001, 55108.72, 44661.4, 1564.62, 5256.91, 6085.0, 4415.0, 230.0, 0.0], "รพ.สต.ทำนบพัฒนา": [38460.520000000004, 69631.23999999999, 52652.6, 2211.55, 3140.0, 4005.0, 2440.0, 275.0, 0.0], "รพ.สต.หนองหอย": [38057.49, 36534.75, 19355.52, 2300.7799999999997, 1465.0, 3075.0, 3550.0, 150.0, 0.0]}, "medsup": {"รพ.สต.พังเทียม": [51285.619999999995, 25878.56, 22702.000000000004, 59667.68000000001, 52935.26, 82815.43000000001, 53273.86, 7813.7, 0.0], "รพ.สต.ทัพรั้ง": [24167.75, 25869.809999999998, 7859.299999999999, 91915.74000000002, 148810.0, 184295.65, 125393.19000000002, 40874.04, 0.0], "รพ.สต.มาบกราด": [13244.380000000001, 13989.880000000001, 2816.8, 35389.549999999996, 51606.799999999996, 40060.12000000001, 38236.03, 11467.240000000002, 0.0], "รพ.สต.ทำนบพัฒนา": [20556.589999999997, 9958.7, 11473.4, 57034.36, 73230.01000000001, 82226.4, 48017.63999999999, 10724.91, 0.0], "รพ.สต.หนองหอย": [11326.13, 20767.38, 18201.0, 27942.699999999997, 32001.019999999993, 44263.79, 23571.18, 2882.08, 0.0]}, "total": {"รพ.สต.พังเทียม": [272008.82, 320708.62999999995, 274818.35, 295728.63, 358170.06, 569615.8200000001, 568063.5099999999, 156852.59000000003, 115081.44], "รพ.สต.ทัพรั้ง": [578945.48, 821918.5899999999, 635994.3, 569283.19, 738428.87, 936617.3, 1347339.17, 472156.3599999999, 253243.12], "รพ.สต.มาบกราด": [216617.06, 291516.31, 233360.60999999996, 232291.09999999998, 278467.37, 321657.02999999997, 323603.61, 168694.58, 83573.01000000001], "รพ.สต.ทำนบพัฒนา": [219942.73, 315254.06999999995, 292560.41, 279852.25999999995, 312374.61, 402348.99, 471184.88000000006, 129109.52000000002, 73934.84000000001], "รพ.สต.หนองหอย": [209678.40999999997, 249302.22999999998, 217438.44, 197605.77999999997, 203710.02999999997, 327552.63, 287174.31, 116508.56, 76855.22]}, "baseline": {"รพ.สต.พังเทียม": 348508.385, "รพ.สต.ทัพรั้ง": 713531.2883333332, "รพ.สต.มาบกราด": 262318.24666666664, "รพ.สต.ทำนบพัฒนา": 303722.17833333334, "รพ.สต.หนองหอย": 234214.58666666667}, "base_total": 1862294.6849999998, "proj_years": [2570, 2571, 2572, 2573, 2574], "scenarios": ["เท่าเดิม", "เพิ่ม 10%", "เพิ่ม 20%", "ลด 10%", "ลด 20%"], "scenario_rates": {"เท่าเดิม": 0.0, "เพิ่ม 10%": 0.1, "เพิ่ม 20%": 0.2, "ลด 10%": -0.1, "ลด 20%": -0.2}, "proj": {"เท่าเดิม": {"total": [1862294.6849999998, 1862294.6849999998, 1862294.6849999998, 1862294.6849999998, 1862294.6849999998], "stations": {"รพ.สต.พังเทียม": [348508.385, 348508.385, 348508.385, 348508.385, 348508.385], "รพ.สต.ทัพรั้ง": [713531.2883333332, 713531.2883333332, 713531.2883333332, 713531.2883333332, 713531.2883333332], "รพ.สต.มาบกราด": [262318.24666666664, 262318.24666666664, 262318.24666666664, 262318.24666666664, 262318.24666666664], "รพ.สต.ทำนบพัฒนา": [303722.17833333334, 303722.17833333334, 303722.17833333334, 303722.17833333334, 303722.17833333334], "รพ.สต.หนองหอย": [234214.58666666667, 234214.58666666667, 234214.58666666667, 234214.58666666667, 234214.58666666667]}}, "เพิ่ม 10%": {"total": [2048524.1535, 2253376.56885, 2478714.2257350003, 2726585.6483085006, 2999244.2131393505], "stations": {"รพ.สต.พังเทียม": [383359.2235, 421695.1458500001, 463864.66043500014, 510251.12647850014, 561276.2391263503], "รพ.สต.ทัพรั้ง": [784884.4171666666, 863372.8588833333, 949710.1447716668, 1044681.1592488334, 1149149.275173717], "รพ.สต.มาบกราด": [288550.0713333333, 317405.0784666667, 349145.5863133334, 384060.1449446667, 422466.1594391334], "รพ.สต.ทำนบพัฒนา": [334094.3961666667, 367503.8357833334, 404254.2193616668, 444679.64129783347, 489147.60542761686], "รพ.สต.หนองหอย": [257636.04533333337, 283399.6498666667, 311739.61485333345, 342913.5763386668, 377204.93397253344]}}, "เพิ่ม 20%": {"total": [2234753.6219999995, 2681704.3463999997, 3218045.2156799994, 3861654.2588159996, 4633985.110579198], "stations": {"รพ.สต.พังเทียม": [418210.062, 501852.0744, 602222.48928, 722666.987136, 867200.3845631998], "รพ.สต.ทัพรั้ง": [856237.5459999999, 1027485.0551999998, 1232982.0662399996, 1479578.4794879996, 1775494.1753855993], "รพ.สต.มาบกราด": [314781.89599999995, 377738.2752, 453285.9302399999, 543943.1162879999, 652731.7395455998], "รพ.สต.ทำนบพัฒนา": [364466.614, 437359.9368, 524831.9241599999, 629798.308992, 755757.9707903998], "รพ.สต.หนองหอย": [281057.504, 337269.0048, 404722.80575999996, 485667.366912, 582800.8402943999]}}, "ลด 10%": {"total": [1676065.2164999999, 1508458.6948499999, 1357612.825365, 1221851.5428284998, 1099666.38854565], "stations": {"รพ.สต.พังเทียม": [313657.5465, 282291.79185000004, 254062.61266500005, 228656.3513985, 205790.71625865003], "รพ.สต.ทัพรั้ง": [642178.1595, 577960.34355, 520164.309195, 468147.8782754999, 421333.09044795], "รพ.สต.มาบกราด": [236086.422, 212477.7798, 191230.00182, 172107.001638, 154896.3014742], "รพ.สต.ทำนบพัฒนา": [273349.96050000004, 246014.96445000003, 221413.46800500003, 199272.1212045, 179344.90908405], "รพ.สต.หนองหอย": [210793.128, 189713.8152, 170742.43368000002, 153668.190312, 138301.37128080003]}}, "ลด 20%": {"total": [1489835.748, 1191868.5984, 953494.8787200002, 762795.9029760001, 610236.7223808], "stations": {"รพ.สต.พังเทียม": [278806.70800000004, 223045.36640000006, 178436.29312000005, 142749.03449600004, 114199.22759680003], "รพ.สต.ทัพรั้ง": [570825.0306666666, 456660.0245333334, 365328.0196266667, 292262.4157013333, 233809.9325610667], "รพ.สต.มาบกราด": [209854.59733333334, 167883.6778666667, 134306.94229333336, 107445.55383466667, 85956.44306773334], "รพ.สต.ทำนบพัฒนา": [242977.7426666667, 194382.19413333337, 155505.75530666672, 124404.60424533336, 99523.6833962667], "รพ.สต.หนองหอย": [187371.66933333335, 149897.3354666667, 119917.86837333336, 95934.29469866668, 76747.43575893335]}}}};
+const baht = n => n.toLocaleString('th-TH',{maximumFractionDigits:0});
+const COL = ['#38bdf8','#f472b6','#34d399','#fbbf24','#a78bfa'];
+const GRID='#334155', TXT='#94a3b8';
+Chart.defaults.color=TXT; Chart.defaults.font.family='"Sarabun","Noto Sans Thai",Segoe UI,sans-serif';
+Chart.defaults.plugins.legend.labels.boxWidth=12;
+
+const yrLabels = DATA.years.map(y=>'ปี '+y);
+
+// ---- KPI cards ----
+const latest = DATA.years.length-1;              // 2568 index
+const peakYearIdx = DATA.total[DATA.stations[0]].map((_,j)=>
+    DATA.stations.reduce((s,st)=>s+DATA.total[st][j],0))
+    .reduce((a,v,i,arr)=>v>arr[a]?i:a,0);
+const grand = j => DATA.stations.reduce((s,st)=>s+DATA.total[st][j],0);
+const cards=[
+  ['ฐานประมาณการ (เฉลี่ย 60–65)', baht(DATA.base_total), 'บาท/ปี'],
+  ['ประมาณการ 2570 (เท่าเดิม)', baht(DATA.proj['เท่าเดิม'].total[0]), 'บาท'],
+  ['สูงสุดในอดีต ปี '+DATA.years[peakYearIdx], baht(grand(peakYearIdx)), 'บาท'],
+  ['จำนวน รพ.สต.', DATA.stations.length, 'แห่ง'],
+];
+document.getElementById('cards').innerHTML = cards.map(c=>
+  `<div class="card"><div class="lbl">${c[0]}</div><div class="val">${c[1]}</div><div class="sub">${c[2]}</div></div>`).join('');
+
+// ---- Trend line ----
+new Chart(document.getElementById('trend'),{type:'line',
+ data:{labels:yrLabels,datasets:DATA.stations.map((st,i)=>({
+   label:st.replace('รพ.สต.',''),data:DATA.total[st],borderColor:COL[i],
+   backgroundColor:COL[i],tension:.3,pointRadius:2.5,borderWidth:2}))},
+ options:{plugins:{legend:{position:'bottom'}},
+   scales:{x:{grid:{color:GRID}},y:{grid:{color:GRID},ticks:{callback:v=>baht(v)}}}}});
+
+// ---- Share doughnut (baseline) ----
+new Chart(document.getElementById('share'),{type:'doughnut',
+ data:{labels:DATA.stations.map(s=>s.replace('รพ.สต.','')),
+   datasets:[{data:DATA.stations.map(s=>DATA.baseline[s]),backgroundColor:COL,borderColor:'#1e293b',borderWidth:2}]},
+ options:{plugins:{legend:{position:'right'},tooltip:{callbacks:{label:c=>c.label+': '+baht(c.raw)+' บาท ('+(c.raw/DATA.base_total*100).toFixed(1)+'%)'}}}}});
+
+// ---- Category stacked bar (sum across stations) ----
+const sumCat = obj => DATA.years.map((_,j)=>DATA.stations.reduce((s,st)=>s+obj[st][j],0));
+new Chart(document.getElementById('cat'),{type:'bar',
+ data:{labels:yrLabels,datasets:[
+   {label:'ยา',data:sumCat(DATA.med),backgroundColor:'#38bdf8'},
+   {label:'วัสดุเภสัชกรรม',data:sumCat(DATA.pharm),backgroundColor:'#fbbf24'},
+   {label:'วัสดุการแพทย์',data:sumCat(DATA.medsup),backgroundColor:'#f472b6'}]},
+ options:{plugins:{legend:{position:'bottom'}},
+   scales:{x:{stacked:true,grid:{color:GRID}},y:{stacked:true,grid:{color:GRID},ticks:{callback:v=>baht(v)}}}}});
+
+// ---- Baseline bar ----
+new Chart(document.getElementById('basebar'),{type:'bar',
+ data:{labels:DATA.stations.map(s=>s.replace('รพ.สต.','')),
+   datasets:[{label:'ฐานเฉลี่ย',data:DATA.stations.map(s=>DATA.baseline[s]),
+     backgroundColor:COL}]},
+ options:{plugins:{legend:{display:false}},indexAxis:'y',
+   scales:{x:{grid:{color:GRID},ticks:{callback:v=>baht(v)}},y:{grid:{color:GRID}}}}});
+
+// ---- Projection scenarios ----
+const scCol={'เท่าเดิม':'#94a3b8','เพิ่ม 10%':'#34d399','เพิ่ม 20%':'#059669','ลด 10%':'#fbbf24','ลด 20%':'#f87171'};
+new Chart(document.getElementById('proj'),{type:'line',
+ data:{labels:DATA.proj_years.map(y=>'ปี '+y),
+   datasets:DATA.scenarios.map(sc=>({label:sc,data:DATA.proj[sc].total,
+     borderColor:scCol[sc],backgroundColor:scCol[sc],tension:.2,borderWidth:2,pointRadius:3,
+     borderDash: sc==='เท่าเดิม'?[6,4]:[]}))},
+ options:{plugins:{legend:{position:'bottom'},
+     tooltip:{callbacks:{label:c=>c.dataset.label+': '+baht(c.raw)+' บาท'}}},
+   scales:{x:{grid:{color:GRID}},y:{grid:{color:GRID},ticks:{callback:v=>baht(v)}}}}});
+
+// ---- Interactive projection table ----
+const scBtns=document.getElementById('scenBtns');
+DATA.scenarios.forEach((sc,i)=>{
+  const b=document.createElement('button');b.textContent=sc;if(i===0)b.classList.add('active');
+  b.onclick=()=>{[...scBtns.children].forEach(x=>x.classList.remove('active'));b.classList.add('active');drawTbl(sc);};
+  scBtns.appendChild(b);
+});
+function drawTbl(sc){
+  const p=DATA.proj[sc];
+  let h='<thead><tr><th>รพ.สต.</th>'+DATA.proj_years.map(y=>'<th>'+y+'</th>').join('')+'</tr></thead><tbody>';
+  DATA.stations.forEach(st=>{
+    h+='<tr><td>'+st+'</td>'+p.stations[st].map(v=>'<td>'+baht(v)+'</td>').join('')+'</tr>';
+  });
+  h+='<tr style="font-weight:700;border-top:2px solid #475569"><td>รวมทั้งหมด</td>'+
+     p.total.map(v=>'<td>'+baht(v)+'</td>').join('')+'</tr></tbody>';
+  document.getElementById('projTbl').innerHTML=h;
+}
+drawTbl(DATA.scenarios[0]);
+</script>
+</body>
+</html>
