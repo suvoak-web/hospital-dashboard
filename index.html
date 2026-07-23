@@ -52,7 +52,6 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
     <div id="date-display" style="font-size:13px; opacity:0.9;"></div>
   </div>
 </header>
-
 <!-- SIDEBAR -->
 <aside id="sidebar" class="sidebar">
   <a href="index.html" class="nav-item active">🏠 หน้าหลัก</a>
@@ -61,7 +60,7 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
   <a href="fin_projection.html" class="nav-item">📈 Finance Projection</a>
   <a href="opwalkin.html" class="nav-item">💰 พึงรับ-พึงจ่าย</a>
   <a href="compare.html" class="nav-item">⏱ ระยะเวลารอคอย</a>
-
+  <a href="pcupayment.html" class="nav-item">💊 ยาและเวชภัณฑ์ รพ.สต.</a>
   <div style="margin: 24px 12px 8px; padding-left: 12px; font-size: 13px; color: var(--muted); font-weight: 600;">🔗 ลิงก์ระบบภายนอก</div>
   
   <div class="dropdown">
@@ -76,7 +75,6 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
       <a href="https://www.r9health.net/servicetime/" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">ระยะเวลารอคอย R9</a>
     </div>
   </div>
-
   <div class="dropdown">
     <a href="#" onclick="toggleDropdown(this)" style="display:flex;align-items:center;gap:12px;padding:12px 24px;color:var(--muted);font-weight:600;">
       🔧 ติดตามงานอื่นๆ <span style="margin-left:auto;">▼</span>
@@ -88,7 +86,6 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
     </div>
   </div>
 </aside>
-
 <div class="main-content">
   <div class="section-label">DASHBOARD ที่พร้อมใช้งาน</div>
   <div class="dash-grid">
@@ -106,7 +103,6 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
         </div>
       </div>
     </a>
-
     <a class="dash-card" href="opwalkin.html" style="border-top: 5px solid #16A34A;">
       <div style="display:flex; gap:16px;">
         <div style="font-size:42px;">💰</div>
@@ -119,7 +115,6 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
         </div>
       </div>
     </a>
-
     <a class="dash-card" href="compare.html" style="border-top: 5px solid #D97706;">
       <div style="display:flex; gap:16px;">
         <div style="font-size:42px;">⏱</div>
@@ -130,7 +125,6 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
         </div>
       </div>
     </a>
-
     <a class="dash-card" href="kpi_dashboard.html" style="border-top: 5px solid #DC2626;">
       <div style="display:flex; gap:16px;">
         <div style="font-size:42px;">📊</div>
@@ -144,7 +138,6 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
         </div>
       </div>
     </a>
-
     <a class="dash-card" href="fin_projection.html" style="border-top: 5px solid #1D6FA4;">
       <div style="display:flex; gap:16px;">
         <div style="font-size:42px;">📈</div>
@@ -157,12 +150,23 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
         </div>
       </div>
     </a>
+    <a class="dash-card" href="pcupayment.html" style="border-top: 5px solid #7C3AED;">
+      <div style="display:flex; gap:16px;">
+        <div style="font-size:42px;">💊</div>
+        <div style="flex:1;">
+          <div style="font-size:17px; font-weight:700;">ยาและเวชภัณฑ์ รพ.สต.</div>
+          <div style="margin:8px 0; font-size:14px; color:var(--muted);">มูลค่าเบิก 5 แห่ง • ประมาณการงบ 2570+</div>
+          <div style="margin-top:12px;">
+            <div style="font-size:28px; font-weight:700; color:#7C3AED;">1.86M</div>
+            <div style="font-size:14px; color:#166534;">ฐานประมาณการ (บาท/ปี)</div>
+          </div>
+        </div>
+      </div>
+    </a>
   </div>
-
   <!-- ลิงก์ระบบภายนอก + ระบบภายใน -->
   <div class="section-label" style="margin-top:40px;">ลิงก์ระบบภายนอก</div>
   <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap:20px;">
-
     <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px;">
       <div style="font-weight:700; margin-bottom:12px; color:var(--accent);">📊 ติดตามตัวชี้วัด</div>
       <a href="https://apikorat.moph.go.th/home/dashboard" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">ตัวชี้วัดสาธารณสุข โคราช</a>
@@ -171,24 +175,20 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
       <a href="https://apikorat.moph.go.th/drug-delivery/dashboard" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">Drug Delivery</a>
       <a href="https://www.r9health.net/servicetime/" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">ระยะเวลารอคอย R9</a>
     </div>
-
     <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px;">
       <div style="font-weight:700; margin-bottom:12px; color:var(--accent);">🔧 ติดตามงานอื่นๆ</div>
       <a href="https://smt.nhso.go.th/smtf/#/home/budget/summary" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">SMT งบประมาณ NHSO</a>
       <a href="https://cmi.moph.go.th/" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">CMI กระทรวงสาธารณสุข</a>
       <a href="https://mishos.nhso.go.th/mis_hos/#/dashboard" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">MIS HOS Dashboard</a>
     </div>
-
     <!-- หมวดใหม่: ระบบติดตามภายใน -->
     <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px;">
       <div style="font-weight:700; margin-bottom:12px; color:#16A34A;">🏠 ระบบติดตามภายใน</div>
       <a href="https://intl.fusionsolar.huawei.com/uniportal/pvmswebsite/assets/build/cloud.html?app-id=smartpvms&instance-id=smartpvms&zone-id=region-7-f3c8137b-724d-4fc1-9e47-6dc6f75a22f0#/home/list" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">☀️ Solar Cell Monitor (Huawei)</a>
       <a href="https://www.ami.pea.co.th/ami.portal/Account/Login" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">⚡ Meter AMI การไฟฟ้าส่วนภูมิภาค</a>
     </div>
-
   </div>
 </div>
-
 <script>
 // Clock + Functions
 function updateClock() {
@@ -199,7 +199,6 @@ function updateClock() {
   document.getElementById('date-display').textContent = `${['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'][now.getDay()]} ${now.getDate()} ${['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'][now.getMonth()]} ${now.getFullYear()+543}`;
 }
 setInterval(updateClock, 10000); updateClock();
-
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); }
 function toggleDropdown(el) {
   const content = el.nextElementSibling;
