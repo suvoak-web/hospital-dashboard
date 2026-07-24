@@ -26,6 +26,7 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
 .sidebar.collapsed { transform: translateX(-100%); }
 .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 24px; color: var(--muted); text-decoration: none; font-weight: 600; margin: 4px 12px; border-radius: 8px; }
 .nav-item.active, .nav-item:hover { background: var(--accent-dim); color: var(--accent); }
+.nav-sub { font-size: 13.5px; font-weight: 500; padding: 9px 24px 9px 44px; margin: 2px 12px; }
 .main-content { margin-left: 260px; padding: 24px 28px; }
 .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
 .dash-card {
@@ -34,7 +35,19 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
   text-decoration: none; color: var(--text); transition: all 0.2s;
 }
 .dash-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+.card-link { display: block; text-decoration: none; color: inherit; }
+.card-extra {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--border);
+  text-decoration: none; color: var(--amber); font-size: 14px; font-weight: 600;
+  border-radius: 8px; transition: background 0.15s;
+}
+.card-extra:hover { background: rgba(180,83,9,0.07); }
+.card-extra:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
+.card-extra .arrow { transition: transform 0.15s; }
+.card-extra:hover .arrow { transform: translateX(3px); }
 .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+@media (prefers-reduced-motion: reduce) { .dash-card, .card-extra, .card-extra .arrow { transition: none; } }
 </style>
 </head>
 <body>
@@ -60,6 +73,7 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
   <a href="fin_projection.html" class="nav-item">📈 Finance Projection</a>
   <a href="opwalkin.html" class="nav-item">💰 พึงรับ-พึงจ่าย</a>
   <a href="compare.html" class="nav-item">⏱ ระยะเวลารอคอย</a>
+  <a href="bottleneck_dashboard.html" class="nav-item nav-sub">🔎 วิเคราะห์คอขวด</a>
   <a href="pcupayment.html" class="nav-item">💊 ยาและเวชภัณฑ์ รพ.สต.</a>
   <div style="margin: 24px 12px 8px; padding-left: 12px; font-size: 13px; color: var(--muted); font-weight: 600;">🔗 ลิงก์ระบบภายนอก</div>
   
@@ -115,16 +129,25 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
         </div>
       </div>
     </a>
-    <a class="dash-card" href="compare.html" style="border-top: 5px solid #D97706;">
-      <div style="display:flex; gap:16px;">
-        <div style="font-size:42px;">⏱</div>
-        <div style="flex:1;">
-          <div style="font-size:17px; font-weight:700;">เปรียบเทียบระยะเวลารอคอย</div>
-          <div style="margin-top:8px; font-size:14px; color:var(--muted);">อันดับที่ 4 จาก 33 รพ.ชุมชน</div>
-          <div style="margin-top:12px; font-size:15px;">เวลารวม <span style="font-weight:700; color:#1D6FA4;">182 นาที</span></div>
+
+    <!-- การ์ดระยะเวลารอคอย: ใช้ div เพราะมีลิงก์ 2 ปลายทางอยู่ข้างใน (ซ้อน <a> ใน <a> ไม่ได้) -->
+    <div class="dash-card" style="border-top: 5px solid #D97706;">
+      <a class="card-link" href="compare.html">
+        <div style="display:flex; gap:16px;">
+          <div style="font-size:42px;">⏱</div>
+          <div style="flex:1;">
+            <div style="font-size:17px; font-weight:700;">เปรียบเทียบระยะเวลารอคอย</div>
+            <div style="margin-top:8px; font-size:14px; color:var(--muted);">อันดับที่ 4 จาก 33 รพ.ชุมชน</div>
+            <div style="margin-top:12px; font-size:15px;">เวลารวม <span style="font-weight:700; color:#1D6FA4;">182 นาที</span></div>
+          </div>
         </div>
-      </div>
-    </a>
+      </a>
+      <a class="card-extra" href="bottleneck_dashboard.html">
+        <span>🔎 วิเคราะห์คอขวด — คลินิก NCD คิดเป็น 51.8% ของเวลารอ</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
     <a class="dash-card" href="kpi_dashboard.html" style="border-top: 5px solid #DC2626;">
       <div style="display:flex; gap:16px;">
         <div style="font-size:42px;">📊</div>

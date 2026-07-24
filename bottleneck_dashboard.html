@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>วิเคราะห์คอขวดระยะเวลารอคอย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eceff1;--card:#fff;--ink:#141f26;--mut:#6a7b85;--line:#dfe6ea;
+--tl:#0b6b73;--tld:#083f45;--am:#dd9330;--co:#cf5540;--gr:#2d9a6d;--vi:#6b5ca5;
+--sh:0 1px 2px rgba(20,40,50,.04),0 8px 24px rgba(20,40,50,.07)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);padding:26px 18px 60px;
+font-family:"IBM Plex Sans Thai",system-ui,sans-serif;line-height:1.5}
+.mono{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+.wrap{max-width:1200px;margin:0 auto}
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;
+padding-bottom:18px;margin-bottom:22px;border-bottom:2px solid var(--ink)}
+.eb{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--tl);font-weight:600;margin:0 0 6px}
+h1{margin:0;font-size:29px;font-weight:700;letter-spacing:-.015em;line-height:1.15}
+.sub{color:var(--mut);font-size:13.5px;margin-top:6px}
+.hmeta{text-align:right;font-size:12.5px;color:var(--mut);line-height:1.65}
+.hmeta b{color:var(--ink)}.hmeta .bg{display:block;font-size:25px;color:var(--tld);font-weight:600}
+
+/* verdict */
+.verdict{background:linear-gradient(155deg,#083f45,#0b6b73 60%,#12867c);color:#eaf6f5;
+border-radius:18px;padding:26px 28px;margin-bottom:22px;box-shadow:var(--sh)}
+.verdict .vl{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:#8fd4cd;font-weight:600}
+.verdict h2{margin:8px 0 6px;font-size:25px;font-weight:700;color:#fff;line-height:1.3}
+.verdict p{margin:0;color:#c4e5e1;font-size:14px;max-width:74ch}
+.vgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:22px;
+padding-top:20px;border-top:1px solid rgba(255,255,255,.16)}
+.vg .n{font-size:33px;font-weight:600;letter-spacing:-.02em;line-height:1;color:#fff}
+.vg .n .u{font-size:15px;font-weight:400;color:#9fdcd5}
+.vg .t{font-size:12.5px;color:#b9e0dc;margin-top:5px;line-height:1.45}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:22px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:13px;
+padding:15px 16px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--tl)}
+.kpi.a::before{background:var(--am)}.kpi.c::before{background:var(--co)}.kpi.g::before{background:var(--gr)}
+.kpi .l{font-size:12px;color:var(--mut);margin-bottom:5px}
+.kpi .v{font-size:28px;font-weight:600;letter-spacing:-.02em;line-height:1}
+.kpi .v .u{font-size:13px;color:var(--mut);font-weight:400;margin-left:3px}
+.kpi .s{font-size:11.5px;color:var(--mut);margin-top:5px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+padding:22px 24px;box-shadow:var(--sh);margin-bottom:22px}
+.card h3{margin:0 0 3px;font-size:17.5px;font-weight:600;letter-spacing:-.01em}
+.card .d{color:var(--mut);font-size:12.5px;margin:0 0 18px}
+.g2{display:grid;grid-template-columns:1.3fr 1fr;gap:22px}
+.g2e{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+
+.bar{display:grid;grid-template-columns:150px 1fr 92px;align-items:center;gap:11px;margin-bottom:10px}
+.bl{font-size:12.5px;text-align:right;line-height:1.3}
+.bt{background:#f0f3f4;border-radius:5px;height:21px;overflow:hidden}
+.bf{height:100%;border-radius:5px}
+.bv{font-size:12.5px;font-weight:600}
+.bv .sm{font-size:10.5px;color:var(--mut);font-weight:400}
+.tg{font-size:9.5px;padding:1px 6px;border-radius:20px;font-weight:600;margin-left:5px}
+.tg.w{background:#fbe9d4;color:#a5621a}.tg.s{background:#d9f0e7;color:#0a6b52}
+
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;color:var(--mut);font-weight:500;font-size:11.5px;padding:0 9px 8px;border-bottom:1px solid var(--line)}
+th.n,td.n{text-align:right}
+td{padding:8px 9px;border-bottom:1px solid #eef2f3}
+tr:last-child td{border-bottom:none}
+tr.hi td{background:#fff6ed}
+.vb{height:7px;border-radius:4px;background:var(--tl);display:inline-block;vertical-align:middle}
+.hot{color:var(--co);font-weight:600}.warn{color:var(--am);font-weight:600}.ok{color:var(--gr);font-weight:600}
+
+.chart{width:100%}
+.ax{font-size:10px;fill:var(--mut);font-family:"IBM Plex Mono",monospace}
+.bl2{font-size:10px;fill:var(--ink);font-family:"IBM Plex Mono",monospace;font-weight:500}
+.gl{stroke:var(--line);stroke-width:1}
+
+.flag{background:#fff4ef;border:1px solid #f2d3c6;border-left:4px solid var(--co);
+border-radius:12px;padding:16px 18px;margin-bottom:22px}
+.flag b{color:#9c3d29}.flag{font-size:13px;color:#7d4535;line-height:1.65}
+.note{background:#fff9f0;border:1px solid #f0dfc4;border-radius:12px;padding:15px 18px;
+font-size:12px;color:#7a6236;line-height:1.6}
+.note b{color:#5c4a29}.note ul{margin:7px 0 0;padding-left:17px}.note li{margin-bottom:4px}
+
+.act{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ac{border:1px solid var(--line);border-radius:13px;padding:17px;background:#f7fafa}
+.ac .r{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;
+padding:3px 9px;border-radius:20px;margin-bottom:9px}
+.ac.p1 .r{background:#fae0d9;color:#a63d24}
+.ac.p2 .r{background:#fbedd6;color:#94651b}
+.ac.p3 .r{background:#dcedf0;color:#0a5b62}
+.ac h4{margin:0 0 6px;font-size:14.5px;font-weight:600}
+.ac p{margin:0;font-size:12.5px;color:var(--mut);line-height:1.6}
+.ac .imp{margin-top:11px;padding-top:10px;border-top:1px dashed var(--line);font-size:12px}
+.ac .imp b{color:var(--tld);font-size:15px}
+.foot{text-align:center;color:var(--mut);font-size:11px;margin-top:28px;line-height:1.6}
+@media(max-width:960px){.kpis,.vgrid{grid-template-columns:repeat(2,1fr)}
+.g2,.g2e,.act{grid-template-columns:1fr}h1{font-size:23px}}
+@media(max-width:560px){body{padding:16px 11px 40px}.bar{grid-template-columns:104px 1fr 74px;gap:8px}
+.verdict h2{font-size:20px}.tblwrap{overflow-x:auto}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body><div class="wrap">
+
+<header class="head">
+ <div><p class="eb">การวิเคราะห์คอขวด · Bottleneck Analysis</p>
+ <h1>ระยะเวลารอคอยผู้ป่วยนอก — คอขวดอยู่ที่ไหน</h1>
+ <div class="sub">เส้นทาง: คัดกรอง → พบแพทย์ → หลังตรวจ → รับยา · จำแนกรายแผนกและระดับความเร่งด่วน</div></div>
+ <div class="hmeta"><span class="bg mono" id="mv"></span>ครั้งการรับบริการ<br>
+ <b class="mono" id="md"></b> หน่วยงาน · เวลารอรวม <b class="mono" id="mb"></b> ชม.</div>
+</header>
+
+<section class="verdict">
+ <div class="vl">ข้อสรุปหลัก</div>
+ <h2 id="vh"></h2>
+ <p id="vp"></p>
+ <div class="vgrid" id="vg"></div>
+</section>
+
+<section class="kpis" id="kpis"></section>
+
+<div class="g2">
+ <section class="card">
+  <h3>คอขวดระดับขั้นตอน</h3>
+  <p class="d">เวลาเฉลี่ยถ่วงน้ำหนักต่อผู้ป่วย 1 ราย และสัดส่วนภาระเวลารวมทั้งโรงพยาบาล</p>
+  <div id="sbars"></div>
+ </section>
+ <section class="card">
+  <h3>ภาระเวลารอสะสมรายแผนก</h3>
+  <p class="d">Pareto — แผนกไม่กี่แห่งกินเวลารอเกือบทั้งหมด</p>
+  <div id="pareto"></div>
+ </section>
+</div>
+
+<section class="card">
+ <h3>จัดอันดับหน่วยงาน — ภาระเวลารอรวม</h3>
+ <p class="d">เรียงตาม person-hours ที่ผู้ป่วยเสียไปกับการรอ · แถวไฮไลต์คือกลุ่มที่ต้องแก้ก่อน</p>
+ <div class="tblwrap"><table id="dtb"><thead><tr>
+  <th>#</th><th>หน่วยงาน</th><th class="n">ครั้ง</th><th>สัดส่วนภาระ</th>
+  <th class="n">รอคัดกรอง</th><th class="n">รอแพทย์</th><th class="n">หลังตรวจ</th><th class="n">รับยา</th>
+  <th class="n">เวลารวม</th><th class="n">ชม.รวม</th><th class="n">%สะสม</th>
+ </tr></thead><tbody></tbody></table></div>
+</section>
+
+<section class="card">
+ <h3>เทียบภายในองค์กร — จุดคัดกรองทำได้ต่างกันถึง 10 เท่า</h3>
+ <p class="d">เวลารอคัดกรองเฉลี่ย (นาที) ของแต่ละจุด · ARI คือต้นแบบที่มีอยู่แล้วในโรงพยาบาลเดียวกัน</p>
+ <div id="bench"></div>
+</section>
+
+<div class="g2e">
+ <section class="card">
+  <h3>ระดับความเร่งด่วน (Triage)</h3>
+  <p class="d">เวลารอเฉลี่ยจำแนกตาม priority — ตรวจว่าระบบคัดแยกทำงานจริงหรือไม่</p>
+  <div class="tblwrap"><table id="ptb"><thead><tr>
+   <th>ระดับ</th><th class="n">ครั้ง</th><th class="n">รอคัดกรอง</th><th class="n">รอแพทย์</th><th class="n">เวลารวม</th>
+  </tr></thead><tbody></tbody></table></div>
+ </section>
+ <section class="card">
+  <h3>ภายในคลินิก NCD แยกตามความเร่งด่วน</h3>
+  <p class="d">ผู้ป่วยฉุกเฉินในคลินิก NCD ใช้เวลารวม<b>มากกว่า</b>ผู้ป่วยที่รอได้</p>
+  <div class="tblwrap"><table id="ntb"><thead><tr>
+   <th>ระดับ</th><th class="n">ครั้ง</th><th class="n">รอคัดกรอง</th><th class="n">เวลารวม</th>
+  </tr></thead><tbody></tbody></table></div>
+ </section>
+</div>
+
+<div class="flag" id="flag"></div>
+
+<section class="card">
+ <h3>ขนาดโอกาส — ถ้าแก้ที่ NCD จุดคัดกรอง</h3>
+ <p class="d">ประมาณการเวลาที่ผู้ป่วยได้คืน หากลดเวลารอคัดกรองของคลินิก NCD ลงตามเป้าหมาย</p>
+ <div id="scen"></div>
+</section>
+
+<section class="card">
+ <h3>ข้อเสนอเพื่อพิจารณาในที่ประชุม</h3>
+ <p class="d">เรียงตามผลกระทบต่อเวลารอรวม เทียบกับความยากในการดำเนินการ</p>
+ <div class="act" id="act"></div>
+</section>
+
+<div class="note">
+ <b>ข้อจำกัดของข้อมูลที่ควรแจ้งในที่ประชุม</b>
+ <ul>
+  <li>ตัวเลขทั้งหมดเป็น<b>ค่าเฉลี่ย (mean)</b> ตามที่ระบบส่งออกมา ซึ่งไวต่อค่าผิดปกติ — ค่ามัธยฐานจริงน่าจะต่ำกว่านี้ ควรขอ median เพิ่มก่อนตั้งเป็น KPI</li>
+  <li>"เวลารอคัดกรอง" นับจาก<b>เวลาที่ผู้ป่วยมาถึง/ลงทะเบียน</b> จึงรวมเวลาที่ผู้ป่วยมารอก่อนคลินิกเปิดด้วย ไม่ใช่ความล่าช้าของเจ้าหน้าที่ทั้งหมด</li>
+  <li>มีผู้ป่วย <span class="mono" id="nm"></span> ครั้งที่ไม่มีเวลารวม (ไม่จบ flow หรือบันทึกไม่ครบ) โดยเฉพาะห้องคลอดและ ER ซึ่งเป็นธรรมชาติของหน่วยงาน</li>
+  <li>ยังไม่มีมิติ "วันในสัปดาห์" และ "ช่วงเวลาของวัน" ในชุดข้อมูลนี้ ซึ่งจำเป็นต่อการวางแผนกำลังคน</li>
+ </ul>
+</div>
+
+<p class="foot">แหล่งข้อมูล: R9_Service_time_ptk (Summary · by Priority · by Dep×Priority)<br>
+เอกสารประกอบการประชุมเชิงวิเคราะห์ — ควรตรวจสอบร่วมกับบริบทหน้างานก่อนตัดสินใจ</p>
+</div>
+
+<script>
+const D={"meta": {"visits": 67264, "depts": 31, "total_avg": 185.9, "wait_avg": 180.1, "serve_avg": 6.3, "wait_pct": 96.6, "burden_hours": 201933, "missing": 2291}, "stages": [{"key": "avg_wait_screen", "label": "รอคัดกรอง", "kind": "wait", "avg": 76.2, "hours": 85402, "share": 40.9}, {"key": "avg_screen_time", "label": "คัดกรอง", "kind": "serve", "avg": 3.9, "hours": 4398, "share": 2.1}, {"key": "avg_wait_doctor", "label": "รอพบแพทย์", "kind": "wait", "avg": 58.8, "hours": 65922, "share": 31.5}, {"key": "avg_doctor_time", "label": "แพทย์ตรวจ", "kind": "serve", "avg": 2.4, "hours": 2710, "share": 1.3}, {"key": "avg_wait_rx", "label": "หลังตรวจ → ใบสั่งยา", "kind": "wait", "avg": 27.1, "hours": 30376, "share": 14.5}, {"key": "avg_rx_time", "label": "รอรับยา", "kind": "wait", "avg": 18.0, "hours": 20232, "share": 9.7}], "depts": [{"name": "ซักประวัติ(NCD)", "visits": 23850, "w_scr": 148.4, "w_dr": 64.9, "w_rx": 30.5, "s_rx": 19.5, "total": 272.3, "hours": 104639, "share": 51.8, "cum": 51.8}, {"name": "ซักประวัติ(OPD)", "visits": 31382, "w_scr": 36.8, "w_dr": 56.1, "w_rx": 24.9, "s_rx": 17.9, "total": 138.8, "hours": 70988, "share": 35.2, "cum": 87.0}, {"name": "ห้องตรวจระบบทางเดินหายใจ(ARI)", "visits": 6935, "w_scr": 14.1, "w_dr": 38.5, "w_rx": 28.9, "s_rx": 12.3, "total": 100.4, "hours": 10846, "share": 5.4, "cum": 92.3}, {"name": "ซักประวัติคลินิกจิตเวช", "visits": 1072, "w_scr": 66.5, "w_dr": 95.8, "w_rx": 14.0, "s_rx": 31.7, "total": 213.3, "hours": 3716, "share": 1.8, "cum": 94.2}, {"name": "ซักประวัติคลินิกวาร์ฟารีน", "visits": 486, "w_scr": 134.6, "w_dr": 68.2, "w_rx": 19.9, "s_rx": 17.2, "total": 248.1, "hours": 1943, "share": 1.0, "cum": 95.1}, {"name": "ซักประวัติระบบทางเดินหายใจ(ARI)", "visits": 788, "w_scr": 17.0, "w_dr": 50.2, "w_rx": 30.1, "s_rx": 11.4, "total": 115.1, "hours": 1427, "share": 0.7, "cum": 95.9}, {"name": "ซักประวัติคลินิก Asthma", "visits": 375, "w_scr": 94.5, "w_dr": 93.5, "w_rx": 16.0, "s_rx": 23.7, "total": 233.7, "hours": 1423, "share": 0.7, "cum": 96.6}, {"name": "ซักประวัติ(ER)", "visits": 636, "w_scr": 36.2, "w_dr": 48.6, "w_rx": 25.3, "s_rx": 21.4, "total": 128.2, "hours": 1394, "share": 0.7, "cum": 97.2}, {"name": "ซักประวัติคลินิก COPD", "visits": 260, "w_scr": 108.6, "w_dr": 106.0, "w_rx": 13.2, "s_rx": 17.7, "total": 254.8, "hours": 1064, "share": 0.5, "cum": 97.8}, {"name": "ซักประวัติSYM", "visits": 308, "w_scr": 60.3, "w_dr": 119.9, "w_rx": 12.8, "s_rx": 14.1, "total": 213.5, "hours": 1063, "share": 0.5, "cum": 98.3}, {"name": "ซักประวัติส่งเสริมสุขภาพ", "visits": 358, "w_scr": 39.2, "w_dr": 77.2, "w_rx": 20.1, "s_rx": 12.2, "total": 154.0, "hours": 887, "share": 0.4, "cum": 98.7}, {"name": "คลิกนิกให้บริการส่งเสริมสุขภาพ", "visits": 201, "w_scr": 87.4, "w_dr": 54.6, "w_rx": 38.3, "s_rx": 14.2, "total": 204.6, "hours": 652, "share": 0.3, "cum": 99.1}, {"name": "ซักประวัติทันตกรรม", "visits": 154, "w_scr": 131.9, "w_dr": 29.4, "w_rx": 29.3, "s_rx": 17.4, "total": 213.4, "hours": 534, "share": 0.3, "cum": 99.3}, {"name": "ห้องตรวจTelemed", "visits": 63, "w_scr": 48.4, "w_dr": 106.3, "w_rx": 84.5, "s_rx": 44.0, "total": 257.6, "hours": 297, "share": 0.1, "cum": 99.5}, {"name": "ซักประวัติคลินิกวัณโรค", "visits": 63, "w_scr": 44.2, "w_dr": 90.3, "w_rx": 36.0, "s_rx": 23.2, "total": 208.2, "hours": 203, "share": 0.1, "cum": 99.6}, {"name": "คลินิกกายภาพบำบัด", "visits": 60, "w_scr": 39.4, "w_dr": 38.9, "w_rx": 66.0, "s_rx": 19.4, "total": 162.1, "hours": 164, "share": 0.1, "cum": 99.7}, {"name": "ห้องบัตร", "visits": 42, "w_scr": 48.7, "w_dr": 97.0, "w_rx": 21.9, "s_rx": 20.9, "total": 195.7, "hours": 132, "share": 0.1, "cum": 99.7}, {"name": "LR ห้องคลอด", "visits": 96, "w_scr": 35.5, "w_dr": 25.7, "w_rx": 15.1, "s_rx": 6.0, "total": 123.1, "hours": 132, "share": 0.1, "cum": 99.8}, {"name": "หน้าห้องตรวจโรค", "visits": 24, "w_scr": 67.7, "w_dr": 66.1, "w_rx": 14.1, "s_rx": 54.0, "total": 195.2, "hours": 81, "share": 0.0, "cum": 99.8}, {"name": "แพทย์แผนไทย", "visits": 33, "w_scr": 68.0, "w_dr": 21.0, "w_rx": 26.8, "s_rx": 18.1, "total": 138.7, "hours": 74, "share": 0.0, "cum": 99.9}, {"name": "ห้องจ่ายยาNCD", "visits": 12, "w_scr": 190.3, "w_dr": 92.7, "w_rx": 12.8, "s_rx": 9.2, "total": 315.8, "hours": 61, "share": 0.0, "cum": 99.9}, {"name": "จุดพิเศษ_รณรง(สิทธิ์ PP)", "visits": 15, "w_scr": 27.6, "w_dr": 144.6, "w_rx": 9.5, "s_rx": 2.0, "total": 68.5, "hours": 46, "share": 0.0, "cum": 99.9}, {"name": "คลินิคหอบหืด", "visits": 9, "w_scr": 97.3, "w_dr": 95.3, "w_rx": 37.3, "s_rx": 33.5, "total": 263.0, "hours": 40, "share": 0.0, "cum": 99.9}, {"name": "ห้องตรวจโรคคลินิกวัณโรค", "visits": 9, "w_scr": 50.0, "w_dr": 47.7, "w_rx": 48.7, "s_rx": 19.3, "total": 185.3, "hours": 25, "share": 0.0, "cum": 99.9}, {"name": "ห้องตรวจโรคคลินิกจิตเวช", "visits": 6, "w_scr": 83.8, "w_dr": 94.0, "w_rx": 7.0, "s_rx": 27.0, "total": 219.5, "hours": 21, "share": 0.0, "cum": 100.0}, {"name": "ห้องตรวจโรคคลินิกวาร์ฟารีน", "visits": 6, "w_scr": 115.5, "w_dr": 44.5, "w_rx": 15.5, "s_rx": 20.5, "total": 209.8, "hours": 20, "share": 0.0, "cum": 100.0}, {"name": "ห้องตรวจโรคคลินิกAshma-COPD", "visits": 6, "w_scr": 78.5, "w_dr": 87.0, "w_rx": 8.5, "s_rx": 19.0, "total": 202.0, "hours": 19, "share": 0.0, "cum": 100.0}, {"name": "ห้องตรวจโรค 1", "visits": 6, "w_scr": 80.0, "w_dr": 49.0, "w_rx": 32.0, "s_rx": 19.0, "total": 179.0, "hours": 18, "share": 0.0, "cum": 100.0}, {"name": "ห้องตรวจโรคSYM", "visits": 3, "w_scr": 68.0, "w_dr": 81.0, "w_rx": 8.0, "s_rx": 13.0, "total": 180.0, "hours": 8, "share": 0.0, "cum": 100.0}, {"name": "คลินิกPalliative care", "visits": 3, "w_scr": 68.0, "w_dr": 70.0, "w_rx": 7.0, "s_rx": 16.0, "total": 171.0, "hours": 8, "share": 0.0, "cum": 100.0}, {"name": "คลินิกผู้สูงอายุ", "visits": 3, "w_scr": 16.7, "w_dr": 112.0, "w_rx": 17.0, "s_rx": 12.0, "total": 161.0, "hours": 8, "share": 0.0, "cum": 100.0}], "priority": [{"name": "Non Urgency (รอได้)", "visits": 55280, "w_scr": 80.4, "w_dr": 59.6, "w_rx": 25.1, "s_rx": 16.7, "total": 188.7}, {"name": "Semi Urgency (ด่วน)", "visits": 7024, "w_scr": 69.3, "w_dr": 56.0, "w_rx": 36.5, "s_rx": 20.8, "total": 190.9}, {"name": "Urgency (ด่วนมาก)", "visits": 3622, "w_scr": 29.1, "w_dr": 47.9, "w_rx": 39.1, "s_rx": 34.0, "total": 151.1}, {"name": "Emergency (ฉุกเฉินเร่งด่วน)", "visits": 839, "w_scr": 55.7, "w_dr": 62.0, "w_rx": 46.0, "s_rx": 40.2, "total": 203.6}, {"name": "ไม่ระบุ triage", "visits": 465, "w_scr": 86.1, "w_dr": 82.8, "w_rx": 18.0, "s_rx": 21.3, "total": 218.9}, {"name": "Resuscitate (กู้ชีพทันที)", "visits": 34, "w_scr": 47.6, "w_dr": 58.2, "w_rx": 36.0, "s_rx": 17.4, "total": 170.2}], "ncd_priority": [{"name": "Non Urgency (รอได้)", "visits": 21078, "w_scr": 148.8, "total": 270.9}, {"name": "Semi Urgency (ด่วน)", "visits": 2316, "w_scr": 147.2, "total": 283.3}, {"name": "Emergency (ฉุกเฉินเร่งด่วน)", "visits": 200, "w_scr": 116.3, "total": 307.8}, {"name": "ไม่ระบุ triage", "visits": 142, "w_scr": 162.5, "total": 254.7}, {"name": "Urgency (ด่วนมาก)", "visits": 110, "w_scr": 128.1, "total": 288.5}, {"name": "Resuscitate (กู้ชีพทันที)", "visits": 4, "w_scr": 147.0, "total": 266.0}], "bench": [{"name": "ซักประวัติ(NCD)", "w_scr": 148.4, "total": 272.3, "visits": 23850}, {"name": "ซักประวัติคลินิกวาร์ฟารีน", "w_scr": 134.6, "total": 248.1, "visits": 486}, {"name": "ซักประวัติ(OPD)", "w_scr": 36.8, "total": 138.8, "visits": 31382}, {"name": "ซักประวัติ(ER)", "w_scr": 36.2, "total": 128.2, "visits": 636}, {"name": "ห้องตรวจระบบทางเดินหายใจ(ARI)", "w_scr": 14.1, "total": 100.4, "visits": 6935}], "scenarios": [{"target": 120, "hours": 11285, "share": 5.6, "newtotal": 244}, {"target": 90, "hours": 23210, "share": 11.5, "newtotal": 214}, {"target": 60, "hours": 35135, "share": 17.4, "newtotal": 184}], "ncd": {"visits": 23850, "w_scr": 148.4, "share": 51.8, "scr_share_all": 29.2, "total": 272.3, "vol_share": 35.5}};
+const f=n=>n==null?'—':(Math.round(n*10)/10).toLocaleString('en-US');
+const f0=n=>n==null?'—':Math.round(n).toLocaleString('en-US');
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+
+document.getElementById('mv').textContent=D.meta.visits.toLocaleString();
+document.getElementById('md').textContent=D.meta.depts;
+document.getElementById('mb').textContent=f0(D.meta.burden_hours);
+document.getElementById('nm').textContent=D.meta.missing.toLocaleString();
+
+const ncd=D.ncd, scr=D.stages[0];
+document.getElementById('vh').textContent=
+ 'คอขวดใหญ่ที่สุดคือ "การรอคัดกรอง" และหน่วยงานที่เป็นต้นเหตุหลักคือคลินิก NCD';
+document.getElementById('vp').textContent=
+ 'คลินิก NCD มีผู้ป่วย '+ncd.vol_share+'% ของทั้งโรงพยาบาล แต่กินเวลารอถึง '+ncd.share+'% '
+ +'โดยลำพัง “เวลารอคัดกรองของ NCD” จุดเดียว คิดเป็น '+ncd.scr_share_all+'% ของเวลารอทั้งหมดของทั้งโรงพยาบาล '
+ +'— แก้จุดนี้จุดเดียวได้ผลมากกว่าแก้ทุกจุดอื่นรวมกัน';
+
+const vg=document.getElementById('vg');
+[{n:D.meta.wait_pct+'<span class="u">%</span>',t:'ของเวลาที่ผู้ป่วยอยู่ในโรงพยาบาล คือการ "รอ" ไม่ใช่การรับบริการ'},
+ {n:f(scr.avg)+'<span class="u"> นาที</span>',t:'เวลารอคัดกรองเฉลี่ย — ขั้นตอนที่กินเวลามากที่สุด ('+scr.share+'% ของเวลาทั้งหมด)'},
+ {n:ncd.share+'<span class="u">%</span>',t:'ของภาระเวลารอทั้งหมด มาจากคลินิก NCD เพียงแผนกเดียว'},
+ {n:f(ncd.w_scr)+'<span class="u"> นาที</span>',t:'เวลารอคัดกรองของ NCD — มากกว่าคลินิก ARI ถึง 10 เท่า'}
+].forEach(v=>vg.appendChild(el('div','vg','<div class="n mono">'+v.n+'</div><div class="t">'+v.t+'</div>')));
+
+const K=document.getElementById('kpis');
+[{c:'',l:'เวลารวมเฉลี่ยต่อครั้ง',v:f(D.meta.total_avg),u:'นาที',s:'≈ '+(D.meta.total_avg/60).toFixed(1)+' ชั่วโมง ต่อการมา 1 ครั้ง'},
+ {c:'a',l:'เวลารอคอยเฉลี่ย',v:f(D.meta.wait_avg),u:'นาที',s:'คิดเป็น '+D.meta.wait_pct+'% ของเวลาทั้งหมด'},
+ {c:'g',l:'เวลารับบริการจริงเฉลี่ย',v:f(D.meta.serve_avg),u:'นาที',s:'คัดกรอง + แพทย์ตรวจ รวมกัน'},
+ {c:'c',l:'เวลารอสะสมทั้งระบบ',v:f0(D.meta.burden_hours/1000),u:'พันชั่วโมง',s:'เวลาที่ผู้ป่วยเสียไปกับการรอทั้งหมด'}
+].forEach(k=>K.appendChild(el('div','kpi '+k.c,
+ '<div class="l">'+k.l+'</div><div class="v mono">'+k.v+'<span class="u">'+k.u+'</span></div><div class="s">'+k.s+'</div>')));
+
+// stage bars
+(function(){const w=document.getElementById('sbars');
+const mx=Math.max(...D.stages.map(s=>s.avg));
+D.stages.forEach(s=>{
+ const col=s.kind==='serve'?'var(--gr)':(s.avg>50?'var(--co)':(s.avg>20?'var(--am)':'#8ec2c6'));
+ const tg=s.kind==='serve'?'<span class="tg s">บริการ</span>':'<span class="tg w">รอ</span>';
+ w.appendChild(el('div','bar','<div class="bl">'+s.label+tg+'</div>'
+ +'<div class="bt"><div class="bf" style="width:'+(s.avg/mx*100)+'%;background:'+col+'"></div></div>'
+ +'<div class="bv mono">'+f(s.avg)+'<span class="sm"> น. · '+s.share+'%</span></div>'));});})();
+
+// pareto
+(function(){const top=D.depts.slice(0,8);
+const W=470,H=260,pd={l:34,r:34,t:16,b:64},NS='http://www.w3.org/2000/svg';
+const s=document.createElementNS(NS,'svg');s.setAttribute('viewBox','0 0 '+W+' '+H);
+s.setAttribute('class','chart');s.setAttribute('width','100%');
+document.getElementById('pareto').appendChild(s);
+const mk=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e};
+const ch=H-pd.t-pd.b,bw=(W-pd.l-pd.r)/top.length,mx=top[0].share;
+for(let i=0;i<=4;i++){const y=pd.t+ch-ch*i/4;s.appendChild(mk('line',{x1:pd.l,y1:y,x2:W-pd.r,y2:y,class:'gl'}));
+ const t=mk('text',{x:pd.l-5,y:y+3,class:'ax','text-anchor':'end'});t.textContent=Math.round(mx*i/4)+'%';s.appendChild(t)}
+let pts=[];
+top.forEach((d,i)=>{const h=d.share/mx*ch,x=pd.l+i*bw+bw*.18,y=pd.t+ch-h;
+ s.appendChild(mk('rect',{x:x,y:y,width:bw*.64,height:Math.max(h,1),rx:3,fill:i<2?'var(--co)':'#7fb2b7'}));
+ if(d.share>2){const t=mk('text',{x:x+bw*.32,y:y-5,class:'bl2','text-anchor':'middle'});t.textContent=d.share+'%';s.appendChild(t)}
+ pts.push([pd.l+i*bw+bw*.5,pd.t+ch-d.cum/100*ch]);
+ const nm=d.name.replace('ซักประวัติ','').replace('ห้องตรวจ','');
+ const g=mk('text',{x:x+bw*.32,y:H-pd.b+16,class:'ax','text-anchor':'end',transform:'rotate(-38 '+(x+bw*.32)+' '+(H-pd.b+16)+')'});
+ g.textContent=nm.length>15?nm.slice(0,15)+'…':nm;s.appendChild(g)});
+s.appendChild(mk('polyline',{points:pts.map(p=>p.join(',')).join(' '),fill:'none',stroke:'var(--tld)','stroke-width':1.8}));
+pts.forEach(p=>s.appendChild(mk('circle',{cx:p[0],cy:p[1],r:3,fill:'var(--tld)'})));
+const lb=mk('text',{x:W-pd.r,y:pd.t+8,class:'ax','text-anchor':'end'});lb.textContent='เส้น = % สะสม';s.appendChild(lb);})();
+
+// dept table
+(function(){const tb=document.querySelector('#dtb tbody');
+const rows=D.depts.filter(d=>d.visits>=150);const mv=rows[0].share;
+rows.forEach((d,i)=>{
+ const cl=v=>v>90?'hot':(v>45?'warn':'ok');
+ const tr=el('tr',i<3?'hi':null,
+ '<td class="mono" style="color:var(--mut)">'+(i+1)+'</td>'
+ +'<td>'+d.name+'</td><td class="n mono">'+d.visits.toLocaleString()+'</td>'
+ +'<td><span class="vb" style="width:'+(d.share/mv*90)+'px"></span> <span class="mono" style="font-size:11px;color:var(--mut)">'+d.share+'%</span></td>'
+ +'<td class="n mono '+cl(d.w_scr)+'">'+f(d.w_scr)+'</td>'
+ +'<td class="n mono '+cl(d.w_dr)+'">'+f(d.w_dr)+'</td>'
+ +'<td class="n mono" style="color:var(--mut)">'+f(d.w_rx)+'</td>'
+ +'<td class="n mono" style="color:var(--mut)">'+f(d.s_rx)+'</td>'
+ +'<td class="n mono" style="font-weight:600">'+f(d.total)+'</td>'
+ +'<td class="n mono" style="color:var(--mut)">'+f0(d.hours)+'</td>'
+ +'<td class="n mono" style="color:var(--mut)">'+d.cum+'%</td>');
+ tb.appendChild(tr)})})();
+
+// bench
+(function(){const w=document.getElementById('bench');
+const mx=Math.max(...D.bench.map(b=>b.w_scr));
+D.bench.forEach(b=>{const col=b.w_scr>100?'var(--co)':(b.w_scr>50?'var(--am)':'var(--gr)');
+ w.appendChild(el('div','bar','<div class="bl">'+b.name+'</div>'
+ +'<div class="bt"><div class="bf" style="width:'+(b.w_scr/mx*100)+'%;background:'+col+'"></div></div>'
+ +'<div class="bv mono">'+f(b.w_scr)+'<span class="sm"> น.</span></div>'))})})();
+
+// priority tables
+(function(){const tb=document.querySelector('#ptb tbody');
+D.priority.forEach(p=>{const cl=v=>v>70?'hot':(v>40?'warn':'ok');
+ tb.appendChild(el('tr',null,'<td>'+p.name+'</td><td class="n mono">'+p.visits.toLocaleString()+'</td>'
+ +'<td class="n mono '+cl(p.w_scr)+'">'+f(p.w_scr)+'</td>'
+ +'<td class="n mono '+cl(p.w_dr)+'">'+f(p.w_dr)+'</td>'
+ +'<td class="n mono" style="font-weight:600">'+f(p.total)+'</td>'))});
+const tn=document.querySelector('#ntb tbody');
+D.ncd_priority.forEach(p=>{
+ tn.appendChild(el('tr',null,'<td>'+p.name+'</td><td class="n mono">'+p.visits.toLocaleString()+'</td>'
+ +'<td class="n mono hot">'+f(p.w_scr)+'</td>'
+ +'<td class="n mono" style="font-weight:600">'+f(p.total)+'</td>'))})})();
+
+// flag
+document.getElementById('flag').innerHTML=
+ '<b>ประเด็นที่ต้องถกในที่ประชุม — ระบบคัดแยกความเร่งด่วนยังไม่สะท้อนในเวลารอจริง</b><br>'
+ +'ผู้ป่วยระดับ Emergency รอคัดกรองเฉลี่ย '+f(D.priority.find(p=>p.name.includes('Emergency')).w_scr)+' นาที '
+ +'และมีเวลารวม '+f(D.priority.find(p=>p.name.includes('Emergency')).total)+' นาที ซึ่ง<b>นานกว่า</b>ผู้ป่วยระดับ Urgency '
+ +'('+f(D.priority.find(p=>p.name.includes('Urgency (ด่วนมาก')).total)+' นาที) '
+ +'และในคลินิก NCD ผู้ป่วย Emergency ใช้เวลารวมถึง '+f(D.ncd_priority.find(p=>p.name.includes('Emergency')).total)+' นาที '
+ +'มากกว่าผู้ป่วยที่ "รอได้" — ควรตรวจสอบว่าเป็นความคลาดเคลื่อนของการบันทึก triage หรือคิวจริงไม่ได้ถูกจัดลำดับตามความเร่งด่วน';
+
+// scenarios
+(function(){const w=document.getElementById('scen');
+const g=el('div','act');
+D.scenarios.forEach((s,i)=>{
+ g.appendChild(el('div','ac p'+(i+1),
+ '<span class="r">เป้าหมาย '+s.target+' นาที</span>'
+ +'<h4>ลดเวลารอคัดกรอง NCD เหลือ '+s.target+' นาที</h4>'
+ +'<p>จากปัจจุบัน '+f(D.ncd.w_scr)+' นาที · เวลารวมของผู้ป่วย NCD จะลดจาก '+f(D.ncd.total)+' เหลือประมาณ '+s.newtotal+' นาที</p>'
+ +'<div class="imp">คืนเวลาให้ผู้ป่วย <b class="mono">'+f0(s.hours)+' ชม.</b> <span style="color:var(--mut)">('+s.share+'% ของเวลารอทั้งระบบ)</span></div>'))});
+w.appendChild(g)})();
+
+// actions
+(function(){const w=document.getElementById('act');
+[{c:'p1',r:'ลำดับ 1 · ผลกระทบสูงสุด',h:'จัดสล็อตเวลานัดคลินิก NCD',
+  p:'ปัจจุบันผู้ป่วย NCD ถูกนัดมากระจุกช่วงเช้าตรู่ แล้วรอจนคลินิกเปิด ทำให้เวลารอคัดกรองพุ่งถึง '+f(D.ncd.w_scr)+' นาที การกระจายนัดเป็นช่วงเวลา (เช่น 07:00 / 08:30 / 10:00) และแจ้งเวลานัดที่เจาะจง คือมาตรการที่ต้นทุนต่ำที่สุดแต่ได้ผลมากที่สุด',
+  i:'เป้า: ลดเวลารอคัดกรอง NCD ลงครึ่งหนึ่ง'},
+ {c:'p2',r:'ลำดับ 2 · ถอดบทเรียนภายใน',h:'นำรูปแบบคลินิก ARI มาปรับใช้',
+  p:'คลินิก ARI ทำเวลารอคัดกรองได้ '+f(D.bench[D.bench.length-1].w_scr)+' นาที และเวลารวมเพียง '+f(D.bench[D.bench.length-1].total)+' นาที ด้วยปริมาณผู้ป่วยกว่า 6,900 ครั้ง ควรตั้งทีมถอดกระบวนการว่าจุดนี้ต่างจาก NCD อย่างไร แล้วขยายผล',
+  i:'ต้นแบบที่พิสูจน์แล้วในองค์กรเดียวกัน'},
+ {c:'p3',r:'ลำดับ 3 · ตรวจสอบระบบ',h:'ทบทวนการบันทึกและการใช้ triage',
+  p:'ผู้ป่วยฉุกเฉินไม่ได้รอสั้นกว่าผู้ป่วยทั่วไปอย่างที่ควรเป็น ต้องแยกให้ชัดว่าเป็นปัญหาการบันทึกข้อมูล หรือคิวหน้างานไม่ได้จัดลำดับตามความเร่งด่วนจริง ก่อนสรุปเป็นปัญหาเชิงคุณภาพบริการ',
+  i:'เป็นความเสี่ยงด้านความปลอดภัยผู้ป่วย'}
+].forEach(a=>w.appendChild(el('div','ac '+a.c,
+ '<span class="r">'+a.r+'</span><h4>'+a.h+'</h4><p>'+a.p+'</p><div class="imp">'+a.i+'</div>')))})();
+</script></body></html>
