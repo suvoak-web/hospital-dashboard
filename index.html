@@ -65,45 +65,20 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
     <div id="date-display" style="font-size:13px; opacity:0.9;"></div>
   </div>
 </header>
-<!-- SIDEBAR -->
 <aside id="sidebar" class="sidebar">
   <a href="index.html" class="nav-item active">🏠 หน้าหลัก</a>
   <a href="kpi_dashboard.html" class="nav-item">📊 KPI Dashboard</a>
   <a href="fin_dashboard.html" class="nav-item">💰 KPI การเงิน</a>
+  <a href="uc_transfer_dashboard.html" class="nav-item">🏦 เงินโอน UC</a>
   <a href="fin_projection.html" class="nav-item">📈 Finance Projection</a>
   <a href="opwalkin.html" class="nav-item">💰 พึงรับ-พึงจ่าย</a>
   <a href="compare.html" class="nav-item">⏱ ระยะเวลารอคอย</a>
   <a href="bottleneck_dashboard.html" class="nav-item nav-sub">🔎 วิเคราะห์คอขวด</a>
   <a href="pcupayment.html" class="nav-item">💊 ยาและเวชภัณฑ์ รพ.สต.</a>
-  <div style="margin: 24px 12px 8px; padding-left: 12px; font-size: 13px; color: var(--muted); font-weight: 600;">🔗 ลิงก์ระบบภายนอก</div>
-  
-  <div class="dropdown">
-    <a href="#" onclick="toggleDropdown(this)" style="display:flex;align-items:center;gap:12px;padding:12px 24px;color:var(--muted);font-weight:600;">
-      📊 ติดตามตัวชี้วัด <span style="margin-left:auto;">▼</span>
-    </a>
-    <div class="dropdown-content" style="display:none;padding-left:40px;">
-      <a href="https://apikorat.moph.go.th/home/dashboard" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">ตัวชี้วัดสาธารณสุข โคราช</a>
-      <a href="https://hdc.moph.go.th/nma/public/main" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">HDC นครราชสีมา</a>
-      <a href="https://rabado.net/mat/" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">MAT Dashboard</a>
-      <a href="https://apikorat.moph.go.th/drug-delivery/dashboard" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">Drug Delivery</a>
-      <a href="https://www.r9health.net/servicetime/" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">ระยะเวลารอคอย R9</a>
-    </div>
-  </div>
-  <div class="dropdown">
-    <a href="#" onclick="toggleDropdown(this)" style="display:flex;align-items:center;gap:12px;padding:12px 24px;color:var(--muted);font-weight:600;">
-      🔧 ติดตามงานอื่นๆ <span style="margin-left:auto;">▼</span>
-    </a>
-    <div class="dropdown-content" style="display:none;padding-left:40px;">
-      <a href="https://smt.nhso.go.th/smtf/#/home/budget/summary" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">SMT งบประมาณ NHSO</a>
-      <a href="https://cmi.moph.go.th/" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">CMI กระทรวงสาธารณสุข</a>
-      <a href="https://mishos.nhso.go.th/mis_hos/#/dashboard" target="_blank" class="nav-item" style="padding:8px 24px;font-size:14px;">MIS HOS Dashboard</a>
-    </div>
-  </div>
 </aside>
 <div class="main-content">
   <div class="section-label">DASHBOARD ที่พร้อมใช้งาน</div>
   <div class="dash-grid">
-    <!-- 5 การ์ด (เหมือนเดิม) -->
     <a class="dash-card" href="fin_dashboard.html" style="border-top: 5px solid #1D6FA4;">
       <div style="display:flex; gap:16px;">
         <div style="font-size:42px;">📊</div>
@@ -117,20 +92,31 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
         </div>
       </div>
     </a>
+    <a class="dash-card" href="uc_transfer_dashboard.html" style="border-top: 5px solid #0F6E56;">
+      <div style="display:flex; gap:16px;">
+        <div style="font-size:42px;">🏦</div>
+        <div style="flex:1;">
+          <div style="font-size:17px; font-weight:700;">เงินโอน สปสช. 4 ปี</div>
+          <div style="margin:8px 0; font-size:14px; color:var(--muted);">UC ดำเนินงาน • OP/IP/PP • % เข้าบัญชี</div>
+          <div style="display:flex; gap:20px; font-size:15px;">
+            <div><span style="color:#16A34A; font-weight:700;">49.16M</span><br><small>UC เข้าบัญชี ปี 69*</small></div>
+            <div><span style="color:#DC2626; font-weight:700;">83.5%</span><br><small>IP เข้าบัญชี</small></div>
+          </div>
+        </div>
+      </div>
+    </a>
     <a class="dash-card" href="opwalkin.html" style="border-top: 5px solid #16A34A;">
       <div style="display:flex; gap:16px;">
         <div style="font-size:42px;">💰</div>
         <div style="flex:1;">
           <div style="font-size:17px; font-weight:700;">พึงรับ — พึงจ่าย OP Walk-in</div>
           <div style="margin-top:12px; display:flex; gap:24px;">
-            <div><div style="color:#166534; font-size:13px;">พึงรับรวม</div><div style="font-size:28px; font-weight:700; color:#16A34A;" id="receive-amount">691K</div></div>
-            <div><div style="color:#991B1B; font-size:13px;">พึงจ่ายรวม</div><div style="font-size:28px; font-weight:700; color:#DC2626;" id="pay-amount">2.64M</div></div>
+            <div><div style="color:#166534; font-size:13px;">พึงรับรวม</div><div style="font-size:28px; font-weight:700; color:#16A34A;">691K</div></div>
+            <div><div style="color:#991B1B; font-size:13px;">พึงจ่ายรวม</div><div style="font-size:28px; font-weight:700; color:#DC2626;">2.64M</div></div>
           </div>
         </div>
       </div>
     </a>
-
-    <!-- การ์ดระยะเวลารอคอย: ใช้ div เพราะมีลิงก์ 2 ปลายทางอยู่ข้างใน (ซ้อน <a> ใน <a> ไม่ได้) -->
     <div class="dash-card" style="border-top: 5px solid #D97706;">
       <a class="card-link" href="compare.html">
         <div style="display:flex; gap:16px;">
@@ -143,21 +129,16 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
         </div>
       </a>
       <a class="card-extra" href="bottleneck_dashboard.html">
-        <span>🔎 วิเคราะห์คอขวด — คลินิก NCD คิดเป็น 51.8% ของเวลารอ</span>
+        <span>🔎 วิเคราะห์คอขวด — คลินิก NCD 51.8%</span>
         <span class="arrow">→</span>
       </a>
     </div>
-
     <a class="dash-card" href="kpi_dashboard.html" style="border-top: 5px solid #DC2626;">
       <div style="display:flex; gap:16px;">
         <div style="font-size:42px;">📊</div>
         <div style="flex:1;">
           <div style="font-size:17px; font-weight:700;">ตัวชี้วัด KPI</div>
-          <div style="margin-top:8px;">
-            <span style="font-size:38px; font-weight:700; color:#DC2626;" id="kpi-bad">64</span>
-            <span style="font-size:15px; color:#991B1B;">ตัวชี้วัดไม่ผ่าน</span>
-          </div>
-          <div style="font-size:13px; color:#666;">ปีงบประมาณ 2569</div>
+          <div style="margin-top:8px;"><span style="font-size:38px; font-weight:700; color:#DC2626;">64</span> <span style="font-size:15px; color:#991B1B;">ตัวชี้วัดไม่ผ่าน</span></div>
         </div>
       </div>
     </a>
@@ -166,10 +147,7 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
         <div style="font-size:42px;">📈</div>
         <div style="flex:1;">
           <div style="font-size:17px; font-weight:700;">แนวโน้มการเงิน</div>
-          <div style="margin-top:12px;">
-            <div style="font-size:28px; font-weight:700; color:#1D6FA4;">15.0M</div>
-            <div style="font-size:14px; color:#166534;">ทรัพย์สุทธิ (บาท)</div>
-          </div>
+          <div style="margin-top:12px;"><div style="font-size:28px; font-weight:700; color:#1D6FA4;">15.0M</div><div style="font-size:14px; color:#166534;">ทรัพย์สุทธิ (บาท)</div></div>
         </div>
       </div>
     </a>
@@ -178,42 +156,13 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
         <div style="font-size:42px;">💊</div>
         <div style="flex:1;">
           <div style="font-size:17px; font-weight:700;">ยาและเวชภัณฑ์ รพ.สต.</div>
-          <div style="margin:8px 0; font-size:14px; color:var(--muted);">มูลค่าเบิก 5 แห่ง • ประมาณการงบ 2570+</div>
-          <div style="margin-top:12px;">
-            <div style="font-size:28px; font-weight:700; color:#7C3AED;">1.86M</div>
-            <div style="font-size:14px; color:#166534;">ฐานประมาณการ (บาท/ปี)</div>
-          </div>
+          <div style="margin-top:12px;"><div style="font-size:28px; font-weight:700; color:#7C3AED;">1.86M</div><div style="font-size:14px; color:#166534;">ฐานประมาณการ (บาท/ปี)</div></div>
         </div>
       </div>
     </a>
   </div>
-  <!-- ลิงก์ระบบภายนอก + ระบบภายใน -->
-  <div class="section-label" style="margin-top:40px;">ลิงก์ระบบภายนอก</div>
-  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap:20px;">
-    <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px;">
-      <div style="font-weight:700; margin-bottom:12px; color:var(--accent);">📊 ติดตามตัวชี้วัด</div>
-      <a href="https://apikorat.moph.go.th/home/dashboard" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">ตัวชี้วัดสาธารณสุข โคราช</a>
-      <a href="https://hdc.moph.go.th/nma/public/main" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">HDC นครราชสีมา</a>
-      <a href="https://rabado.net/mat/" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">MAT Dashboard</a>
-      <a href="https://apikorat.moph.go.th/drug-delivery/dashboard" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">Drug Delivery</a>
-      <a href="https://www.r9health.net/servicetime/" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">ระยะเวลารอคอย R9</a>
-    </div>
-    <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px;">
-      <div style="font-weight:700; margin-bottom:12px; color:var(--accent);">🔧 ติดตามงานอื่นๆ</div>
-      <a href="https://smt.nhso.go.th/smtf/#/home/budget/summary" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">SMT งบประมาณ NHSO</a>
-      <a href="https://cmi.moph.go.th/" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">CMI กระทรวงสาธารณสุข</a>
-      <a href="https://mishos.nhso.go.th/mis_hos/#/dashboard" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">MIS HOS Dashboard</a>
-    </div>
-    <!-- หมวดใหม่: ระบบติดตามภายใน -->
-    <div style="background:white; border:1px solid var(--border); border-radius:14px; padding:20px;">
-      <div style="font-weight:700; margin-bottom:12px; color:#16A34A;">🏠 ระบบติดตามภายใน</div>
-      <a href="https://intl.fusionsolar.huawei.com/uniportal/pvmswebsite/assets/build/cloud.html?app-id=smartpvms&instance-id=smartpvms&zone-id=region-7-f3c8137b-724d-4fc1-9e47-6dc6f75a22f0#/home/list" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">☀️ Solar Cell Monitor (Huawei)</a>
-      <a href="https://www.ami.pea.co.th/ami.portal/Account/Login" target="_blank" style="display:block; padding:8px 0; color:var(--text); text-decoration:none;">⚡ Meter AMI การไฟฟ้าส่วนภูมิภาค</a>
-    </div>
-  </div>
 </div>
 <script>
-// Clock + Functions
 function updateClock() {
   const now = new Date();
   const h = String(now.getHours()).padStart(2,'0');
@@ -223,10 +172,6 @@ function updateClock() {
 }
 setInterval(updateClock, 10000); updateClock();
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); }
-function toggleDropdown(el) {
-  const content = el.nextElementSibling;
-  content.style.display = content.style.display === 'block' ? 'none' : 'block';
-}
 </script>
 </body>
 </html>
