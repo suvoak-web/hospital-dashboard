@@ -7,16 +7,9 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 :root {
-  --bg: #F4F6F9;
-  --surface: #FFFFFF;
-  --border: #E2E8F0;
-  --text: #1A2332;
-  --muted: #64748B;
-  --accent: #1D6FA4;
-  --accent-dim: rgba(29,111,164,0.08);
-  --green: #16A34A;
-  --amber: #B45309;
-  --red: #DC2626;
+  --bg: #F4F6F9; --surface: #FFFFFF; --border: #E2E8F0; --text: #1A2332;
+  --muted: #64748B; --accent: #1D6FA4; --accent-dim: rgba(29,111,164,0.08);
+  --green: #16A34A; --amber: #B45309; --red: #DC2626;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: var(--text); font-family: 'Sarabun', sans-serif; font-size: 15px; line-height: 1.6; }
@@ -29,25 +22,10 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
 .nav-sub { font-size: 13.5px; font-weight: 500; padding: 9px 24px 9px 44px; margin: 2px 12px; }
 .main-content { margin-left: 260px; padding: 24px 28px; }
 .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-.dash-card {
-  background: white; border: 1px solid var(--border); border-radius: 14px;
-  padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-  text-decoration: none; color: var(--text); transition: all 0.2s;
-}
-.dash-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+.dash-card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); text-decoration: none; color: var(--text); }
 .card-link { display: block; text-decoration: none; color: inherit; }
-.card-extra {
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--border);
-  text-decoration: none; color: var(--amber); font-size: 14px; font-weight: 600;
-  border-radius: 8px; transition: background 0.15s;
-}
-.card-extra:hover { background: rgba(180,83,9,0.07); }
-.card-extra:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
-.card-extra .arrow { transition: transform 0.15s; }
-.card-extra:hover .arrow { transform: translateX(3px); }
+.card-extra { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--border); text-decoration: none; color: var(--amber); font-size: 14px; font-weight: 600; }
 .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
-@media (prefers-reduced-motion: reduce) { .dash-card, .card-extra, .card-extra .arrow { transition: none; } }
 </style>
 </head>
 <body>
@@ -80,85 +58,43 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
   <div class="section-label">DASHBOARD ที่พร้อมใช้งาน</div>
   <div class="dash-grid">
     <a class="dash-card" href="fin_dashboard.html" style="border-top: 5px solid #1D6FA4;">
-      <div style="display:flex; gap:16px;">
-        <div style="font-size:42px;">📊</div>
-        <div style="flex:1;">
-          <div style="font-size:17px; font-weight:700;">KPI การเงิน ปี 2569</div>
-          <div style="margin:8px 0; font-size:14px; color:var(--muted);">รายรับ - รายจ่าย • ขาดดุล • ความเสี่ยง</div>
-          <div style="display:flex; gap:20px; font-size:15px;">
-            <div><span style="color:#16A34A; font-weight:700;">76.99M</span><br><small>รายรับ</small></div>
-            <div><span style="color:#DC2626; font-weight:700;">82.80M</span><br><small>รายจ่าย</small></div>
-          </div>
-        </div>
-      </div>
+      <div style="display:flex; gap:16px;"><div style="font-size:42px;">📊</div>
+      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">KPI การเงิน ปี 2569</div>
+      <div style="margin:8px 0; font-size:14px; color:var(--muted);">รายรับ - รายจ่าย • ขาดดุล • ความเสี่ยง</div>
+      <div style="display:flex; gap:20px; font-size:15px;"><div><span style="color:#16A34A; font-weight:700;">76.99M</span><br><small>รายรับ</small></div><div><span style="color:#DC2626; font-weight:700;">82.80M</span><br><small>รายจ่าย</small></div></div></div></div>
     </a>
     <a class="dash-card" href="uc_transfer_dashboard.html" style="border-top: 5px solid #0F6E56;">
-      <div style="display:flex; gap:16px;">
-        <div style="font-size:42px;">🏦</div>
-        <div style="flex:1;">
-          <div style="font-size:17px; font-weight:700;">เงินโอน สปสช. 4 ปี</div>
-          <div style="margin:8px 0; font-size:14px; color:var(--muted);">UC ดำเนินงาน • OP/IP/PP • % เข้าบัญชี</div>
-          <div style="display:flex; gap:20px; font-size:15px;">
-            <div><span style="color:#16A34A; font-weight:700;">49.16M</span><br><small>UC เข้าบัญชี ปี 69*</small></div>
-            <div><span style="color:#DC2626; font-weight:700;">83.5%</span><br><small>IP เข้าบัญชี</small></div>
-          </div>
-        </div>
-      </div>
+      <div style="display:flex; gap:16px;"><div style="font-size:42px;">🏦</div>
+      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">เงินโอน สปสช. 4 ปี</div>
+      <div style="margin:8px 0; font-size:14px; color:var(--muted);">UC ดำเนินงาน • OP/IP/PP • % เข้าบัญชี</div>
+      <div style="display:flex; gap:20px; font-size:15px;"><div><span style="color:#16A34A; font-weight:700;">49.45M</span><br><small>UC เข้าบัญชี ปี 69*</small></div><div><span style="color:#DC2626; font-weight:700;">83.7%</span><br><small>IP เข้าบัญชี</small></div></div></div></div>
     </a>
     <a class="dash-card" href="opwalkin.html" style="border-top: 5px solid #16A34A;">
-      <div style="display:flex; gap:16px;">
-        <div style="font-size:42px;">💰</div>
-        <div style="flex:1;">
-          <div style="font-size:17px; font-weight:700;">พึงรับ — พึงจ่าย OP Walk-in</div>
-          <div style="margin-top:12px; display:flex; gap:24px;">
-            <div><div style="color:#166534; font-size:13px;">พึงรับรวม</div><div style="font-size:28px; font-weight:700; color:#16A34A;">691K</div></div>
-            <div><div style="color:#991B1B; font-size:13px;">พึงจ่ายรวม</div><div style="font-size:28px; font-weight:700; color:#DC2626;">2.64M</div></div>
-          </div>
-        </div>
-      </div>
+      <div style="display:flex; gap:16px;"><div style="font-size:42px;">💰</div>
+      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">พึงรับ — พึงจ่าย OP Walk-in</div>
+      <div style="margin-top:12px; display:flex; gap:24px;"><div><div style="color:#166534; font-size:13px;">พึงรับรวม</div><div style="font-size:28px; font-weight:700; color:#16A34A;">691K</div></div><div><div style="color:#991B1B; font-size:13px;">พึงจ่ายรวม</div><div style="font-size:28px; font-weight:700; color:#DC2626;">2.64M</div></div></div></div></div>
     </a>
     <div class="dash-card" style="border-top: 5px solid #D97706;">
-      <a class="card-link" href="compare.html">
-        <div style="display:flex; gap:16px;">
-          <div style="font-size:42px;">⏱</div>
-          <div style="flex:1;">
-            <div style="font-size:17px; font-weight:700;">เปรียบเทียบระยะเวลารอคอย</div>
-            <div style="margin-top:8px; font-size:14px; color:var(--muted);">อันดับที่ 4 จาก 33 รพ.ชุมชน</div>
-            <div style="margin-top:12px; font-size:15px;">เวลารวม <span style="font-weight:700; color:#1D6FA4;">182 นาที</span></div>
-          </div>
-        </div>
-      </a>
-      <a class="card-extra" href="bottleneck_dashboard.html">
-        <span>🔎 วิเคราะห์คอขวด — คลินิก NCD 51.8%</span>
-        <span class="arrow">→</span>
-      </a>
+      <a class="card-link" href="compare.html"><div style="display:flex; gap:16px;"><div style="font-size:42px;">⏱</div>
+      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">เปรียบเทียบระยะเวลารอคอย</div>
+      <div style="margin-top:8px; font-size:14px; color:var(--muted);">อันดับที่ 4 จาก 33 รพ.ชุมชน</div>
+      <div style="margin-top:12px; font-size:15px;">เวลารวม <span style="font-weight:700; color:#1D6FA4;">182 นาที</span></div></div></div></a>
+      <a class="card-extra" href="bottleneck_dashboard.html"><span>🔎 วิเคราะห์คอขวด — คลินิก NCD 51.8%</span><span class="arrow">→</span></a>
     </div>
     <a class="dash-card" href="kpi_dashboard.html" style="border-top: 5px solid #DC2626;">
-      <div style="display:flex; gap:16px;">
-        <div style="font-size:42px;">📊</div>
-        <div style="flex:1;">
-          <div style="font-size:17px; font-weight:700;">ตัวชี้วัด KPI</div>
-          <div style="margin-top:8px;"><span style="font-size:38px; font-weight:700; color:#DC2626;">64</span> <span style="font-size:15px; color:#991B1B;">ตัวชี้วัดไม่ผ่าน</span></div>
-        </div>
-      </div>
+      <div style="display:flex; gap:16px;"><div style="font-size:42px;">📊</div>
+      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">ตัวชี้วัด KPI</div>
+      <div style="margin-top:8px;"><span style="font-size:38px; font-weight:700; color:#DC2626;">64</span> <span style="font-size:15px; color:#991B1B;">ตัวชี้วัดไม่ผ่าน</span></div></div></div>
     </a>
     <a class="dash-card" href="fin_projection.html" style="border-top: 5px solid #1D6FA4;">
-      <div style="display:flex; gap:16px;">
-        <div style="font-size:42px;">📈</div>
-        <div style="flex:1;">
-          <div style="font-size:17px; font-weight:700;">แนวโน้มการเงิน</div>
-          <div style="margin-top:12px;"><div style="font-size:28px; font-weight:700; color:#1D6FA4;">15.0M</div><div style="font-size:14px; color:#166534;">ทรัพย์สุทธิ (บาท)</div></div>
-        </div>
-      </div>
+      <div style="display:flex; gap:16px;"><div style="font-size:42px;">📈</div>
+      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">แนวโน้มการเงิน</div>
+      <div style="margin-top:12px;"><div style="font-size:28px; font-weight:700; color:#1D6FA4;">15.0M</div><div style="font-size:14px; color:#166534;">ทรัพย์สุทธิ (บาท)</div></div></div></div>
     </a>
     <a class="dash-card" href="pcupayment.html" style="border-top: 5px solid #7C3AED;">
-      <div style="display:flex; gap:16px;">
-        <div style="font-size:42px;">💊</div>
-        <div style="flex:1;">
-          <div style="font-size:17px; font-weight:700;">ยาและเวชภัณฑ์ รพ.สต.</div>
-          <div style="margin-top:12px;"><div style="font-size:28px; font-weight:700; color:#7C3AED;">1.86M</div><div style="font-size:14px; color:#166534;">ฐานประมาณการ (บาท/ปี)</div></div>
-        </div>
-      </div>
+      <div style="display:flex; gap:16px;"><div style="font-size:42px;">💊</div>
+      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">ยาและเวชภัณฑ์ รพ.สต.</div>
+      <div style="margin-top:12px;"><div style="font-size:28px; font-weight:700; color:#7C3AED;">1.86M</div><div style="font-size:14px; color:#166534;">ฐานประมาณการ (บาท/ปี)</div></div></div></div>
     </a>
   </div>
 </div>
