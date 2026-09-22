@@ -8,73 +8,73 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
-body { font-family: 'Sarabun', system-ui, sans-serif; background:#F4F6F9; color:#1A2332; }
-.top-nav{display:flex;align-items:center;gap:0;background:#fff;border-bottom:2px solid #e8eef6;padding:0 16px;position:sticky;top:0;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,.07);flex-wrap:wrap}
-.top-nav a{display:flex;align-items:center;gap:5px;padding:11px 15px;font-size:.82rem;font-weight:600;color:#555;text-decoration:none;border-bottom:3px solid transparent;white-space:nowrap}
-.top-nav a:hover{color:#1A4FA0;background:#f0f5ff}
+body{font-family:'Sarabun',system-ui,sans-serif;background:#F4F6F9;color:#1A2332}
+.top-nav{display:flex;align-items:center;background:#fff;border-bottom:2px solid #e8eef6;padding:0 16px;position:sticky;top:0;z-index:9999;flex-wrap:wrap}
+.top-nav a{padding:11px 15px;font-size:.82rem;font-weight:600;color:#555;text-decoration:none;border-bottom:3px solid transparent}
 .top-nav a.active{color:#1A4FA0;border-bottom:3px solid #1A4FA0;background:#f5f8ff}
-.card { background:#fff; border:1px solid #E2E8F0; border-radius:14px; box-shadow:0 4px 12px rgba(0,0,0,.05); }
+.card{background:#fff;border:1px solid #E2E8F0;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.05)}
 </style>
 </head>
 <body>
 <nav class="top-nav">
-  <a href="index.html"><span>🏠</span>หน้าหลัก</a>
-  <a href="kpi_dashboard.html"><span>📊</span>KPI Dashboard</a>
-  <a href="fin_dashboard.html"><span>💹</span>KPI การเงิน</a>
-  <a href="uc_transfer_dashboard.html" class="active"><span>🏦</span>เงินโอน UC</a>
-  <a href="fin_projection.html"><span>📈</span>Finance Projection</a>
-  <a href="opwalkin.html"><span>🔥</span>พึงรับ-พึงจ่าย</a>
-  <a href="compare.html"><span>⏱️</span>ระยะเวลารอคอย</a>
+  <a href="index.html">🏠 หน้าหลัก</a>
+  <a href="kpi_dashboard.html">📊 KPI</a>
+  <a href="fin_dashboard.html">💹 KPI การเงิน</a>
+  <a href="uc_transfer_dashboard.html" class="active">🏦 เงินโอน UC</a>
+  <a href="fin_projection.html">📈 Projection</a>
+  <a href="opwalkin.html">🔥 พึงรับ-พึงจ่าย</a>
+  <a href="compare.html">⏱️ รอคอย</a>
 </nav>
 <div class="max-w-7xl mx-auto p-6">
   <div class="flex flex-wrap justify-between items-end gap-3 mb-6">
     <div>
-      <h1 class="text-2xl md:text-3xl font-bold text-slate-800">Dashboard เงินโอน สปสช. (UC) 4 ปี</h1>
-      <p class="text-slate-500 text-sm mt-1">รพ.พระทองคำเฉลิมพระเกียรติ 80 พรรษา · รหัส 22456</p>
-      <p class="text-slate-400 text-xs mt-1">ปี 2569 ตัด 22 ก.ย. 2569 · แยกกองทุนย่อยเพื่อวางแผน 2570</p>
+      <h1 class="text-2xl font-bold">Dashboard เงินโอน สปสช. 4 ปี</h1>
+      <p class="text-slate-500 text-sm">รพ.พระทองคำฯ · 22456 · ปี 2569 ตัด 22 ก.ย. · growth รายกองทุน</p>
     </div>
-    <div class="text-right text-xs text-slate-500">อัปเดต 22 ก.ย. 2569</div>
+    <div class="text-xs text-slate-500">อัปเดต 22 ก.ย. 2569</div>
   </div>
   <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
-    <div class="card p-4 border-t-4 border-slate-700"><div class="text-xs text-slate-500">ปี 2566</div><div class="text-2xl font-bold">48.64</div><div class="text-xs text-slate-400">ลบ. UC ดำเนินงาน</div></div>
-    <div class="card p-4 border-t-4 border-emerald-600"><div class="text-xs text-slate-500">ปี 2567</div><div class="text-2xl font-bold text-emerald-700">49.64</div><div class="text-xs text-slate-400">ลบ. ปีฐาน</div></div>
-    <div class="card p-4 border-t-4 border-red-600"><div class="text-xs text-slate-500">ปี 2568</div><div class="text-2xl font-bold text-red-600">44.36</div><div class="text-xs text-slate-400">ลบ. UC หด</div></div>
-    <div class="card p-4 border-t-4 border-emerald-600"><div class="text-xs text-slate-500">ปี 2569*</div><div class="text-2xl font-bold text-emerald-700">49.45</div><div class="text-xs text-slate-400">ถึง 22 ก.ย.</div></div>
-    <div class="card p-4 border-t-4 border-amber-500"><div class="text-xs text-slate-500">เทียบแผน 69</div><div class="text-2xl font-bold text-amber-700">100.5%</div><div class="text-xs text-slate-400">49.45 / 49.22</div></div>
+    <div class="card p-4 border-t-4 border-slate-700"><div class="text-xs text-slate-500">2566</div><div class="text-2xl font-bold">48.64</div><div class="text-xs text-slate-400">ลบ. UC ดำเนินงาน</div></div>
+    <div class="card p-4 border-t-4 border-emerald-600"><div class="text-xs text-slate-500">2567</div><div class="text-2xl font-bold text-emerald-700">49.64</div><div class="text-xs text-slate-400">ปีฐาน</div></div>
+    <div class="card p-4 border-t-4 border-red-600"><div class="text-xs text-slate-500">2568</div><div class="text-2xl font-bold text-red-600">44.36</div><div class="text-xs text-slate-400">UC หด</div></div>
+    <div class="card p-4 border-t-4 border-emerald-600"><div class="text-xs text-slate-500">2569*</div><div class="text-2xl font-bold text-emerald-700">49.45</div><div class="text-xs text-slate-400">ถึง 22 ก.ย.</div></div>
+    <div class="card p-4 border-t-4 border-amber-500"><div class="text-xs text-slate-500">vs แผน 69</div><div class="text-2xl font-bold text-amber-700">100.5%</div><div class="text-xs text-slate-400">49.45 / 49.22</div></div>
   </div>
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
-    <div class="card p-5"><h3 class="font-semibold mb-1">เงินเข้าบัญชี vs รายการที่หลอกตา</h3><canvas id="c1" height="200"></canvas></div>
-    <div class="card p-5"><h3 class="font-semibold mb-1">โครงสร้าง OP / IP / PP</h3><canvas id="c2" height="200"></canvas></div>
+    <div class="card p-5"><h3 class="font-semibold mb-1">UC ดำเนินงาน vs รายการหลอกตา</h3><canvas id="c1" height="180"></canvas></div>
+    <div class="card p-5"><h3 class="font-semibold mb-1">Growth รายกองทุน (ล้านบาท)</h3><canvas id="c5" height="180"></canvas></div>
   </div>
   <div class="card p-5 overflow-x-auto mb-6">
-    <h3 class="font-semibold mb-1">แยกกองทุนย่อย วางแผนงานปี 2570</h3>
-    <p class="text-xs text-slate-400 mb-3">เขียว = นับฐานได้ · เหลือง = แกว่ง · แดง = งานเร่ง · ฟ้า = ไม่นับรายได้หมุนเวียน</p>
+    <h3 class="font-semibold mb-1">ย้อนหลัง 4 ปี รายกองทุน — growth การดำเนินงาน</h3>
+    <p class="text-xs text-slate-400 mb-3">ยอดจัดสรร ยกเว้น IP ใช้เงินสดคงเหลือ · CAGR = เฉลี่ยต่อปี 66→69</p>
     <table class="w-full text-sm">
-      <thead class="bg-slate-800 text-white"><tr><th class="text-left p-2">กองทุนย่อย</th><th class="text-right p-2">จัดสรร</th><th class="text-right p-2">คงเหลือ</th><th class="text-right p-2">%</th><th class="text-left p-2">งานปี 2570</th><th class="text-left p-2">ฐานแผน</th></tr></thead>
+      <thead class="bg-slate-800 text-white"><tr><th class="text-left p-2">กองทุน</th><th class="text-right p-2">2566</th><th class="text-right p-2">2567</th><th class="text-right p-2">2568</th><th class="text-right p-2">2569*</th><th class="text-right p-2">Δ69/68</th><th class="text-right p-2">CAGR</th><th class="text-left p-2">ทิศทาง</th></tr></thead>
       <tbody>
-        <tr class="bg-emerald-50 border-t"><td class="p-2">OP เหมาจ่าย</td><td class="text-right p-2">23.11</td><td class="text-right p-2">23.04</td><td class="text-right p-2">99.7%</td><td class="p-2">คุมทะเบียนสิทธิ + refer</td><td class="p-2">23.0</td></tr>
-        <tr class="bg-red-50 border-t"><td class="p-2 font-semibold">IP CAP</td><td class="text-right p-2">17.12</td><td class="text-right p-2">14.33</td><td class="text-right p-2 font-bold text-red-700">83.7%</td><td class="p-2">เร่งอุทธรณ์/ชะลอ รั่ว 2.78 ลบ.</td><td class="p-2">14.3–15.0</td></tr>
-        <tr class="bg-emerald-50 border-t"><td class="p-2">PP BASIC</td><td class="text-right p-2">7.47</td><td class="text-right p-2">7.45</td><td class="text-right p-2">99.7%</td><td class="p-2">รักษาปริมาณบริการพื้นฐาน</td><td class="p-2">7.4–7.5</td></tr>
-        <tr class="bg-sky-50 border-t"><td class="p-2">งบลงทุนค่าเสื่อม</td><td class="text-right p-2">1.98</td><td class="text-right p-2">1.98</td><td class="text-right p-2">100%</td><td class="p-2">ไม่นับรายได้หมุนเวียน</td><td class="p-2">ไม่นับฐาน UC</td></tr>
-        <tr class="bg-emerald-50 border-t"><td class="p-2">Central กรณีเฉพาะ</td><td class="text-right p-2">1.93</td><td class="text-right p-2">1.92</td><td class="text-right p-2">99.9%</td><td class="p-2">ไม่ให้เคสค้างอุทธรณ์</td><td class="p-2">1.8–2.0</td></tr>
-        <tr class="bg-amber-50 border-t"><td class="p-2">แพทย์แผนไทย</td><td class="text-right p-2">1.35</td><td class="text-right p-2">1.32</td><td class="text-right p-2">97.3%</td><td class="p-2">แกว่งรายปี ตั้งเป้าปริมาณ</td><td class="p-2">0.8–1.2</td></tr>
-        <tr class="bg-red-50 border-t"><td class="p-2 font-semibold">ปฐมภูมิเพิ่มเติม</td><td class="text-right p-2">0.82</td><td class="text-right p-2">0.48</td><td class="text-right p-2 font-bold text-red-700">58.6%</td><td class="p-2">ตามปล่อยเงินชะลอ 0.34 ลบ.</td><td class="p-2">0.48</td></tr>
-        <tr class="bg-sky-50 border-t"><td class="p-2">อปท. จ่ายตรง (นอก UC)</td><td class="text-right p-2">0.67</td><td class="text-right p-2">0.67</td><td class="text-right p-2">100%</td><td class="p-2">แยกบัญชี</td><td class="p-2">ไม่รวมฐาน UC</td></tr>
-        <tr class="bg-emerald-50 border-t"><td class="p-2">ฟื้นฟูสมรถภาพ</td><td class="text-right p-2">0.26</td><td class="text-right p-2">0.26</td><td class="text-right p-2">100%</td><td class="p-2">ขยายคลินิกได้ถ้าพร้อม</td><td class="p-2">0.25–0.30</td></tr>
-        <tr class="bg-emerald-50 border-t"><td class="p-2">Central Risk Protection</td><td class="text-right p-2">0.15</td><td class="text-right p-2">0.15</td><td class="text-right p-2">99.5%</td><td class="p-2">ตามเกณฑ์กองทุน</td><td class="p-2">0.15</td></tr>
-        <tr class="bg-amber-50 border-t"><td class="p-2">Central นอกเครือ</td><td class="text-right p-2">0.12</td><td class="text-right p-2">0.10</td><td class="text-right p-2">85.2%</td><td class="p-2">คุมการส่งต่อนอกเครือ</td><td class="p-2">0.10</td></tr>
-        <tr class="bg-emerald-50 border-t"><td class="p-2">DM/HT + หึด/COPD + เอดส์</td><td class="text-right p-2">0.24</td><td class="text-right p-2">0.24</td><td class="text-right p-2">99%</td><td class="p-2">ทำ QOF/NCD ให้ครบ จิตเวชถ้ามเขต</td><td class="p-2">0.16–0.24</td></tr>
-        <tr class="bg-emerald-50 border-t"><td class="p-2">เอดส์ ป้องกัน+ARV</td><td class="text-right p-2">0.08</td><td class="text-right p-2">0.08</td><td class="text-right p-2">99%</td><td class="p-2">ตามจำนวนผู้รับบริการ</td><td class="p-2">0.08</td></tr>
+        <tr class="bg-red-50 border-t"><td class="p-2">OP เหมาจ่าย</td><td class="text-right p-2">27.21</td><td class="text-right p-2">24.62</td><td class="text-right p-2">24.94</td><td class="text-right p-2">23.11</td><td class="text-right p-2">−7.4%</td><td class="text-right p-2">−5.3%</td><td class="p-2">หดต่อเนื่อง อย่าตั้ง OP โต</td></tr>
+        <tr class="bg-amber-50 border-t"><td class="p-2">IP CAP ยอดเบิก</td><td class="text-right p-2">11.07</td><td class="text-right p-2">12.41</td><td class="text-right p-2">10.42</td><td class="text-right p-2">17.12</td><td class="text-right p-2">+64.3%</td><td class="text-right p-2">+15.6%</td><td class="p-2">เบิกพุ่ง เงินสดไม่ตาม</td></tr>
+        <tr class="bg-amber-50 border-t font-semibold"><td class="p-2">IP CAP เงินสด</td><td class="text-right p-2">10.85</td><td class="text-right p-2">11.90</td><td class="text-right p-2">10.25</td><td class="text-right p-2">14.33</td><td class="text-right p-2">+39.8%</td><td class="text-right p-2">+9.7%</td><td class="p-2">ใช้เส้นนี้วางแผน</td></tr>
+        <tr class="bg-emerald-50 border-t"><td class="p-2">PP BASIC+พื้นที่</td><td class="text-right p-2">7.99</td><td class="text-right p-2">8.23</td><td class="text-right p-2">7.21</td><td class="text-right p-2">7.52</td><td class="text-right p-2">+4.3%</td><td class="text-right p-2">−2.0%</td><td class="p-2">ทรงตัว ฐานนิ่ง</td></tr>
+        <tr class="bg-amber-50 border-t"><td class="p-2">Central Reimburse</td><td class="text-right p-2">1.27</td><td class="text-right p-2">3.37</td><td class="text-right p-2">1.28</td><td class="text-right p-2">2.23</td><td class="text-right p-2">+74.7%</td><td class="text-right p-2">+20.7%</td><td class="p-2">ปี 67 พุ่งผิดปกติ</td></tr>
+        <tr class="bg-amber-50 border-t"><td class="p-2">แพทย์แผนไทย</td><td class="text-right p-2">0.01</td><td class="text-right p-2">1.09</td><td class="text-right p-2">0.26</td><td class="text-right p-2">1.35</td><td class="text-right p-2">+430%</td><td class="text-right p-2">n/a</td><td class="p-2">ไม่เสถียร</td></tr>
+        <tr class="bg-amber-50 border-t"><td class="p-2">ปฐมภูมิเพิ่มเติม</td><td class="text-right p-2">—</td><td class="text-right p-2">—</td><td class="text-right p-2">0.03</td><td class="text-right p-2">0.82</td><td class="text-right p-2">+30×</td><td class="text-right p-2">n/a</td><td class="p-2">เพิ่งเกิด เข้า 59%</td></tr>
+        <tr class="bg-emerald-50 border-t"><td class="p-2">ฟื้นฟูสมรถภาพ</td><td class="text-right p-2">0.25</td><td class="text-right p-2">0.73</td><td class="text-right p-2">0.14</td><td class="text-right p-2">0.26</td><td class="text-right p-2">+78%</td><td class="text-right p-2">+0.3%</td><td class="p-2">กลับสู่ฐาน 66</td></tr>
+        <tr class="bg-red-50 border-t"><td class="p-2">NCD / DM-HT / QOF</td><td class="text-right p-2">1.10</td><td class="text-right p-2">0.35</td><td class="text-right p-2">0.27</td><td class="text-right p-2">0.23</td><td class="text-right p-2">−12.4%</td><td class="text-right p-2">−40.3%</td><td class="p-2">หด 4 ปี ถามเขต</td></tr>
+        <tr class="bg-emerald-50 border-t"><td class="p-2">กองทุนเอดส์</td><td class="text-right p-2">0.03</td><td class="text-right p-2">0.05</td><td class="text-right p-2">0.05</td><td class="text-right p-2">0.08</td><td class="text-right p-2">+65.4%</td><td class="text-right p-2">+39.6%</td><td class="p-2">โตตามผู้รับบริการ</td></tr>
+        <tr class="bg-sky-50 border-t"><td class="p-2">งบลงทุนค่าเสื่อม</td><td class="text-right p-2">1.51</td><td class="text-right p-2">5.10</td><td class="text-right p-2">3.87</td><td class="text-right p-2">1.98</td><td class="text-right p-2">−48.7%</td><td class="text-right p-2">+9.5%</td><td class="p-2">นอกฐานดำเนินงาน</td></tr>
+        <tr class="bg-sky-50 border-t"><td class="p-2">อปท. จ่ายตรง</td><td class="text-right p-2">0.33</td><td class="text-right p-2">0.91</td><td class="text-right p-2">1.01</td><td class="text-right p-2">0.67</td><td class="text-right p-2">−33.4%</td><td class="text-right p-2">+27.3%</td><td class="p-2">นอก UC</td></tr>
       </tbody>
     </table>
-    <p class="text-xs text-slate-700 mt-3 bg-amber-50 p-3 rounded">ฐาน UC ดำเนินงาน 2570: OP 23.0 + PP 7.4 + เฉพาะด้าน 2.5–3.0 + แพทย์แผนไทย 0.8–1.2 + NCD/เอดส์/ฟื้นฟู 0.5 + <b>IP นับเงินสดไม่เกิน 14.5–15.0</b> (ห้ามใช้ยอดเบิก 17.1) = <b>48.5–50.0 ลบ.</b></p>
+  </div>
+  <div class="card p-5 overflow-x-auto mb-6">
+    <h3 class="font-semibold mb-1">งานปี 2570 จาก growth</h3>
+    <p class="text-sm text-slate-700">OP หดปีละ ~5% — อย่าตั้งรายรับ OP โต. IP เงินสดโตจาก 10.9→14.3 แต่ช้ากว่ายอดเบิก ดังนับแผนไม่เกิน 14.5–15.0. PP ทรงตัว 7.4–7.5. แพทย์แผนไทย/ปฐมภูมิเพิ่มเติม ยังไม่ใช้ยอด 69 เป็นฐาน. NCD หดจาก 1.10 เหลือ 0.23 — ถามเขตว่าโปรแกรมยังอยู่หรือไม่.</p>
   </div>
 </div>
 <script>
 const years=['2566','2567','2568','2569*'];
 const opt={responsive:true,plugins:{legend:{position:'bottom',labels:{boxWidth:12}}}};
 new Chart(document.getElementById('c1'),{type:'bar',data:{labels:years,datasets:[{label:'เงินเข้าทั้งก้อน',data:[54.78,56.80,50.00,52.13],backgroundColor:'#94A3B8'},{label:'UC ดำเนินงาน',data:[48.64,49.64,44.36,49.45],backgroundColor:'#0F6E56'},{label:'งบลงทุน',data:[1.51,5.10,3.87,1.98],backgroundColor:'#B45309'},{label:'โควิด',data:[3.81,0,0,0],backgroundColor:'#64748B'}]},options:opt});
-new Chart(document.getElementById('c2'),{type:'bar',data:{labels:years,datasets:[{label:'OP',data:[27.21,24.62,24.94,23.11],backgroundColor:'#1D6FA4',stack:'s'},{label:'IP',data:[11.07,12.41,10.42,17.12],backgroundColor:'#C05621',stack:'s'},{label:'PP',data:[7.99,8.23,7.21,7.52],backgroundColor:'#0F6E56',stack:'s'},{label:'อื่น',data:[2.67,5.59,2.02,4.99],backgroundColor:'#7C3AED',stack:'s'}]},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}});
+new Chart(document.getElementById('c5'),{type:'bar',data:{labels:['OP','IP เงินสด','PP','Central','แพทย์แผนไทย','ปฐมภูมิ+'],datasets:[{label:'2566',data:[27.21,10.85,7.99,1.27,0.01,0],backgroundColor:'#94A3B8'},{label:'2567',data:[24.62,11.90,8.23,3.37,1.09,0],backgroundColor:'#1D6FA4'},{label:'2568',data:[24.94,10.25,7.21,1.28,0.26,0.03],backgroundColor:'#C05621'},{label:'2569*',data:[23.11,14.33,7.52,2.23,1.35,0.82],backgroundColor:'#0F6E56'}]},options:opt});
 </script>
 </body>
 </html>
