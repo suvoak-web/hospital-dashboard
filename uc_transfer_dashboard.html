@@ -1,69 +1,186 @@
 <!DOCTYPE html>
-<html lang="th"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>UC 4 ปี</title>
-<script src="https://cdn.tailwindcss.com"></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap');
-body{font-family:Sarabun,system-ui,sans-serif;background:#F4F6F9;color:#1A2332}
-.top-nav{display:flex;flex-wrap:wrap;background:#fff;border-bottom:2px solid #e8eef6;position:sticky;top:0;z-index:40}
-.top-nav a{padding:11px 12px;font-size:.8rem;font-weight:600;color:#555;text-decoration:none;border-bottom:3px solid transparent}
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เงินโอน สปสช. 4 ปี — รพ.พระทองคำฯ</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+body{font-family:'Sarabun',system-ui,sans-serif;background:#F4F6F9;color:#1A2332}
+.top-nav{display:flex;align-items:center;background:#fff;border-bottom:2px solid #e8eef6;padding:0 12px;position:sticky;top:0;z-index:50;flex-wrap:wrap}
+.top-nav a{padding:11px 12px;font-size:.8rem;font-weight:600;color:#555;text-decoration:none;border-bottom:3px solid transparent;white-space:nowrap}
 .top-nav a.active{color:#1A4FA0;border-bottom-color:#1A4FA0;background:#f5f8ff}
 .card{background:#fff;border:1px solid #E2E8F0;border-radius:14px}
-.fund-btn{cursor:pointer}.fund-btn.active-fund{outline:2px solid #1A4FA0;background:#f5f8ff}</style></head>
+tr.fund-row{cursor:pointer}
+tr.fund-row:hover td{background:#eef4ff}
+tr.fund-row.on td{background:#dbeafe}
+</style>
+</head>
 <body>
 <nav class="top-nav">
-<a href="index.html">🏠 หน้าหลัก</a><a href="kpi_dashboard.html">📊 KPI</a><a href="fin_dashboard.html">💹 KPI การเงิน</a>
-<a href="uc_transfer_dashboard.html" class="active">🏦 เงินโอน UC</a><a href="fin_projection.html">📈 Projection</a><a href="opwalkin.html">🔥 พึงรับ-พึงจ่าย</a><a href="compare.html">⏱️ รอคอย</a>
+  <a href="index.html">🏠 หน้าหลัก</a>
+  <a href="kpi_dashboard.html">📊 KPI</a>
+  <a href="fin_dashboard.html">💹 KPI การเงิน</a>
+  <a href="uc_transfer_dashboard.html" class="active">🏦 เงินโอน UC</a>
+  <a href="fin_projection.html">📈 Projection</a>
+  <a href="opwalkin.html">🔥 พึงรับ-พึงจ่าย</a>
+  <a href="compare.html">⏱️ รอคอย</a>
 </nav>
-<div class="max-w-7xl mx-auto p-4">
-<h1 class="text-xl font-bold">Dashboard เงินโอน สปสช. 4 ปี</h1>
-<p class="text-sm text-slate-500 mb-4">คลิกชื่อกองทุนเพื่อดูแนวโน้มและเงินเข้ารายไตรมาส · ตัด 22 ก.ย. 69 · หน่วย: ล้านบาท</p>
-<div class="grid grid-cols-2 md:grid-cols-5 gap-2 mb-4">
-<div class="card p-3 border-t-4 border-slate-700"><div class="text-xs">2566</div><div class="text-2xl font-bold">48.64</div></div>
-<div class="card p-3 border-t-4 border-emerald-600"><div class="text-xs">2567</div><div class="text-2xl font-bold text-emerald-700">49.64</div></div>
-<div class="card p-3 border-t-4 border-red-600"><div class="text-xs">2568</div><div class="text-2xl font-bold text-red-600">44.36</div></div>
-<div class="card p-3 border-t-4 border-emerald-600"><div class="text-xs">2569*</div><div class="text-2xl font-bold text-emerald-700">49.45</div></div>
-<div class="card p-3 border-t-4 border-amber-500"><div class="text-xs">vs แผน</div><div class="text-2xl font-bold text-amber-700">100.5%</div></div>
+<div class="max-w-7xl mx-auto p-4 md:p-6">
+  <div class="flex flex-wrap justify-between gap-2 mb-4">
+    <div>
+      <h1 class="text-xl md:text-2xl font-bold">เงินโอน สปสช. — คลิกกองทุนดูแนวโน้ม</h1>
+      <p class="text-slate-500 text-sm">รพ.พระทองคำฯ 22456 · ปี 69 ตัด 22 ก.ย. · ไตรมาสงบ = ต.ค.–ก.ย.</p>
+    </div>
+    <div class="text-xs text-slate-500">อัปเดต 22 ก.ย. 2569</div>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
+    <div class="card p-3 border-t-4 border-slate-700"><div class="text-xs text-slate-500">2566</div><div class="text-2xl font-bold">48.64</div><div class="text-xs text-slate-400">ลบ. UC ดำเนินงาน</div></div>
+    <div class="card p-3 border-t-4 border-emerald-600"><div class="text-xs text-slate-500">2567</div><div class="text-2xl font-bold text-emerald-700">49.64</div><div class="text-xs text-slate-400">ปีฐาน</div></div>
+    <div class="card p-3 border-t-4 border-red-600"><div class="text-xs text-slate-500">2568</div><div class="text-2xl font-bold text-red-600">44.36</div><div class="text-xs text-slate-400">UC หด</div></div>
+    <div class="card p-3 border-t-4 border-emerald-600"><div class="text-xs text-slate-500">2569*</div><div class="text-2xl font-bold text-emerald-700">49.45</div><div class="text-xs text-slate-400">ถึง 22 ก.ย.</div></div>
+    <div class="card p-3 border-t-4 border-amber-500"><div class="text-xs text-slate-500">vs แผน 69</div><div class="text-2xl font-bold text-amber-700">100.5%</div><div class="text-xs text-slate-400">49.45 / 49.22</div></div>
+  </div>
+  <div class="card p-4 mb-5">
+    <h3 class="font-semibold">เงินเข้าบัญชีรวมรายไตรมาส (ใช้วางแผนจ่าย)</h3>
+    <p class="text-xs text-slate-400 mb-2">ล้านบาท · Q1 = ต.ค.–ธ.ค. · Q4 ปี 69 ยังไม่ครบเดือน</p>
+    <canvas id="cCash" height="120"></canvas>
+    <p class="text-xs text-slate-600 mt-2">ทุกปีเงินเข้าหนา Q1 เพราะโอน OP/PP ไปพลางก่อน — อย่าเอา Q1 ไปหารเฉลี่ยเป็นรายเดือนจ่ายทั้งปี</p>
+  </div>
+  <div class="card p-4 overflow-x-auto mb-5">
+    <h3 class="font-semibold mb-1">คลิกชื่อกองทุนเพื่อดูกราฟแนวโน้ม + รายไตรมาส</h3>
+    <p class="text-xs text-slate-400 mb-3">หน่วยล้านบาท · ยอดจัดสรรรายปี ยกเว้นแถว IP เงินสด</p>
+    <table class="w-full text-sm">
+      <thead class="bg-slate-800 text-white">
+        <tr><th class="text-left p-2">กองทุน</th><th class="text-right p-2">2566</th><th class="text-right p-2">2567</th><th class="text-right p-2">2568</th><th class="text-right p-2">2569*</th><th class="text-right p-2">d69/68</th></tr>
+      </thead>
+      <tbody id="fundBody"></tbody>
+    </table>
+  </div>
+  <div id="detail" class="card p-4 mb-5 hidden">
+    <div class="flex justify-between items-start gap-2 mb-2">
+      <div>
+        <h3 id="dTitle" class="font-semibold text-lg"></h3>
+        <p id="dNote" class="text-xs text-slate-500"></p>
+      </div>
+      <button onclick="closeDetail()" class="text-sm text-slate-500 px-2">ปิด</button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div><p class="text-xs text-slate-400 mb-1">แนวโน้ม 4 ปี</p><canvas id="cYear" height="180"></canvas></div>
+      <div><p class="text-xs text-slate-400 mb-1">ได้รับรายไตรมาส (คงเหลือตามเอกสาร)</p><canvas id="cQ" height="180"></canvas></div>
+    </div>
+    <div class="overflow-x-auto mt-3">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100"><tr><th class="text-left p-2">ปี</th><th class="text-right p-2">Q1 ต.ค.-ธ.ค.</th><th class="text-right p-2">Q2 ม.ค.-มี.ค.</th><th class="text-right p-2">Q3 เม.ย.-มิ.ย.</th><th class="text-right p-2">Q4 ก.ค.-ก.ย.</th><th class="text-right p-2">รวม</th></tr></thead>
+        <tbody id="qBody"></tbody>
+      </table>
+    </div>
+    <p id="dPlan" class="text-xs text-slate-700 mt-3 bg-amber-50 p-3 rounded"></p>
+  </div>
 </div>
-<div class="card p-4 mb-4"><h3 class="font-semibold">เงินเข้าบัญชีทั้ง รพ. รายไตรมาส</h3>
-<p class="text-xs text-slate-400 mb-2">ตามวันที่โอนจริง · Q1=ต.ค.–ธ.ค. Q2=ม.ค.–มี.ค. Q3=เม.ย.–มิ.ย. Q4=ก.ค.–ก.ย.</p>
-<canvas id="cqAll" height="120"></canvas>
-<div class="overflow-x-auto mt-2"><table class="w-full text-sm"><thead class="bg-slate-800 text-white"><tr><th class="p-2 text-left">ปี</th><th class="p-2 text-right">Q1</th><th class="p-2 text-right">Q2</th><th class="p-2 text-right">Q3</th><th class="p-2 text-right">Q4</th><th class="p-2 text-right">รวม</th></tr></thead><tbody id="allQBody"></tbody></table></div>
-<p class="text-xs text-slate-500 mt-2">เงินก้อนใหญ่มา Q1–Q2 · Q3–Q4 บาง — อย่าวางแผนจ่ายเท่ากันทุกเดือน</p></div>
-<div class="card p-4 mb-4"><h3 class="font-semibold mb-2">คลิกกองทุนเพื่อดูกราฟและไตรมาส</h3><div id="fundGrid" class="grid grid-cols-2 md:grid-cols-5 gap-2"></div></div>
-<div id="detail" class="card p-4 mb-6 hidden">
-<div class="flex justify-between"><div><h3 id="dTitle" class="font-semibold text-lg"></h3><p id="dNote" class="text-xs text-slate-500"></p></div><button onclick="closeDetail()" class="text-sm text-slate-400">ปิด</button></div>
-<div class="grid md:grid-cols-2 gap-4 mt-2"><div><p class="text-xs text-slate-400">แนวโน้ม 4 ปี</p><canvas id="cYear" height="150"></canvas></div><div><p class="text-xs text-slate-400">รายไตรมาส แต่ละปี</p><canvas id="cQ" height="150"></canvas></div></div>
-<div class="overflow-x-auto mt-3"><table class="w-full text-sm"><thead class="bg-slate-100"><tr><th class="p-2 text-left">ปี</th><th class="p-2 text-right">Q1</th><th class="p-2 text-right">Q2</th><th class="p-2 text-right">Q3</th><th class="p-2 text-right">Q4</th><th class="p-2 text-right">รวม</th></tr></thead><tbody id="qBody"></tbody></table></div>
-<p id="dPlan" class="text-xs mt-3 bg-amber-50 p-3 rounded"></p></div></div>
 <script>
-const years=['2566','2567','2568','2569*'],qL=['Q1','Q2','Q3','Q4'];
-const allCash={'2566':[27.60,19.25,2.36,5.56],'2567':[23.26,9.11,7.73,16.70],'2568':[23.42,17.18,7.46,1.95],'2569':[21.21,21.17,5.45,4.30]};
+const years=['2566','2567','2568','2569*'];
+const qLabel=['Q1','Q2','Q3','Q4'];
+const cashQ={2566:[27.60,19.25,2.36,5.56],2567:[23.26,9.11,7.73,16.70],2568:[23.42,17.18,7.46,1.95],2569:[21.21,21.17,5.45,4.30]};
 const funds={
-OP:{name:'OP เหมาจ่าย',c:'#1D6FA4',y:[27.21,24.62,24.94,23.11],q:{2566:[14.52,13.59,0,-0.02],2567:[13.60,4.47,-0.02,6.49],2568:[12.93,10.80,1.19,0],2569:[11.98,9.99,-0.02,1.10]},n:'เงินก้อนต้นปี',p:'แผน 23.0 · กันเงินไว้จ่าย Q3-Q4'},
-IP:{name:'IP CAP',c:'#C05621',y:[10.85,11.90,10.25,14.33],q:{2566:[4.44,1.95,1.77,2.69],2567:[2.65,2.64,1.88,4.73],2568:[3.92,1.55,3.08,1.69],2569:[3.32,6.13,2.74,2.14]},n:'ใช้เงินสดไม่ยอดเบิก',p:'แผน 14.3-15.0 · รั่ว 2.78 เร่งอุทธรณ์'},
-PP:{name:'PP BASIC',c:'#0F6E56',y:[7.99,8.23,7.21,7.52],q:{2566:[2.88,2.92,0,2.17],2567:[3.35,1.25,0.20,3.28],2568:[4.56,0.20,2.44,0.01],2569:[2.90,2.41,2.03,0.15]},n:'ฐานนิ่ง',p:'แผน 7.4-7.5 · ปี 69 Q4 บาง'},
-central:{name:'Central',c:'#7C3AED',y:[1.27,3.37,1.28,2.23],q:{2566:[0.43,0.25,0.27,0.30],2567:[1.59,0.56,0.41,0.36],2568:[0.45,0.41,0.32,0.08],2569:[0.99,0.40,0.41,0.42]},n:'ปี 67 พุ่ง',p:'แผน 1.8-2.0 กระจายทั้งปี'},
-thai:{name:'แพทย์แผนไทย',c:'#B45309',y:[0.01,1.09,0.26,1.35],q:{2566:[0,0,0,0],2567:[0.62,0.01,0.01,0.44],2568:[0.03,0.01,0.14,0.08],2569:[1.00,0.15,0.06,0.10]},n:'ไม่เสถียร',p:'แผน 0.8-1.2 · ปี 69 กระจุก Q1'},
-primary:{name:'ปฐมภูมิ+',c:'#DC2626',y:[0,0,0.03,0.82],q:{2566:[0,0,0,0],2567:[0,0,0,0],2568:[0,0.01,0.01,0],2569:[0.37,0.01,0.02,0.08]},n:'เข้า 59%',p:'ตามชะลอ 0.34 · แผน 0.48'},
-rehab:{name:'ฟื้นฟู',c:'#0F766E',y:[0.25,0.73,0.14,0.26],q:{2566:[0.19,0,0.05,0.01],2567:[0.42,0.02,0.01,0.28],2568:[0.12,0.01,0.02,0],2569:[0.21,0.02,0.03,0]},n:'กลับฐาน 66',p:'แผน 0.25-0.30 เงินมัก Q1'},
-ncd:{name:'NCD/QOF',c:'#BE123C',y:[1.10,0.35,0.27,0.23],q:{2566:[0.64,0.21,0,0.18],2567:[0.14,0.15,0,0.07],2568:[0,0.21,0,0.06],2569:[0.08,0.07,0.02,0.08]},n:'หด 4 ปี',p:'ถามเขตก่อนนับ 1.10'},
-aids:{name:'เอดส์',c:'#0369A1',y:[0.03,0.05,0.05,0.08],q:{2566:[0,0,0.01,0.01],2567:[0.01,0.02,0.01,0],2568:[0.01,0.02,0.01,0.01],2569:[0.03,0.02,0.03,0.01]},n:'โตตามผู้รับบริการ',p:'แผน 0.08'},
-capex:{name:'ค่าเสื่อม',c:'#64748B',y:[1.51,5.10,3.87,1.98],q:{2566:[1.51,0,0,0],2567:[0,0,5.10,0],2568:[0,3.87,0,0],2569:[0,1.98,0,0]},n:'ไม่ใช่รายได้หมุนเวียน',p:'ไม่นับฐาน UC · มาก้อนเดียว'}
+  op:{name:'OP เหมาจ่าย', color:'#1D6FA4', annual:[27.21,24.62,24.94,23.11],
+      q:{2566:[14.52,13.59,0.00,-0.02],2567:[13.60,4.47,-0.02,6.49],2568:[12.93,10.80,1.19,0.00],2569:[11.98,9.99,-0.02,1.10]},
+      note:'หดต่อเนื่อง 3 ปี', plan:'ฐานแผน 2570 ประมาณ 23.0 ลบ. เงินเข้าหนา Q1-Q2'},
+  ipb:{name:'IP CAP ยอดเบิก', color:'#C05621', annual:[11.07,12.41,10.42,17.12],
+      q:{2566:[4.44,1.95,1.77,2.69],2567:[2.65,2.64,1.88,4.73],2568:[3.92,1.55,3.08,1.69],2569:[3.32,6.13,2.74,2.14]},
+      note:'เบิกพุ่งปี 69 แต่เงินสดไม่ตาม', plan:'อย่าใช้ยอดเบิก 17.1 วางแผนจ่าย ใช้แถว IP เงินสด'},
+  ipc:{name:'IP CAP เงินสด', color:'#DC2626', annual:[10.85,11.90,10.25,14.33],
+      q:{2566:[4.44,1.95,1.77,2.69],2567:[2.65,2.64,1.88,4.73],2568:[3.92,1.55,3.08,1.69],2569:[3.32,6.13,2.74,2.14]},
+      note:'เส้นที่ใช้วางแผน IP', plan:'ฐาน 14.3-15.0 ปี 69 เข้าหนา Q2 (6.13) ผ่อ Q3-Q4'},
+  pp:{name:'PP BASIC+พื้นที่', color:'#0F6E56', annual:[7.99,8.23,7.21,7.52],
+      q:{2566:[2.88,2.92,0.00,2.17],2567:[3.35,1.25,0.20,3.28],2568:[4.56,0.20,2.44,0.01],2569:[2.90,2.41,2.03,0.15]},
+      note:'ทรงตัว', plan:'ฐาน 7.4-7.5 Q4 มักบาง อย่าวางจ่าย PP ท้ายปีหนา'},
+  central:{name:'Central Reimburse', color:'#7C3AED', annual:[1.27,3.37,1.28,2.23],
+      q:{2566:[0.43,0.25,0.27,0.30],2567:[1.59,0.56,0.41,0.36],2568:[0.45,0.41,0.32,0.08],2569:[0.99,0.40,0.41,0.42]},
+      note:'ปี 67 พุ่งผิดปกติ', plan:'ฐาน 1.8-2.0 กระจายทั้งปี'},
+  thai:{name:'แพทย์แผนไทย', color:'#B45309', annual:[0.01,1.09,0.26,1.35],
+      q:{2566:[0.00,0.00,0.00,0.00],2567:[0.62,0.01,0.01,0.44],2568:[0.03,0.01,0.14,0.08],2569:[1.00,0.15,0.06,0.10]},
+      note:'ไม่เสถียร', plan:'ปี 69 ก้อนใหญ่ Q1 (1.00) อย่าใช้เป็นแพทเทิร์น 70'},
+  primary:{name:'ปฐมภูมิเพิ่มเติม', color:'#BE185D', annual:[0,0,0.03,0.82],
+      q:{2566:[0,0,0,0],2567:[0,0,0,0],2568:[0,0.01,0.01,0],2569:[0.37,0.01,0.02,0.08]},
+      note:'เพิ่งเกิด ปี 69 เข้าแค่ 59%', plan:'นับเงินสด 0.48 จนกว่าชะลอ 0.34 จะปล่อย'},
+  rehab:{name:'ฟื้นฟูสมรถภาพ', color:'#0F766E', annual:[0.25,0.73,0.14,0.26],
+      q:{2566:[0.19,0,0.05,0.01],2567:[0.42,0.02,0.01,0.28],2568:[0.12,0.01,0.02,0],2569:[0.21,0.02,0.03,0.00]},
+      note:'กลับสู่ฐานปี 66', plan:'0.25-0.30 ถ้าขยายคลินิก'},
+  ncd:{name:'NCD / DM-HT / QOF', color:'#991B1B', annual:[1.10,0.35,0.27,0.23],
+      q:{2566:[0.64,0.21,0,0.18],2567:[0.14,0.15,0.00,0.07],2568:[0,0.21,0,0.06],2569:[0.08,0.07,0.02,0.08]},
+      note:'หด 4 ปี', plan:'ถามเขตก่อนนับแผน 70'},
+  aids:{name:'กองทุนเอดส์', color:'#1D4ED8', annual:[0.03,0.05,0.05,0.08],
+      q:{2566:[0.00,0.00,0.01,0.01],2567:[0.01,0.02,0.01,0.00],2568:[0.01,0.02,0.01,0.01],2569:[0.03,0.02,0.03,0.01]},
+      note:'โตตามผู้รับบริการ', plan:'0.08 กระจายทั้งปี'},
+  capex:{name:'งบลงทุนค่าเสื่อม', color:'#64748B', annual:[1.51,5.10,3.87,1.98],
+      q:{2566:[1.51,0,0,0],2567:[0,0,5.10,0],2568:[0,3.87,0,0],2569:[0,1.98,0,0]},
+      note:'ก้อนเดียวต่อปี ไม่ใช่รายได้หมุนเวียน', plan:'ไม่นับฐาน UC ดำเนินงาน'},
+  local:{name:'อปท. จ่ายตรง', color:'#475569', annual:[0.33,0.91,1.01,0.67],
+      q:{2566:[0.08,0.10,0.15,0],2567:[0.58,0,0.01,0.32],2568:[0.66,0.09,0.25,0],2569:[0.33,0,0.13,0.22]},
+      note:'นอก UC', plan:'แยกบัญชีคนละก้อน'}
 };
-function sum(a){return a.reduce((x,y)=>x+y,0)} function n(v){return (Number(v)||0).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})}
-const ab=document.getElementById('allQBody');
-['2566','2567','2568','2569'].forEach(y=>{const d=allCash[y];ab.insertAdjacentHTML('beforeend',`<tr class="border-t"><td class="p-2">${y}${y==='2569'?'*':''}</td><td class="text-right p-2">${n(d[0])}</td><td class="text-right p-2">${n(d[1])}</td><td class="text-right p-2">${n(d[2])}</td><td class="text-right p-2">${n(d[3])}</td><td class="text-right p-2 font-semibold">${n(sum(d))}</td></tr>`)});
-new Chart(document.getElementById('cqAll'),{type:'bar',data:{labels:qL,datasets:[{label:'2566',data:allCash['2566'],backgroundColor:'#94A3B8'},{label:'2567',data:allCash['2567'],backgroundColor:'#1D6FA4'},{label:'2568',data:allCash['2568'],backgroundColor:'#C05621'},{label:'2569*',data:allCash['2569'],backgroundColor:'#0F6E56'}]},options:{responsive:true,plugins:{legend:{position:'bottom',labels:{boxWidth:10}}},scales:{y:{beginAtZero:true}}}});
-const grid=document.getElementById('fundGrid');
-Object.entries(funds).forEach(([id,f])=>{const d=f.y[2]?((f.y[3]-f.y[2])/Math.abs(f.y[2]))*100:0;grid.insertAdjacentHTML('beforeend',`<button class="fund-btn card p-3 text-left" id="btn-${id}" onclick="openFund('${id}')"><div class="text-xs text-slate-500">${f.name}</div><div class="text-xl font-bold" style="color:${f.c}">${n(f.y[3])}</div><div class="text-xs">ปี 69 · Δ68 ${d>=0?'+':''}${d.toFixed(0)}%</div></button>`)});
-let yc,qc;function closeDetail(){document.getElementById('detail').classList.add('hidden');document.querySelectorAll('.fund-btn').forEach(b=>b.classList.remove('active-fund'))}
-function openFund(id){const f=funds[id];document.querySelectorAll('.fund-btn').forEach(b=>b.classList.remove('active-fund'));document.getElementById('btn-'+id).classList.add('active-fund');
-const box=document.getElementById('detail');box.classList.remove('hidden');
-document.getElementById('dTitle').textContent=f.name;document.getElementById('dNote').textContent=f.n;document.getElementById('dPlan').textContent=f.p;
-const qb=document.getElementById('qBody');qb.innerHTML='';
-[2566,2567,2568,2569].forEach(y=>{const d=f.q[y];qb.insertAdjacentHTML('beforeend',`<tr class="border-t"><td class="p-2">${y}${y===2569?'*':''}</td><td class="text-right p-2">${n(d[0])}</td><td class="text-right p-2">${n(d[1])}</td><td class="text-right p-2">${n(d[2])}</td><td class="text-right p-2">${n(d[3])}</td><td class="text-right p-2 font-semibold">${n(sum(d))}</td></tr>`)});
-if(yc)yc.destroy();if(qc)qc.destroy();
-yc=new Chart(document.getElementById('cYear'),{type:'bar',data:{labels:years,datasets:[{data:f.y,backgroundColor:f.c}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}});
-qc=new Chart(document.getElementById('cQ'),{type:'bar',data:{labels:qL,datasets:[{label:'2566',data:f.q[2566],backgroundColor:'#94A3B8'},{label:'2567',data:f.q[2567],backgroundColor:'#1D6FA4'},{label:'2568',data:f.q[2568],backgroundColor:'#C05621'},{label:'2569*',data:f.q[2569],backgroundColor:f.c}]},options:{responsive:true,plugins:{legend:{position:'bottom',labels:{boxWidth:10}}},scales:{y:{beginAtZero:true}}});
-box.scrollIntoView({behavior:'smooth',block:'start'})}
-openFund('OP');
-</script></body></html>
+function pct(a,b){ if(!b) return b===0 && a? 'ใหม่':'—'; const v=(a-b)/b; return (v>=0?'+':'')+(v*100).toFixed(1)+'%'; }
+function sum(a){ return a.reduce((x,y)=>x+y,0); }
+const body=document.getElementById('fundBody');
+Object.keys(funds).forEach(id=>{
+  const f=funds[id];
+  const tr=document.createElement('tr');
+  tr.className='fund-row border-t';
+  tr.dataset.id=id;
+  tr.innerHTML='<td class="p-2 font-semibold text-sky-800 underline">'+f.name+'</td>'+
+    f.annual.map(v=>'<td class="text-right p-2">'+v.toFixed(2)+'</td>').join('')+
+    '<td class="text-right p-2">'+pct(f.annual[3],f.annual[2])+'</td>';
+  tr.onclick=function(){ openFund(id); };
+  body.appendChild(tr);
+});
+new Chart(document.getElementById('cCash'),{
+  type:'bar',
+  data:{labels:qLabel,datasets:[
+    {label:'2566',data:cashQ[2566],backgroundColor:'#94A3B8'},
+    {label:'2567',data:cashQ[2567],backgroundColor:'#1D6FA4'},
+    {label:'2568',data:cashQ[2568],backgroundColor:'#C05621'},
+    {label:'2569*',data:cashQ[2569],backgroundColor:'#0F6E56'}
+  ]},
+  options:{responsive:true,plugins:{legend:{position:'bottom',labels:{boxWidth:10}}},scales:{y:{beginAtZero:true}}}
+});
+let yChart,qChart;
+function openFund(id){
+  document.querySelectorAll('.fund-row').forEach(function(r){ r.classList.toggle('on', r.dataset.id===id); });
+  const f=funds[id];
+  document.getElementById('detail').classList.remove('hidden');
+  document.getElementById('dTitle').textContent=f.name;
+  document.getElementById('dNote').textContent=f.note;
+  document.getElementById('dPlan').textContent=f.plan;
+  document.getElementById('qBody').innerHTML=[2566,2567,2568,2569].map(function(y){
+    const q=f.q[y];
+    return '<tr class="border-t"><td class="p-2">'+y+(y===2569?'*':'')+'</td>'+q.map(function(v){return '<td class="text-right p-2">'+v.toFixed(2)+'</td>';}).join('')+'<td class="text-right p-2 font-semibold">'+sum(q).toFixed(2)+'</td></tr>';
+  }).join('');
+  if(yChart) yChart.destroy();
+  if(qChart) qChart.destroy();
+  yChart=new Chart(document.getElementById('cYear'),{
+    type:'line',
+    data:{labels:years,datasets:[{label:f.name,data:f.annual,borderColor:f.color,backgroundColor:f.color,tension:.25,fill:false}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}
+  });
+  qChart=new Chart(document.getElementById('cQ'),{
+    type:'bar',
+    data:{labels:qLabel,datasets:[
+      {label:'2566',data:f.q[2566],backgroundColor:'#94A3B8'},
+      {label:'2567',data:f.q[2567],backgroundColor:'#1D6FA4'},
+      {label:'2568',data:f.q[2568],backgroundColor:'#C05621'},
+      {label:'2569*',data:f.q[2569],backgroundColor:f.color}
+    ]},
+    options:{responsive:true,plugins:{legend:{position:'bottom',labels:{boxWidth:10}}},scales:{y:{beginAtZero:true}}}
+  });
+  document.getElementById('detail').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function closeDetail(){
+  document.getElementById('detail').classList.add('hidden');
+  document.querySelectorAll('.fund-row').forEach(function(r){ r.classList.remove('on'); });
+}
+</script>
+</body>
+</html>
