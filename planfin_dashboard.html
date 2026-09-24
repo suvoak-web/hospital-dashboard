@@ -7,24 +7,24 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap');
-:root{--bg:#F4F6F9;--surface:#FFFFFF;--border:#E2E8F0;--text:#1A2332;--muted:#64748B;--accent:#1D6FA4;--accent-dim:rgba(29,111,164,0.08);--green:#16A34A;--amber:#B45309;--red:#DC2626;--y69:#1D6FA4;--y70:#0F6E56;}
-*{box-sizing:border-box;margin:0;padding:0;}body{background:var(--bg);color:var(--text);font-family:'Sarabun',sans-serif;font-size:15px;line-height:1.55;}header{background:var(--accent);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;} .logo-mark{width:44px;height:44px;background:rgba(255,255,255,0.25);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;} .sidebar{position:fixed;left:0;top:68px;bottom:0;width:260px;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;padding:16px 0;z-index:150;} .nav-item{display:flex;align-items:center;gap:10px;padding:11px 22px;color:var(--muted);text-decoration:none;font-weight:600;margin:3px 12px;border-radius:8px;} .nav-item.active,.nav-item:hover{background:var(--accent-dim);color:var(--accent);} .nav-sub{font-size:13.5px;font-weight:500;padding:8px 22px 8px 42px;} .main{margin-left:260px;padding:22px 26px 48px;} .kicker{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}h1{font-size:24px;font-weight:800;margin:4px 0 6px;} .sub{color:var(--muted);font-size:14px;margin-bottom:18px;} .grid{display:grid;gap:14px;} .g4{grid-template-columns:repeat(4,1fr);} .g3{grid-template-columns:repeat(3,1fr);} .g2{grid-template-columns:1fr 1fr;} .card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 18px;} .kpi .lbl{font-size:12px;color:var(--muted);font-weight:600;} .kpi .val{font-size:26px;font-weight:800;margin-top:4px;font-family:'IBM Plex Mono',Sarabun,monospace;} .kpi .unit{font-size:12px;color:var(--muted);} .delta{font-size:12.5px;font-weight:700;margin-top:6px;} .up{color:var(--red);} .down{color:var(--green);} .note{font-size:11.5px;color:var(--muted);margin-top:4px;} .badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:700;} .b-warn{background:#FEF3C7;color:#92400E;} .b-info{background:#DBEAFE;color:#1E40AF;} .b-risk{background:#FEE2E2;color:#991B1B;}table{width:100%;border-collapse:collapse;font-size:13.5px;}th{text-align:left;font-size:11px;color:var(--muted);padding:8px;border-bottom:1px solid var(--border);}td{padding:8px;border-bottom:1px solid #F1F5F9;}td.num,th.num{text-align:right;font-family:'IBM Plex Mono',Sarabun,monospace;} .risk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;} .risk-box{border:1px solid var(--border);border-radius:10px;padding:12px;} .footer{margin-top:22px;font-size:12px;color:var(--muted);} .tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;} .tab{border:1px solid var(--border);background:#fff;padding:8px 14px;border-radius:999px;font-weight:700;font-size:13.5px;cursor:pointer;color:var(--muted);} .tab.on{background:var(--accent);color:#fff;border-color:var(--accent);} .view{display:none;} .view.on{display:block;} .quick{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px;} .quick a{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:#fff;color:var(--text);text-decoration:none;font-weight:700;font-size:13.5px;} .quick a:hover{background:var(--accent);color:#fff;border-color:var(--accent);} .page-byline{margin:28px 0 8px;padding:16px 8px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--border);} .page-byline b{color:var(--text);} .alert{background:#FEF3C7;border:1px solid #F59E0B;color:#78350F;border-radius:12px;padding:12px 14px;font-size:13.5px;margin-bottom:14px;}@media(max-width:1100px){.g4,.g3,.risk-grid{grid-template-columns:1fr 1fr;}.sidebar{transform:translateX(-100%);}.sidebar.open{transform:none;}.main{margin-left:0;}}
+:root{--bg:#F4F6F9;--surface:#FFFFFF;--border:#E2E8F0;--text:#1A2332;--muted:#64748B;--accent:#1D6FA4;--accent-dim:rgba(29,111,164,0.08);--green:#16A34A;--amber:#B45309;--red:#DC2626;}
+*{box-sizing:border-box;margin:0;padding:0;}body{background:var(--bg);color:var(--text);font-family:'Sarabun',sans-serif;font-size:15px;}header{background:var(--accent);padding:16px 24px;display:flex;align-items:center;position:sticky;top:0;z-index:200;} .sidebar{position:fixed;left:0;top:68px;bottom:0;width:260px;background:#fff;border-right:1px solid var(--border);overflow-y:auto;padding:16px 0;} .nav-item{display:flex;gap:10px;padding:11px 22px;color:var(--muted);text-decoration:none;font-weight:600;margin:3px 12px;border-radius:8px;} .nav-item.active,.nav-item:hover{background:var(--accent-dim);color:var(--accent);} .nav-sub{font-size:13.5px;padding:8px 22px 8px 42px;} .main{margin-left:260px;padding:22px 26px 48px;} .kicker{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}h1{font-size:24px;font-weight:800;margin:4px 0 6px;} .sub{color:var(--muted);font-size:14px;margin-bottom:18px;} .grid{display:grid;gap:14px;} .g4{grid-template-columns:repeat(4,1fr);} .g3{grid-template-columns:repeat(3,1fr);} .g2{grid-template-columns:1fr 1fr;} .card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 18px;} .kpi .lbl{font-size:12px;color:var(--muted);font-weight:600;} .kpi .val{font-size:26px;font-weight:800;margin-top:4px;font-family:'IBM Plex Mono',monospace;} .note{font-size:11.5px;color:var(--muted);margin-top:4px;} .badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:700;} .b-warn{background:#FEF3C7;color:#92400E;} .b-info{background:#DBEAFE;color:#1E40AF;} .b-risk{background:#FEE2E2;color:#991B1B;}table{width:100%;border-collapse:collapse;font-size:13.5px;}th,td{padding:8px;border-bottom:1px solid #E2E8F0;}td.num,th.num{text-align:right;} .risk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;} .risk-box{border:1px solid var(--border);border-radius:10px;padding:12px;} .footer{margin-top:22px;font-size:12px;color:var(--muted);} .tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;} .tab{border:1px solid var(--border);background:#fff;padding:8px 14px;border-radius:999px;font-weight:700;font-size:13.5px;cursor:pointer;color:var(--muted);} .tab.on{background:var(--accent);color:#fff;} .view{display:none;} .view.on{display:block;} .quick{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px;} .quick a{padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:#fff;color:var(--text);text-decoration:none;font-weight:700;font-size:13.5px;} .quick a:hover{background:var(--accent);color:#fff;} .page-byline{margin:28px 0 8px;padding:16px 8px;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid var(--border);} .alert{background:#FEF3C7;border:1px solid #F59E0B;color:#78350F;border-radius:12px;padding:12px 14px;font-size:13.5px;margin-bottom:14px;}@media(max-width:1100px){.g4,.g3,.risk-grid{grid-template-columns:1fr 1fr;}.sidebar{transform:translateX(-100%);}.sidebar.open{transform:none;}.main{margin-left:0;}}
 </style></head><body>
-<header><div style="display:flex;align-items:center;gap:14px;"><button onclick="document.getElementById('sidebar').classList.toggle('open')" style="background:none;border:none;color:#fff;font-size:26px;cursor:pointer;">☰</button><div class="logo-mark">🏥</div><div><div style="color:#fff;font-weight:700;">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา</div><div style="color:rgba(255,255,255,.85);font-size:13px;">Planfin / แผนเงินบำรุง</div></div></div></header>
+<header><div style="display:flex;align-items:center;gap:14px;color:#fff;"><button onclick="document.getElementById('sidebar').classList.toggle('open')" style="background:none;border:none;color:#fff;font-size:26px;cursor:pointer;">☰</button><div><div style="font-weight:700;">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา</div><div style="opacity:.85;font-size:13px;">Planfin / แผนเงินบำรุง</div></div></div></header>
 <aside id="sidebar" class="sidebar">
 <a href="index.html" class="nav-item">🏠 หน้าหลัก</a>
-<a href="kpi_dashboard.html" class="nav-item">📊 KPI Dashboard</a>
-<a href="planfin_dashboard.html" class="nav-item active">📈 Planfin / การเงิน</a>
-<a href="uc_transfer_dashboard.html" class="nav-item">🏦 เงินโอน UC</a>
+<a href="kpi_dashboard.html" class="nav-item">📊 KPI</a>
+<a href="planfin_dashboard.html" class="nav-item active">📈 Planfin</a>
+<a href="uc_transfer_dashboard.html" class="nav-item">🏦 UC</a>
 <a href="opwalkin.html" class="nav-item">💰 พึงรับ-พึงจ่าย</a>
 <a href="compare.html" class="nav-item">⏱ รอคอย</a>
 <a href="bottleneck_dashboard.html" class="nav-item nav-sub">🔎 คอขวด</a>
 <a href="pcupayment.html" class="nav-item">💊 ยา รพ.สต.</a>
 </aside>
 <div class="main">
-<div class="kicker">CFO · เงินบำรุง · 22456</div>
+<div class="kicker">CFO · 22456</div>
 <h1>แผนรับ–จ่ายเงินบำรุง ปี 2570</h1>
-<p class="sub">จากไฟล์แผนเงินบำรุง F-PLB1 · หน่วยล้านบาท</p>
+<p class="sub">F-PLB1 · หน่วยล้านบาท</p>
 <div class="quick">
 <a href="index.html">🏠 หน้าหลัก</a>
 <a href="kpi_dashboard.html">📊 KPI</a>
@@ -35,70 +35,57 @@
 <a href="pcupayment.html">💊 ยา รพ.สต.</a>
 </div>
 <div class="tabs">
-<button class="tab on" onclick="showView('bamrung', this)">เงินสดเงินบำรุง 2570</button>
-<button class="tab" onclick="showView('accrual', this)">เกณฑ์คงค้าง 69 / 70</button>
+<button class="tab on" onclick="showView('bamrung',this)">เงินสดเงินบำรุง 2570</button>
+<button class="tab" onclick="showView('accrual',this)">เกณฑ์คงค้าง 69 / 70</button>
 </div>
 <div id="view-bamrung" class="view on">
-<div class="alert"><b>แผน 2570 รอบ 1:</b> รับ 74.95 ลบ. · จ่ายรวมผูกพัน 97.84 ลบ. · ขาดดุลเงินสด 22.89 ลบ. · คงเหลือหลังแผน ≈ −2.69 ลบ.</div>
+<div class="alert"><b>แผน 2570 รอบ 1:</b> รับ 74.95 · จ่าย 97.84 · ขาดดุลเงินสด 22.89 · คงเหลือ≈ −2.69 ลบ.</div>
 <div class="grid g4" style="margin-bottom:16px;">
-<div class="card kpi"><div class="lbl">รายรับแผน 2570</div><div class="val">74.95 <span class="unit">ลบ.</span></div><div class="note">จริง 69 = 61.25</div></div>
-<div class="card kpi"><div class="lbl">รายจ่ายแผน 2570</div><div class="val">97.84 <span class="unit">ลบ.</span></div><div class="note">จริง 69 = 70.94</div></div>
-<div class="card kpi"><div class="lbl">รับสูง(ต่ำ)กว่ารายจ่าย</div><div class="val" style="color:var(--red);">−22.89 <span class="unit">ลบ.</span></div></div>
-<div class="card kpi"><div class="lbl">คงเหลือหลังแผน</div><div class="val" style="color:var(--red);">−2.69 <span class="unit">ลบ.</span></div><div class="note">ต้นปี 20.20</div></div>
+<div class="card kpi"><div class="lbl">รายรับแผน 2570</div><div class="val">74.95</div><div class="note">จริง 69 = 61.25</div></div>
+<div class="card kpi"><div class="lbl">รายจ่ายแผน 2570</div><div class="val">97.84</div><div class="note">จริง 69 = 70.94</div></div>
+<div class="card kpi"><div class="lbl">ขาดดุลเงินสด</div><div class="val" style="color:var(--red);">−22.89</div></div>
+<div class="card kpi"><div class="lbl">คงเหลือหลังแผน</div><div class="val" style="color:var(--red);">−2.69</div></div>
 </div>
 <div class="grid g2" style="margin-bottom:16px;">
-<div class="card"><div class="kicker">รับ–จ่าย เงินบำรุง</div><canvas id="chartCash" height="210"></canvas></div>
-<div class="card"><div class="kicker">โครงสร้างรายรับแผน 70</div><canvas id="chartRevPie" height="210"></canvas></div>
+<div class="card"><div class="kicker">รับ–จ่าย</div><canvas id="chartCash" height="210"></canvas></div>
+<div class="card"><div class="kicker">โครงสร้างรายรับ</div><canvas id="chartRevPie" height="210"></canvas></div>
 </div>
-<div class="grid g3" style="margin-bottom:16px;">
-<div class="card"><div class="kicker">ลงทุนครุภัณฑ์ 2.93 ลบ.</div><div class="note">ค่าเสื่อม 1.18 · บริจาค 1.01 · เงินบำรุง 0.74</div></div>
+<div class="grid g3">
+<div class="card"><div class="kicker">ครุภัณฑ์ 2.93 ลบ.</div><div class="note">ค่าเสื่อม 1.18 · บริจาค 1.01 · บำรุง 0.74</div></div>
 <div class="card"><div class="kicker">สิ่งก่อสร้าง 1.55 ลบ.</div><div class="note">ER 0.30 · NCD/Lab 0.50 · หลังคาคลังยา 0.26 · ศูนย์เปล 0.49</div></div>
-<div class="card"><div class="kicker">จุดจับตา CFO</div><div class="note"><span class="badge b-risk">ใช้สอย 16.76</span> สูงกว่าจริง 69 (7.23)</div><div class="note"><span class="badge b-warn">ยา 13.86</span></div><div class="note"><span class="badge b-info">UC 75%</span></div></div>
+<div class="card"><div class="kicker">CFO</div><div class="note"><span class="badge b-risk">ใช้สอย 16.76</span></div><div class="note"><span class="badge b-warn">ยา 13.86</span></div><div class="note"><span class="badge b-info">UC 75%</span></div></div>
 </div></div>
 <div id="view-accrual" class="view">
 <div class="grid g4" style="margin-bottom:16px;">
-<div class="card kpi"><div class="lbl">รายได้ P13S</div><div class="val" id="k-rev">—</div><div class="delta" id="d-rev"></div></div>
-<div class="card kpi"><div class="lbl">ค่าใช้จ่าย P26S</div><div class="val" id="k-exp">—</div><div class="delta" id="d-exp"></div></div>
-<div class="card kpi"><div class="lbl">ขาดดุลบัญชี</div><div class="val" id="k-net">—</div><div class="delta" id="d-net"></div></div>
-<div class="card kpi"><div class="lbl">EBITDA</div><div class="val" id="k-ebitda">—</div><div class="delta" id="d-ebitda"></div></div>
+<div class="card kpi"><div class="lbl">รายได้ P13S</div><div class="val" id="k-rev">-</div></div>
+<div class="card kpi"><div class="lbl">ค่าใช้จ่าย P26S</div><div class="val" id="k-exp">-</div></div>
+<div class="card kpi"><div class="lbl">ขาดดุล</div><div class="val" id="k-net">-</div></div>
+<div class="card kpi"><div class="lbl">EBITDA</div><div class="val" id="k-ebitda">-</div></div>
 </div>
-<div class="grid g2" style="margin-bottom:16px;">
-<div class="card"><div class="kicker">รายได้ · ค่าใช้จ่าย</div><canvas id="chartMain" height="210"></canvas></div>
-<div class="card"><div class="kicker">โครงสร้างรายได้</div><canvas id="chartRev" height="210"></canvas></div>
+<div class="grid g2"><div class="card"><canvas id="chartMain" height="210"></canvas></div><div class="card"><canvas id="chartRev" height="210"></canvas></div></div>
+<div class="card" style="margin-top:14px;"><table id="cmpTable"></table></div>
 </div>
-<div class="grid g2" style="margin-bottom:16px;">
-<div class="card"><div class="kicker">โครงสร้างค่าใช้จ่าย</div><canvas id="chartExp" height="210"></canvas></div>
-<div class="card"><div class="kicker">ความเสี่ยงแผน 8 แบบ</div><div class="risk-grid" id="riskBoxes"></div></div>
-</div>
-<div class="card" style="margin-bottom:16px;"><div class="kicker">ตารางเปรียบเทียบ</div><div style="overflow-x:auto;"><table id="cmpTable"></table></div></div>
-</div>
-<div class="footer">F-PLB1 ปี 2570 + Planfin เกณฑ์คงค้าง · 25 ก.ย. 2569</div>
+<div class="footer">F-PLB1 2570 + Planfin · 25 ก.ย. 2569</div>
 <div class="page-byline">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา<br>by <b>Suweerasak Riwlord, M.D.</b></div>
 </div>
 <script>
-const PLANFIN={y69:{revenue:114.427,expense:123.114,net:-8.687,ebitda:0.156,investBamrung:6.636,investTotal:10.620,nwc:21.444,planType:3,pcu:0.693,staffTotal:7.458,revItems:[["UC",49.223],["งบบุคลากร",37.441],["รายได้อื่น",12.958],["งบลงทุน",3.984],["เบิกจ่ายตรง",4.972],["ประกันสังคม",2.061],["ค่ารักษาอื่น",2.408],["อปท.",1.136]],expItems:[["เงินเดือน",37.441],["ค่าตอบแทน",22.339],["ยา",12.494],["ค่าเสื่อม",12.505],["จ้างชั่วคราว/พกส.",12.523],["ใช้สอย+สาธารณูปโกค",7.127],["เวชภัณฑ์",7.666],["อื่น",3.540]]},y70:{revenue:115.952,expense:127.976,net:-12.024,ebitda:0.133,investBamrung:3.302,investTotal:4.474,nwc:21.444,planType:3,pcu:0.527,staffTotal:8.158,revItems:[["UC",50.883],["งบบุคลากร",39.677],["รายได้อื่น",13.905],["งบลงทุน",1.172],["เบิกจ่ายตรง",4.772],["ประกันสังคม",1.821],["ค่ารักษาอื่น",2.438],["อปท.",1.066]],expItems:[["เงินเดือน",39.677],["ค่าตอบแทน",22.809],["ยา",11.857],["ค่าเสื่อม",13.330],["จ้างชั่วคราว/พกส.",12.910],["ใช้สอย+สาธารณูปโกค",8.725],["เวชภัณฑ์",6.748],["อื่น",4.997]]}};
-function mil(n){return (n<0?"\u2212":"")+Math.abs(n).toFixed(2);}function pctDelta(a,b){const p=((b-a)/Math.abs(a))*100;return (p>=0?"+":"")+p.toFixed(1)+"%";}function clsDelta(a,b,inv){const d=b-a;if(Math.abs(d)<0.005)return "flat";return (inv?d>0:d<0)?"up":"down";}
-function render(){const a=PLANFIN.y69,b=PLANFIN.y70;
-document.getElementById("k-rev").innerHTML=mil(a.revenue)+" \u2192 "+mil(b.revenue)+" <span class='unit'>ลบ.</span>";
-document.getElementById("d-rev").className="delta "+clsDelta(a.revenue,b.revenue,false);
-document.getElementById("d-rev").textContent=pctDelta(a.revenue,b.revenue);
-document.getElementById("k-exp").innerHTML=mil(a.expense)+" \u2192 "+mil(b.expense)+" <span class='unit'>ลบ.</span>";
-document.getElementById("d-exp").className="delta "+clsDelta(a.expense,b.expense,true);
-document.getElementById("d-exp").textContent=pctDelta(a.expense,b.expense);
-document.getElementById("k-net").innerHTML=mil(a.net)+" \u2192 "+mil(b.net)+" <span class='unit'>ลบ.</span>";
-document.getElementById("d-net").className="delta "+clsDelta(a.net,b.net,false);
-document.getElementById("k-ebitda").innerHTML=mil(a.ebitda)+" \u2192 "+mil(b.ebitda)+" <span class='unit'>ลบ.</span>";
-document.getElementById("d-ebitda").className="delta "+clsDelta(a.ebitda,b.ebitda,false);
-new Chart(document.getElementById("chartMain"),{type:"bar",data:{labels:["รายได้","ค่าใช้จ่าย","ขาดดุล","EBITDA"],datasets:[{label:"2569",data:[a.revenue,a.expense,a.net,a.ebitda],backgroundColor:"#1D6FA4"},{label:"2570",data:[b.revenue,b.expense,b.net,b.ebitda],backgroundColor:"#0F6E56"}]},options:{responsive:true,plugins:{legend:{position:"bottom"}}}});
-new Chart(document.getElementById("chartRev"),{type:"bar",data:{labels:a.revItems.map(x=>x[0]),datasets:[{label:"2569",data:a.revItems.map(x=>x[1]),backgroundColor:"#1D6FA4"},{label:"2570",data:b.revItems.map(x=>x[1]),backgroundColor:"#0F6E56"}]},options:{indexAxis:"y",responsive:true,plugins:{legend:{position:"bottom"}}}});
-new Chart(document.getElementById("chartExp"),{type:"bar",data:{labels:a.expItems.map(x=>x[0]),datasets:[{label:"2569",data:a.expItems.map(x=>x[1]),backgroundColor:"#1D6FA4"},{label:"2570",data:b.expItems.map(x=>x[1]),backgroundColor:"#0F6E56"}]},options:{indexAxis:"y",responsive:true,plugins:{legend:{position:"bottom"}}}});
-document.getElementById("riskBoxes").innerHTML='<div class="risk-box"><b>ปี 2569</b><div class="note">แบบ '+a.planType+'</div></div><div class="risk-box"><b>ปี 2570</b><div class="note">แบบ '+b.planType+'</div></div><div class="risk-box"><b>CFO</b><div class="note">EBITDA บาง ลงทุนเงินบำรุงเกินเพดาน</div></div>';
-const rows=[["รายได้",a.revenue,b.revenue,false],["ค่าใช้จ่าย",a.expense,b.expense,true],["ขาดดุล",a.net,b.net,false],["EBITDA",a.ebitda,b.ebitda,false]];
-let h="<thead><tr><th>รายการ</th><th class='num'>2569</th><th class='num'>2570</th><th class='num'>%Δ</th></tr></thead><tbody>";
-rows.forEach(([n,x,y,inv])=>{h+=`<tr><td>${n}</td><td class='num'>${mil(x)}</td><td class='num'>${mil(y)}</td><td class='num ${clsDelta(x,y,inv)}'>${pctDelta(x,y)}</td></tr>`;});
-document.getElementById("cmpTable").innerHTML=h+"</tbody>";}
+const A={revenue:114.427,expense:123.114,net:-8.687,ebitda:0.156,rev:[49.223,37.441,12.958,3.984,4.972,2.061],exp:[37.441,22.339,12.494,12.505,12.523,7.127]};
+const B={revenue:115.952,expense:127.976,net:-12.024,ebitda:0.133,rev:[50.883,39.677,13.905,1.172,4.772,1.821],exp:[39.677,22.809,11.857,13.330,12.910,8.725]};
+function mil(n){return (n<0?'\u2212':'')+Math.abs(n).toFixed(2);}
 function showView(id,btn){document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));document.getElementById('view-'+id).classList.add('on');btn.classList.add('on');}
-function renderBamrung(){new Chart(document.getElementById('chartCash'),{type:'bar',data:{labels:['รายรับ','รายจ่าย','ขาดดุล'],datasets:[{label:'จริง 69',data:[61.25,70.94,-9.68],backgroundColor:'#1D6FA4'},{label:'แผน 70',data:[74.95,97.84,-22.89],backgroundColor:'#0F6E56'}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}'});new Chart(document.getElementById('chartRevPie'),{type:'doughnut',data:{labels:['UC','เบิกจ่ายตรง','ประกันสังคม','ค่ารักษาอื่น','อปท.','อุดหนุน','อื่น'],datasets:[{data:[56.22,6.46,2.74,2.31,1.38,1.70,4.14],backgroundColor:['#1D6FA4','#0F6E56','#7C3AED','#B45309','#16A34A','#DC2626','#64748B']}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}});}
+function renderBamrung(){
+ new Chart(document.getElementById('chartCash'),{type:'bar',data:{labels:['รายรับ','รายจ่าย','ขาดดุล'],datasets:[{label:'จริง 69',data:[61.25,70.94,-9.68],backgroundColor:'#1D6FA4'},{label:'แผน 70',data:[74.95,97.84,-22.89],backgroundColor:'#0F6E56'}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
+ new Chart(document.getElementById('chartRevPie'),{type:'doughnut',data:{labels:['UC','เบิกจ่ายตรง','SSO','ค่ารักษา','อปท.','อุดหนุน','อื่น'],datasets:[{data:[56.22,6.46,2.74,2.31,1.38,1.70,4.14],backgroundColor:['#1D6FA4','#0F6E56','#7C3AED','#B45309','#16A34A','#DC2626','#64748B']}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
+}
+function render(){
+ document.getElementById('k-rev').textContent=mil(A.revenue)+' \u2192 '+mil(B.revenue);
+ document.getElementById('k-exp').textContent=mil(A.expense)+' \u2192 '+mil(B.expense);
+ document.getElementById('k-net').textContent=mil(A.net)+' \u2192 '+mil(B.net);
+ document.getElementById('k-ebitda').textContent=mil(A.ebitda)+' \u2192 '+mil(B.ebitda);
+ new Chart(document.getElementById('chartMain'),{type:'bar',data:{labels:['รายได้','ค่าใช้จ่าย','ขาดดุล','EBITDA'],datasets:[{label:'2569',data:[A.revenue,A.expense,A.net,A.ebitda],backgroundColor:'#1D6FA4'},{label:'2570',data:[B.revenue,B.expense,B.net,B.ebitda],backgroundColor:'#0F6E56'}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
+ new Chart(document.getElementById('chartRev'),{type:'bar',data:{labels:['UC','บุคลากร','อื่น','ลงทุน','เบิกจ่ายตรง','SSO'],datasets:[{label:'2569',data:A.rev,backgroundColor:'#1D6FA4'},{label:'2570',data:B.rev,backgroundColor:'#0F6E56'}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{position:'bottom'}}}});
+ document.getElementById('cmpTable').innerHTML='<thead><tr><th>รายการ</th><th class="num">2569</th><th class="num">2570</th></tr></thead><tbody><tr><td>รายได้</td><td class="num">'+mil(A.revenue)+'</td><td class="num">'+mil(B.revenue)+'</td></tr><tr><td>ค่าใช้จ่าย</td><td class="num">'+mil(A.expense)+'</td><td class="num">'+mil(B.expense)+'</td></tr><tr><td>ขาดดุล</td><td class="num">'+mil(A.net)+'</td><td class="num">'+mil(B.net)+'</td></tr></tbody>';
+}
 renderBamrung();render();
 </script>
 <script src="credit.js"></script>
