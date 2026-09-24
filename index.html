@@ -46,7 +46,7 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
 <aside id="sidebar" class="sidebar">
   <a href="index.html" class="nav-item active">🏠 หน้าหลัก</a>
   <a href="kpi_dashboard.html" class="nav-item">📊 KPI Dashboard</a>
-  <a href="fin_dashboard.html" class="nav-item">💰 KPI การเงิน</a>
+  <a href="planfin_dashboard.html" class="nav-item">📈 Planfin / การเงิน</a>
   <a href="uc_transfer_dashboard.html" class="nav-item">🏦 เงินโอน UC / สปสช.</a>
   <a href="opwalkin.html" class="nav-item">💰 พึงรับ-พึงจ่าย</a>
   <a href="compare.html" class="nav-item">⏱ ระยะเวลารอคอย</a>
@@ -56,21 +56,23 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
 <div class="main-content">
   <div class="section-label">DASHBOARD ที่พร้อมใช้งาน</div>
   <div class="dash-grid">
-    <a class="dash-card" href="fin_dashboard.html" style="border-top: 5px solid #1D6FA4;">
-      <div style="display:flex; gap:16px;"><div style="font-size:42px;">📊</div>
-      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">KPI การเงิน ปี 2569</div>
-      <div style="margin:8px 0; font-size:14px; color:var(--muted);">รายรับ - รายจ่าย • ขาดดุล • ความเสี่ยง</div>
-      <div style="display:flex; gap:20px; font-size:15px;"><div><span style="color:#16A34A; font-weight:700;">76.99M</span><br><small>รายรับ</small></div><div><span style="color:#DC2626; font-weight:700;">82.80M</span><br><small>รายจ่าย</small></div></div></div></div>
+    <a class="dash-card" href="planfin_dashboard.html" style="border-top: 5px solid #0F6E56;">
+      <div style="display:flex; gap:16px;"><div style="font-size:42px;">📈</div>
+      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">Planfin เปรียบเทียบ 2569 / 2570</div>
+      <div style="margin:8px 0; font-size:14px; color:var(--muted);">รายได้ · ค่าใช้จ่าย · EBITDA · แผนแบบ 3</div>
+      <div style="display:flex; gap:20px; font-size:15px;">
+        <div><span style="color:#DC2626; font-weight:700;">−8.69 → −12.02M</span><br><small>ขาดดุลบัญชี</small></div>
+        <div><span style="color:#0F6E56; font-weight:700;">แบบ 3</span><br><small>ทบทวนลงทุน</small></div>
+      </div></div></div>
     </a>
     <a class="dash-card" href="uc_transfer_dashboard.html" style="border-top: 5px solid #0F6E56;">
       <div style="display:flex; gap:16px;"><div style="font-size:42px;">🏦</div>
       <div style="flex:1;">
         <div style="font-size:17px; font-weight:700;">เงินโอน สปสช. (UC)</div>
-        <div style="margin:8px 0; font-size:14px; color:var(--muted);">ข้อมูลล่าสุด 22 ก.ย. 2569 • ทั้งปี + รายไตรมาส</div>
+        <div style="margin:8px 0; font-size:14px; color:var(--muted);">ข้อมูลล่าสุด 22 ก.ย. 2569</div>
         <div style="display:flex; gap:20px; font-size:15px;">
           <div><span style="color:#16A34A; font-weight:700;">49.45M</span><br><small>UC ดำเนินงาน ปี 69*</small></div>
           <div><span style="color:#0F6E56; font-weight:700;">52.13M</span><br><small>เงินเข้าทั้งก้อน</small></div>
-          <div><span style="color:#B45309; font-weight:700;">100.5%</span><br><small>เทียบแผนทั้งปี</small></div>
         </div>
       </div></div>
     </a>
