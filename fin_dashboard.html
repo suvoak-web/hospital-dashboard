@@ -24,7 +24,7 @@
   <a href="index.html"><span>🏠</span>หน้าหลัก</a>
   <a href="kpi_dashboard.html"><span>📊</span>KPI Dashboard</a>
   <a href="fin_dashboard.html" class="active"><span>💹</span>KPI การเงิน</a>
-  <a href="fin_projection.html"><span>📈</span>Finance Projection</a>
+  <a href="uc_transfer_dashboard.html"><span>🏦</span>เงินโอน UC</a>
   <a href="opwalkin.html"><span>🔥</span>พึงรับ-พึงจ่าย</a>
   <a href="compare.html"><span>⏱️</span>ระยะเวลารอคอย</a>
 </nav>
@@ -141,14 +141,9 @@
             reader.onload = function(e) {
                 try {
                     const workbook = XLSX.read(e.target.result, { type: 'array' });
-                    // ตัวอย่างการดึงข้อมูล (คุณสามารถปรับ sheet/เซลล์ ตามไฟล์จริง)
-                    // เช่น อ่านจาก sheet "หน้าแรก" หรือ "PlanFin Analysis"
-                    // data.revenue = parseFloat(...) ...
-
-                    // ตอนนี้ยังใช้ข้อมูลเดิม + แสดงข้อความ (พัฒนาต่อได้)
                     document.getElementById('status').innerHTML = `✅ อัพโหลดสำเร็จ: ${file.name}<br><small class="text-green-600">ข้อมูลถูกอัพเดต (ตัวอย่าง)</small>`;
                     
-                    updateDashboard(); // Refresh หน้า
+                    updateDashboard();
                 } catch (err) {
                     document.getElementById('status').innerHTML = '❌ ไม่สามารถอ่านไฟล์ได้';
                     console.error(err);
@@ -157,7 +152,6 @@
             reader.readAsArrayBuffer(file);
         }
 
-        // โหลดครั้งแรก
         window.onload = updateDashboard;
     </script>
 </body>
