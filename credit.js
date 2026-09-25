@@ -5,14 +5,14 @@
   window.__ptkShell = true;
 
   var PAGES = [
-    { href: 'index.html', icon: '\ud83c\udfe0', label: '\u0e2b\u0e19\u0e49\u0e32\u0e2b\u0e25\u0e31\u0e01' },
-    { href: 'kpi_dashboard.html', icon: '\ud83d\udcca', label: 'KPI Dashboard' },
-    { href: 'planfin_dashboard.html', icon: '\ud83d\udcc8', label: 'Planfin / \u0e01\u0e32\u0e23\u0e40\u0e07\u0e34\u0e19' },
-    { href: 'uc_transfer_dashboard.html', icon: '\ud83c\udfe6', label: '\u0e40\u0e07\u0e34\u0e19\u0e42\u0e2d\u0e19 UC / \u0e2a\u0e1b\u0e2a\u0e0a.' },
-    { href: 'opwalkin.html', icon: '\ud83d\udcb0', label: '\u0e1e\u0e36\u0e07\u0e23\u0e31\u0e1a-\u0e1e\u0e36\u0e07\u0e08\u0e48\u0e32\u0e22' },
-    { href: 'compare.html', icon: '\u23f1', label: '\u0e23\u0e30\u0e22\u0e30\u0e40\u0e27\u0e25\u0e32\u0e23\u0e2d\u0e04\u0e2d\u0e22' },
-    { href: 'bottleneck_dashboard.html', icon: '\ud83d\udd0e', label: '\u0e27\u0e34\u0e40\u0e04\u0e23\u0e32\u0e30\u0e2b\u0e4c\u0e04\u0e2d\u0e02\u0e27\u0e14', sub: true },
-    { href: 'pcupayment.html', icon: '\ud83d\udc8a', label: '\u0e22\u0e32\u0e41\u0e25\u0e30\u0e40\u0e27\u0e0a\u0e20\u0e31\u0e13\u0e11\u0e4c \u0e23\u0e1e.\u0e2a\u0e15.' }
+    { href: 'index.html', icon: '🏠', label: 'หน้าหลัก' },
+    { href: 'kpi_dashboard.html', icon: '📊', label: 'KPI Dashboard' },
+    { href: 'planfin_dashboard.html', icon: '📈', label: 'Planfin / การเงิน' },
+    { href: 'uc_transfer_dashboard.html', icon: '🏦', label: 'เงินโอน UC / สปสช.' },
+    { href: 'opwalkin.html', icon: '💰', label: 'พึงรับ-พึงจ่าย' },
+    { href: 'compare.html', icon: '⏱', label: 'ระยะเวลารอคอย' },
+    { href: 'bottleneck_dashboard.html', icon: '🔎', label: 'วิเคราะห์คอขวด', sub: true },
+    { href: 'pcupayment.html', icon: '💊', label: 'ยาและเวชภัณฑ์ รพ.สต.' }
   ];
 
   var file = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
@@ -59,10 +59,10 @@
     var h = document.createElement('header');
     h.id = 'ptk-header';
     h.innerHTML = '<div class="ptk-left">'
-      + '<button type="button" id="ptk-burger" aria-label="\u0e40\u0e21\u0e19\u0e39">\u2630</button>'
-      + '<div class="ptk-mark">\ud83c\udfe5</div>'
-      + '<div><div class="ptk-title">\u0e42\u0e23\u0e07\u0e1e\u0e22\u0e32\u0e1a\u0e32\u0e25\u0e1e\u0e23\u0e30\u0e17\u0e2d\u0e07\u0e04\u0e33\u0e40\u0e09\u0e25\u0e34\u0e21\u0e1e\u0e23\u0e30\u0e40\u0e01\u0e35\u0e22\u0e23\u0e15\u0e34 80 \u0e1e\u0e23\u0e23\u0e29\u0e32</div>'
-      + '<div class="ptk-sub">\u0e23\u0e30\u0e1a\u0e1a\u0e15\u0e34\u0e14\u0e15\u0e32\u0e21\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e42\u0e23\u0e07\u0e1e\u0e22\u0e32\u0e1a\u0e32\u0e25</div></div></div>'
+      + '<button type="button" id="ptk-burger" aria-label="เมนู">☰</button>'
+      + '<div class="ptk-mark">🏥</div>'
+      + '<div><div class="ptk-title">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา</div>'
+      + '<div class="ptk-sub">ระบบติดตามข้อมูลโรงพยาบาล</div></div></div>'
       + '<div class="ptk-clock"><div class="ptk-time" id="ptk-clock">--:--</div>'
       + '<div class="ptk-date" id="ptk-date"></div></div>';
     document.body.insertBefore(h, document.body.firstChild);
@@ -87,7 +87,7 @@
     box.id = 'ptk-quick';
     box.innerHTML = PAGES.map(function (p) {
       return '<a href="' + p.href + '"' + (isActive(p.href) ? ' class="active"' : '') + '>'
-        + p.icon + ' ' + p.label.replace(' / \u0e01\u0e32\u0e23\u0e40\u0e07\u0e34\u0e19', '').replace(' / \u0e2a\u0e1b\u0e2a\u0e0a.', '') + '</a>';
+        + p.icon + ' ' + p.label.replace(' / การเงิน', '').replace(' / สปสช.', '') + '</a>';
     }).join('');
     var host = document.querySelector('.main-content, .main, .wrap, main');
     if (host) host.insertBefore(box, host.firstChild);
@@ -100,8 +100,8 @@
     var ed = document.getElementById('ptk-date');
     if (!el) return;
     el.textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
-    var days = ['\u0e2d\u0e32\u0e17\u0e34\u0e15\u0e22\u0e4c', '\u0e08\u0e31\u0e19\u0e17\u0e23\u0e4c', '\u0e2d\u0e31\u0e07\u0e04\u0e32\u0e23', '\u0e1e\u0e38\u0e18', '\u0e1e\u0e24\u0e2b\u0e31\u0e2a\u0e1a\u0e14\u0e35', '\u0e28\u0e38\u0e01\u0e23\u0e4c', '\u0e40\u0e2a\u0e32\u0e23\u0e4c'];
-    var months = ['\u0e21.\u0e04.', '\u0e01.\u0e1e.', '\u0e21\u0e35.\u0e04.', '\u0e40\u0e21.\u0e22.', '\u0e1e.\u0e04.', '\u0e21\u0e34.\u0e22.', '\u0e01.\u0e04.', '\u0e2a.\u0e04.', '\u0e01.\u0e22.', '\u0e15.\u0e04.', '\u0e1e.\u0e22.', '\u0e18.\u0e04.'];
+    var days = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
+    var months = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
     if (ed) ed.textContent = days[now.getDay()] + ' ' + now.getDate() + ' ' + months[now.getMonth()] + ' ' + (now.getFullYear() + 543);
   }
 
@@ -123,7 +123,7 @@
     if (document.querySelector('.page-byline')) return;
     var d = document.createElement('div');
     d.className = 'page-byline';
-    d.innerHTML = '\u0e42\u0e23\u0e07\u0e1e\u0e22\u0e32\u0e1a\u0e32\u0e25\u0e1e\u0e23\u0e30\u0e17\u0e2d\u0e07\u0e04\u0e33\u0e40\u0e09\u0e25\u0e34\u0e21\u0e1e\u0e23\u0e30\u0e40\u0e01\u0e35\u0e22\u0e23\u0e15\u0e34 80 \u0e1e\u0e23\u0e23\u0e29\u0e32<br>by <b>Suweerasak Riwlord, M.D.</b>';
+    d.innerHTML = 'โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา<br>by <b>Suweerasak Riwlord, M.D.</b>';
     document.body.appendChild(d);
   }
 
@@ -134,6 +134,169 @@
     s.async = true;
     s.src = 'https://gc.zgo.at/count.js';
     document.head.appendChild(s);
+  }
+
+  function enhanceOpWalkinCharts() {
+    if (file !== 'opwalkin.html') return;
+    if (typeof renderTopCharts !== 'function') return;
+    var recTitle = document.querySelector('#cTopRec') && document.getElementById('cTopRec').closest('.card');
+    var payTitle = document.querySelector('#cTopPay') && document.getElementById('cTopPay').closest('.card');
+    if (recTitle) {
+      var t = recTitle.querySelector('.card-ttl');
+      if (t) t.lastChild.textContent = 'Top 10 แหล่งพึงรับ — รับแล้ว vs คงค้าง';
+    }
+    if (payTitle) {
+      var t2 = payTitle.querySelector('.card-ttl');
+      if (t2) t2.lastChild.textContent = 'Top 10 รายจ่าย — จ่ายแล้ว vs คงค้าง';
+    }
+    window.counterpartSettled = function (name, kind) {
+      var months = getAllMonthsForHosp(state.currentHosp);
+      var total = 0, settled = 0;
+      months.forEach(function (m) {
+        var map = kind === 'rec' ? (m.rd || {}) : (m.pd || {});
+        Object.entries(map).forEach(function (pair) {
+          var h = pair[0], v = pair[1];
+          if (kind === 'rec' && String(h).indexOf('รวม') === 0) return;
+          var c = resolveHospName(h);
+          if (c !== name) return;
+          total += v;
+          var done = kind === 'rec' ? isRec(c, m.month) : isPaid(c, m.month);
+          if (done) settled += v;
+        });
+      });
+      return { total: total, settled: settled, remain: Math.max(0, total - settled) };
+    };
+    window.renderTopCharts = function (hosp) {
+      var months = getAllMonthsForHosp(hosp);
+      var recMap = {};
+      months.forEach(function (m) {
+        Object.entries(m.rd || {}).forEach(function (pair) {
+          if (String(pair[0]).indexOf('รวม') === 0) return;
+          var c = resolveHospName(pair[0]);
+          recMap[c] = (recMap[c] || 0) + pair[1];
+        });
+      });
+      var topRec = Object.entries(recMap).filter(function (e) { return e[1] > 0; }).sort(function (a, b) { return b[1] - a[1]; }).slice(0, 10);
+      var recSettled = topRec.map(function (e) { return counterpartSettled(e[0], 'rec'); });
+      dc('cTopRec');
+      charts.cTopRec = new Chart(document.getElementById('cTopRec'), {
+        type: 'bar',
+        data: {
+          labels: topRec.map(function (e) { return e[0]; }),
+          datasets: [
+            { label: 'รับแล้ว', data: recSettled.map(function (s) { return s.settled; }), backgroundColor: '#B8860B', borderRadius: 3, stack: 's' },
+            { label: 'คงค้างรับ', data: recSettled.map(function (s) { return s.remain; }), backgroundColor: '#1A7A4A', borderRadius: 3, stack: 's' }
+          ]
+        },
+        options: {
+          indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { display: true, position: 'top', labels: { font: FONT, boxWidth: 12 } },
+            tooltip: { callbacks: { afterBody: function (items) {
+              var s = recSettled[items[0].dataIndex];
+              var pct = s.total ? Math.round(s.settled / s.total * 100) : 0;
+              return 'รวมพึงรับ ' + fmt(s.total) + ' · รับแล้ว ' + pct + '%';
+            } } }
+          },
+          scales: {
+            x: { stacked: true, ticks: { callback: function (v) { return fmtK(v); }, font: FONT }, grid: { color: '#E8EFF7' } },
+            y: { stacked: true, ticks: { font: Object.assign({}, FONT, { size: 10 }) }, grid: { display: false } }
+          }
+        }
+      });
+      var payMap = {};
+      months.forEach(function (m) {
+        Object.entries(m.pd || {}).forEach(function (pair) {
+          var c = resolveHospName(pair[0]);
+          payMap[c] = (payMap[c] || 0) + pair[1];
+        });
+      });
+      var topPay = Object.entries(payMap).filter(function (e) { return e[1] > 0; }).sort(function (a, b) { return b[1] - a[1]; }).slice(0, 10);
+      var paySettled = topPay.map(function (e) { return counterpartSettled(e[0], 'pay'); });
+      dc('cTopPay');
+      charts.cTopPay = new Chart(document.getElementById('cTopPay'), {
+        type: 'bar',
+        data: {
+          labels: topPay.map(function (e) { return e[0]; }),
+          datasets: [
+            { label: 'จ่ายแล้ว', data: paySettled.map(function (s) { return s.settled; }), backgroundColor: '#B8860B', borderRadius: 3, stack: 's' },
+            { label: 'คงค้างจ่าย', data: paySettled.map(function (s) { return s.remain; }), backgroundColor: '#C0392B', borderRadius: 3, stack: 's' }
+          ]
+        },
+        options: {
+          indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { display: true, position: 'top', labels: { font: FONT, boxWidth: 12 } },
+            tooltip: { callbacks: { afterBody: function (items) {
+              var s = paySettled[items[0].dataIndex];
+              var pct = s.total ? Math.round(s.settled / s.total * 100) : 0;
+              return 'รวมพึงจ่าย ' + fmt(s.total) + ' · จ่ายแล้ว ' + pct + '%';
+            } } }
+          },
+          scales: {
+            x: { stacked: true, ticks: { callback: function (v) { return fmtK(v); }, font: FONT }, grid: { color: '#E8EFF7' } },
+            y: { stacked: true, ticks: { font: Object.assign({}, FONT, { size: 10 }) }, grid: { display: false } }
+          }
+        }
+      });
+    };
+    var ovTitle = document.querySelector('#cOverview') && document.getElementById('cOverview').closest('.card');
+    if (ovTitle) {
+      var t3 = ovTitle.querySelector('.card-ttl');
+      if (t3) t3.lastChild.textContent = 'พึงรับ vs พึงจ่าย รายเดือน — ส่วนที่เคลียร์แล้ว';
+    }
+    window.monthSettled = function (m) {
+      var recDone = 0, payDone = 0;
+      Object.entries(m.rd || {}).forEach(function (pair) {
+        if (String(pair[0]).indexOf('รวม') === 0) return;
+        if (isRec(resolveHospName(pair[0]), m.month)) recDone += pair[1];
+      });
+      Object.entries(m.pd || {}).forEach(function (pair) {
+        if (isPaid(resolveHospName(pair[0]), m.month)) payDone += pair[1];
+      });
+      var rec = m.receivable || 0, pay = m.payable || 0;
+      return {
+        recDone: Math.min(recDone, rec),
+        recRemain: Math.max(0, rec - recDone),
+        payDone: Math.min(payDone, pay),
+        payRemain: Math.max(0, pay - payDone)
+      };
+    };
+    window.renderOverviewChart = function (months) {
+      dc('cOverview');
+      var settled = months.map(monthSettled);
+      charts.cOverview = new Chart(document.getElementById('cOverview'), {
+        type: 'bar',
+        data: {
+          labels: months.map(function (m) { return m.month; }),
+          datasets: [
+            { label: 'รับแล้ว', data: settled.map(function (s) { return s.recDone; }), backgroundColor: '#CA8A04', borderRadius: 4, stack: 'rec' },
+            { label: 'คงค้างรับ', data: settled.map(function (s) { return s.recRemain; }), backgroundColor: '#1A7A4A', borderRadius: 4, stack: 'rec' },
+            { label: 'จ่ายแล้ว', data: settled.map(function (s) { return s.payDone; }), backgroundColor: '#B45309', borderRadius: 4, stack: 'pay' },
+            { label: 'คงค้างจ่าย', data: settled.map(function (s) { return s.payRemain; }), backgroundColor: '#C0392B', borderRadius: 4, stack: 'pay' }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { font: FONT, boxWidth: 12 } },
+            tooltip: { callbacks: { afterBody: function (items) {
+              var s = settled[items[0].dataIndex];
+              var rec = s.recDone + s.recRemain, pay = s.payDone + s.payRemain;
+              var rp = rec ? Math.round(s.recDone / rec * 100) : 0;
+              var pp = pay ? Math.round(s.payDone / pay * 100) : 0;
+              return 'รับแล้ว ' + rp + '% · จ่ายแล้ว ' + pp + '%';
+            } } }
+          },
+          scales: {
+            y: { stacked: true, ticks: { callback: function (v) { return fmtK(v); }, font: FONT }, grid: { color: '#E8EFF7' } },
+            x: { stacked: true, ticks: { font: FONT }, grid: { display: false } }
+          }
+        }
+      });
+    };
+    try { renderTopCharts(state.currentHosp); } catch (e) {}
+    try { renderOverviewChart(getAllMonthsForHosp(state.currentHosp)); } catch (e) {}
   }
 
   function boot() {
@@ -147,6 +310,7 @@
     setInterval(tick, 10000);
     footer();
     analytics();
+    enhanceOpWalkinCharts();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
