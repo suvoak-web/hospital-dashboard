@@ -33,7 +33,7 @@ tr.fund-row.on td{background:#dbeafe}
   <div class="flex flex-wrap justify-between gap-2 mb-4">
     <div>
       <h1 class="text-xl md:text-2xl font-bold">เงินโอน สปสช. — รายรับทั้งปี และรายไตรมาส</h1>
-      <p class="text-slate-500 text-sm">รพ.พระทองคำฯ 22456 · ปี 69 ตัด 22 ก.ย. · หน่วยล้านบาท</p>
+      <p class="text-slate-500 text-sm">รพ.พระทองคำฯ 22456 · ปี 69 ครบปี 1 ต.ค. 68 – 30 ก.ย. 69 · หน่วยล้านบาท</p>
     </div>
     <div class="flex gap-2 items-start flex-wrap">
       <button class="tab on" id="tBoth" onclick="setView('both')">ทั้งปี + ไตรมาส</button>
@@ -45,7 +45,7 @@ tr.fund-row.on td{background:#dbeafe}
     <div class="card p-3 border-t-4 border-slate-700"><div class="text-xs text-slate-500">ทั้งปี 2566</div><div class="text-2xl font-bold">48.64</div><div class="text-xs text-slate-400">UC ดำเนินงาน</div></div>
     <div class="card p-3 border-t-4 border-emerald-600"><div class="text-xs text-slate-500">ทั้งปี 2567</div><div class="text-2xl font-bold text-emerald-700">49.64</div><div class="text-xs text-slate-400">ปีฐาน</div></div>
     <div class="card p-3 border-t-4 border-red-600"><div class="text-xs text-slate-500">ทั้งปี 2568</div><div class="text-2xl font-bold text-red-600">44.36</div><div class="text-xs text-slate-400">UC หด</div></div>
-    <div class="card p-3 border-t-4 border-emerald-600"><div class="text-xs text-slate-500">ทั้งปี 2569*</div><div class="text-2xl font-bold text-emerald-700">49.45</div><div class="text-xs text-slate-400">ถึง 22 ก.ย.</div></div>
+    <div class="card p-3 border-t-4 border-emerald-600"><div class="text-xs text-slate-500">ทั้งปี 2569</div><div class="text-2xl font-bold text-emerald-700">49.45</div><div class="text-xs text-slate-400">ปิดปี 30 ก.ย.</div></div>
     <div class="card p-3 border-t-4 border-amber-500"><div class="text-xs text-slate-500">vs แผนทั้งปี 69</div><div class="text-2xl font-bold text-amber-700">100.5%</div><div class="text-xs text-slate-400">49.45 / 49.22</div></div>
   </div>
   <div id="yearBlock" class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
@@ -57,7 +57,7 @@ tr.fund-row.on td{background:#dbeafe}
     <div class="card p-4 overflow-x-auto">
       <h3 class="font-semibold mb-2">สรุปทั้งปี</h3>
       <table class="w-full text-sm">
-        <thead class="bg-slate-800 text-white"><tr><th class="text-left p-2">รายการ</th><th class="text-right p-2">2566</th><th class="text-right p-2">2567</th><th class="text-right p-2">2568</th><th class="text-right p-2">2569*</th></tr></thead>
+        <thead class="bg-slate-800 text-white"><tr><th class="text-left p-2">รายการ</th><th class="text-right p-2">2566</th><th class="text-right p-2">2567</th><th class="text-right p-2">2568</th><th class="text-right p-2">2569</th></tr></thead>
         <tbody>
           <tr class="border-t"><td class="p-2">เงินเข้าบัญชีทั้งก้อน</td><td class="text-right p-2">54.78</td><td class="text-right p-2">56.80</td><td class="text-right p-2">50.00</td><td class="text-right p-2">52.13</td></tr>
           <tr class="border-t bg-emerald-50 font-semibold"><td class="p-2">UC ดำเนินงานทั้งปี</td><td class="text-right p-2">48.64</td><td class="text-right p-2">49.64</td><td class="text-right p-2">44.36</td><td class="text-right p-2">49.45</td></tr>
@@ -72,7 +72,7 @@ tr.fund-row.on td{background:#dbeafe}
   </div>
   <div id="qBlock" class="card p-4 mb-5">
     <h3 class="font-semibold">เงินเข้าบัญชีรวม แยกไตรมาส</h3>
-    <p class="text-xs text-slate-400 mb-2">ใช้วางแผนจ่ายรายงวด · Q1 = ต.ค.–ธ.ค. · ปี 69 Q4 ยังไม่ครบเดือน</p>
+    <p class="text-xs text-slate-400 mb-2">ใช้วางแผนจ่ายรายงวด · Q1 = ต.ค.–ธ.ค. · ปี 69 ปิดครบ Q4 แล้ว (เงินเข้าหลัง 22 ก.ย. ไม่ขยับยอดรวม)</p>
     <canvas id="cCash" height="120"></canvas>
     <div class="overflow-x-auto mt-3">
       <table class="w-full text-sm">
@@ -81,7 +81,7 @@ tr.fund-row.on td{background:#dbeafe}
           <tr class="border-t"><td class="p-2">2566</td><td class="text-right p-2">27.60</td><td class="text-right p-2">19.25</td><td class="text-right p-2">2.36</td><td class="text-right p-2">5.56</td><td class="text-right p-2 font-semibold">54.78</td></tr>
           <tr class="border-t"><td class="p-2">2567</td><td class="text-right p-2">23.26</td><td class="text-right p-2">9.11</td><td class="text-right p-2">7.73</td><td class="text-right p-2">16.70</td><td class="text-right p-2 font-semibold">56.80</td></tr>
           <tr class="border-t"><td class="p-2">2568</td><td class="text-right p-2">23.42</td><td class="text-right p-2">17.18</td><td class="text-right p-2">7.46</td><td class="text-right p-2">1.95</td><td class="text-right p-2 font-semibold">50.00</td></tr>
-          <tr class="border-t bg-emerald-50"><td class="p-2">2569*</td><td class="text-right p-2">21.21</td><td class="text-right p-2">21.17</td><td class="text-right p-2">5.45</td><td class="text-right p-2">4.30</td><td class="text-right p-2 font-semibold">52.13</td></tr>
+          <tr class="border-t bg-emerald-50"><td class="p-2">2569</td><td class="text-right p-2">21.21</td><td class="text-right p-2">21.17</td><td class="text-right p-2">5.45</td><td class="text-right p-2">4.30</td><td class="text-right p-2 font-semibold">52.13</td></tr>
         </tbody>
       </table>
     </div>
@@ -119,7 +119,7 @@ tr.fund-row.on td{background:#dbeafe}
   </div>
 </div>
 <script>
-const years=['2566','2567','2568','2569*'];
+const years=['2566','2567','2568','2569'];
 const qLabel=['Q1','Q2','Q3','Q4'];
 const cashQ={2566:[27.60,19.25,2.36,5.56],2567:[23.26,9.11,7.73,16.70],2568:[23.42,17.18,7.46,1.95],2569:[21.21,21.17,5.45,4.30]};
 const funds={
@@ -183,7 +183,7 @@ new Chart(document.getElementById('cCash'),{
     {label:'2566',data:cashQ[2566],backgroundColor:'#94A3B8'},
     {label:'2567',data:cashQ[2567],backgroundColor:'#1D6FA4'},
     {label:'2568',data:cashQ[2568],backgroundColor:'#C05621'},
-    {label:'2569*',data:cashQ[2569],backgroundColor:'#0F6E56'}
+    {label:'2569',data:cashQ[2569],backgroundColor:'#0F6E56'}
   ]},
   options:{responsive:true,plugins:{legend:{position:'bottom',labels:{boxWidth:10}}},scales:{y:{beginAtZero:true}}}
 });
@@ -200,7 +200,7 @@ function openFund(id){
   }).join('');
   document.getElementById('qBody').innerHTML=[2566,2567,2568,2569].map(function(y){
     const q=f.q[y];
-    return '<tr class="border-t"><td class="p-2">'+y+(y===2569?'*':'')+'</td>'+q.map(function(v){return '<td class="text-right p-2">'+v.toFixed(2)+'</td>';}).join('')+'<td class="text-right p-2 font-semibold">'+sum(q).toFixed(2)+'</td></tr>';
+    return '<tr class="border-t"><td class="p-2">'+y+'</td>'+q.map(function(v){return '<td class="text-right p-2">'+v.toFixed(2)+'</td>';}).join('')+'<td class="text-right p-2 font-semibold">'+sum(q).toFixed(2)+'</td></tr>';
   }).join('');
   if(yChart) yChart.destroy();
   if(qChart) qChart.destroy();
@@ -215,7 +215,7 @@ function openFund(id){
       {label:'2566',data:f.q[2566],backgroundColor:'#94A3B8'},
       {label:'2567',data:f.q[2567],backgroundColor:'#1D6FA4'},
       {label:'2568',data:f.q[2568],backgroundColor:'#C05621'},
-      {label:'2569*',data:f.q[2569],backgroundColor:f.color}
+      {label:'2569',data:f.q[2569],backgroundColor:f.color}
     ]},
     options:{responsive:true,plugins:{legend:{position:'bottom',labels:{boxWidth:10}}},scales:{y:{beginAtZero:true}}}
   });
