@@ -9,6 +9,7 @@
     { href: 'kpi_dashboard.html', icon: '📊', label: 'KPI Dashboard' },
     { href: 'planfin_dashboard.html', icon: '📈', label: 'Planfin / การเงิน' },
     { href: 'uc_transfer_dashboard.html', icon: '🏦', label: 'เงินโอน UC / สปสช.' },
+    { href: 'sso_dashboard.html', icon: '🛡️', label: 'ประกันสังคมจากแม่ข่าย' },
     { href: 'opwalkin.html', icon: '💰', label: 'พึงรับ-พึงจ่าย' },
     { href: 'compare.html', icon: '⏱', label: 'ระยะเวลารอคอย' },
     { href: 'bottleneck_dashboard.html', icon: '🔎', label: 'วิเคราะห์คอขวด', sub: true },
