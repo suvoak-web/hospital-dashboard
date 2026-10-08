@@ -13,7 +13,8 @@
     { href: 'opwalkin.html', icon: '💰', label: 'พึงรับ-พึงจ่าย' },
     { href: 'compare.html', icon: '⏱', label: 'ระยะเวลารอคอย' },
     { href: 'bottleneck_dashboard.html', icon: '🔎', label: 'วิเคราะห์คอขวด', sub: true },
-    { href: 'pcupayment.html', icon: '💊', label: 'ยาและเวชภัณฑ์ รพ.สต.' }
+    { href: 'pcupayment.html', icon: '💊', label: 'ยาและเวชภัณฑ์ รพ.สต.' },
+    { href: 'plan2570.html', icon: '📋', label: 'แผนงานโครงการ 2570' }
   ];
 
   var file = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
@@ -137,169 +138,6 @@
     document.head.appendChild(s);
   }
 
-  function enhanceOpWalkinCharts() {
-    if (file !== 'opwalkin.html') return;
-    if (typeof renderTopCharts !== 'function') return;
-    var recTitle = document.querySelector('#cTopRec') && document.getElementById('cTopRec').closest('.card');
-    var payTitle = document.querySelector('#cTopPay') && document.getElementById('cTopPay').closest('.card');
-    if (recTitle) {
-      var t = recTitle.querySelector('.card-ttl');
-      if (t) t.lastChild.textContent = 'Top 10 แหล่งพึงรับ — รับแล้ว vs คงค้าง';
-    }
-    if (payTitle) {
-      var t2 = payTitle.querySelector('.card-ttl');
-      if (t2) t2.lastChild.textContent = 'Top 10 รายจ่าย — จ่ายแล้ว vs คงค้าง';
-    }
-    window.counterpartSettled = function (name, kind) {
-      var months = getAllMonthsForHosp(state.currentHosp);
-      var total = 0, settled = 0;
-      months.forEach(function (m) {
-        var map = kind === 'rec' ? (m.rd || {}) : (m.pd || {});
-        Object.entries(map).forEach(function (pair) {
-          var h = pair[0], v = pair[1];
-          if (kind === 'rec' && String(h).indexOf('รวม') === 0) return;
-          var c = resolveHospName(h);
-          if (c !== name) return;
-          total += v;
-          var done = kind === 'rec' ? isRec(c, m.month) : isPaid(c, m.month);
-          if (done) settled += v;
-        });
-      });
-      return { total: total, settled: settled, remain: Math.max(0, total - settled) };
-    };
-    window.renderTopCharts = function (hosp) {
-      var months = getAllMonthsForHosp(hosp);
-      var recMap = {};
-      months.forEach(function (m) {
-        Object.entries(m.rd || {}).forEach(function (pair) {
-          if (String(pair[0]).indexOf('รวม') === 0) return;
-          var c = resolveHospName(pair[0]);
-          recMap[c] = (recMap[c] || 0) + pair[1];
-        });
-      });
-      var topRec = Object.entries(recMap).filter(function (e) { return e[1] > 0; }).sort(function (a, b) { return b[1] - a[1]; }).slice(0, 10);
-      var recSettled = topRec.map(function (e) { return counterpartSettled(e[0], 'rec'); });
-      dc('cTopRec');
-      charts.cTopRec = new Chart(document.getElementById('cTopRec'), {
-        type: 'bar',
-        data: {
-          labels: topRec.map(function (e) { return e[0]; }),
-          datasets: [
-            { label: 'รับแล้ว', data: recSettled.map(function (s) { return s.settled; }), backgroundColor: '#B8860B', borderRadius: 3, stack: 's' },
-            { label: 'คงค้างรับ', data: recSettled.map(function (s) { return s.remain; }), backgroundColor: '#1A7A4A', borderRadius: 3, stack: 's' }
-          ]
-        },
-        options: {
-          indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-          plugins: {
-            legend: { display: true, position: 'top', labels: { font: FONT, boxWidth: 12 } },
-            tooltip: { callbacks: { afterBody: function (items) {
-              var s = recSettled[items[0].dataIndex];
-              var pct = s.total ? Math.round(s.settled / s.total * 100) : 0;
-              return 'รวมพึงรับ ' + fmt(s.total) + ' · รับแล้ว ' + pct + '%';
-            } } }
-          },
-          scales: {
-            x: { stacked: true, ticks: { callback: function (v) { return fmtK(v); }, font: FONT }, grid: { color: '#E8EFF7' } },
-            y: { stacked: true, ticks: { font: Object.assign({}, FONT, { size: 10 }) }, grid: { display: false } }
-          }
-        }
-      });
-      var payMap = {};
-      months.forEach(function (m) {
-        Object.entries(m.pd || {}).forEach(function (pair) {
-          var c = resolveHospName(pair[0]);
-          payMap[c] = (payMap[c] || 0) + pair[1];
-        });
-      });
-      var topPay = Object.entries(payMap).filter(function (e) { return e[1] > 0; }).sort(function (a, b) { return b[1] - a[1]; }).slice(0, 10);
-      var paySettled = topPay.map(function (e) { return counterpartSettled(e[0], 'pay'); });
-      dc('cTopPay');
-      charts.cTopPay = new Chart(document.getElementById('cTopPay'), {
-        type: 'bar',
-        data: {
-          labels: topPay.map(function (e) { return e[0]; }),
-          datasets: [
-            { label: 'จ่ายแล้ว', data: paySettled.map(function (s) { return s.settled; }), backgroundColor: '#B8860B', borderRadius: 3, stack: 's' },
-            { label: 'คงค้างจ่าย', data: paySettled.map(function (s) { return s.remain; }), backgroundColor: '#C0392B', borderRadius: 3, stack: 's' }
-          ]
-        },
-        options: {
-          indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-          plugins: {
-            legend: { display: true, position: 'top', labels: { font: FONT, boxWidth: 12 } },
-            tooltip: { callbacks: { afterBody: function (items) {
-              var s = paySettled[items[0].dataIndex];
-              var pct = s.total ? Math.round(s.settled / s.total * 100) : 0;
-              return 'รวมพึงจ่าย ' + fmt(s.total) + ' · จ่ายแล้ว ' + pct + '%';
-            } } }
-          },
-          scales: {
-            x: { stacked: true, ticks: { callback: function (v) { return fmtK(v); }, font: FONT }, grid: { color: '#E8EFF7' } },
-            y: { stacked: true, ticks: { font: Object.assign({}, FONT, { size: 10 }) }, grid: { display: false } }
-          }
-        }
-      });
-    };
-    var ovTitle = document.querySelector('#cOverview') && document.getElementById('cOverview').closest('.card');
-    if (ovTitle) {
-      var t3 = ovTitle.querySelector('.card-ttl');
-      if (t3) t3.lastChild.textContent = 'พึงรับ vs พึงจ่าย รายเดือน — ส่วนที่เคลียร์แล้ว';
-    }
-    window.monthSettled = function (m) {
-      var recDone = 0, payDone = 0;
-      Object.entries(m.rd || {}).forEach(function (pair) {
-        if (String(pair[0]).indexOf('รวม') === 0) return;
-        if (isRec(resolveHospName(pair[0]), m.month)) recDone += pair[1];
-      });
-      Object.entries(m.pd || {}).forEach(function (pair) {
-        if (isPaid(resolveHospName(pair[0]), m.month)) payDone += pair[1];
-      });
-      var rec = m.receivable || 0, pay = m.payable || 0;
-      return {
-        recDone: Math.min(recDone, rec),
-        recRemain: Math.max(0, rec - recDone),
-        payDone: Math.min(payDone, pay),
-        payRemain: Math.max(0, pay - payDone)
-      };
-    };
-    window.renderOverviewChart = function (months) {
-      dc('cOverview');
-      var settled = months.map(monthSettled);
-      charts.cOverview = new Chart(document.getElementById('cOverview'), {
-        type: 'bar',
-        data: {
-          labels: months.map(function (m) { return m.month; }),
-          datasets: [
-            { label: 'รับแล้ว', data: settled.map(function (s) { return s.recDone; }), backgroundColor: '#CA8A04', borderRadius: 4, stack: 'rec' },
-            { label: 'คงค้างรับ', data: settled.map(function (s) { return s.recRemain; }), backgroundColor: '#1A7A4A', borderRadius: 4, stack: 'rec' },
-            { label: 'จ่ายแล้ว', data: settled.map(function (s) { return s.payDone; }), backgroundColor: '#B45309', borderRadius: 4, stack: 'pay' },
-            { label: 'คงค้างจ่าย', data: settled.map(function (s) { return s.payRemain; }), backgroundColor: '#C0392B', borderRadius: 4, stack: 'pay' }
-          ]
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          plugins: {
-            legend: { labels: { font: FONT, boxWidth: 12 } },
-            tooltip: { callbacks: { afterBody: function (items) {
-              var s = settled[items[0].dataIndex];
-              var rec = s.recDone + s.recRemain, pay = s.payDone + s.payRemain;
-              var rp = rec ? Math.round(s.recDone / rec * 100) : 0;
-              var pp = pay ? Math.round(s.payDone / pay * 100) : 0;
-              return 'รับแล้ว ' + rp + '% · จ่ายแล้ว ' + pp + '%';
-            } } }
-          },
-          scales: {
-            y: { stacked: true, ticks: { callback: function (v) { return fmtK(v); }, font: FONT }, grid: { color: '#E8EFF7' } },
-            x: { stacked: true, ticks: { font: FONT }, grid: { display: false } }
-          }
-        }
-      });
-    };
-    try { renderTopCharts(state.currentHosp); } catch (e) {}
-    try { renderOverviewChart(getAllMonthsForHosp(state.currentHosp)); } catch (e) {}
-  }
-
   function boot() {
     css();
     document.body.classList.add('ptk-has-shell');
@@ -311,7 +149,7 @@
     setInterval(tick, 10000);
     footer();
     analytics();
-    enhanceOpWalkinCharts();
+    if (typeof enhanceOpWalkinCharts === 'function') enhanceOpWalkinCharts();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
