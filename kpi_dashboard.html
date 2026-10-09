@@ -3,389 +3,488 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard ตัวชี้วัดที่ไม่ผ่านเกณฑ์ — รพ.พระทองคำ 2569</title>
+<title>ตัวชี้วัด ปี 2569 / 2570 — รพ.พระทองคำ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-  :root {
-    --bg: #F7F6F2;
-    --surface: #FFFFFF;
-    --surface2: #F0EFE9;
-    --border: #E2E0D8;
-    --border-strong: #C8C6BC;
-    --text-primary: #1A1A18;
-    --text-secondary: #5C5B55;
-    --text-muted: #9A9890;
-    --red: #C23B2A;
-    --red-bg: #FBF0EE;
-    --red-border: #F0C4BB;
-    --amber: #B56B0F;
-    --amber-bg: #FDF5E6;
-    --amber-border: #F5D48A;
-    --green: #2D7A4F;
-    --green-bg: #EDF7F1;
-    --green-border: #A3D9BA;
-    --blue: #1B5FA8;
-    --blue-bg: #EDF3FC;
-    --blue-border: #A8C7F0;
-    --gray: #6B6A64;
-    --gray-bg: #F0EFE9;
-    --gray-border: #D5D3CB;
-    --accent: #C23B2A;
-    --mono: 'IBM Plex Mono', monospace;
-    --sans: 'IBM Plex Sans Thai', sans-serif;
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: var(--sans);
-    background: var(--bg);
-    color: var(--text-primary);
-    font-size: 14px;
-    line-height: 1.6;
-    min-height: 100vh;
-  }
-
-  .header {
-    background: var(--text-primary);
-    color: #F7F6F2;
-    padding: 2rem 2.5rem;
-    border-bottom: 3px solid var(--accent);
-  }
-  .header-inner { max-width: 1200px; margin: 0 auto; }
-  .header-eyebrow {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: .1em;
-    color: #9A9890;
-    text-transform: uppercase;
-    margin-bottom: .4rem;
-  }
-  .header-title {
-    font-size: clamp(22px, 3vw, 32px);
-    font-weight: 600;
-    line-height: 1.2;
-    letter-spacing: -.02em;
-  }
-  .header-title em { color: var(--accent); font-style: normal; }
-  .header-sub {
-    margin-top: .5rem;
-    font-size: 13px;
-    color: #9A9890;
-    font-weight: 300;
-  }
-
-  .main { max-width: 1200px; margin: 0 auto; padding: 2rem 2.5rem; }
-  @media (max-width: 700px) { .main { padding: 1rem; } .header { padding: 1.25rem 1rem; } }
-
-  .alert {
-    background: var(--amber-bg);
-    border: 1px solid var(--amber-border);
-    border-left: 4px solid var(--amber);
-    border-radius: var(--radius-md);
-    padding: .75rem 1rem;
-    font-size: 12.5px;
-    color: #7A4A08;
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
-  }
-  .alert-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
-
-  .stat-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-    margin-bottom: 1.5rem;
-  }
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1rem 1.25rem;
-  }
-  .stat-card .lbl {
-    font-size: 11px;
-    font-weight: 400;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    font-family: var(--mono);
-    margin-bottom: 6px;
-  }
-  .stat-card .num {
-    font-size: 28px;
-    font-weight: 600;
-    letter-spacing: -.03em;
-    line-height: 1;
-  }
-  .stat-card .sub {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 4px;
-  }
-
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 1.25rem;
-  }
-  .card-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-primary);
-    letter-spacing: .01em;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .card-title-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--accent); flex-shrink: 0;
-  }
-
-  .two-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.25rem;
-    margin-bottom: 1.25rem;
-  }
-  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
-
-  .chart-wrap { position: relative; width: 100%; height: 280px; }
-  .chart-wrap-tall { position: relative; width: 100%; height: 320px; }
-
-  .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 11.5px; color: var(--text-secondary); margin-bottom: 10px; }
-  .legend span { display: flex; align-items: center; gap: 5px; }
-  .legend i { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; display: inline-block; }
-
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th {
-    text-align: left;
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 500;
-    color: var(--text-muted);
-    letter-spacing: .07em;
-    text-transform: uppercase;
-    padding: 6px 8px;
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-  }
-  td {
-    padding: 7px 8px;
-    color: var(--text-primary);
-    border-bottom: 1px solid var(--border);
-    vertical-align: middle;
-    line-height: 1.45;
-  }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: var(--surface2); }
-  .td-name { max-width: 260px; font-size: 12px; }
-  .td-name small { display: block; font-size: 10.5px; color: var(--text-muted); margin-top: 2px; }
-
-  .badge {
-    display: inline-block; font-size: 10px; padding: 1px 7px;
-    border-radius: var(--radius-sm); font-weight: 500; white-space: nowrap;
-  }
-  .b-red { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
-  .b-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
-  .b-green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
-  .b-gray { background: var(--gray-bg); color: var(--gray); border: 1px solid var(--gray-border); }
-  .b-blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
-  .b-warn { background: #FFFBEA; color: #8B5E00; border: 1px solid #F0D48A; font-size: 9.5px; }
-
-  .mini-bar-bg { background: var(--surface2); border-radius: 3px; height: 5px; width: 80px; }
-  .mini-bar-fill { height: 5px; border-radius: 3px; }
-
-  .filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
-  .filter-btn {
-    font-size: 11.5px; padding: 4px 12px; border-radius: 20px;
-    border: 1px solid var(--border-strong); background: transparent;
-    color: var(--text-secondary); cursor: pointer; font-family: var(--sans);
-    transition: all .12s; white-space: nowrap;
-  }
-  .filter-btn:hover { background: var(--surface2); }
-  .filter-btn.active {
-    background: var(--text-primary); color: #F7F6F2;
-    border-color: var(--text-primary);
-  }
-
-  .divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
-  .mono { font-family: var(--mono); }
-
-  .section-label {
-    font-family: var(--mono); font-size: 10px; letter-spacing: .1em;
-    text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .section-label::after {
-    content: ''; flex: 1; height: 1px; background: var(--border);
-  }
-
-  .footer {
-    text-align: center; font-size: 11px; color: var(--text-muted);
-    padding: 2rem; font-family: var(--mono);
-    border-top: 1px solid var(--border); margin-top: 1rem;
-  }
-
-  @media print {
-    body { background: white; }
-    .filter-row { display: none; }
-  }
-
-.top-nav{display:flex;align-items:center;gap:0;background:#fff;border-bottom:2px solid #e8eef6;padding:0 16px;position:sticky;top:0;z-index:9999;box-shadow:0 2px 8px rgba(0,0,0,.07);flex-wrap:wrap}
-.top-nav a{display:flex;align-items:center;gap:5px;padding:11px 15px;font-size:.82rem;font-weight:600;color:#555;text-decoration:none;border-bottom:3px solid transparent;white-space:nowrap;transition:all .18s;font-family:inherit}
-.top-nav a:hover{color:#1A4FA0;background:#f0f5ff}
-.top-nav a.active{color:#1A4FA0;border-bottom:3px solid #1A4FA0;background:#f5f8ff}
-
+:root {
+  --bg:#F4F6F9; --surface:#fff; --surface2:#F0F3F8; --border:#E2E8F0; --border-strong:#CBD5E1;
+  --text:#1A2332; --muted:#64748B; --faint:#94A3B8;
+  --accent:#1D6FA4; --accent-dim:rgba(29,111,164,.08);
+  --green:#16A34A; --green-bg:#ECFDF3; --green-border:#BBF7D0;
+  --amber:#B45309; --amber-bg:#FFF7ED; --amber-border:#FED7AA;
+  --red:#DC2626; --red-bg:#FEF2F2; --red-border:#FECACA;
+  --s1:#0F6E56; --s2:#1D6FA4; --s3:#7C3AED; --s4:#B45309; --s5:#BE185D;
+  --mono:'IBM Plex Mono', monospace; --sans:'Sarabun', sans-serif;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); color:var(--text); font-family:var(--sans); font-size:14.5px; line-height:1.55; }
+.main { max-width:1180px; margin:0 auto; padding:18px 22px 48px; }
+.kicker { font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+h1 { font-size:clamp(22px,2.6vw,28px); font-weight:800; margin:4px 0 6px; letter-spacing:-.02em; }
+.sub { color:var(--muted); font-size:14px; margin-bottom:16px; }
+.tabs { display:flex; gap:6px; flex-wrap:wrap; margin:0 0 16px; }
+.tab {
+  border:1px solid var(--border-strong); background:#fff; color:var(--muted);
+  font-family:var(--sans); font-weight:700; font-size:13.5px; padding:7px 14px;
+  border-radius:999px; cursor:pointer;
+}
+.tab:hover { background:var(--accent-dim); color:var(--accent); }
+.tab.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+.tab[data-view="kpi69"].on { background:#B45309; border-color:#B45309; }
+.stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-bottom:16px; }
+.stat { background:#fff; border:1px solid var(--border); border-radius:12px; padding:12px 14px; }
+.stat .lbl { font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--faint); margin-bottom:4px; }
+.stat .num { font-size:26px; font-weight:800; letter-spacing:-.03em; line-height:1.1; }
+.stat .hint { font-size:12px; color:var(--muted); margin-top:3px; }
+.card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin-bottom:14px; }
+.card-h { font-size:14.5px; font-weight:700; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.filters { display:flex; gap:6px; flex-wrap:wrap; margin:0 0 12px; }
+.fbtn {
+  border:1px solid var(--border-strong); background:#fff; color:#475569;
+  font-family:var(--sans); font-size:12.5px; padding:4px 11px; border-radius:999px; cursor:pointer;
+}
+.fbtn.on { background:#1A2332; color:#fff; border-color:#1A2332; }
+.search {
+  width:100%; max-width:360px; border:1px solid var(--border-strong); border-radius:8px;
+  padding:7px 12px; font-family:var(--sans); font-size:14px; margin-bottom:12px;
+}
+.table-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+th {
+  text-align:left; font-family:var(--mono); font-size:10px; font-weight:500;
+  color:var(--faint); letter-spacing:.07em; text-transform:uppercase;
+  padding:7px 8px; border-bottom:1px solid var(--border); white-space:nowrap;
+}
+td { padding:8px; border-bottom:1px solid var(--border); vertical-align:top; }
+tr:hover td { background:var(--surface2); }
+.badge { display:inline-block; font-size:11px; font-weight:600; padding:1px 8px; border-radius:999px; white-space:nowrap; }
+.b-s1 { background:#ECFDF3; color:#0F6E56; }
+.b-s2 { background:#EFF6FF; color:#1D6FA4; }
+.b-s3 { background:#F5F3FF; color:#6D28D9; }
+.b-s4 { background:#FFF7ED; color:#B45309; }
+.b-s5 { background:#FDF2F8; color:#BE185D; }
+.b-wait { background:#F1F5F9; color:#475569; }
+.b-red { background:var(--red-bg); color:var(--red); border:1px solid var(--red-border); }
+.b-amber { background:var(--amber-bg); color:var(--amber); border:1px solid var(--amber-border); }
+.b-green { background:var(--green-bg); color:var(--green); border:1px solid var(--green-border); }
+.b-gray { background:#F1F5F9; color:#64748B; }
+.owner { font-size:12px; color:var(--muted); }
+.two { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+.chart-wrap { position:relative; height:260px; }
+.chart-tall { position:relative; height:300px; }
+.k-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px; }
+.k-card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:14px 16px; }
+.k-card h3 { font-size:14px; font-weight:700; margin:4px 0 8px; }
+.k-card ol { margin:0 0 0 18px; color:#334155; font-size:13.5px; }
+.k-card li { margin:4px 0; }
+.alert {
+  background:var(--amber-bg); border:1px solid var(--amber-border); border-left:4px solid var(--amber);
+  border-radius:10px; padding:10px 12px; font-size:13px; color:#7A4A08; margin-bottom:14px;
+}
+.hidden { display:none !important; }
+.mini-bar-bg { background:var(--surface2); border-radius:3px; height:5px; width:80px; }
+.mini-bar-fill { height:5px; border-radius:3px; }
+.year-switch { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:0 0 14px; }
+.year-btn {
+  text-align:left; border:2px solid var(--border); background:#fff; border-radius:14px;
+  padding:12px 14px; cursor:pointer; font-family:var(--sans); color:var(--text);
+}
+.year-btn .tag { font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); }
+.year-btn .y { font-size:22px; font-weight:800; letter-spacing:-.02em; margin-top:2px; }
+.year-btn .d { font-size:12.5px; color:var(--muted); margin-top:2px; }
+.year-btn.on-70 { border-color:#0F6E56; background:#F0FDF4; box-shadow:0 0 0 3px rgba(15,110,86,.12); }
+.year-btn.on-70 .y { color:#0F6E56; }
+.year-btn.on-69 { border-color:#B45309; background:#FFF7ED; box-shadow:0 0 0 3px rgba(180,83,9,.12); }
+.year-btn.on-69 .y { color:#B45309; }
+.year-strip {
+  display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+  border-radius:10px; padding:8px 12px; margin:0 0 12px; font-size:13px; font-weight:600;
+}
+.year-strip.y70 { background:#ECFDF3; color:#0F6E56; border:1px solid #BBF7D0; }
+.year-strip.y69 { background:#FFF7ED; color:#9A3412; border:1px solid #FED7AA; }
+.year-strip span { font-weight:500; }
+@media (max-width:760px) {
+  .main { padding:12px 12px 40px; }
+  .two { grid-template-columns:1fr; }
+  .year-switch { grid-template-columns:1fr; }
+  .stat .num { font-size:22px; }
+  .year-btn .y { font-size:20px; }
+}
 </style>
 </head>
 <body>
-<nav class="top-nav">
-  <a href="index.html"><span>🏠</span>หน้าหลัก</a>
-  <a href="kpi_dashboard.html" class="active"><span>📊</span>KPI Dashboard</a>
-  <a href="fin_dashboard.html"><span>💹</span>KPI การเงิน</a>
-  <a href="uc_transfer_dashboard.html"><span>📈</span>UC Transfer</a>
-  <a href="opwalkin.html"><span>🔥</span>พึงรับ-พึงจ่าย</a>
-  <a href="compare.html"><span>⏱️</span>ระยะเวลารอคอย</a>
-  <a href="bottleneck_dashboard.html"><span>📊</span>คอขวด</a>
-</nav>
-
-<header class="header">
-  <div class="header-inner">
-    <div class="header-eyebrow">โรงพยาบาลพระทองคำ · ปีงบประมาณ 2569</div>
-    <h1 class="header-title">ตัวชี้วัด<em>ที่ไม่ผ่านเกณฑ์</em> — รายงานวิเคราะห์</h1>
-    <p class="header-sub">ข้อมูลจากระบบ 43 แฟ้ม / HDC · จัดทำโดยอัตโนมัติ · บางตัวชี้วัดอาจมีปัญหาคุณภาพข้อมูล</p>
-  </div>
-</header>
-
 <main class="main">
-  <div class="alert">
-    <span class="alert-icon">⚠</span>
-    <div>
-      <strong>ข้อสังเกตด้านคุณภาพข้อมูล:</strong>
-      มีหลายตัวชี้วัดที่ตัวตั้ง = 0 หรือตัวหารน้อยมาก (≤ 5) ซึ่งอาจเกิดจากการบันทึกข้อมูลไม่ครบ หรือดึงข้อมูลผิดประเภท
-      — ควรตรวจสอบก่อนใช้ข้อมูลเหล่านี้ประกอบการตัดสินใจ
-    </div>
-  </div>
+  <div class="kicker">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา · สสจ.นครราชสีมา</div>
+  <h1 id="pageTitle">ตัวชี้วัด ปีงบประมาณ 2570</h1>
+  <p class="sub" id="pageSub">หน้าเดียวกัน แต่คนละแท็บ — ปี 2570 คือกรอบเป้าหมาย ปี 2569 คือผลงานจริง ไม่ได้ต่อกัน</p>
 
-  <div class="stat-grid">
-    <div class="stat-card">
-      <div class="lbl">ตัวชี้วัดไม่ผ่านทั้งหมด</div>
-      <div class="num" style="color:var(--red)">64</div>
-      <div class="sub">ตัวชี้วัด</div>
-    </div>
-    <div class="stat-card">
-      <div class="lbl">วิกฤต (<50% ของเกณฑ์)</div>
-      <div class="num" style="color:var(--red)">29</div>
-      <div class="sub">ต้องดำเนินการเร่งด่วน</div>
-    </div>
-    <div class="stat-card">
-      <div class="lbl">ปานกลาง (50–79%)</div>
-      <div class="num" style="color:var(--amber)">19</div>
-      <div class="sub">ต้องปรับปรุง</div>
-    </div>
-    <div class="stat-card">
-      <div class="lbl">ใกล้ผ่านเกณฑ์ (≥80%)</div>
-      <div class="num" style="color:var(--green)">16</div>
-      <div class="sub">เร่งแก้ไขได้ทัน</div>
-    </div>
-    <div class="stat-card">
-      <div class="lbl">กลุ่มงานมีปัญหาสูงสุด</div>
-      <div class="num" style="font-size:18px; font-weight:600">แม่และเด็ก</div>
-      <div class="sub">16 ตัวชี้วัด</div>
-    </div>
-    <div class="stat-card">
-      <div class="lbl">ข้อมูลน่าสงสัย</div>
-      <div class="num" style="color:var(--gray)">11</div>
-      <div class="sub">ตัวตั้ง=0 หรือตัวหาร ≤ 5</div>
-    </div>
+  <div class="tabs" id="yearTabs">
+    <button class="tab on" data-view="kpi70">ปี 2570 · ตัวชี้วัด (64)</button>
+    <button class="tab" data-view="focus70">ปี 2570 · เข็มมุ่ง (20)</button>
+    <button class="tab" data-view="kpi69">ปี 2569 · ไม่ผ่านเกณฑ์ (64)</button>
   </div>
+  <div class="year-strip y70" id="yearStrip"><b>แท็บปี 2570</b><span>กรอบเป้าหมาย ไม่ปนกับผลงานปี 2569</span></div>
 
-  <div class="two-col">
-    <div class="card">
-      <div class="card-title"><span class="card-title-dot"></span>จำนวนตัวชี้วัดไม่ผ่าน แยกกลุ่มงาน</div>
-      <div class="chart-wrap">
-        <canvas id="groupChart"></canvas>
+  <section id="view-kpi70">
+    <div class="stat-grid">
+      <div class="stat"><div class="lbl">ตัวชี้วัดทางการ</div><div class="num" style="color:var(--accent)">64</div><div class="hint">ตชว. สสจ.นม. ปี 70</div></div>
+      <div class="stat"><div class="lbl">แถวติดตาม</div><div class="num" id="leafCount">—</div><div class="hint">รวมหัวข้อย่อย 52 / 54 / 57 / 58</div></div>
+      <div class="stat"><div class="lbl">ยุทธศาสตร์</div><div class="num">5</div><div class="hint">PP&amp;P · Service · People · Governance · Health Eco</div></div>
+      <div class="stat"><div class="lbl">เข็มมุ่ง</div><div class="num" style="color:var(--s1)">20</div><div class="hint">กลยุทธ์ขับเคลื่อนปี 70</div></div>
+      <div class="stat"><div class="lbl">สถานะผลงาน</div><div class="num" style="font-size:18px;padding-top:6px">รอข้อมูล</div><div class="hint">ยังไม่ถึงรอบรายงานปี 70</div></div>
+    </div>
+
+    <div class="two">
+      <div class="card">
+        <div class="card-h"><span class="dot" style="background:var(--accent)"></span>จำนวนตัวชี้วัดแยกยุทธศาสตร์</div>
+        <div class="chart-wrap"><canvas id="sChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><span class="dot" style="background:var(--s4)"></span>กลุ่มงานรับผิดชอบ</div>
+        <div class="chart-wrap"><canvas id="oChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="card" style="padding-bottom:8px">
+      <div class="card-h"><span class="dot" style="background:var(--s1)"></span>รายการตัวชี้วัดปี 2570</div>
+      <input class="search" id="q70" type="search" placeholder="ค้นหาชื่อตัวชี้วัด / กลุ่มงาน / รหัส">
+      <div class="filters" id="sFilters"></div>
+      <div class="filters" id="oFilters"></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>รหัส</th>
+              <th>ยุทธศาสตร์</th>
+              <th style="min-width:240px">ตัวชี้วัด</th>
+              <th>ค่าเป้าหมาย</th>
+              <th>กลุ่มงาน</th>
+              <th>สถานะ</th>
+            </tr>
+          </thead>
+          <tbody id="tb70"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="view-focus70" class="hidden">
+    <div class="stat-grid">
+      <div class="stat"><div class="lbl">เข็มมุ่งทั้งหมด</div><div class="num">20</div><div class="hint">กลยุทธ์ประจำปี 2570</div></div>
+      <div class="stat"><div class="lbl">ยุทธศาสตร์ 1 PP&amp;P</div><div class="num" style="color:var(--s1)">6</div></div>
+      <div class="stat"><div class="lbl">ยุทธศาสตร์ 2 Service</div><div class="num" style="color:var(--s2)">2</div></div>
+      <div class="stat"><div class="lbl">ยุทธศาสตร์ 3 People</div><div class="num" style="color:var(--s3)">2</div></div>
+      <div class="stat"><div class="lbl">ยุทธศาสตร์ 4 Governance</div><div class="num" style="color:var(--s4)">6</div></div>
+      <div class="stat"><div class="lbl">ยุทธศาสตร์ 5 Health Eco</div><div class="num" style="color:var(--s5)">4</div></div>
+    </div>
+    <div class="k-grid" id="focusGrid"></div>
+  </section>
+
+  <section id="view-kpi69" class="hidden">
+    <div class="alert">ข้อมูลชุดนี้คือผลงานปี 2569 ที่ไม่ผ่านเกณฑ์ จากระบบ 43 แฟ้ม / HDC — เก็บไว้เทียบกับกรอบปี 2570 ไม่ใช่ผลงานปีใหม่</div>
+    <div class="stat-grid">
+      <div class="stat"><div class="lbl">ไม่ผ่านทั้งหมด</div><div class="num" style="color:var(--red)">64</div></div>
+      <div class="stat"><div class="lbl">วิกฤต (&lt;50%)</div><div class="num" style="color:var(--red)">29</div></div>
+      <div class="stat"><div class="lbl">ปานกลาง (50–79%)</div><div class="num" style="color:var(--amber)">19</div></div>
+      <div class="stat"><div class="lbl">ใกล้ผ่าน (≥80%)</div><div class="num" style="color:var(--green)">16</div></div>
+      <div class="stat"><div class="lbl">กลุ่มงานสูงสุด</div><div class="num" style="font-size:18px;padding-top:6px">แม่และเด็ก</div><div class="hint">16 ตัวชี้วัด</div></div>
+      <div class="stat"><div class="lbl">ข้อมูลน่าสงสัย</div><div class="num" style="color:var(--muted)">11</div></div>
+    </div>
+    <div class="two">
+      <div class="card">
+        <div class="card-h"><span class="dot" style="background:var(--red)"></span>จำนวนไม่ผ่านแยกกลุ่มงาน</div>
+        <div class="chart-wrap"><canvas id="groupChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><span class="dot" style="background:var(--amber)"></span>ระดับผลงานเทียบเกณฑ์</div>
+        <div class="chart-wrap"><canvas id="distChart"></canvas></div>
       </div>
     </div>
     <div class="card">
-      <div class="card-title"><span class="card-title-dot"></span>ระดับผลงานเทียบเกณฑ์</div>
-      <div class="legend">
-        <span><i style="background:#C23B2A"></i>วิกฤต <50%</span>
-        <span><i style="background:#D4870F"></i>ปานกลาง 50–79%</span>
-        <span><i style="background:#2D7A4F"></i>ใกล้ผ่าน ≥80%</span>
+      <div class="card-h"><span class="dot" style="background:var(--accent)"></span>ผลงานจริง vs เกณฑ์ (เรียงต่ำ→สูง)</div>
+      <div class="chart-tall"><canvas id="overviewChart"></canvas></div>
+    </div>
+    <div class="filters" id="filterRow">
+      <button class="fbtn on" data-filter="all">ทั้งหมด (64)</button>
+      <button class="fbtn" data-filter="crisis">วิกฤต (29)</button>
+      <button class="fbtn" data-filter="mid">ปานกลาง (19)</button>
+      <button class="fbtn" data-filter="near">ใกล้ผ่าน (16)</button>
+      <button class="fbtn" data-filter="suspect">ข้อมูลน่าสงสัย (11)</button>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>รหัส</th><th>กลุ่มงาน</th><th style="min-width:200px">ตัวชี้วัด</th>
+              <th>เกณฑ์</th><th>ตัวตั้ง</th><th>ตัวหาร</th><th>ผลงาน</th>
+              <th>ความก้าวหน้า</th><th>ระดับ</th><th>หมายเหตุ</th>
+            </tr>
+          </thead>
+          <tbody id="mainTbody"></tbody>
+        </table>
       </div>
-      <div class="chart-wrap">
-        <canvas id="distChart"></canvas>
-      </div>
     </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title"><span class="card-title-dot"></span>ภาพรวมทุกตัวชี้วัด — ผลงานจริง vs เกณฑ์</div>
-    <div class="chart-wrap-tall">
-      <canvas id="overviewChart"></canvas>
-    </div>
-  </div>
-
-  <hr class="divider">
-  <div class="section-label">รายละเอียดตัวชี้วัด</div>
-
-  <div class="filter-row" id="filterRow">
-    <button class="filter-btn active" data-filter="all">ทั้งหมด (64)</button>
-    <button class="filter-btn" data-filter="crisis">วิกฤต (29)</button>
-    <button class="filter-btn" data-filter="mid">ปานกลาง (19)</button>
-    <button class="filter-btn" data-filter="near">ใกล้ผ่าน (16)</button>
-    <button class="filter-btn" data-filter="suspect">ข้อมูลน่าสงสัย (11)</button>
-  </div>
-
-  <div class="card" style="padding:0; overflow:hidden">
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>รหัส</th>
-            <th>กลุ่มงาน</th>
-            <th style="min-width:200px">ตัวชี้วัด</th>
-            <th>เกณฑ์</th>
-            <th>ตัวตั้ง</th>
-            <th>ตัวหาร</th>
-            <th>ผลงาน</th>
-            <th>ความก้าวหน้า</th>
-            <th>ระดับ</th>
-            <th>หมายเหตุ</th>
-          </tr>
-        </thead>
-        <tbody id="mainTbody"></tbody>
-      </table>
-    </div>
-  </div>
+  </section>
 </main>
-
-<footer class="footer">
-  รพ.พระทองคำ · ปีงบประมาณ 2569 · dashboard นี้สร้างจากไฟล์ xlsx รายงานวิเคราะห์ตัวชี้วัดที่ไม่ผ่านเกณฑ์
-</footer>
-
+<script src="credit.js"></script>
 <script>
+const STRAT = {
+  1: { short:'ยุทธศาสตร์ 1', name:'ส่งเสริมสุขภาพ ป้องกันโรค และคุ้มครองผู้บริโภคเป็นเลิศ', en:'PP&P Excellence', color:'var(--s1)', cls:'b-s1', n:23 },
+  2: { short:'ยุทธศาสตร์ 2', name:'พัฒนาระบบบริการที่เป็นเลิศ', en:'Service Excellence', color:'var(--s2)', cls:'b-s2', n:20 },
+  3: { short:'ยุทธศาสตร์ 3', name:'พัฒนากำลังคนเป็นเลิศ', en:'People Excellence', color:'var(--s3)', cls:'b-s3', n:5 },
+  4: { short:'ยุทธศาสตร์ 4', name:'พัฒนาระบบบริหารจัดการที่เป็นเลิศ', en:'Governance Excellence', color:'var(--s4)', cls:'b-s4', n:10 },
+  5: { short:'ยุทธศาสตร์ 5', name:'ความเป็นเลิศด้านเศรษฐกิจสุขภาพ', en:'Health Economic Excellence', color:'var(--s5)', cls:'b-s5', n:6 }
+};
+
+const KPI70 = [
+  {id:'1', s:1, name:'ร้อยละของอำเภอขับเคลื่อน TO BE NUMBER ONE ครบทุกประเภท', target:'ร้อยละ 100', owner:'สสอ.'},
+  {id:'2', s:1, name:'อัตราส่วนการตายมารดาไทยต่อการเกิดมีชีพแสนคน', target:'ร้อยละ 0', owner:'LR'},
+  {id:'3', s:1, name:'ร้อยละเด็กอายุ 0–5 ปี มีพัฒนาการสมวัย', target:'≥ 88%', owner:'ปฐมภูมิ'},
+  {id:'4', s:1, name:'ร้อยละหน่วยบริการในสังกัดผ่านเกณฑ์องค์กรรอบรู้ด้านสุขภาพ', target:'ร้อยละ 100', owner:'ปฐมภูมิ'},
+  {id:'5', s:1, name:'ร้อยละของผู้สูงอายุไม่มีภาวะพึ่งพิง หรือมี ADL ≥ 12 คะแนน', target:'≥ 97.50%', owner:'ปฐมภูมิ'},
+  {id:'6', s:1, name:'ร้อยละของผู้สูงอายุที่มีความเสี่ยงด้านความคิดความจำ และการเคลื่อนไหว ได้รับการดูแลรักษาอย่างเหมาะสม', target:'≥ 60%', owner:'ผู้สูงอายุ'},
+  {id:'7', s:1, name:'ร้อยละเด็กอายุ 0–5 ปี ฟันดีไม่มีผุ', target:'ร้อยละ 80%', owner:'ทันตกรรม'},
+  {id:'8', s:1, name:'ร้อยละเด็กอายุ 12 ปี ฟันดีไม่มีผุ', target:'ร้อยละ 75', owner:'ทันตกรรม'},
+  {id:'9', s:1, name:'ร้อยละเด็กอายุครบ 1 ปี ได้รับวัคซีนครบตามเกณฑ์', target:'≥ 95%', owner:'ปฐมภูมิ'},
+  {id:'10', s:1, name:'ร้อยละเด็กอายุครบ 2 ปี ได้รับวัคซีนครบตามเกณฑ์', target:'≥ 95%', owner:'ปฐมภูมิ'},
+  {id:'11', s:1, name:'ร้อยละเด็กอายุครบ 3 ปี ได้รับวัคซีนครบตามเกณฑ์', target:'≥ 95%', owner:'ปฐมภูมิ'},
+  {id:'12', s:1, name:'ร้อยละเด็กอายุครบ 5 ปี ได้รับวัคซีนครบตามเกณฑ์', target:'≥ 95%', owner:'ปฐมภูมิ'},
+  {id:'13', s:1, name:'ร้อยละนักเรียนหญิงชั้นประถมศึกษาปีที่ 5 ได้รับวัคซีน HPV ตามเกณฑ์', target:'ร้อยละ 100', owner:'ปฐมภูมิ'},
+  {id:'14', s:1, name:'อัตราการเสียชีวิตและบาดเจ็บรุนแรงจากอุบัติเหตุทางถนนในเด็กและเยาวชน', target:'ลดลง ≥ 3%', owner:'ER'},
+  {id:'15', s:1, name:'อัตราการเสียชีวิตจากการจมน้ำ ทุกกลุ่มอายุ', target:'ลดลง ≥ 25%', owner:'ER'},
+  {id:'16', s:1, name:'ร้อยละผู้ป่วยเบาหวานที่เข้าเกณฑ์และสมัครใจเข้าสู่โรคเบาหวานระยะสงบ (Remission)', target:'≥ 3%', owner:'NCD'},
+  {id:'17', s:1, name:'ร้อยละกลุ่มสงสัยป่วยโรคเบาหวานที่ได้รับการตรวจยืนยัน', target:'≥ 80%', owner:'ปฐมภูมิ'},
+  {id:'18', s:1, name:'ร้อยละกลุ่มสงสัยป่วยโรคความดันโลหิตสูงที่ได้รับการตรวจยืนยัน', target:'≥ 80%', owner:'ปฐมภูมิ'},
+  {id:'19', s:1, name:'ร้อยละผู้ป่วยโรคเบาหวานที่สามารถควบคุมระดับน้ำตาลในเลือดได้ตามเกณฑ์', target:'≥ 40%', owner:'NCD'},
+  {id:'20', s:1, name:'ร้อยละผู้ป่วยโรคความดันโลหิตสูงที่สามารถควบคุมระดับความดันโลหิตได้ตามเกณฑ์', target:'≥ 60%', owner:'NCD'},
+  {id:'21', s:1, name:'ร้อยละประชากรกลุ่มเป้าหมายได้รับการคัดกรองมะเร็งลำไส้ใหญ่และไส้ตรงด้วย FIT Test', target:'≥ 55%', owner:'กลุ่มการ'},
+  {id:'22', s:1, name:'ร้อยละสตรีกลุ่มเป้าหมายได้รับการคัดกรองมะเร็งปากมดลูกสะสม 5 ปี', target:'≥ 45%', owner:'ปฐมภูมิ'},
+  {id:'23', s:1, name:'ร้อยละสตรีกลุ่มเป้าหมายที่พบความผิดปกติจากการตรวจเต้านมด้วยตนเอง ได้รับการส่งต่อเพื่อตรวจวินิจฉัยเพิ่มเติม', target:'≥ 90%', owner:'กลุ่มการ'},
+  {id:'24', s:2, name:'อัตราตายของผู้ป่วยโรคหลอดเลือดสมอง', target:'< ร้อยละ 7', owner:'ER+HCT'},
+  {id:'25', s:2, name:'อัตราตายของผู้ป่วยโรคหลอดเลือดหัวใจ', target:'< ร้อยละ 8', owner:'ER+HCT'},
+  {id:'26', s:2, name:'อัตราความสำเร็จการรักษาผู้ป่วยวัณโรคปอดรายใหม่', target:'≥ ร้อยละ 88%', owner:'ปฐมภูมิ'},
+  {id:'27', s:2, name:'อัตราความครอบคลุมการขึ้นทะเบียนของผู้ป่วยรายใหม่และกลับเป็นซ้ำ', target:'≥ ร้อยละ 85%', owner:'ปฐมภูมิ'},
+  {id:'28', s:2, name:'ประชาชนที่เกิดก่อนปี พ.ศ.2535 ได้รับการคัดกรองไวรัสตับอักเสบบีและซี', target:'ร้อยละ 60', owner:'ปฐมภูมิ'},
+  {id:'29', s:2, name:'ร้อยละของผู้ที่มีผลตรวจยืนยันผิดปกติโรคไวรัสตับอักเสบบี ได้รับบริการรักษาตามมาตรฐาน', target:'ร้อยละ 60', owner:'กลุ่มการ'},
+  {id:'30', s:2, name:'ร้อยละของผู้ที่มีผลตรวจยืนยันผิดปกติโรคไวรัสตับอักเสบซี ได้รับบริการรักษาตามมาตรฐาน', target:'ร้อยละ 80', owner:'กลุ่มการ'},
+  {id:'31', s:2, name:'อัตราตายผู้ป่วยติดเชื้อในกระแสเลือดแบบรุนแรงชนิด community-acquired', target:'น้อยกว่าร้อยละ 24', owner:'IC'},
+  {id:'32', s:2, name:'อัตราการเสียชีวิตของทารกแรกเกิดที่อายุน้อยกว่า 28 วัน', target:'< 3.6/1,000 ทารกเกิดมีชีพ', owner:'กลุ่มการ'},
+  {id:'33', s:2, name:'คัดกรองการได้ยินของทารกแรกเกิด', target:'≥ ร้อยละ 95%', owner:'LR'},
+  {id:'34', s:2, name:'ระดับความสำเร็จของการดูแลผู้ป่วยแบบประคับประคองอย่างมีคุณภาพจนถึงวาระสุดท้ายของชีวิต', target:'ระดับ 4', owner:'Palliative'},
+  {id:'35', s:2, name:'อัตราการฆ่าตัวตายสำเร็จ', target:'ไม่เกิน 7.8/แสนประชากร', owner:'ยสต.'},
+  {id:'36', s:2, name:'ผู้ป่วยยาเสพติดที่เข้าสู่กระบวนการบำบัดรักษา ได้รับการดูแลอย่างมีคุณภาพต่อเนื่องจนถึงการติดตาม (Retention Rate — ระบบสมัครใจ)', target:'ร้อยละ 75', owner:'ยสต.'},
+  {id:'37', s:2, name:'ประชาชนทุกสิทธิ์เข้าถึงบริการสุขภาพช่องปาก', target:'1 ล้านครั้ง', owner:'ทันตกรรม'},
+  {id:'38', s:2, name:'ระดับความสำเร็จของโรงพยาบาลผ่านเกณฑ์พัฒนาด้านการตรวจทางห้องปฏิบัติการอย่างสมเหตุผล', target:'ระดับ 4', owner:'LAB'},
+  {id:'39', s:2, name:'ลดระยะเวลารอคอยแผนกผู้ป่วยนอก (OPD)', target:'ร้อยละ 20', owner:'OPD'},
+  {id:'40', s:2, name:'โรงพยาบาลมีการนัดหมายผู้ป่วยออนไลน์เป็นรายชั่วโมง', target:'ร้อยละ 100', owner:'OPD'},
+  {id:'41', s:2, name:'อัตราการให้บริการแพทย์ทางไกล (Telemedicine) ต่อผู้ป่วยนอก', target:'ร้อยละ 30', owner:'กลุ่มการ'},
+  {id:'42', s:2, name:'ร้อยละการจัดตั้งหน่วยบริการปฐมภูมิ PCU/NPCU ตาม พ.ร.บ.ระบบสุขภาพปฐมภูมิ พ.ศ.2562', target:'ร้อยละ 100', owner:'ปฐมภูมิ'},
+  {id:'43', s:2, name:'ร้อยละของ PCU/NPCU ที่ขึ้นทะเบียนผ่านเกณฑ์คุณภาพมาตรฐานตาม พ.ร.บ.ระบบสุขภาพปฐมภูมิ พ.ศ.2562', target:'ร้อยละ 80', owner:'ปฐมภูมิ'},
+  {id:'44', s:3, name:'ร้อยละของบุคลากรที่ได้รับการพัฒนาศักยภาพตามแผนพัฒนาบุคลากรประจำปี', target:'ร้อยละ 70', owner:'บริหาร'},
+  {id:'45', s:3, name:'ร้อยละการประเมินความสุขและความทุกข์ของบุคลากร และมีการจัดกิจกรรมอย่างน้อย 1 กิจกรรม', target:'ร้อยละ 70', owner:'บริหาร'},
+  {id:'46', s:3, name:'ร้อยละหน่วยบริการมีระบบติดตามประเมินผลบุคลากร โดยมีแบบประเมินผลการปฏิบัติราชการ', target:'ร้อยละ 100', owner:'HR'},
+  {id:'47', s:3, name:'ร้อยละของการได้รับการเลื่อนเงินเดือนทันรอบเวลา ของข้าราชการ (วัดระดับจังหวัด)', target:'ร้อยละ 100', owner:'จังหวัด'},
+  {id:'48', s:3, name:'หน่วยบริการจัดทำข้อมูลระบบทะเบียนประวัติข้าราชการอิเล็กทรอนิกส์ (SEIS)', target:'ร้อยละ 100', owner:'HR'},
+  {id:'49', s:4, name:'โรงพยาบาลมีความมั่นคงปลอดภัยทางไซเบอร์ตามมาตรฐาน CTAM PLUS', target:'ร้อยละ 100 (รพ.ระดับ S และ M ผ่านภายในไตรมาส 1, ระดับ F ภายในไตรมาส 3)', owner:'IT'},
+  {id:'50', s:4, name:'โรงพยาบาลผ่านเกณฑ์ Smart Hospital', target:'ระดับทองขึ้นไป ร้อยละ 100', owner:'IT'},
+  {id:'51', s:4, name:'หน่วยบริการผ่านเกณฑ์การประเมิน ITA', target:'คะแนนไม่น้อยกว่าร้อยละ 94 ภายใน 6 เดือน', owner:'บริหาร'},
+  {id:'52.1', s:4, name:'บริหารการเงินการคลังอย่างมีประสิทธิภาพ — ระดับวิกฤตทางการเงิน (ระดับ 4–7)', target:'เป็น 0% ในระดับจังหวัด', owner:'ประกัน+บริหาร'},
+  {id:'52.2', s:4, name:'บริหารการเงินการคลังอย่างมีประสิทธิภาพ — ประสิทธิภาพการเงินการคลัง (TPS) ระดับ B ขึ้นไป', target:'มากกว่าร้อยละ 60', owner:'ประกัน+บริหาร'},
+  {id:'53', s:4, name:'ร้อยละของหน่วยบริการมีประสิทธิภาพการบริหารคลังยา/เวชภัณฑ์ สำรองไม่เกิน 60 วัน', target:'เกณฑ์ระดับ C ขึ้นไป', owner:'เภสัชกรรม'},
+  {id:'54.1', s:4, name:'ประสิทธิภาพระบบจัดเก็บรายได้ค่ารักษาพยาบาล — มีศูนย์จัดเก็บรายได้ที่มีประสิทธิภาพ', target:'ระดับดีขึ้นไป มากกว่าร้อยละ 90', owner:'ประกัน'},
+  {id:'54.2', s:4, name:'ประสิทธิภาพระบบจัดเก็บรายได้ — ผลงานรายได้มากกว่ารายจ่ายเป็นบวก (NI)', target:'ไม่น้อยกว่าร้อยละ 80', owner:'ประกัน'},
+  {id:'54.3', s:4, name:'ประสิทธิภาพระบบจัดเก็บรายได้ — เบิกชดเชย IPD กองทุน UC มากกว่าเป้าหมายประมาณการ', target:'ไม่น้อยกว่าร้อยละ 80', owner:'ประกัน'},
+  {id:'55', s:4, name:'ร้อยละของหน่วยบริการสามารถขึ้นทะเบียนด้วย Biometric และเบิกชดเชยผู้ป่วยในผ่านระบบ FDH Migrant ถูกต้อง (ไม่ติด C)', target:'ไม่น้อยกว่าร้อยละ 90', owner:'ประกัน'},
+  {id:'56', s:4, name:'ร้อยละของหน่วยบริการมีระบบการเบิกชดเชยค่าบริการผ่านบริษัทประกันภัยสำหรับคนต่างชาติ', target:'ร้อยละ 100', owner:'ประกัน'},
+  {id:'57.1', s:4, name:'มุ่งสู่ระบบสุขภาพที่เป็นมิตรต่อสิ่งแวดล้อม — ผ่านมาตรฐาน Green & Clean Hospital Challenge', target:'ร้อยละ 50', owner:'ENV'},
+  {id:'57.2', s:4, name:'โรงพยาบาลพัฒนาสู่การเป็นโรงพยาบาลคาร์บอนต่ำ', target:'ลดการปล่อยก๊าซเรือนกระจก ≥ 20%', owner:'ENV'},
+  {id:'57.3', s:4, name:'โรงพยาบาลพัฒนาโรงพยาบาลคาร์บอนต่ำสู่ Carbon Credit', target:'≥ 20%', owner:'ENV'},
+  {id:'58.1', s:4, name:'การจัดการองค์กรสุขภาพ — ผ่านการรับรองมาตรฐาน HA หรือ HS4', target:'รพศ/รพท 100% และ รพช. 96.9%', owner:'HA'},
+  {id:'58.2', s:4, name:'สาธารณสุขอำเภอผ่านมาตรฐานการประเมิน PMQA', target:'ร้อยละ 100', owner:'สสอ.'},
+  {id:'58.3', s:4, name:'หน่วยบริการปฐมภูมิผ่านมาตรฐานการประเมิน PHA', target:'ร้อยละ 100', owner:'ปฐมภูมิ'},
+  {id:'58.4', s:4, name:'หน่วยบริการเข้าสู่กระบวนการประเมินรับรองมาตรฐาน NQA จากภายนอก', target:'ตามเป้าหมายรายปี สะสม 33 แห่ง', owner:'กลุ่มการ'},
+  {id:'59', s:5, name:'มูลค่าการสั่งจ่ายยาสมุนไพร (ล้านบาท) (ค่าเริ่มต้นปี 2569: 45 ล้านบาท)', target:'57.35 ล้านบาท', owner:'แผนไทย'},
+  {id:'60', s:5, name:'ร้อยละผู้ป่วยนอกที่มารับบริการในระดับปฐมภูมิได้รับการรักษาด้วยการแพทย์แผนไทยและแพทย์ทางเลือก (ค่าเริ่มต้นปี 2569: 48%)', target:'ร้อยละ 50%', owner:'รพ.สต.'},
+  {id:'61', s:5, name:'จำนวนสถานประกอบการเพื่อสุขภาพระดับพรีเมียม (Premium Wellness) (ค่าเริ่มต้น 2569: 6 แห่ง)', target:'6 แห่ง', owner:'ของ สสจ.'},
+  {id:'62', s:5, name:'จำนวนผลิตภัณฑ์สุขภาพที่ผ่านการรับรอง อย. และพร้อมส่งออก (ค่าเริ่มต้น 2569: 130 รายการ)', target:'เพิ่ม 10%', owner:'ของ สสจ.'},
+  {id:'63', s:5, name:'ร้อยละของสถานประกอบการผ่าน SAN (ค่าเริ่มต้นปี 2569: 80%)', target:'ร้อยละ 80%', owner:'เภสัช'},
+  {id:'64', s:5, name:'ร้อยละของอาหารปลอดภัยจากสารเคมีและวัตถุปนเปื้อน (ค่าเริ่มต้นปี 2569: 85%)', target:'ร้อยละ 85%', owner:'เภสัช'}
+];
+
+const FOCUS = [
+  {s:1, items:[
+    'Data Trust & Population Integrity: ธรรมาภิบาลข้อมูลและความถูกต้องของประชากร',
+    'KHD Active List & Closed-loop Care: ทะเบียนรายบุคคลและการดูแลจนปิดเคส',
+    'Outcome-based Performance Governance: การบริหารโดยมุ่งผลลัพธ์สุขภาพ',
+    'Life-course Proactive & Flexible Service: บริการเชิงรุกและยืดหยุ่นตามช่วงวัย',
+    'Shared Capacity & Institutional Synergy: การใช้ทรัพยากรร่วมและบูรณาการเครือข่าย',
+    'Equity, Resilience & Future Readiness: ลดความเหลื่อมล้ำและเตรียมพร้อมรับภัย'
+  ]},
+  {s:2, items:[
+    'ยกระดับระบบบริการสุขภาพให้ได้คุณภาพมาตรฐานสู่ความเป็นเลิศ',
+    'ระบบบริการสุขภาพเชื่อมโยงไร้รอยต่อ'
+  ]},
+  {s:3, items:[
+    'การพัฒนาสมรรถนะและพัฒนาคุณภาพบุคลากร',
+    'การพัฒนาระบบติดตามประเมินผลและเสริมสร้างขวัญกำลังใจ'
+  ]},
+  {s:4, items:[
+    'ยกระดับระบบสุขภาพด้วยเทคโนโลยีดิจิทัลที่มั่นคงปลอดภัยทางไซเบอร์',
+    'การยกระดับคุณธรรมและความโปร่งใส (ITA)',
+    'บริหารการเงินการคลังอย่างมีประสิทธิภาพ',
+    'พัฒนาระบบบริหารจัดการแรงงานต่างด้าวและต่างชาติ',
+    'มุ่งสู่ระบบสุขภาพที่เป็นมิตรต่อสิ่งแวดล้อม (รพ.สีเขียว / Low Carbon)',
+    'การจัดการองค์กรคุณภาพ'
+  ]},
+  {s:5, items:[
+    'สมุนไพรสร้างมูลค่าและการแพทย์แผนไทยปฐมภูมิ',
+    'ผลิตภัณฑ์สุขภาพชุมชนได้รับอนุญาต พร้อมพัฒนากระบวนการผลิตให้ส่งออกได้',
+    'Korat Wellness Hub (ยกระดับธุรกิจบริการสุขภาพและการท่องเที่ยว)',
+    'Smart Protection & Food Safety (คุ้มครองผู้บริโภคอัจฉริยะและ Korat Food Safety)'
+  ]}
+];
+
+document.getElementById('leafCount').textContent = KPI70.length;
+
+const owners = [...new Set(KPI70.map(k => k.owner))].sort((a,b)=>a.localeCompare(b,'th'));
+let sFilter = 'all';
+let oFilter = 'all';
+let q70 = '';
+
+const sFilters = document.getElementById('sFilters');
+sFilters.innerHTML = '<button class="fbtn on" data-s="all">ทุกยุทธศาสตร์</button>' +
+  [1,2,3,4,5].map(s => `<button class="fbtn" data-s="${s}">${STRAT[s].short} (${STRAT[s].n})</button>`).join('');
+sFilters.onclick = e => {
+  const b = e.target.closest('button'); if (!b) return;
+  sFilter = b.dataset.s;
+  [...sFilters.querySelectorAll('.fbtn')].forEach(x => x.classList.toggle('on', x===b));
+  render70();
+};
+
+const oFilters = document.getElementById('oFilters');
+oFilters.innerHTML = '<button class="fbtn on" data-o="all">ทุกกลุ่มงาน</button>' +
+  owners.map(o => `<button class="fbtn" data-o="${o}">${o}</button>`).join('');
+oFilters.onclick = e => {
+  const b = e.target.closest('button'); if (!b) return;
+  oFilter = b.dataset.o;
+  [...oFilters.querySelectorAll('.fbtn')].forEach(x => x.classList.toggle('on', x===b));
+  render70();
+};
+
+document.getElementById('q70').addEventListener('input', e => { q70 = e.target.value.trim().toLowerCase(); render70(); });
+
+function render70() {
+  const rows = KPI70.filter(k => {
+    if (sFilter !== 'all' && String(k.s) !== sFilter) return false;
+    if (oFilter !== 'all' && k.owner !== oFilter) return false;
+    if (q70) {
+      const blob = (k.id + ' ' + k.name + ' ' + k.owner + ' ' + k.target).toLowerCase();
+      if (!blob.includes(q70)) return false;
+    }
+    return true;
+  });
+  document.getElementById('tb70').innerHTML = rows.map(k => {
+    const st = STRAT[k.s];
+    return `<tr>
+      <td class="mono">${k.id}</td>
+      <td><span class="badge ${st.cls}">${st.short}</span></td>
+      <td>${k.name}</td>
+      <td>${k.target}</td>
+      <td class="owner">${k.owner}</td>
+      <td><span class="badge b-wait">รอผลงาน</span></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="6" style="color:var(--muted);padding:18px">ไม่พบตัวชี้วัดตามตัวกรอง</td></tr>';
+}
+render70();
+
+new Chart(document.getElementById('sChart'), {
+  type:'bar',
+  data:{
+    labels:[1,2,3,4,5].map(s => STRAT[s].short.replace('ยุทธศาสตร์ ','ยุทธฯ ')),
+    datasets:[{
+      data:[23,20,5,10,6],
+      backgroundColor:['#0F6E56','#1D6FA4','#7C3AED','#B45309','#BE185D'],
+      borderRadius:4, borderSkipped:false
+    }]
+  },
+  options:{
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.parsed.x} ตัวชี้วัด`}} },
+    scales:{
+      x:{ grid:{color:'rgba(0,0,0,.06)'}, ticks:{color:'#64748B'} },
+      y:{ grid:{display:false}, ticks:{color:'#1A2332'} }
+    }
+  }
+});
+
+const ownerCount = {};
+KPI70.forEach(k => { ownerCount[k.owner] = (ownerCount[k.owner]||0)+1; });
+const ownerSorted = Object.entries(ownerCount).sort((a,b)=>b[1]-a[1]);
+new Chart(document.getElementById('oChart'), {
+  type:'bar',
+  data:{
+    labels: ownerSorted.map(x=>x[0]),
+    datasets:[{ data:ownerSorted.map(x=>x[1]), backgroundColor:'#1D6FA4', borderRadius:3, borderSkipped:false }]
+  },
+  options:{
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.parsed.x} ตัว`}} },
+    scales:{
+      x:{ grid:{color:'rgba(0,0,0,.06)'}, ticks:{color:'#64748B', stepSize:1} },
+      y:{ grid:{display:false}, ticks:{color:'#1A2332', font:{size:11}} }
+    }
+  }
+});
+
+document.getElementById('focusGrid').innerHTML = FOCUS.map(f => {
+  const st = STRAT[f.s];
+  return `<article class="k-card">
+    <span class="badge ${st.cls}">${st.short} · ${f.items.length} กลยุทธ์</span>
+    <h3>${st.name}</h3>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:8px">${st.en}</div>
+    <ol>${f.items.map(t=>`<li>${t}</li>`).join('')}</ol>
+  </article>`;
+}).join('');
+
+function setView(v) {
+  [...document.querySelectorAll('#yearTabs .tab')].forEach(x => x.classList.toggle('on', x.dataset.view === v));
+  document.getElementById('view-kpi70').classList.toggle('hidden', v !== 'kpi70');
+  document.getElementById('view-focus70').classList.toggle('hidden', v !== 'focus70');
+  document.getElementById('view-kpi69').classList.toggle('hidden', v !== 'kpi69');
+  const y70 = v !== 'kpi69';
+  document.getElementById('pageTitle').textContent = y70
+    ? (v === 'focus70' ? 'เข็มมุ่ง ปีงบประมาณ 2570' : 'ตัวชี้วัด ปีงบประมาณ 2570')
+    : 'ตัวชี้วัดที่ไม่ผ่านเกณฑ์ ปีงบประมาณ 2569';
+  document.getElementById('pageSub').textContent = y70
+    ? 'กรอบเป้าหมายจากไฟล์ทางการ สสจ.นครราชสีมา · คนละแท็บกับผลงานปี 2569'
+    : 'ผลงานจริงจาก 43 แฟ้ม / HDC · คนละชุดกับกรอบปี 2570';
+  const strip = document.getElementById('yearStrip');
+  strip.className = 'year-strip ' + (y70 ? 'y70' : 'y69');
+  strip.innerHTML = y70
+    ? '<b>แท็บปี 2570</b><span>กรอบเป้าหมาย ไม่ปนกับผลงานปี 2569</span>'
+    : '<b>แท็บปี 2569</b><span>ผลงานที่ไม่ผ่านเกณฑ์ ไม่ใช่กรอบปี 2570</span>';
+  document.title = y70 ? 'ตัวชี้วัด ปี 2570 — รพ.พระทองคำ' : 'ตัวชี้วัดที่ไม่ผ่าน ปี 2569 — รพ.พระทองคำ';
+  const hash = v === 'kpi69' ? '#2569' : (v === 'focus70' ? '#2570-focus' : '#2570');
+  if (location.hash !== hash) history.replaceState(null, '', hash);
+  if (v === 'kpi69') boot69();
+}
+document.getElementById('yearTabs').addEventListener('click', e => {
+  const b = e.target.closest('.tab'); if (!b) return;
+  setView(b.dataset.view);
+});
+setView(location.hash === '#2569' ? 'kpi69' : (location.hash === '#2570-focus' ? 'focus70' : 'kpi70'));
+
+/* ── ปี 2569 (ผลงานที่ไม่ผ่าน) ── */
 const DATA = [
   {id:142,grp:"คุ้มครองผู้บริโภค",name:"แผงลอยจำหน่ายอาหาร ดำเนินการตามมาตรฐาน SAN",crit:"≥85%",cv:0.85,num:34,den:44,pct:0.773,dir:"gte",flag:""},
   {id:144,grp:"คุ้มครองผู้บริโภค",name:"ตลาดประเภทที่ 1 (ตลาดสด) ดำเนินการตามมาตรฐาน SAN",crit:"≥100%",cv:1.0,num:0,den:1,pct:0.0,dir:"gte",flag:"ข้อมูลน้อย (n=1)"},
   {id:147,grp:"คุ้มครองผู้บริโภค",name:"ผลิตภัณฑ์อาหารได้มาตรฐาน",crit:"≥95%",cv:0.95,num:31,den:33,pct:0.939,dir:"gte",flag:""},
-  {id:8271,grp:"จิตเวช",name:"ผู้พยายามข้าตัวตายเข้าถึงบริการที่มีประสิทธิภาพ",crit:"≥70%",cv:0.70,num:0,den:6,pct:0.0,dir:"gte",flag:"ตัวตั้ง=0"},
+  {id:8271,grp:"จิตเวช",name:"ผู้พยายามฆ่าตัวตายเข้าถึงบริการที่มีประสิทธิภาพ",crit:"≥70%",cv:0.70,num:0,den:6,pct:0.0,dir:"gte",flag:"ตัวตั้ง=0"},
   {id:828,grp:"จิตเวช",name:"ผู้ป่วย SMI-V ไม่ก่อความรุนแรงซ้ำ (ไม่เกิน 85%)",crit:"≤85%",cv:0.85,num:4,den:4,pct:1.0,dir:"lte",flag:"HDC=0% ขัดแย้งในระบบ"},
   {id:9125,grp:"จิตเวช",name:"ผู้ป่วย SMI-V ระดับเขต ไม่กลับมาก่อความรุนแรง",crit:"≥20%",cv:0.20,num:4,den:139,pct:0.029,dir:"gte",flag:""},
   {id:91344,grp:"ดูแลประคับประคอง",name:"ผู้ป่วย Palliative Care ได้รับบริการต่อเนื่องที่บ้าน",crit:"≥55%",cv:0.55,num:1,den:68,pct:0.015,dir:"gte",flag:"HDC=1.43% ตัวตั้งน้อยมาก"},
@@ -401,13 +500,13 @@ const DATA = [
   {id:820,grp:"พัฒนาคุณภาพชุมชน",name:"ชุมชนมีการจัดการสุขภาพที่เหมาะสม",crit:"≥90%",cv:0.90,num:16385,den:19068,pct:0.859,dir:"gte",flag:""},
   {id:913,grp:"พัฒนาคุณภาพชุมชน",name:"ชุมชนมีการจัดการสุขภาพที่เหมาะสม (ระดับจังหวัด)",crit:"≥90%",cv:0.90,num:1,den:4,pct:0.250,dir:"gte",flag:"ข้อมูลน้อย (n=4)"},
   {id:560,grp:"แพทย์แผนไทย",name:"ผู้ป่วยโรคหลอดเลือดสมอง Intermediate Care ได้รับแพทย์แผนไทย",crit:"≥20%",cv:0.20,num:5,den:54,pct:0.093,dir:"gte",flag:"HDC=9.09%"},
-  {id:2451,grp:"เภสัชกรรม",name:"การใช้ยาปฏิชีวนะในโรคอุจจารร่วง ผู้ป่วยนอก เป้า <20%",crit:"≤20%",cv:0.20,num:69,den:314,pct:0.220,dir:"lte",flag:""},
+  {id:2451,grp:"เภสัชกรรม",name:"การใช้ยาปฏิชีวนะในโรคอุจจาระร่วง ผู้ป่วยนอก เป้า <20%",crit:"≤20%",cv:0.20,num:69,den:314,pct:0.220,dir:"lte",flag:""},
   {id:2455,grp:"เภสัชกรรม",name:"เฝ้าระวังความปลอดภัยด้านยา ร้านชำขนาดใหญ่ (รพ.)",crit:"≥100%",cv:1.0,num:100,den:200,pct:0.500,dir:"gte",flag:""},
   {id:2457,grp:"เภสัชกรรม",name:"เฝ้าระวังความปลอดภัยด้านยา ร้านชำขนาดใหญ่ (อำเภอ)",crit:"≥100%",cv:1.0,num:100,den:200,pct:0.500,dir:"gte",flag:""},
   {id:2459,grp:"เภสัชกรรม",name:"ความรอบรู้การใช้ยาสมเหตุผล (RDU Literacy)",crit:"≥100%",cv:1.0,num:100,den:200,pct:0.500,dir:"gte",flag:""},
   {id:2460,grp:"เภสัชกรรม",name:"การส่งเสริมการใช้ยาสมเหตุผลในชุมชน (RDU community)",crit:"≥100%",cv:1.0,num:0,den:200,pct:0.0,dir:"gte",flag:"ตัวตั้ง=0"},
   {id:110,grp:"แม่และเด็ก",name:"หญิงตั้งครรภ์ฝากครรภ์คุณภาพ 5 ครั้ง",crit:"≥75%",cv:0.75,num:33,den:56,pct:0.589,dir:"gte",flag:""},
-  {id:115,grp:"แม่และเด็ก",name:"เด็ก 0-5 ปี ชั่งน้ำหนัก วัดส่วนสูงคลอบคลุม",crit:"≥90%",cv:0.90,num:2614,den:4755,pct:0.550,dir:"gte",flag:""},
+  {id:115,grp:"แม่และเด็ก",name:"เด็ก 0-5 ปี ชั่งน้ำหนัก วัดส่วนสูงครอบคลุม",crit:"≥90%",cv:0.90,num:2614,den:4755,pct:0.550,dir:"gte",flag:""},
   {id:1241,grp:"แม่และเด็ก",name:"เด็กอายุครบ 1 ปี ได้รับวัคซีน MMR1",crit:"≥95%",cv:0.95,num:7,den:11,pct:0.636,dir:"gte",flag:"HDC=81% ข้อมูลไม่ตรงกัน"},
   {id:1242,grp:"แม่และเด็ก",name:"เด็กอายุครบ 2 ปี ได้รับวัคซีน MMR2",crit:"≥95%",cv:0.95,num:154,den:172,pct:0.895,dir:"gte",flag:"HDC=90%"},
   {id:1243,grp:"แม่และเด็ก",name:"เด็กอายุ 1 ปี ได้รับวัคซีนตามเกณฑ์",crit:"≥90%",cv:0.90,num:12,den:16,pct:0.750,dir:"gte",flag:""},
@@ -420,25 +519,25 @@ const DATA = [
   {id:17,grp:"แม่และเด็ก",name:"อัตราการคลอดก่อนกำหนด ไม่เกิน 8%",crit:"<8%",cv:0.08,num:1,den:5,pct:0.200,dir:"lte",flag:"ตัวหารน้อยมาก (n=5)"},
   {id:18,grp:"แม่และเด็ก",name:"หญิงตั้งครรภ์ฝากครรภ์ครั้งแรก ≤12 สัปดาห์",crit:"≥75%",cv:0.75,num:42,den:63,pct:0.667,dir:"gte",flag:""},
   {id:19,grp:"แม่และเด็ก",name:"หญิงหลังคลอด ได้รับการดูแลครบ 3 ครั้ง",crit:"≥75%",cv:0.75,num:90,den:153,pct:0.588,dir:"gte",flag:""},
-  {id:1914,grp:"แม่และเด็ก",name:"ความคลอบคลุมวัคซีนพื้นฐาน 0-5 ปี ผ่านเกณฑ์มาตรฐาน",crit:"≥90%",cv:0.90,num:0,den:15,pct:0.0,dir:"gte",flag:"ตัวตั้ง=0"},
-  {id:854,grp:"แม่และเด็ก",name:"อัตราความคลอบคลุมวัคซีน MMR เข็ม 2 ในเด็ก <3 ปี",crit:"≥95%",cv:0.95,num:154,den:172,pct:0.895,dir:"gte",flag:""},
-  {id:918,grp:"แม่และเด็ก",name:"ความคลอบคลุมวัคซีน MMR2 ระดับจังหวัด",crit:"≥95%",cv:0.95,num:154,den:172,pct:0.895,dir:"gte",flag:""},
+  {id:1914,grp:"แม่และเด็ก",name:"ความครอบคลุมวัคซีนพื้นฐาน 0-5 ปี ผ่านเกณฑ์มาตรฐาน",crit:"≥90%",cv:0.90,num:0,den:15,pct:0.0,dir:"gte",flag:"ตัวตั้ง=0"},
+  {id:854,grp:"แม่และเด็ก",name:"อัตราความครอบคลุมวัคซีน MMR เข็ม 2 ในเด็ก <3 ปี",crit:"≥95%",cv:0.95,num:154,den:172,pct:0.895,dir:"gte",flag:""},
+  {id:918,grp:"แม่และเด็ก",name:"ความครอบคลุมวัคซีน MMR2 ระดับจังหวัด",crit:"≥95%",cv:0.95,num:154,den:172,pct:0.895,dir:"gte",flag:""},
   {id:1251,grp:"ระบาดวิทยา",name:"ผลยืนยัน HBV ผิดปกติ ได้รับการส่งต่อวินิจฉัยรักษา",crit:"≥50%",cv:0.50,num:0,den:11,pct:0.0,dir:"gte",flag:"ตัวตั้ง=0"},
   {id:1909,grp:"โรคติดต่อ",name:"อัตราความสำเร็จในการรักษาผู้ป่วย TB",crit:"≥88%",cv:0.88,num:0,den:1,pct:0.0,dir:"gte",flag:"ข้อมูลน้อยมาก (n=1)"},
-  {id:1910,grp:"โรคติดต่อ",name:"ความคลอบคลุมขึ้นทะเบียนรักษา TB รายใหม่และกลับเป็นซ้ำ",crit:"≥88%",cv:0.88,num:1,den:57,pct:0.018,dir:"gte",flag:""},
+  {id:1910,grp:"โรคติดต่อ",name:"ความครอบคลุมขึ้นทะเบียนรักษา TB รายใหม่และกลับเป็นซ้ำ",crit:"≥88%",cv:0.88,num:1,den:57,pct:0.018,dir:"gte",flag:""},
   {id:822,grp:"โรคติดต่อ",name:"ความสำเร็จรักษาวัณโรคปอดรายใหม่ (ซ้ำ)",crit:"≥88%",cv:0.88,num:0,den:1,pct:0.0,dir:"gte",flag:"ข้อมูลน้อยมาก (n=1)"},
-  {id:823,grp:"โรคติดต่อ",name:"ความคลอบคลุมขึ้นทะเบียนวัณโรครายใหม่และกลับเป็นซ้ำ (ซ้ำ)",crit:"≥10%",cv:0.10,num:1,den:57,pct:0.018,dir:"gte",flag:""},
+  {id:823,grp:"โรคติดต่อ",name:"ความครอบคลุมขึ้นทะเบียนวัณโรครายใหม่และกลับเป็นซ้ำ (ซ้ำ)",crit:"≥10%",cv:0.10,num:1,den:57,pct:0.018,dir:"gte",flag:""},
   {id:9112,grp:"โรคติดต่อ",name:"ความสำเร็จรักษาวัณโรคปอดรายใหม่ (ระดับจังหวัด)",crit:"≥88%",cv:0.88,num:0,den:1,pct:0.0,dir:"gte",flag:"ข้อมูลน้อยมาก (n=1)"},
-  {id:132,grp:"โรคเรื้อรัง",name:"คัดกรองมะเร็งลำไสใหญ่/ไส้ตรง อายุ 50-70 ปี",crit:"≥55%",cv:0.55,num:202,den:891,pct:0.227,dir:"gte",flag:""},
+  {id:132,grp:"โรคเรื้อรัง",name:"คัดกรองมะเร็งลำไส้ใหญ่/ไส้ตรง อายุ 50-70 ปี",crit:"≥55%",cv:0.55,num:202,den:891,pct:0.227,dir:"gte",flag:""},
   {id:136,grp:"โรคเรื้อรัง",name:"ตรวจติดตามยืนยันกลุ่มสงสัยป่วยโรคเบาหวาน",crit:"≥70%",cv:0.70,num:45,den:114,pct:0.395,dir:"gte",flag:""},
   {id:137,grp:"โรคเรื้อรัง",name:"ตรวจติดตามยืนยันกลุ่มสงสัยป่วยความดันโลหิตสูง",crit:"≥87%",cv:0.87,num:652,den:918,pct:0.710,dir:"gte",flag:""},
   {id:1908,grp:"โรคเรื้อรัง",name:"ผู้ป่วยเบาหวานชนิด 2 มีค่า HbA1C <7 ร้อยละ 40",crit:"≥40%",cv:0.40,num:1133,den:2939,pct:0.386,dir:"gte",flag:""},
-  {id:4561,grp:"โรคเรื้อรัง",name:"ผู้ป่วยเบาหวาน ตรวจ HbA1c ซ้ำภายใน 90 วัน ไม่เกิน 5%",crit:"≥5%",cv:0.05,num:77,den:3707,pct:0.021,dir:"gte",flag:"เกณฑ์น่าสงสัย"},
+  {id:4561,grp:"โรคเรื้อรัง",name:"ผู้ป่วยเบาหวาน ตรวจ HbA1c ซ้ำภายใน 90 วัน ไม่เกิน 5%",crit:"≥5%",cv:0.05,num:77,den:3707,pct:0.021,dir:"gte",flag:"เกณฑ์น่าสงสัย ตรวจสอบอีกครั้ง"},
   {id:4562,grp:"โรคเรื้อรัง",name:"ผู้ป่วยเบาหวาน ตรวจ HbA1c อย่างน้อยปีละ 1 ครั้ง",crit:"≥75%",cv:0.75,num:4439,den:6883,pct:0.645,dir:"gte",flag:"HDC=76.19%"},
   {id:712,grp:"โรคเรื้อรัง",name:"ผู้ป่วยเบาหวานชนิด 2 เข้าสู่ DM remission (โรงเรียนเบาหวาน)",crit:"≥10%",cv:0.10,num:1,den:20,pct:0.050,dir:"gte",flag:""},
   {id:721,grp:"โรคเรื้อรัง",name:"ผู้ป่วยเบาหวานชนิด 2 เข้าสู่ DM remission ≥1%",crit:"≥1%",cv:0.01,num:0,den:20,pct:0.0,dir:"gte",flag:"ตัวตั้ง=0"},
   {id:814,grp:"โรคเรื้อรัง",name:"ตรวจติดตามยืนยันกลุ่มสงสัยป่วยโรคเบาหวาน (ซ้ำ)",crit:"≥70%",cv:0.70,num:45,den:114,pct:0.395,dir:"gte",flag:""},
-  {id:834,grp:"โรคเรื้อรัง",name:"คัดกรองมะเร็งลำไสใหญ่และไส้ตรง (ซ้ำ)",crit:"≥55%",cv:0.55,num:202,den:891,pct:0.227,dir:"gte",flag:""},
+  {id:834,grp:"โรคเรื้อรัง",name:"คัดกรองมะเร็งลำไส้ใหญ่และไส้ตรง (ซ้ำ)",crit:"≥55%",cv:0.55,num:202,den:891,pct:0.227,dir:"gte",flag:""},
   {id:1281,grp:"อาชีวอนามัย",name:"อำเภอขับเคลื่อนระบบเฝ้าระวังโรคจากการประกอบอาชีพ",crit:"≥100%",cv:1.0,num:0,den:1,pct:0.0,dir:"gte",flag:"ข้อมูลน้อย (n=1)"},
   {id:1282,grp:"อาชีวอนามัย",name:"หน่วยบริการดำเนินงานอาชีวอนามัยและเวชกรรมสิ่งแวดล้อม ≥60%",crit:"≥60%",cv:0.60,num:0,den:1,pct:0.0,dir:"gte",flag:"ข้อมูลน้อย (n=1)"},
   {id:1283,grp:"อาชีวอนามัย",name:"จัดบริการอาชีวอนามัยในโรงพยาบาลส่งเสริมสุขภาพตำบล",crit:"=1",cv:1.0,num:0,den:1,pct:0.0,dir:"gte",flag:"ข้อมูลน้อย (n=1)"},
@@ -448,7 +547,6 @@ const DATA = [
   {id:840,grp:"ไอทีและมาตรฐาน",name:"หน่วยงานผ่านเกณฑ์มาตรฐานความมั่นคงปลอดภัยไซเบอร์ระดับสูง",crit:"=1",cv:1.0,num:0,den:1,pct:0.0,dir:"gte",flag:"ตัวตั้ง=0"},
   {id:9127,grp:"ไอทีและมาตรฐาน",name:"หน่วยงานผ่านเกณฑ์ไซเบอร์ระดับสูง (ระดับจังหวัด)",crit:"=1",cv:1.0,num:0,den:1,pct:0.0,dir:"gte",flag:"ตัวตั้ง=0"}
 ];
-
 const GRP_COLORS = {
   "แม่และเด็ก":"#C23B2A","โรคเรื้อรัง":"#D4870F","ทันตกรรม":"#1B5FA8",
   "โรคติดต่อ":"#1D9E75","เภสัชกรรม":"#6A5FC1","ไอทีและมาตรฐาน":"#B55A1A",
@@ -456,160 +554,77 @@ const GRP_COLORS = {
   "ดูแลประคับประคอง":"#1B5FA8","พัฒนาคุณภาพชุมชน":"#B56B0F",
   "บริหารและการเงิน":"#4A3889","แพทย์แผนไทย":"#0F6E56","ระบาดวิทยา":"#993556"
 };
-
 function getProgress(d) {
-  if (d.dir === "lte") {
-    if (d.cv === 0 || d.pct === 0) return 0;
-    return Math.min(d.cv / d.pct, 1);
-  }
+  if (d.dir === "lte") { if (d.cv === 0 || d.pct === 0) return 0; return Math.min(d.cv / d.pct, 1); }
   if (d.cv === 0) return 1;
   return Math.min(d.pct / d.cv, 1);
 }
-function getLevel(p) {
-  if (p < 0.5) return "crisis";
-  if (p < 0.8) return "mid";
-  return "near";
-}
+function getLevel(p) { if (p < 0.5) return "crisis"; if (p < 0.8) return "mid"; return "near"; }
 function pStr(v) { return (v * 100).toFixed(1) + "%"; }
 function isSuspect(d) { return d.flag !== "" || d.den <= 5; }
-
-const grpCount = {};
-DATA.forEach(d => { grpCount[d.grp] = (grpCount[d.grp] || 0) + 1; });
-const sortedGrp = Object.entries(grpCount).sort((a, b) => b[1] - a[1]);
-
-new Chart(document.getElementById("groupChart"), {
-  type: "bar",
-  data: {
-    labels: sortedGrp.map(g => g[0]),
-    datasets: [{
-      data: sortedGrp.map(g => g[1]),
-      backgroundColor: sortedGrp.map(g => GRP_COLORS[g[0]] || "#888"),
-      borderRadius: 3,
-      borderSkipped: false,
-    }]
-  },
-  options: {
-    indexAxis: "y",
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.x} ตัวชี้วัด` } } },
-    scales: {
-      x: { grid: { color: "rgba(0,0,0,.06)" }, ticks: { color: "#888", font: { size: 11 } } },
-      y: { grid: { display: false }, ticks: { color: "#444", font: { size: 11 } } }
-    }
+let booted69 = false;
+function boot69() {
+  if (booted69) return;
+  booted69 = true;
+  const grpCount = {};
+  DATA.forEach(d => { grpCount[d.grp] = (grpCount[d.grp] || 0) + 1; });
+  const sortedGrp = Object.entries(grpCount).sort((a,b)=>b[1]-a[1]);
+  new Chart(document.getElementById("groupChart"), {
+    type:"bar",
+    data:{ labels:sortedGrp.map(g=>g[0]), datasets:[{ data:sortedGrp.map(g=>g[1]), backgroundColor:sortedGrp.map(g=>GRP_COLORS[g[0]]||"#888"), borderRadius:3, borderSkipped:false }] },
+    options:{ indexAxis:"y", responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}, tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.x} ตัวชี้วัด`}}}, scales:{ x:{grid:{color:"rgba(0,0,0,.06)"},ticks:{color:"#888"}}, y:{grid:{display:false},ticks:{color:"#444",font:{size:11}}} } }
+  });
+  const progAll = DATA.map(d => getProgress(d));
+  const counts = [progAll.filter(p=>p<0.5).length, progAll.filter(p=>p>=0.5&&p<0.8).length, progAll.filter(p=>p>=0.8).length];
+  new Chart(document.getElementById("distChart"), {
+    type:"doughnut",
+    data:{ labels:["วิกฤต (<50%)","ปานกลาง (50–79%)","ใกล้ผ่าน (≥80%)"], datasets:[{ data:counts, backgroundColor:["#C23B2A","#D4870F","#2D7A4F"], borderWidth:2, borderColor:"#fff" }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{position:"bottom", labels:{font:{size:11},color:"#666",padding:14,boxWidth:12}} }, cutout:"62%" }
+  });
+  const sorted = [...DATA].sort((a,b)=>getProgress(a)-getProgress(b));
+  const ovColors = sorted.map(d => { const p=getProgress(d); return p<0.5?"#C23B2A":p<0.8?"#D4870F":"#2D7A4F"; });
+  new Chart(document.getElementById("overviewChart"), {
+    type:"bar",
+    data:{ labels:sorted.map(d=>`[${d.id}] ${d.name.substring(0,28)}${d.name.length>28?"…":""}`), datasets:[{ data:sorted.map(d=>Math.round(getProgress(d)*100)), backgroundColor:ovColors, borderRadius:2, borderSkipped:false }] },
+    options:{ indexAxis:"y", responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:ctx=>{ const d=sorted[ctx.dataIndex]; return [` ความสำเร็จ: ${ctx.parsed.x}% ของเกณฑ์`,` ผลงาน: ${pStr(d.pct)}  เกณฑ์: ${d.crit}`,` ตัวตั้ง: ${d.num}  ตัวหาร: ${d.den}`]; }, title:ctx=>sorted[ctx[0].dataIndex].name } } }, scales:{ x:{max:100,grid:{color:"rgba(0,0,0,.06)"},ticks:{color:"#888"}}, y:{grid:{display:false},ticks:{color:"#444",font:{size:9}}} } }
+  });
+  function render69(filter) {
+    const rows = DATA.filter(d => {
+      const p = getProgress(d);
+      if (filter==="crisis") return p<0.5;
+      if (filter==="mid") return p>=0.5 && p<0.8;
+      if (filter==="near") return p>=0.8;
+      if (filter==="suspect") return isSuspect(d);
+      return true;
+    });
+    document.getElementById("mainTbody").innerHTML = rows.map(d => {
+      const p = getProgress(d);
+      const lv = getLevel(p);
+      const badge = lv==="crisis"?"b-red":lv==="mid"?"b-amber":"b-green";
+      const label = lv==="crisis"?"วิกฤต":lv==="mid"?"ปานกลาง":"ใกล้ผ่าน";
+      const col = lv==="crisis"?"#C23B2A":lv==="mid"?"#D4870F":"#2D7A4F";
+      return `<tr>
+        <td class="mono">${d.id}</td>
+        <td>${d.grp}</td>
+        <td>${d.name}</td>
+        <td>${d.crit}</td>
+        <td class="mono">${d.num}</td>
+        <td class="mono">${d.den}</td>
+        <td class="mono">${pStr(d.pct)}</td>
+        <td><div class="mini-bar-bg"><div class="mini-bar-fill" style="width:${Math.round(p*100)}%;background:${col}"></div></div></td>
+        <td><span class="badge ${badge}">${label}</span></td>
+        <td>${d.flag?`<span class="badge b-gray">${d.flag}</span>`:""}</td>
+      </tr>`;
+    }).join("");
   }
-});
-
-const progAll = DATA.map(d => getProgress(d));
-const counts = [
-  progAll.filter(p => p < 0.5).length,
-  progAll.filter(p => p >= 0.5 && p < 0.8).length,
-  progAll.filter(p => p >= 0.8).length
-];
-new Chart(document.getElementById("distChart"), {
-  type: "doughnut",
-  data: {
-    labels: ["วิกฤต (<50%)", "ปานกลาง (50–79%)", "ใกล้ผ่าน (≥80%)"],
-    datasets: [{ data: counts, backgroundColor: ["#C23B2A", "#D4870F", "#2D7A4F"], borderWidth: 2, borderColor: "#fff" }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { position: "bottom", labels: { font: { size: 11 }, color: "#666", padding: 14, boxWidth: 12 } },
-      tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} ตัว` } }
-    },
-    cutout: "62%"
-  }
-});
-
-const sorted = [...DATA].sort((a, b) => getProgress(a) - getProgress(b));
-const ovColors = sorted.map(d => {
-  const p = getProgress(d);
-  if (p < 0.5) return "#C23B2A";
-  if (p < 0.8) return "#D4870F";
-  return "#2D7A4F";
-});
-new Chart(document.getElementById("overviewChart"), {
-  type: "bar",
-  data: {
-    labels: sorted.map(d => `[${d.id}] ${d.name.substring(0, 28)}${d.name.length > 28 ? "…" : ""}`),
-    datasets: [{ data: sorted.map(d => Math.round(getProgress(d) * 100)), backgroundColor: ovColors, borderRadius: 2, borderSkipped: false }]
-  },
-  options: {
-    indexAxis: "y",
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: ctx => {
-            const d = sorted[ctx.dataIndex];
-            return [` ความสำเร็จ: ${ctx.parsed.x}% ของเกณฑ์`, ` ผลงาน: ${pStr(d.pct)}  เกณฑ์: ${d.crit}`, ` ตัวตั้ง: ${d.num}  ตัวหาร: ${d.den}`];
-          },
-          title: ctx => sorted[ctx[0].dataIndex].name
-        }
-      }
-    },
-    scales: {
-      x: { min: 0, max: 105, grid: { color: "rgba(0,0,0,.06)" }, ticks: { color: "#888", font: { size: 10 }, callback: v => v + "%" } },
-      y: { grid: { display: false }, ticks: { color: "#444", font: { size: 9.5 } } }
-    }
-  }
-});
-
-function renderTable(filter) {
-  const tbody = document.getElementById("mainTbody");
-  tbody.innerHTML = "";
-  const filtered = DATA.filter(d => {
-    const p = getProgress(d);
-    const lv = getLevel(p);
-    if (filter === "all") return true;
-    if (filter === "crisis") return lv === "crisis";
-    if (filter === "mid") return lv === "mid";
-    if (filter === "near") return lv === "near";
-    if (filter === "suspect") return isSuspect(d);
-    return true;
-  }).sort((a, b) => getProgress(a) - getProgress(b));
-
-  filtered.forEach(d => {
-    const p = getProgress(d);
-    const lv = getLevel(p);
-    const fillColor = lv === "crisis" ? "#C23B2A" : lv === "mid" ? "#D4870F" : "#2D7A4F";
-    const badgeClass = lv === "crisis" ? "b-red" : lv === "mid" ? "b-amber" : "b-green";
-    const badgeLabel = lv === "crisis" ? "วิกฤต" : lv === "mid" ? "ปานกลาง" : "ใกล้ผ่าน";
-    const numColor = d.num === 0 ? "color:#C23B2A" : "";
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td class="mono" style="font-size:11px;color:#9A9890">${d.id}</td>
-      <td><span class="badge b-gray" style="font-size:9.5px">${d.grp}</span></td>
-      <td class="td-name">${d.name}</td>
-      <td class="mono" style="font-size:11px;white-space:nowrap">${d.crit}</td>
-      <td class="mono" style="font-size:11px;${numColor}">${d.num.toLocaleString()}</td>
-      <td class="mono" style="font-size:11px">${d.den.toLocaleString()}</td>
-      <td class="mono" style="font-size:12px;font-weight:500;color:${fillColor}">${pStr(d.pct)}</td>
-      <td>
-        <div class="mini-bar-bg">
-          <div class="mini-bar-fill" style="background:${fillColor};width:${Math.max(p * 100, 2)}%"></div>
-        </div>
-        <div style="font-size:10px;color:#9A9890;margin-top:2px">${Math.round(p * 100)}% ของเกณฑ์</div>
-      </td>
-      <td><span class="badge ${badgeClass}">${badgeLabel}</span></td>
-      <td>${d.flag ? `<span class="badge b-warn">${d.flag}</span>` : '<span style="color:#ccc">—</span>'}</td>
-    `;
-    tbody.appendChild(tr);
+  render69("all");
+  document.getElementById("filterRow").addEventListener("click", e => {
+    const b = e.target.closest(".fbtn"); if (!b) return;
+    [...document.querySelectorAll("#filterRow .fbtn")].forEach(x => x.classList.toggle("on", x===b));
+    render69(b.dataset.filter);
   });
 }
-renderTable("all");
-document.getElementById("filterRow").addEventListener("click", e => {
-  const btn = e.target.closest(".filter-btn");
-  if (!btn) return;
-  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-  renderTable(btn.dataset.filter);
-});
 </script>
-<script src="credit.js"></script>
 </body>
 </html>
+
