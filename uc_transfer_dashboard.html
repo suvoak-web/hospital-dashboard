@@ -53,19 +53,19 @@ tr.fund-row.on td{background:#dbeafe}
   <div id="y70Block" class="card p-4 mb-5 border-t-4 border-sky-700">
     <div class="flex flex-wrap justify-between gap-2 mb-3">
       <div>
-        <h3 class="font-semibold">ปี 2570 แยกติดตาม — ถึง 5 ต.ค. 2569</h3>
+        <h3 class="font-semibold">ปี 2570 แยกติดตาม — ถึง 9 ต.ค. 2569</h3>
         <p class="text-xs text-slate-500">ปีงบใหม่ 1 ต.ค. 69 – 30 ก.ย. 70 · ยังไม่ครบเดือน ห้ามเทียบกับทั้งปี 66–69 · ส่ง statement มาในแชทแล้วลง GitHub</p>
       </div>
       <div class="text-right">
-        <div class="text-2xl font-bold text-sky-800">0.293</div>
+        <div class="text-2xl font-bold text-sky-800">7.47</div>
         <div class="text-xs text-slate-400">ล้านบาท เข้าบัญชี</div>
       </div>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-      <div class="card p-3"><div class="text-xs text-slate-500">จัดสรร</div><div class="text-xl font-bold">0.294</div></div>
+      <div class="card p-3"><div class="text-xs text-slate-500">จัดสรร</div><div class="text-xl font-bold">7.47</div></div>
       <div class="card p-3"><div class="text-xs text-slate-500">หัก</div><div class="text-xl font-bold">0.001</div></div>
-      <div class="card p-3"><div class="text-xs text-slate-500">เข้าบัญชี</div><div class="text-xl font-bold text-sky-800">0.293</div></div>
-      <div class="card p-3"><div class="text-xs text-slate-500">เทียบ Q1 ปี 69</div><div class="text-xl font-bold">1.4%</div><div class="text-xs text-slate-400">Q1/69 เข้า 21.21</div></div>
+      <div class="card p-3"><div class="text-xs text-slate-500">เข้าบัญชี</div><div class="text-xl font-bold text-sky-800">7.47</div></div>
+      <div class="card p-3"><div class="text-xs text-slate-500">เทียบ Q1 ปี 69</div><div class="text-xl font-bold">35%</div><div class="text-xs text-slate-400">ของ Q1/69 ที่เข้า 21.21</div></div>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div class="overflow-x-auto">
@@ -154,19 +154,19 @@ tr.fund-row.on td{background:#dbeafe}
 <script>
 
 const y70=[
+  {name:'OP ไปพลางก่อน 25%', claim:5.931, deduct:0, cash:5.931, note:'8 ต.ค. ก้อนหลักปี 70'},
+  {name:'PP ไปพลางก่อน 25%', claim:1.245, deduct:0, cash:1.245, note:'8 ต.ค. คู่กับ OP'},
   {name:'IP ปรับ DRGs 69', claim:0.289, deduct:0, cash:0.288, note:'เงินปีเก่า มาปิดต้นปี 70'},
   {name:'ฟื้นฟู', claim:0.005, deduct:0, cash:0.005, note:'งวดปี 70'},
   {name:'แพทย์แผนไทย', claim:0, deduct:0.001, cash:0, note:'หักอุทธรณ์ 6908'},
-  {name:'OP เหมาจ่าย', claim:0, deduct:0, cash:0, note:'ยังไม่เข้า'},
-  {name:'IP งวดใหม่', claim:0, deduct:0, cash:0, note:'ยังไม่เข้า'},
-  {name:'PP BASIC', claim:0, deduct:0, cash:0, note:'ยังไม่เข้า'}
+  {name:'IP งวดใหม่', claim:0, deduct:0, cash:0, note:'ยังไม่เข้า'}
 ];
 document.getElementById('y70Body').innerHTML=y70.map(function(r){
   return '<tr class="border-t"><td class="p-2 font-semibold">'+r.name+'</td><td class="text-right p-2">'+(r.claim?r.claim.toFixed(3):'—')+'</td><td class="text-right p-2">'+(r.deduct?r.deduct.toFixed(3):'—')+'</td><td class="text-right p-2 font-semibold">'+(r.cash?r.cash.toFixed(3):'—')+'</td><td class="p-2 text-slate-500">'+r.note+'</td></tr>';
-}).join('')+'<tr class="border-t bg-sky-50 font-semibold"><td class="p-2">รวมถึงวันนี้</td><td class="text-right p-2">0.294</td><td class="text-right p-2">0.001</td><td class="text-right p-2">0.293</td><td class="p-2">5 วันแรก</td></tr>';
+}).join('')+'<tr class="border-t bg-sky-50 font-semibold"><td class="p-2">รวมถึง 9 ต.ค.</td><td class="text-right p-2">7.470</td><td class="text-right p-2">0.001</td><td class="text-right p-2">7.469</td><td class="p-2">9 วันแรก</td></tr>';
 new Chart(document.getElementById('c70'),{
   type:'bar',
-  data:{labels:['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.'],datasets:[{label:'เข้าบัญชี',data:[0.293,0,0,0,0,0],backgroundColor:'#0369A1'}]},
+  data:{labels:['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.'],datasets:[{label:'เข้าบัญชี',data:[7.469,0,0,0,0,0],backgroundColor:'#0369A1'}]},
   options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}
 });
 
