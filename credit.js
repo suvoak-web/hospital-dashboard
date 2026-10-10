@@ -10,6 +10,7 @@
     { href: 'planfin_dashboard.html', icon: '📈', label: 'Planfin / การเงิน' },
     { href: 'uc_transfer_dashboard.html', icon: '🏦', label: 'เงินโอน UC / สปสช.' },
     { href: 'sso_dashboard.html', icon: '🛡️', label: 'ประกันสังคมจากแม่ข่าย' },
+    { href: 'ppfs_dashboard.html', icon: '📑', label: 'PPFS NHSO' },
     { href: 'opwalkin.html', icon: '💰', label: 'พึงรับ-พึงจ่าย' },
     { href: 'compare.html', icon: '⏱', label: 'ระยะเวลารอคอย' },
     { href: 'bottleneck_dashboard.html', icon: '🔎', label: 'วิเคราะห์คอขวด', sub: true },
@@ -245,7 +246,7 @@
     var ovTitle = document.querySelector('#cOverview') && document.getElementById('cOverview').closest('.card');
     if (ovTitle) {
       var t3 = ovTitle.querySelector('.card-ttl');
-      if (t3) t3.lastChild.textContent = 'พึงรับ vs พึงจ่าย รายเดือน — ส่วนที่เคลียร์แล้ว';
+      if (t3) t3.lastChild.textContent = 'พึงรับ vs พึงจ่าย รายเดือน — ส่วนที่เคลียรแล้ว';
     }
     window.monthSettled = function (m) {
       var recDone = 0, payDone = 0;
