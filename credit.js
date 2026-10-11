@@ -53,7 +53,8 @@
       'body.ptk-has-shell .main-content,body.ptk-has-shell .main,body.ptk-has-shell .wrap{margin-left:0}',
       '.page-byline{margin:28px auto 12px;padding:16px 8px;text-align:center;color:#64748B;font-size:13px;font-family:Sarabun,Tahoma,sans-serif;border-top:1px solid rgba(148,163,184,.35)}',
       '@media(min-width:901px){body.ptk-has-shell{margin-left:260px}#ptk-burger{visibility:hidden}}',
-      '@media(max-width:900px){#ptk-sidebar{transform:translateX(-100%);box-shadow:8px 0 24px rgba(0,0,0,.12)}#ptk-sidebar.open{transform:translateX(0)}#ptk-dim.show{display:block}body.ptk-has-shell{margin-left:0 !important}#ptk-header .ptk-title{font-size:13.5px}#ptk-header .ptk-clock{display:none}}'
+      '@media(max-width:900px){#ptk-sidebar{transform:translateX(-100%);box-shadow:8px 0 24px rgba(0,0,0,.12)}#ptk-sidebar.open{transform:translateX(0)}#ptk-dim.show{display:block}body.ptk-has-shell{margin-left:0 !important}#ptk-header .ptk-title{font-size:13.5px}#ptk-header .ptk-clock{display:none}}',
+      '.kpi-row{grid-template-columns:1.25fr 1.25fr .9fr !important}','@media(max-width:900px){.kpi-row{grid-template-columns:1fr !important}}','.kpi.kpi-prog{min-height:150px}','.kpi-pct{font-weight:800;margin-left:6px}','.kpi.pay .kpi-pct,.kpi.pay .kpi-meta b{color:#dc2626}','.kpi.rec .kpi-pct,.kpi.rec .kpi-meta b{color:#16a34a}','.kpi-bar{height:12px;border-radius:99px;background:#eef2f7;overflow:hidden;display:flex;margin-top:8px}','.kpi-bar span{display:block;height:100%}','.kpi-legend{display:flex;gap:12px;margin-top:6px;font-size:11.5px;color:#64748B}','.kpi-legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px}','.kpi-meta{display:flex;justify-content:space-between;gap:10px;margin-top:10px}','.kpi-meta div{flex:1}','.kpi-meta b{display:block;font-size:15px;font-weight:800}','.kpi-meta b.dim{opacity:.45}','.kpi-meta small{font-size:11.5px;color:#64748B;font-weight:700}','.kpi-tag{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:800;margin-top:12px}',
     ].join('\n');
     document.head.appendChild(s);
   }
@@ -302,6 +303,52 @@
     try { renderOverviewChart(getAllMonthsForHosp(state.currentHosp)); } catch (e) {}
   }
 
+
+  function enhanceOpWalkinKpis() {
+    if (file !== 'opwalkin.html') return;
+    if (typeof renderKPIs !== 'function' || typeof getPaidFromCells !== 'function') return;
+    window.renderKPIs = function (months) {
+      var totalRec = months.reduce(function (s, m) { return s + (m.receivable || 0); }, 0);
+      var totalPay = months.reduce(function (s, m) { return s + (m.payable || 0); }, 0);
+      var net = totalRec - totalPay;
+      var paidPay = getPaidFromCells(state.currentHosp) + state.payments.filter(function (p) {
+        return p.hosp === state.currentHosp && p.type === 'payable';
+      }).reduce(function (s, p) { return s + p.amount; }, 0);
+      var recPaid = getRecFromCells(state.currentHosp);
+      var outstanding = Math.max(0, totalPay - paidPay);
+      var recOut = Math.max(0, totalRec - recPaid);
+      var payPct = totalPay ? Math.round(paidPay / totalPay * 1000) / 10 : 0;
+      var recPct = totalRec ? Math.round(recPaid / totalRec * 1000) / 10 : 0;
+      var last = months[months.length - 1] || {};
+      var lastLbl = last.month || '';
+      var netTag = net >= 0 ? '▲ รับมากกว่าจ่าย' : '▼ จ่ายมากกว่ากัน';
+      document.getElementById('kpiRow').innerHTML =
+        '<div class="kpi pay kpi-prog">'
+        + '<div class="kpi-lbl">พึงจ่ายรวม (ทุกเดือน) <span class="kpi-pct">จ่ายแล้ว ' + payPct + '%</span></div>'
+        + '<div class="kpi-val">' + fmt(totalPay) + '</div>'
+        + '<div class="kpi-sub">เดือนล่าสุด ' + lastLbl + ' · ' + fmt(last.payable || 0) + ' บาท</div>'
+        + '<div class="kpi-bar"><span style="width:' + Math.min(100, payPct) + '%;background:#dc2626"></span><span style="width:' + Math.max(0, 100 - payPct) + '%;background:#fecaca"></span></div>'
+        + '<div class="kpi-legend"><span><i style="background:#dc2626"></i>จ่ายแล้ว</span><span><i style="background:#fecaca"></i>คงค้าง</span></div>'
+        + '<div class="kpi-meta"><div><small>ตามจ่ายแล้ว</small><b>' + fmt(paidPay) + '</b></div><div><small>ค้างจ่าย</small><b class="dim">' + fmt(outstanding) + '</b></div></div>'
+        + '</div>'
+        + '<div class="kpi rec kpi-prog">'
+        + '<div class="kpi-lbl">พึงรับรวม (ทุกเดือน) <span class="kpi-pct">รับแล้ว ' + recPct + '%</span></div>'
+        + '<div class="kpi-val">' + fmt(totalRec) + '</div>'
+        + '<div class="kpi-sub">เดือนล่าสุด ' + lastLbl + ' · ' + fmt(last.receivable || 0) + ' บาท</div>'
+        + '<div class="kpi-bar"><span style="width:' + Math.min(100, recPct) + '%;background:#16a34a"></span><span style="width:' + Math.max(0, 100 - recPct) + '%;background:#dcfce7"></span></div>'
+        + '<div class="kpi-legend"><span><i style="background:#16a34a"></i>รับแล้ว</span><span><i style="background:#bbf7d0"></i>คงค้าง</span></div>'
+        + '<div class="kpi-meta"><div><small>รับชำระแล้ว</small><b>' + fmt(recPaid) + '</b></div><div><small>ค้างรับ</small><b class="dim">' + fmt(recOut) + '</b></div></div>'
+        + '</div>'
+        + '<div class="kpi net">'
+        + '<div class="kpi-lbl">ยอดสุทธิสะสม</div>'
+        + '<div class="kpi-val">' + fmt(net) + '</div>'
+        + '<div class="kpi-sub">รับ ' + fmt(totalRec) + ' − จ่าย ' + fmt(totalPay) + '</div>'
+        + '<div class="kpi-tag">' + netTag + '</div>'
+        + '</div>';
+    };
+    try { renderKPIs(getAllMonthsForHosp(state.currentHosp)); } catch (e) {}
+  }
+
   function boot() {
     css();
     document.body.classList.add('ptk-has-shell');
@@ -314,6 +361,7 @@
     footer();
     analytics();
     enhanceOpWalkinCharts();
+    enhanceOpWalkinKpis();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
