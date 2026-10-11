@@ -54,7 +54,37 @@
       '.page-byline{margin:28px auto 12px;padding:16px 8px;text-align:center;color:#64748B;font-size:13px;font-family:Sarabun,Tahoma,sans-serif;border-top:1px solid rgba(148,163,184,.35)}',
       '@media(min-width:901px){body.ptk-has-shell{margin-left:260px}#ptk-burger{visibility:hidden}}',
       '@media(max-width:900px){#ptk-sidebar{transform:translateX(-100%);box-shadow:8px 0 24px rgba(0,0,0,.12)}#ptk-sidebar.open{transform:translateX(0)}#ptk-dim.show{display:block}body.ptk-has-shell{margin-left:0 !important}#ptk-header .ptk-title{font-size:13.5px}#ptk-header .ptk-clock{display:none}}',
-      '.kpi-row{grid-template-columns:1.25fr 1.25fr .9fr !important}','@media(max-width:900px){.kpi-row{grid-template-columns:1fr !important}}','.kpi.kpi-prog{min-height:150px}','.kpi-pct{font-weight:800;margin-left:6px}','.kpi.pay .kpi-pct,.kpi.pay .kpi-meta b{color:#dc2626}','.kpi.rec .kpi-pct,.kpi.rec .kpi-meta b{color:#16a34a}','.kpi-bar{height:12px;border-radius:99px;background:#eef2f7;overflow:hidden;display:flex;margin-top:8px}','.kpi-bar span{display:block;height:100%}','.kpi-legend{display:flex;gap:12px;margin-top:6px;font-size:11.5px;color:#64748B}','.kpi-legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px}','.kpi-meta{display:flex;justify-content:space-between;gap:10px;margin-top:10px}','.kpi-meta div{flex:1}','.kpi-meta b{display:block;font-size:15px;font-weight:800}','.kpi-meta b.dim{opacity:.45}','.kpi-meta small{font-size:11.5px;color:#64748B;font-weight:700}','.kpi-tag{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:800;margin-top:12px}',
+      '.kpi-row{grid-template-columns:1.3fr 1.3fr .85fr !important;gap:14px !important}',
+      '@media(max-width:900px){.kpi-row{grid-template-columns:1fr !important}}',
+      '.kpi.kpi-prog,.kpi.net{border-radius:16px !important;border:1px solid transparent !important;border-left:5px solid !important;padding:15px 16px 13px !important;box-shadow:0 6px 18px rgba(15,23,42,.05) !important}',
+      '.kpi.pay.kpi-prog{background:linear-gradient(180deg,#fff 0%,#fff6f6 100%) !important;border-color:#fecaca !important;border-left-color:#dc2626 !important}',
+      '.kpi.rec.kpi-prog{background:linear-gradient(180deg,#fff 0%,#f4fdf7 100%) !important;border-color:#bbf7d0 !important;border-left-color:#16a34a !important}',
+      '.kpi.net{background:linear-gradient(180deg,#fff 0%,#f5f9ff 100%) !important;border-color:#dbeafe !important;border-left-color:#2563eb !important}',
+      '.kpi-head{display:flex;align-items:center;justify-content:space-between;gap:8px}',
+      '.kpi-prog .kpi-lbl{font-size:12.5px !important;font-weight:700 !important;color:#64748B !important;margin:0 !important}',
+      '.kpi-pill{font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px;white-space:nowrap}',
+      '.kpi.pay .kpi-pill{background:#fee2e2;color:#b91c1c}',
+      '.kpi.rec .kpi-pill{background:#dcfce7;color:#15803d}',
+      '.kpi-prog .kpi-val,.kpi.net .kpi-val{font-size:1.55rem !important;font-weight:800 !important;letter-spacing:-.3px;margin:7px 0 2px !important;line-height:1.1}',
+      '.kpi-prog .kpi-sub{font-size:12px !important;color:#94a3b8 !important;margin:0 0 2px !important}',
+      '.kpi-bar{height:11px;border-radius:99px;margin-top:12px;overflow:hidden}',
+      '.kpi.pay .kpi-bar{background:#fecaca}',
+      '.kpi.rec .kpi-bar{background:#dcfce7}',
+      '.kpi.pay .kpi-bar span{display:block;height:100%;background:linear-gradient(90deg,#f87171,#b91c1c);border-radius:99px}',
+      '.kpi.rec .kpi-bar span{display:block;height:100%;background:linear-gradient(90deg,#4ade80,#15803d);border-radius:99px}',
+      '.kpi-split{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}',
+      '.kpi-chip{border-radius:11px;padding:8px 10px}',
+      '.kpi.pay .kpi-chip.done{background:#fee2e2}',
+      '.kpi.pay .kpi-chip.left{background:#fff1f2}',
+      '.kpi.rec .kpi-chip.done{background:#dcfce7}',
+      '.kpi.rec .kpi-chip.left{background:#f0fdf4}',
+      '.kpi-chip span{display:block;font-size:11px;color:#64748B;font-weight:700}',
+      '.kpi-chip b{display:block;font-size:14.5px;font-weight:800;margin-top:1px}',
+      '.kpi.pay .kpi-chip.done b{color:#b91c1c}',
+      '.kpi.pay .kpi-chip.left b{color:#fca5a5}',
+      '.kpi.rec .kpi-chip.done b{color:#15803d}',
+      '.kpi.rec .kpi-chip.left b{color:#86efac}',
+      '.kpi-tag{display:inline-block;background:#dbeafe;color:#1d4ed8;border-radius:99px;padding:5px 12px;font-size:12.5px;font-weight:800;margin-top:14px}',
     ].join('\n');
     document.head.appendChild(s);
   }
@@ -322,23 +352,20 @@
       var last = months[months.length - 1] || {};
       var lastLbl = last.month || '';
       var netTag = net >= 0 ? '▲ รับมากกว่าจ่าย' : '▼ จ่ายมากกว่ากัน';
+      function card(kind, title, pill, total, lastAmt, settledLbl, settled, leftLbl, left) {
+        return '<div class="kpi ' + kind + ' kpi-prog">'
+          + '<div class="kpi-head"><div class="kpi-lbl">' + title + '</div><div class="kpi-pill">' + pill + '</div></div>'
+          + '<div class="kpi-val">' + fmt(total) + '</div>'
+          + '<div class="kpi-sub">เดือนล่าสุด ' + lastLbl + ' · ' + fmt(lastAmt) + '</div>'
+          + '<div class="kpi-bar"><span style="width:' + pill.replace('%','') + '%"></span></div>'
+          + '<div class="kpi-split">'
+          + '<div class="kpi-chip done"><span>' + settledLbl + '</span><b>' + fmt(settled) + '</b></div>'
+          + '<div class="kpi-chip left"><span>' + leftLbl + '</span><b>' + fmt(left) + '</b></div>'
+          + '</div></div>';
+      }
       document.getElementById('kpiRow').innerHTML =
-        '<div class="kpi pay kpi-prog">'
-        + '<div class="kpi-lbl">พึงจ่ายรวม (ทุกเดือน) <span class="kpi-pct">จ่ายแล้ว ' + payPct + '%</span></div>'
-        + '<div class="kpi-val">' + fmt(totalPay) + '</div>'
-        + '<div class="kpi-sub">เดือนล่าสุด ' + lastLbl + ' · ' + fmt(last.payable || 0) + ' บาท</div>'
-        + '<div class="kpi-bar"><span style="width:' + Math.min(100, payPct) + '%;background:#dc2626"></span><span style="width:' + Math.max(0, 100 - payPct) + '%;background:#fecaca"></span></div>'
-        + '<div class="kpi-legend"><span><i style="background:#dc2626"></i>จ่ายแล้ว</span><span><i style="background:#fecaca"></i>คงค้าง</span></div>'
-        + '<div class="kpi-meta"><div><small>ตามจ่ายแล้ว</small><b>' + fmt(paidPay) + '</b></div><div><small>ค้างจ่าย</small><b class="dim">' + fmt(outstanding) + '</b></div></div>'
-        + '</div>'
-        + '<div class="kpi rec kpi-prog">'
-        + '<div class="kpi-lbl">พึงรับรวม (ทุกเดือน) <span class="kpi-pct">รับแล้ว ' + recPct + '%</span></div>'
-        + '<div class="kpi-val">' + fmt(totalRec) + '</div>'
-        + '<div class="kpi-sub">เดือนล่าสุด ' + lastLbl + ' · ' + fmt(last.receivable || 0) + ' บาท</div>'
-        + '<div class="kpi-bar"><span style="width:' + Math.min(100, recPct) + '%;background:#16a34a"></span><span style="width:' + Math.max(0, 100 - recPct) + '%;background:#dcfce7"></span></div>'
-        + '<div class="kpi-legend"><span><i style="background:#16a34a"></i>รับแล้ว</span><span><i style="background:#bbf7d0"></i>คงค้าง</span></div>'
-        + '<div class="kpi-meta"><div><small>รับชำระแล้ว</small><b>' + fmt(recPaid) + '</b></div><div><small>ค้างรับ</small><b class="dim">' + fmt(recOut) + '</b></div></div>'
-        + '</div>'
+        card('pay', 'พึงจ่ายรวม', payPct + '%', totalPay, last.payable || 0, 'จ่ายแล้ว', paidPay, 'ค้างจ่าย', outstanding)
+        + card('rec', 'พึงรับรวม', recPct + '%', totalRec, last.receivable || 0, 'รับแล้ว', recPaid, 'ค้างรับ', recOut)
         + '<div class="kpi net">'
         + '<div class="kpi-lbl">ยอดสุทธิสะสม</div>'
         + '<div class="kpi-val">' + fmt(net) + '</div>'
