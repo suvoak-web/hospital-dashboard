@@ -134,6 +134,8 @@
   /* Shell compatibility with credit.js */
   body.ptk-has-shell header { top: 64px; }
   body.ptk-has-shell main { margin-left: 0; }
+  /* PPFS is a reading list: cap width (beats credit.js full-width rule) */
+  @media (min-width:901px){ html body.ptk-has-shell > main { max-width:1200px !important; margin-left:0 !important; margin-right:0 !important; } }
 </style>
 </head>
 <body>
