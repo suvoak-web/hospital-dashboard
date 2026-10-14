@@ -11,7 +11,7 @@
     { href: 'uc_transfer_dashboard.html', icon: '🏦', label: 'เงินโอน UC / สปสช.' },
     { href: 'sso_dashboard.html', icon: '🛡️', label: 'ประกันสังคมจากแม่ข่าย' },
     { href: 'ppfs_dashboard.html', icon: '📑', label: 'PPFS NHSO' },
-    { href: 'opwalkin.html', icon: '💰', label: 'พึงรับ-พึงจ่าย' },
+    { href: 'opwalkin.html', icon: '💰', label: 'OP out CUP' },
     { href: 'ar_aging.html', icon: '🧾', label: 'อายุลูกหนี้' },
     { group: '📊 KPI และแผนงาน' },
     { href: 'kpi_dashboard.html', icon: '📊', label: 'KPI Dashboard' },
