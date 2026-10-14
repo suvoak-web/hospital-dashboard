@@ -164,11 +164,11 @@
   <div class="brand">
     <div class="kicker">CUP พระทองคำ · นครราชสีมา · ปีงบประมาณ 2570</div>
     <h1>ติดตามแผนงานโครงการ</h1>
-    <p class="sub">59 โครงการจากส่วนที่ 10 สรุปแผน 2570 · ติ๊กแล้วส่งขึ้นเว็บ คนอื่นเปิดหน้านี้จะเห็นสถานะเดียวกัน</p>
+    <p class="sub">59 โครงการ · ติ๊กใน Google Sheet แล้วทุกเครื่องที่เปิดหน้านี้จะเห็นตาม</p>
   </div>
-  <div class="sync" id="syncBox" style="cursor:pointer" title="คลิกเพื่อตั้งค่าการส่งสถานะ">
-    <b id="syncTitle">กำลังเชื่อมสถานะร่วม</b>
-    <span id="syncText">ติ๊กแล้วจะส่งให้ทุกคนที่เปิดหน้านี้เห็น</span>
+  <div class="sync" id="syncBox" style="cursor:pointer">
+    <b id="syncTitle">อัปเดตจาก Google Sheet</b>
+    <span id="syncText">ติ๊กในชีต แล้วทุกเครื่องเห็นสถานะเดียวกัน</span>
   </div>
 </header>
 <main>
@@ -180,6 +180,8 @@
     <select id="owner"></select>
     <select id="stage"></select>
     <select id="quarter"></select>
+    <a href="https://docs.google.com/spreadsheets/d/1EJAUtfprxsVuQoIpbA9uqHaHL0L3jjvAPVvCqaoiHDM/edit" target="_blank" style="border:1px solid #1a4d4a;background:#1a4d4a;color:#fff;border-radius:10px;padding:8px 12px;text-decoration:none">เปิดชีตเพื่อติ๊ก</a>
+    <a href="https://drive.google.com/drive/folders/1CzOgfFpPVhmtaQ5prv9Jq5cyHZWyWFpX" target="_blank" style="border:1px solid #e4dccf;background:#fff;border-radius:10px;padding:8px 12px;text-decoration:none">โฟลเดอร์ Drive</a>
     <button id="sheetBtn">ตั้งค่า Google Sheet</button>
     <button id="exportBtn">ส่งออก CSV</button>
     <button id="importBtn">นำเข้า CSV</button>
@@ -216,6 +218,8 @@ const STEPS = [
 const QLABEL = ["ต.ค.–ธ.ค. 69", "ม.ค.–มี.ค. 70", "เม.ย.–มิ.ย. 70", "ก.ค.–ก.ย. 70"];
 const KEY = "cup70-status-v1";
 const SHEET_KEY = "cup70-sheet-url";
+const DEFAULT_SHEET = "https://docs.google.com/spreadsheets/d/1EJAUtfprxsVuQoIpbA9uqHaHL0L3jjvAPVvCqaoiHDM/export?format=csv";
+const SHEET_EDIT = "https://docs.google.com/spreadsheets/d/1EJAUtfprxsVuQoIpbA9uqHaHL0L3jjvAPVvCqaoiHDM/edit";
 const seed = JSON.parse(document.getElementById("seed").textContent);
 let status = JSON.parse(localStorage.getItem(KEY) || "{}");
 let sheetMode = false;
@@ -500,11 +504,14 @@ fillFilters();
 render();
 pullStatus().catch(e => setSyncState(getToken() ? "err" : "need", e.message));
 setInterval(() => { if (!dirty && !pushing) pullStatus().catch(() => {}); }, 40000);
-const savedUrl = localStorage.getItem(SHEET_KEY);
-if (savedUrl) {
-  document.getElementById("sheetUrl").value = savedUrl;
-  loadSheet(savedUrl).catch(err => setSync(false, "ผูกชีตไว้แต่โหลดไม่ได้: " + err.message));
-}
+const savedUrl = localStorage.getItem(SHEET_KEY) || DEFAULT_SHEET;
+document.getElementById("sheetUrl").value = savedUrl;
+loadSheet(savedUrl).catch(err => setSync(false, "แชร์ชีตเป็น คนที่มีลิงก์ดูได้ ก่อน · " + err.message));
+setInterval(() => {
+  const url = document.getElementById("sheetUrl").value.trim();
+  if (url) loadSheet(url).catch(() => {});
+}, 30000);
+document.getElementById("syncBox").onclick = () => window.open(SHEET_EDIT, "_blank");
 </script>
 <script src="credit.js"></script>
 </body>
