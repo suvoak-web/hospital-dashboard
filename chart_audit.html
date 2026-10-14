@@ -5,73 +5,228 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>สรุปผล Audit ชาร์ต</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap');
+:root{
+  --navy:#1f3864; --navy-2:#2f4f86; --navy-soft:#e8edf6;
+  --bar:#4a6aa5; --bar-2:#8fa6cf;
+  --good:#15803d; --good-soft:#e7f6ec;
+  --warn:#b45309; --warn-soft:#fdf3e3;
+  --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb;
+  --bg:#f4f6fa; --card:#ffffff;
+  --r:14px;
+}
 *{box-sizing:border-box}
-body{margin:0;font-family:'Sarabun',sans-serif;background:#f4f6fa;color:#1f2937}
-.wrap{max-width:1400px;margin:0 auto;padding:20px 24px 32px}
-h1{text-align:center;font-size:26px;margin:8px 0 4px}
-.sub{text-align:center;color:#6b7280;margin:0 0 18px}
-.ca-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
-.kpi{background:#1f3864;color:#fff;border-radius:10px;padding:16px;text-align:center}
-.kpi .l{font-size:15px;opacity:.9}.kpi .v{font-size:32px;font-weight:700;color:#ffe066;margin:6px 0}.kpi .n{font-size:12.5px;opacity:.85}
+body{margin:0;font-family:'IBM Plex Sans Thai','Sarabun',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1360px;margin:0 auto;padding:28px 24px 36px}
+
+/* ---------- Header ---------- */
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.06em;color:var(--navy-2);text-transform:uppercase;margin:0 0 4px}
+h1{font-size:28px;line-height:1.25;margin:0;color:var(--navy)}
+.scope{color:var(--muted);margin:6px 0 0;font-size:15px}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--navy-soft);color:var(--navy);font-size:13px;font-weight:500;padding:6px 12px;border-radius:999px;white-space:nowrap}
+
+/* ---------- Stepper ---------- */
+.flow{display:flex;gap:0;background:var(--card);border-radius:var(--r);padding:14px 18px;margin-bottom:20px;box-shadow:0 1px 2px rgba(16,24,40,.05)}
+.st{flex:1;display:flex;align-items:center;gap:10px;position:relative;min-width:0}
+.st:not(:last-child)::after{content:"";flex:1;height:2px;background:var(--line);margin:0 12px;min-width:12px}
+.dot{width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;font-weight:600;display:grid;place-items:center;flex:none}
+.st b{display:block;font-size:14px;font-weight:600;white-space:nowrap}
+.st small{display:block;font-size:12px;color:var(--muted);white-space:nowrap}
+
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.kpi{background:var(--card);border-radius:var(--r);padding:18px 20px;border-top:4px solid var(--navy);box-shadow:0 1px 2px rgba(16,24,40,.05)}
+.kpi .l{font-size:14px;color:var(--muted);font-weight:500}
+.kpi .v{font-size:34px;font-weight:700;color:var(--navy);margin:4px 0 2px;font-variant-numeric:tabular-nums;line-height:1.2}
+.kpi .n{font-size:13px;color:var(--muted)}
+.kpi.good{border-top-color:var(--good);background:linear-gradient(180deg,var(--good-soft),#fff 70%)}
+.kpi.good .v{color:var(--good)}
+
+/* ---------- Cards ---------- */
+.card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:0 1px 2px rgba(16,24,40,.05);min-width:0}
+.card h3{margin:0;font-size:17px;font-weight:700;color:var(--navy)}
+.card .hint{margin:2px 0 14px;font-size:13px;color:var(--muted)}
+.sec{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:700;color:var(--navy);margin:32px 0 14px;padding:10px 16px;
+  background:linear-gradient(90deg,#dfe6f3 0%,rgba(223,230,243,0) 85%);border-left:5px solid var(--navy);border-radius:8px}
+.sec .ic{font-size:18px}
+
+/* ---------- Impact ---------- */
+.impact{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+.ba{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:6px 0 16px}
+.ba .num{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.ba .cap{font-size:13px;color:var(--muted)}
+.ba .to{font-size:22px;color:var(--muted)}
+.chip{display:inline-block;padding:6px 12px;border-radius:999px;font-weight:600;font-size:15px;font-variant-numeric:tabular-nums}
+.chip.up{background:var(--good-soft);color:var(--good)}
+.chip.down{background:#fdecec;color:#b91c1c}
+.cmp{display:grid;grid-template-columns:56px 1fr 72px;align-items:center;gap:10px;font-size:13px;margin:8px 0}
+.track{height:12px;background:#f1f3f7;border-radius:6px;overflow:hidden}
+.fill{height:100%;border-radius:6px}
+.cmp .val{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.foot-note{font-size:12.5px;color:var(--muted);margin-top:12px}
+.tags{display:grid;gap:12px}
+.tag{display:flex;gap:14px;align-items:center;padding:14px 16px;border-radius:12px}
+.tag .big{font-size:28px;font-weight:700;min-width:44px;text-align:center}
+.tag b{display:block;font-size:14px}
+.tag small{font-size:12.5px;opacity:.85}
+.tag.warn{background:var(--warn-soft);color:var(--warn)}
+.tag.info{background:var(--navy-soft);color:var(--navy)}
+
+/* ---------- Charts ---------- */
 .charts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.card{min-width:0;background:#fff;border-radius:10px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.card h3{margin:0 0 8px;text-align:center;font-size:16px}
-.cv{position:relative;height:380px}
-h2{text-align:center;font-size:19px;margin:28px 0 12px}
-.flow{display:flex;align-items:center;gap:8px}
-.step{flex:1;color:#fff;border-radius:6px;padding:16px 8px;text-align:center;font-weight:600;line-height:1.6}
-.step small{display:block;font-weight:500}
-.arr{font-size:24px;color:#111}
-.foot{text-align:right;color:#9ca3af;font-size:12px;margin-top:16px}
-.err{color:#b91c1c;text-align:center}
-@media(max-width:900px){.ca-kpis{grid-template-columns:1fr 1fr}.wrap{padding:12px}.charts{grid-template-columns:1fr}.flow{flex-direction:column}.arr{transform:rotate(90deg)}.step{width:100%}h1{font-size:20px}}
+.cv{position:relative}
+.plist{list-style:none;margin:0;padding:0}
+.plist li{display:grid;grid-template-columns:22px 58px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.plist li:last-child{border-bottom:0}
+.plist .rk{color:var(--muted);font-size:12px;text-align:right}
+.plist code{font-family:'IBM Plex Mono',monospace;font-size:12.5px;background:var(--navy-soft);color:var(--navy);padding:3px 6px;border-radius:6px;text-align:center}
+.plist .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.plist .ct{font-weight:600;font-variant-numeric:tabular-nums;color:var(--navy);background:#f1f3f7;border-radius:999px;padding:2px 10px;font-size:13px}
+.plist li.top .ct{background:var(--navy);color:#fff}
+
+.foot{text-align:right;color:#9ca3af;font-size:12px;margin-top:20px}
+.err{color:#b91c1c;background:#fdecec;padding:12px 16px;border-radius:10px;grid-column:1/-1}
+
+@media(max-width:1000px){
+  .charts{grid-template-columns:1fr 1fr}
+  .impact{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .sec{font-size:18px}
+  .wrap{padding:16px}
+  h1{font-size:22px}
+  .kpis{grid-template-columns:1fr 1fr;gap:12px}
+  .kpi .v{font-size:26px}
+  .charts{grid-template-columns:1fr}
+  .flow{flex-direction:column;gap:12px}
+  .st:not(:last-child)::after{display:none}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
-<h1 id="title">สรุปผล Audit ชาร์ต (OAiK_chart)</h1>
-<p class="sub">ข้อมูลรวม ไม่มีข้อมูลระบุตัวตน</p>
-<div class="ca-kpis" id="kpis"></div>
-<div class="charts">
-<div class="card"><h3>PDx ตามหมวด ICD-10 (หลัง audit)</h3><div class="cv"><canvas id="pdx"></canvas></div></div>
-<div class="card"><h3 id="sdxT">SDx ตามหมวด</h3><div class="cv"><canvas id="sdx"></canvas></div></div>
-<div class="card"><h3 id="procT">หัตถการ ICD-9</h3><div class="cv"><canvas id="proc"></canvas></div></div>
+
+  <header class="head">
+    <div>
+      <p class="eyebrow">Chart Audit Report</p>
+      <h1 id="title">สรุปผล Audit ชาร์ต (OAiK_chart)</h1>
+      <p class="scope" id="scope">ข้อมูลรวม ไม่มีข้อมูลระบุตัวตน</p>
+    </div>
+    <span class="badge">🔒 ข้อมูลรวม · ไม่มี AN/HN/ชื่อ/วันเกิด (PDPA)</span>
+  </header>
+
+  <nav class="flow" id="flow" aria-label="ขั้นตอนการทำงาน"></nav>
+
+  <div class="sec" style="margin-top:4px"><span class="ic">📊</span>ภาพรวม</div>
+  <section class="kpis" id="kpis"></section>
+
+  <div class="sec"><span class="ic">📈</span>ผลกระทบจากการ audit</div>
+  <section class="impact">
+    <div class="card" id="impactCard">
+      <h3>AdjRW ก่อน → หลัง audit</h3>
+      <p class="hint" id="impactHint"></p>
+      <div id="impactBody"></div>
+    </div>
+    <div class="card">
+      <h3>ชาร์ตที่ต้องดำเนินการเพิ่ม</h3>
+      <p class="hint" id="tagsHint"></p>
+      <div class="tags" id="tags"></div>
+    </div>
+  </section>
+
+  <div class="sec"><span class="ic">🩺</span>การกระจายรหัส</div>
+  <section class="charts">
+    <div class="card"><h3>PDx ตามหมวด ICD-10</h3><p class="hint" id="pdxH">หลัง audit</p><div class="cv" id="pdxBox"><canvas id="pdx"></canvas></div></div>
+    <div class="card"><h3>SDx ตามหมวด ICD-10</h3><p class="hint" id="sdxH"></p><div class="cv" id="sdxBox"><canvas id="sdx"></canvas></div></div>
+    <div class="card"><h3>หัตถการ ICD-9-CM</h3><p class="hint" id="procH"></p><ul class="plist" id="proc"></ul></div>
+  </section>
+
+  <div class="foot">ข้อมูลรวมเท่านั้น ตาม พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล (PDPA)</div>
 </div>
-<h2>ขั้นตอนการทำงาน</h2>
-<div class="flow" id="flow"></div>
-<div class="foot">ไม่มี AN/HN/ชื่อ/วันเกิด – ข้อมูลรวมเท่านั้น (PDPA)</div>
-</div>
+
 <script>
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
-function f4(x){return Number(x).toFixed(4)}
-var PIE=['#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b','#e377c2','#7f7f7f','#bcbd22','#17becf'];
-var STEP=['#2e75b6','#548235','#bf9000','#c55a11','#7030a0'];
+function f4(x){return Number(x||0).toFixed(4)}
+function $(id){return document.getElementById(id)}
+
+/* ชื่อหมวด ICD-10 ภาษาอังกฤษ: "X Respiratory" -> "X · Respiratory" */
+function chap(s){var m=String(s||'').match(/^([IVXL]+)\s+(.*)$/);return m?m[1]+' · '+m[2]:String(s)}
+
+/* plugin วาดตัวเลขที่ปลายแท่ง */
+var valueLabels={id:'valueLabels',afterDatasetsDraw:function(ch){
+  var ctx=ch.ctx;ctx.save();ctx.font="600 12px 'IBM Plex Sans Thai',sans-serif";ctx.fillStyle='#374151';ctx.textBaseline='middle';
+  ch.getDatasetMeta(0).data.forEach(function(b,i){ctx.fillText(ch.data.datasets[0].data[i],b.x+6,b.y)});ctx.restore()}};
+
+function hbar(id,boxId,labels,vals,tips){
+  $(boxId).style.height=Math.max(160,labels.length*30+20)+'px';
+  var max=Math.max.apply(null,vals.concat([1]));
+  var colors=vals.map(function(v){return v===max?'#1f3864':'#8fa6cf'});
+  new Chart($(id),{type:'bar',plugins:[valueLabels],
+    data:{labels:labels,datasets:[{data:vals,backgroundColor:colors,borderRadius:5,barThickness:16}]},
+    options:{indexAxis:'y',maintainAspectRatio:false,layout:{padding:{right:28}},
+      plugins:{legend:{display:false},tooltip:{callbacks:{title:function(c){return tips[c[0].dataIndex].t},label:function(c){return tips[c.dataIndex].l}}}},
+      scales:{x:{display:false,beginAtZero:true,suggestedMax:max*1.1},
+              y:{grid:{display:false},border:{display:false},ticks:{font:{size:12},color:'#374151'}}}}});
+}
+
 fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()}).then(function(d){
-  document.getElementById('title').textContent='สรุปผล Audit ชาร์ต (OAiK_chart) – '+(d.scope_label||'');
-  var ba=d.before_after||{};var diff=Number(ba.diff||0);
-  var k=[['ชาร์ตที่ audit ครบ',String(d.total_charts),''],
-    ['Sum AdjRW หลัง audit',f4(d.adjrw_after_sum),'เฉลี่ย '+f4(d.adjrw_after_mean)+' ต่อชาร์ต'],
-    ['ก่อน-หลัง (มีทั้งสองแถว)',(diff>=0?'+':'')+f4(diff),(ba.charts||0)+' ชาร์ต: '+f4(ba.sum_before)+' -> '+f4(ba.sum_after)],
-    ['Audit note / ปรับรหัส',d.audit_note_charts+' / '+d.charts_with_code_adjustment,'DISCHT conflict / code adjust ให้ TGrp ผ่าน']];
-  var K=document.getElementById('kpis');
-  k.forEach(function(a){var c=el('div','kpi');c.appendChild(el('div','l',a[0]));c.appendChild(el('div','v',a[1]));c.appendChild(el('div','n',a[2]));K.appendChild(c)});
-  Chart.defaults.font.family="'Sarabun',sans-serif";
-  var p=d.pdx_by_chapter||[];
-  new Chart(document.getElementById('pdx'),{type:'pie',data:{labels:p.map(function(x){return x.chapter}),datasets:[{data:p.map(function(x){return x.count}),backgroundColor:PIE,borderColor:'#fff'}]},
-    options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{callbacks:{label:function(c){var x=p[c.dataIndex];return x.chapter+': '+x.count+' ('+x.pct+'%)'}}}}}});
-  function hbar(id,labels,vals,color,tips){new Chart(document.getElementById(id),{type:'bar',data:{labels:labels,datasets:[{data:vals,backgroundColor:color}]},
-    options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return tips[c.dataIndex]}}}},scales:{x:{beginAtZero:true,ticks:{precision:0}},y:{ticks:{font:{size:11}}}}}})}
-  var s=d.sdx_by_chapter||[];
-  document.getElementById('sdxT').textContent='SDx ตามหมวด (รวม '+d.sdx_total+' รหัส)';
-  hbar('sdx',s.map(function(x){return x.chapter}),s.map(function(x){return x.count}),'#5b9bd5',s.map(function(x){return x.count+' ('+x.pct+'%)'}));
-  var t=d.top_icd9||[];
-  document.getElementById('procT').textContent='หัตถการ ICD-9 (รวม '+d.proc_total+')';
-  hbar('proc',t.map(function(x){return x.code+' '+x.name}),t.map(function(x){return x.count}),'#ed7d31',t.map(function(x){return x.count+' ครั้ง'}));
-  var F=document.getElementById('flow');
-  (d.flow||[]).forEach(function(s,i){if(i)F.appendChild(el('div','arr','➜'));var b=el('div','step',s.title);b.style.background=STEP[i%STEP.length];b.appendChild(el('small','',s.sub));F.appendChild(b)});
-}).catch(function(e){document.getElementById('kpis').appendChild(el('p','err','โหลดข้อมูลไม่สำเร็จ: '+e.message))});
+  Chart.defaults.font.family="'IBM Plex Sans Thai','Sarabun',sans-serif";
+  var total=Number(d.total_charts||0);
+  if(d.scope_label)$('scope').textContent=d.scope_label+(d.updated?' · อัปเดต '+d.updated:'');
+
+  /* ---- Stepper ---- */
+  var F=$('flow');
+  (d.flow||[]).forEach(function(s,i){var w=el('div','st');w.appendChild(el('span','dot',String(i+1)));
+    var t=el('div');t.appendChild(el('b','',s.title));t.appendChild(el('small','',s.sub));w.appendChild(t);F.appendChild(w)});
+
+  /* ---- KPI ---- */
+  var ba=d.before_after||{};var diff=Number(ba.diff||0);var before=Number(ba.sum_before||0),after=Number(ba.sum_after||0);
+  var pct=before?diff/before*100:0;
+  var k=[['ชาร์ตที่ audit ครบ',String(total),'ชาร์ต',''],
+    ['Sum AdjRW หลัง audit',f4(d.adjrw_after_sum),'รวมทุกชาร์ต',''],
+    ['AdjRW เฉลี่ย',f4(d.adjrw_after_mean),'ต่อชาร์ต',''],
+    ['AdjRW เปลี่ยนแปลง',(diff>=0?'▲ +':'▼ ')+f4(diff),(ba.charts||0)+' ชาร์ตที่มีข้อมูลก่อน–หลัง',diff>=0?'good':'']];
+  k.forEach(function(a){var c=el('div','kpi '+a[3]);c.appendChild(el('div','l',a[0]));c.appendChild(el('div','v',a[1]));c.appendChild(el('div','n',a[2]));$('kpis').appendChild(c)});
+
+  /* ---- Impact ---- */
+  $('impactHint').textContent='เทียบเฉพาะ '+(ba.charts||0)+' ชาร์ตที่มีทั้งค่าก่อนและหลัง audit';
+  var B=$('impactBody');var row=el('div','ba');
+  function blk(cap,v,col){var w=el('div');w.appendChild(el('div','cap',cap));var n=el('div','num',f4(v));if(col)n.style.color=col;w.appendChild(n);return w}
+  row.appendChild(blk('ก่อน audit',before,'#6b7280'));row.appendChild(el('div','to','→'));row.appendChild(blk('หลัง audit',after,'#1f3864'));
+  row.appendChild(el('span','chip '+(diff>=0?'up':'down'),(diff>=0?'+':'')+f4(diff)+'  ('+(diff>=0?'+':'')+pct.toFixed(2)+'%)'));
+  B.appendChild(row);
+  var mx=Math.max(before,after)||1;
+  [['ก่อน',before,'#c3cee3'],['หลัง',after,'#1f3864']].forEach(function(a){var r=el('div','cmp');r.appendChild(el('span','',a[0]));
+    var tr=el('div','track');var f=el('div','fill');f.style.width=(a[1]/mx*100)+'%';f.style.background=a[2];tr.appendChild(f);r.appendChild(tr);
+    r.appendChild(el('span','val',f4(a[1])));B.appendChild(r)});
+  B.appendChild(el('div','foot-note','คิดเป็น '+(ba.charts||0)+' จาก '+total+' ชาร์ต ('+(total?((ba.charts||0)/total*100).toFixed(0):0)+'%) ที่ AdjRW เปลี่ยนหลัง audit'));
+
+  /* ---- Tags ---- */
+  $('tagsHint').textContent='จากทั้งหมด '+total+' ชาร์ต';
+  function tag(cls,n,t,s){var w=el('div','tag '+cls);w.appendChild(el('div','big',String(n||0)));var x=el('div');x.appendChild(el('b','',t));x.appendChild(el('small','',s));w.appendChild(x);$('tags').appendChild(w)}
+  tag('warn',d.audit_note_charts,'Audit note','DISCHT conflict — ต้องตรวจสอบสถานะจำหน่าย');
+  tag('info',d.charts_with_code_adjustment,'ปรับรหัส','Code adjust เพื่อให้ TGrp ผ่าน');
+
+  /* ---- PDx / SDx ---- */
+  var p=(d.pdx_by_chapter||[]).slice().sort(function(a,b){return b.count-a.count});
+  $('pdxH').textContent='หลัง audit · '+total+' ชาร์ต';
+  hbar('pdx','pdxBox',p.map(function(x){return chap(x.chapter)}),p.map(function(x){return x.count}),
+    p.map(function(x){return {t:chap(x.chapter),l:x.count+' ชาร์ต ('+x.pct+'%)'}}));
+  var s=(d.sdx_by_chapter||[]).slice().sort(function(a,b){return b.count-a.count});
+  $('sdxH').textContent='รวม '+(d.sdx_total||0)+' รหัส';
+  hbar('sdx','sdxBox',s.map(function(x){return chap(x.chapter)}),s.map(function(x){return x.count}),
+    s.map(function(x){return {t:chap(x.chapter),l:x.count+' รหัส ('+x.pct+'%)'}}));
+
+  /* ---- Procedures list ---- */
+  var t=(d.top_icd9||[]).slice().sort(function(a,b){return b.count-a.count});
+  $('procH').textContent='รวม '+(d.proc_total||0)+' หัตถการ';
+  var mxp=t.length?t[0].count:0;
+  t.forEach(function(x,i){var li=el('li',x.count===mxp?'top':'');li.appendChild(el('span','rk',String(i+1)));li.appendChild(el('code','',x.code));
+    var nm=el('span','nm',x.name);nm.title=x.name;li.appendChild(nm);li.appendChild(el('span','ct','×'+x.count));$('proc').appendChild(li)});
+}).catch(function(e){$('kpis').appendChild(el('p','err','โหลดข้อมูลไม่สำเร็จ: '+e.message))});
 </script>
 <script src="credit.js"></script>
 </body>
