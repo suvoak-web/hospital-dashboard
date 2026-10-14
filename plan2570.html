@@ -168,7 +168,7 @@
   </div>
   <div class="sync" id="syncBox" style="cursor:pointer">
     <b id="syncTitle">อัปเดตจาก Google Sheet</b>
-    <span id="syncText">ติ๊กในชีต แล้วทุกเครื่องเห็นสถานะเดียวกัน</span>
+    <span id="syncText">ติ๊กในชีต หน้าเว็บโชว์ว่า login ไหนติ๊กขั้นไหน</span>
   </div>
 </header>
 <main>
@@ -180,7 +180,7 @@
     <select id="owner"></select>
     <select id="stage"></select>
     <select id="quarter"></select>
-    <a href="https://docs.google.com/spreadsheets/d/1EJAUtfprxsVuQoIpbA9uqHaHL0L3jjvAPVvCqaoiHDM/edit" target="_blank" style="border:1px solid #1a4d4a;background:#1a4d4a;color:#fff;border-radius:10px;padding:8px 12px;text-decoration:none">เปิดชีตเพื่อติ๊ก</a>
+    <a href="https://docs.google.com/spreadsheets/d/1cAEh_E-bv-5dgiJyE-Fo1tmGEnM319g3zepllsJCB2c/edit" target="_blank" style="border:1px solid #1a4d4a;background:#1a4d4a;color:#fff;border-radius:10px;padding:8px 12px;text-decoration:none">เปิดชีตเพื่อติ๊ก</a>
     <a href="https://drive.google.com/drive/folders/1CzOgfFpPVhmtaQ5prv9Jq5cyHZWyWFpX" target="_blank" style="border:1px solid #e4dccf;background:#fff;border-radius:10px;padding:8px 12px;text-decoration:none">โฟลเดอร์ Drive</a>
     <button id="sheetBtn">ตั้งค่า Google Sheet</button>
     <button id="exportBtn">ส่งออก CSV</button>
@@ -218,8 +218,8 @@ const STEPS = [
 const QLABEL = ["ต.ค.–ธ.ค. 69", "ม.ค.–มี.ค. 70", "เม.ย.–มิ.ย. 70", "ก.ค.–ก.ย. 70"];
 const KEY = "cup70-status-v1";
 const SHEET_KEY = "cup70-sheet-url";
-const DEFAULT_SHEET = "https://docs.google.com/spreadsheets/d/1EJAUtfprxsVuQoIpbA9uqHaHL0L3jjvAPVvCqaoiHDM/export?format=csv";
-const SHEET_EDIT = "https://docs.google.com/spreadsheets/d/1EJAUtfprxsVuQoIpbA9uqHaHL0L3jjvAPVvCqaoiHDM/edit";
+const DEFAULT_SHEET = "https://docs.google.com/spreadsheets/d/1cAEh_E-bv-5dgiJyE-Fo1tmGEnM319g3zepllsJCB2c/export?format=csv";
+const SHEET_EDIT = "https://docs.google.com/spreadsheets/d/1cAEh_E-bv-5dgiJyE-Fo1tmGEnM319g3zepllsJCB2c/edit";
 const seed = JSON.parse(document.getElementById("seed").textContent);
 let status = JSON.parse(localStorage.getItem(KEY) || "{}");
 let sheetMode = false;
@@ -297,9 +297,13 @@ function render() {
       const skipped = s.skipMoney && ["borrow", "claim", "paid"].includes(step.key);
       const on = skipped || !!s[step.key];
       const date = step.date ? `<input type="date" data-date="${p.id}" value="${esc(s.heldDate)}" ${sheetMode ? "disabled" : ""}>` : "";
+      const who = s[step.key + "By"] || "";
+      const when = s[step.key + "At"] || "";
+      const whoLine = who || when ? `<div style="font-size:11px;color:#6d655b;margin-top:4px">${esc(who)}${when ? " · " + esc(String(when).slice(0,16)) : ""}</div>` : "";
       return `<div class="step ${on ? "done" : ""} ${skipped ? "skip" : ""}">
         <label><input type="checkbox" data-id="${p.id}" data-key="${step.key}" ${on ? "checked" : ""} ${sheetMode || skipped ? "disabled" : ""}>${step.label}</label>
         ${date}
+        ${whoLine}
       </div>`;
     }).join("");
     return `<article class="card">
@@ -385,13 +389,20 @@ function truthy(v) { return /^(true|yes|y|1|x|ใช่|ติ๊ก|done)$/i.te
 function applyRows(rows) {
   rows.forEach(r => {
     if (!r.id) return;
+    const prev = status[r.id] || {};
     status[r.id] = {
-      propose: truthy(r.propose), borrow: truthy(r.borrow), held: truthy(r.held),
-      heldDate: r.heldDate || "", claim: truthy(r.claim), paid: truthy(r.paid),
-      summary: truthy(r.summary), note: r.note || "", skipMoney: truthy(r.skipMoney)
+      propose: truthy(r.propose), proposeBy: r.proposeBy || "", proposeAt: r.proposeAt || "",
+      borrow: truthy(r.borrow), borrowBy: r.borrowBy || "", borrowAt: r.borrowAt || "",
+      held: truthy(r.held), heldDate: r.heldDate || "", heldBy: r.heldBy || "", heldAt: r.heldAt || "",
+      claim: truthy(r.claim), claimBy: r.claimBy || "", claimAt: r.claimAt || "",
+      paid: truthy(r.paid), paidBy: r.paidBy || "", paidAt: r.paidAt || "",
+      summary: truthy(r.summary), summaryBy: r.summaryBy || "", summaryAt: r.summaryAt || "",
+      note: r.note || "", updatedBy: r.updatedBy || "", updatedAt: r.updatedAt || "",
+      skipMoney: truthy(r.skipMoney)
     };
   });
-  save();
+  localStorage.setItem(KEY, JSON.stringify(status));
+  render();
 }
 document.getElementById("exportBtn").onclick = toCsv;
 document.getElementById("importBtn").onclick = () => document.getElementById("file").click();
