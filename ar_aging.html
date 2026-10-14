@@ -279,7 +279,7 @@ const M=v=>(v/1e6).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFracti
 const pct=(a,b)=>b?(100*a/b):0;
 const P=v=>v.toLocaleString('th-TH',{maximumFractionDigits:1})+'%';
 const $=s=>document.querySelector(s);
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&','<':'<','>':'>','"':'"'}[c]));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&'+'amp;','<':'&'+'lt;','>':'&'+'gt;','"':'&'+'quot;'}[c]));
 const shortName=n=>n.replace('โรงพยาบาล','รพ.');
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 
