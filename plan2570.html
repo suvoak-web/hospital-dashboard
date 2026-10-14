@@ -164,11 +164,11 @@
   <div class="brand">
     <div class="kicker">CUP พระทองคำ · นครราชสีมา · ปีงบประมาณ 2570</div>
     <h1>ติดตามแผนงานโครงการ</h1>
-    <p class="sub">59 โครงการ · ติ๊กใน Google Sheet แล้วทุกเครื่องที่เปิดหน้านี้จะเห็นตาม</p>
+    <p class="sub">59 โครงการจากส่วนที่ 10 สรุปแผน 2570 · ติ๊กขั้นตอนได้ · เปิดหลายเครื่องได้ถ้ายึด Google Sheet เป็นตัวเก็บสถานะ</p>
   </div>
-  <div class="sync" id="syncBox" style="cursor:pointer">
-    <b id="syncTitle">อัปเดตจาก Google Sheet</b>
-    <span id="syncText">ติ๊กในชีต หน้าเว็บโชว์ว่า login ไหนติ๊กขั้นไหน</span>
+  <div class="sync" id="syncBox">
+    <b id="syncTitle">เก็บสถานะในเครื่องนี้</b>
+    <span id="syncText">ติ๊กแล้วอยู่แค่เบราว์เซอร์นี้ จนกว่าจะผูกชีต</span>
   </div>
 </header>
 <main>
@@ -180,8 +180,6 @@
     <select id="owner"></select>
     <select id="stage"></select>
     <select id="quarter"></select>
-    <a href="https://docs.google.com/spreadsheets/d/1cAEh_E-bv-5dgiJyE-Fo1tmGEnM319g3zepllsJCB2c/edit" target="_blank" style="border:1px solid #1a4d4a;background:#1a4d4a;color:#fff;border-radius:10px;padding:8px 12px;text-decoration:none">เปิดชีตเพื่อติ๊ก</a>
-    <a href="https://drive.google.com/drive/folders/1CzOgfFpPVhmtaQ5prv9Jq5cyHZWyWFpX" target="_blank" style="border:1px solid #e4dccf;background:#fff;border-radius:10px;padding:8px 12px;text-decoration:none">โฟลเดอร์ Drive</a>
     <button id="sheetBtn">ตั้งค่า Google Sheet</button>
     <button id="exportBtn">ส่งออก CSV</button>
     <button id="importBtn">นำเข้า CSV</button>
@@ -189,15 +187,10 @@
     <input id="file" type="file" accept=".csv,text/csv" hidden />
   </div>
   <section class="panel" id="panel">
-    <b>ให้คนติ๊กแล้วคนอื่นเห็น — ใส่โทเคนครั้งเดียวในเครื่องนี้</b>
-    <p>สถานะเก็บบน GitHub คนเปิดหน้านี้จะดึงติ๊กล่าสุดเอง เครื่องที่จะติ๊กส่งงานต้องใส่ Personal Access Token สิทธิ์ <b>repo</b> ครั้งเดียว โทเคนอยู่แค่เบราว์เซอร์นี้</p>
-    <p>สร้างโทเคนที่ GitHub → Settings → Developer settings → Personal access tokens → Generate → เลือก repo</p>
-    <input id="tokenInput" type="password" placeholder="github_pat_... หรือ ghp_..." style="width:min(420px,100%)" />
-    <button class="primary" id="saveToken">บันทึกโทเคน</button>
-    <button id="pullNow">โหลดสถานะล่าสุด</button>
-    <button id="pushNow">ส่งสถานะตอนนี้</button>
-    <p class="warn" id="tokenMsg"></p>
-    <p>ทางเลือก Google Sheet: เผยแพร่เป็น CSV แล้ววางลิงก์ หน้านี้จะอ่านอย่างเดียว</p>
+    <b>ให้หลายเครื่องเห็นสถานะเดียวกัน — ใช้ Google Sheet ไม่ใช้ Gist</b>
+    <p>Gist เป็นที่วางโค้ด ติ๊กจากมือถือแล้วให้คอมอีกเครื่องเห็นเองไม่ได้ ถ้าไม่ฝังโทเคน (ซึ่งไม่ควรทำ) Google Sheet ติ๊กจากเครื่องไหนก็ได้ แล้วหน้านี้ดึงชีตที่เผยแพร่มาแสดง</p>
+    <p>1. นำเข้า <code>data/แผน2570_เทมเพลตชีต.csv</code> เข้า Google Sheet &nbsp; 2. แชร์เป็นคนที่มีลิงก์แก้ไขได้ &nbsp; 3. ไฟล์ → แชร์ → เผยแพร่ไปยังเว็บ → ทั้งเอกสาร เป็น CSV &nbsp; 4. วางลิงก์ด้านล่าง</p>
+    <p>คอลัมน์สถานะที่หน้านี้จะอ่าน: propose, borrow, held, heldDate, claim, paid, summary, note ค่าที่นับว่าติ๊กแล้วคือ TRUE, ใช่, 1, x</p>
     <input id="sheetUrl" type="url" placeholder="https://docs.google.com/spreadsheets/d/.../pub?output=csv" style="width:min(640px,100%)" />
     <button class="primary" id="saveSheet">บันทึกและโหลดชีต</button>
     <button id="clearSheet">เลิกผูกชีต</button>
@@ -218,8 +211,6 @@ const STEPS = [
 const QLABEL = ["ต.ค.–ธ.ค. 69", "ม.ค.–มี.ค. 70", "เม.ย.–มิ.ย. 70", "ก.ค.–ก.ย. 70"];
 const KEY = "cup70-status-v1";
 const SHEET_KEY = "cup70-sheet-url";
-const DEFAULT_SHEET = "https://docs.google.com/spreadsheets/d/1cAEh_E-bv-5dgiJyE-Fo1tmGEnM319g3zepllsJCB2c/export?format=csv";
-const SHEET_EDIT = "https://docs.google.com/spreadsheets/d/1cAEh_E-bv-5dgiJyE-Fo1tmGEnM319g3zepllsJCB2c/edit";
 const seed = JSON.parse(document.getElementById("seed").textContent);
 let status = JSON.parse(localStorage.getItem(KEY) || "{}");
 let sheetMode = false;
@@ -227,7 +218,7 @@ const baht = n => (n ? Number(n).toLocaleString("th-TH") : "0");
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"\u0026amp;","<":"\u0026lt;",">":"\u0026gt;","\"":"\u0026quot;"})[c]);
 function blank() { return { propose: false, borrow: false, held: false, heldDate: "", claim: false, paid: false, summary: false, note: "", skipMoney: false }; }
 function st(id) { return status[id] || blank(); }
-function save() { localStorage.setItem(KEY, JSON.stringify(status)); dirty = true; render(); schedulePush(); }
+function save() { localStorage.setItem(KEY, JSON.stringify(status)); render(); }
 function doneCount(s, p) {
   return STEPS.filter(step => {
     if (s.skipMoney && ["borrow", "claim", "paid"].includes(step.key)) return true;
@@ -297,13 +288,9 @@ function render() {
       const skipped = s.skipMoney && ["borrow", "claim", "paid"].includes(step.key);
       const on = skipped || !!s[step.key];
       const date = step.date ? `<input type="date" data-date="${p.id}" value="${esc(s.heldDate)}" ${sheetMode ? "disabled" : ""}>` : "";
-      const who = s[step.key + "By"] || "";
-      const when = s[step.key + "At"] || "";
-      const whoLine = who || when ? `<div style="font-size:11px;color:#6d655b;margin-top:4px">${esc(who)}${when ? " · " + esc(String(when).slice(0,16)) : ""}</div>` : "";
       return `<div class="step ${on ? "done" : ""} ${skipped ? "skip" : ""}">
         <label><input type="checkbox" data-id="${p.id}" data-key="${step.key}" ${on ? "checked" : ""} ${sheetMode || skipped ? "disabled" : ""}>${step.label}</label>
         ${date}
-        ${whoLine}
       </div>`;
     }).join("");
     return `<article class="card">
@@ -339,7 +326,7 @@ document.getElementById("list").addEventListener("change", e => {
     const s = st(t.dataset.date); s.heldDate = t.value; if (t.value) s.held = true; status[t.dataset.date] = s; save();
   }
   if (t.dataset.note) {
-    const s = st(t.dataset.note); s.note = t.value; status[t.dataset.note] = s; localStorage.setItem(KEY, JSON.stringify(status)); dirty = true; schedulePush();
+    const s = st(t.dataset.note); s.note = t.value; status[t.dataset.note] = s; localStorage.setItem(KEY, JSON.stringify(status));
   }
 });
 document.getElementById("list").addEventListener("click", e => {
@@ -389,20 +376,13 @@ function truthy(v) { return /^(true|yes|y|1|x|ใช่|ติ๊ก|done)$/i.te
 function applyRows(rows) {
   rows.forEach(r => {
     if (!r.id) return;
-    const prev = status[r.id] || {};
     status[r.id] = {
-      propose: truthy(r.propose), proposeBy: r.proposeBy || "", proposeAt: r.proposeAt || "",
-      borrow: truthy(r.borrow), borrowBy: r.borrowBy || "", borrowAt: r.borrowAt || "",
-      held: truthy(r.held), heldDate: r.heldDate || "", heldBy: r.heldBy || "", heldAt: r.heldAt || "",
-      claim: truthy(r.claim), claimBy: r.claimBy || "", claimAt: r.claimAt || "",
-      paid: truthy(r.paid), paidBy: r.paidBy || "", paidAt: r.paidAt || "",
-      summary: truthy(r.summary), summaryBy: r.summaryBy || "", summaryAt: r.summaryAt || "",
-      note: r.note || "", updatedBy: r.updatedBy || "", updatedAt: r.updatedAt || "",
-      skipMoney: truthy(r.skipMoney)
+      propose: truthy(r.propose), borrow: truthy(r.borrow), held: truthy(r.held),
+      heldDate: r.heldDate || "", claim: truthy(r.claim), paid: truthy(r.paid),
+      summary: truthy(r.summary), note: r.note || "", skipMoney: truthy(r.skipMoney)
     };
   });
-  localStorage.setItem(KEY, JSON.stringify(status));
-  render();
+  save();
 }
 document.getElementById("exportBtn").onclick = toCsv;
 document.getElementById("importBtn").onclick = () => document.getElementById("file").click();
@@ -413,72 +393,8 @@ document.getElementById("file").onchange = async e => {
 document.getElementById("resetBtn").onclick = () => { if (confirm("ล้างสถานะที่เก็บในเครื่องนี้?")) { status = {}; save(); } };
 document.getElementById("sheetBtn").onclick = () => document.getElementById("panel").classList.toggle("open");
 function setSync(ok, text) {
-  document.getElementById("syncTitle").textContent = ok ? "อ่านสถานะจาก Google Sheet" : "สถานะร่วมบนเว็บ";
+  document.getElementById("syncTitle").textContent = ok ? "อ่านสถานะจาก Google Sheet" : "เก็บสถานะในเครื่องนี้";
   document.getElementById("syncText").textContent = text;
-}
-const STATUS_PATH = "data/plan2570_status.json";
-const REPO = "suvoak-web/hospital-dashboard";
-const TOKEN_KEY = "plan2570Token";
-let statusSha = "";
-let pushing = false;
-let dirty = false;
-let pushTimer = null;
-let pollWait = 40000;
-function getToken() { return localStorage.getItem(TOKEN_KEY) || ""; }
-function setSyncState(mode, extra) {
-  const title = document.getElementById("syncTitle");
-  const text = document.getElementById("syncText");
-  if (mode === "ok") { title.textContent = "ส่งสถานะร่วมแล้ว"; text.textContent = "ติ๊กแล้วคนอื่นเห็นภายในไม่กี่สิบวินาที" + (extra ? " · " + extra : ""); }
-  else if (mode === "need") { title.textContent = "ยังส่งติ๊กไม่ได้"; text.textContent = "คลิกกล่องนี้แล้วใส่โทเคน GitHub ครั้งเดียว"; }
-  else if (mode === "sending") { title.textContent = "กำลังส่งสถานะ"; text.textContent = "รอสักครู่"; }
-  else if (mode === "read") { title.textContent = "เห็นสถานะร่วม"; text.textContent = "ดูติ๊กของคนอื่นได้ ถ้าจะติ๊กเองให้ใส่โทเคน"; }
-  else if (mode === "err") { title.textContent = "ส่งสถานะไม่สำเร็จ"; text.textContent = extra || "ตรวจโทเคนสิทธิ์ repo"; }
-}
-function schedulePush() {
-  if (!getToken()) { setSyncState("need"); return; }
-  clearTimeout(pushTimer);
-  pushTimer = setTimeout(pushStatus, 700);
-}
-function b64utf8(str) { return btoa(unescape(encodeURIComponent(str))); }
-function utf8b64(str) { return decodeURIComponent(escape(atob(str.replace(/\n/g, "")))); }
-async function pullStatus() {
-  const res = await fetch("https://api.github.com/repos/" + REPO + "/contents/" + STATUS_PATH + "?t=" + Date.now(), { headers: { Accept: "application/vnd.github+json" } });
-  if (res.status === 403 || res.status === 429) { pollWait = 120000; throw new Error("GitHub จำกัดจำนวนครั้ง รอสักครู่"); }
-  if (!res.ok) throw new Error("โหลดสถานะไม่ได้ " + res.status);
-  pollWait = 40000;
-  const data = await res.json();
-  statusSha = data.sha;
-  const remote = JSON.parse(utf8b64(data.content || ""));
-  if (!dirty && remote && remote.status) {
-    status = remote.status;
-    localStorage.setItem(KEY, JSON.stringify(status));
-    render();
-  }
-  const when = remote.updated ? new Date(remote.updated).toLocaleString("th-TH") : "";
-  setSyncState(getToken() ? "ok" : "read", when);
-  return remote;
-}
-async function pushStatus() {
-  if (!getToken() || pushing) return;
-  pushing = true;
-  setSyncState("sending");
-  try {
-    if (!statusSha) await pullStatus();
-    const payload = { updated: new Date().toISOString(), status };
-    const res = await fetch("https://api.github.com/repos/" + REPO + "/contents/" + STATUS_PATH, {
-      method: "PUT",
-      headers: { Authorization: "token " + getToken(), Accept: "application/vnd.github+json", "Content-Type": "application/json" },
-      body: JSON.stringify({ message: "Update plan 2570 status", content: b64utf8(JSON.stringify(payload)), sha: statusSha })
-    });
-    if (res.status === 409) { statusSha = ""; pushing = false; return pushStatus(); }
-    if (!res.ok) throw new Error("ส่งไม่ได้ " + res.status + " โทเคนต้องมีสิทธิ์ repo");
-    const data = await res.json();
-    statusSha = data.content && data.content.sha || statusSha;
-    dirty = false;
-    setSyncState("ok", new Date().toLocaleString("th-TH"));
-  } catch (e) {
-    setSyncState("err", e.message);
-  } finally { pushing = false; }
 }
 async function loadSheet(url) {
   const res = await fetch(url);
@@ -497,32 +413,16 @@ document.getElementById("saveSheet").onclick = async () => {
 };
 document.getElementById("clearSheet").onclick = () => {
   localStorage.removeItem(SHEET_KEY); sheetMode = false;
-  setSyncState(getToken() ? "ok" : "read");
+  setSync(false, "ติ๊กแล้วอยู่แค่เบราว์เซอร์นี้ จนกว่าจะผูกชีต");
   render();
 };
-document.getElementById("syncBox").onclick = () => document.getElementById("panel").classList.add("open");
-document.getElementById("saveToken").onclick = () => {
-  const v = document.getElementById("tokenInput").value.trim();
-  if (!v) return;
-  localStorage.setItem(TOKEN_KEY, v);
-  document.getElementById("tokenMsg").textContent = "บันทึกโทเคนแล้ว ติ๊กได้เลย";
-  pushStatus();
-};
-document.getElementById("pullNow").onclick = () => pullStatus().catch(e => setSyncState("err", e.message));
-document.getElementById("pushNow").onclick = () => { dirty = true; pushStatus(); };
-document.getElementById("tokenInput").value = getToken();
 fillFilters();
 render();
-pullStatus().catch(e => setSyncState(getToken() ? "err" : "need", e.message));
-setInterval(() => { if (!dirty && !pushing) pullStatus().catch(() => {}); }, 40000);
-const savedUrl = localStorage.getItem(SHEET_KEY) || DEFAULT_SHEET;
-document.getElementById("sheetUrl").value = savedUrl;
-loadSheet(savedUrl).catch(err => setSync(false, "แชร์ชีตเป็น คนที่มีลิงก์ดูได้ ก่อน · " + err.message));
-setInterval(() => {
-  const url = document.getElementById("sheetUrl").value.trim();
-  if (url) loadSheet(url).catch(() => {});
-}, 30000);
-document.getElementById("syncBox").onclick = () => window.open(SHEET_EDIT, "_blank");
+const savedUrl = localStorage.getItem(SHEET_KEY);
+if (savedUrl) {
+  document.getElementById("sheetUrl").value = savedUrl;
+  loadSheet(savedUrl).catch(err => setSync(false, "ผูกชีตไว้แต่โหลดไม่ได้: " + err.message));
+}
 </script>
 <script src="credit.js"></script>
 </body>
