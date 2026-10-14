@@ -44,8 +44,7 @@
   --dr:#3987e5; --cr:#2cc48d;
   --warn:#f2b43c; --warn-bg:#33290f; --crit:#e66767; --good:#3fbf3f; color-scheme:dark}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14.5px;line-height:1.55;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14.5px;line-height:1.55;margin:0;padding:0}
 .wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
 .num{font-variant-numeric:tabular-nums}
 header{position:relative;overflow:hidden;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:14px;
@@ -178,10 +177,12 @@ footer{font-size:12px;color:var(--ink-3)}
 .btn:disabled{opacity:.55;cursor:default}
 .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .empty{padding:28px;text-align:center;color:var(--ink-2)}
+
+/* page padding (shell from credit.js provides header/sidebar offsets) */
+.wrap{padding:16px 20px 40px;box-sizing:border-box}
 </style>
 
 <div class="wrap">
-  <a href="index.html" style="color:var(--accent);font-size:13px;text-decoration:none">← กลับหน้าหลัก</a>
   <header>
     <div>
       <div class="eyebrow">รายงานอายุลูกหนี้ค่ารักษาพยาบาล · จังหวัดนครราชสีมา</div>
@@ -278,7 +279,7 @@ const M=v=>(v/1e6).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFracti
 const pct=(a,b)=>b?(100*a/b):0;
 const P=v=>v.toLocaleString('th-TH',{maximumFractionDigits:1})+'%';
 const $=s=>document.querySelector(s);
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&'+'amp;','<':'&'+'lt;','>':'&'+'gt;','"':'&'+'quot;'}[c]));
 const shortName=n=>n.replace('โรงพยาบาล','รพ.');
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 
@@ -502,5 +503,6 @@ $('#seg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)
 loadData();
 </script>
 
+<script src="credit.js"></script>
 </body>
 </html>

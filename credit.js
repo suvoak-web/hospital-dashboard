@@ -15,7 +15,8 @@
     { href: 'compare.html', icon: '⏱', label: 'ระยะเวลารอคอย' },
     { href: 'bottleneck_dashboard.html', icon: '🔎', label: 'วิเคราะห์คอขวด', sub: true },
     { href: 'pcupayment.html', icon: '💊', label: 'ยาและเวชภัณฑ์ รพ.สต.' },
-    { href: 'plan2570.html', icon: '📋', label: 'แผนงานโครงการ 2570' }
+    { href: 'plan2570.html', icon: '📋', label: 'แผนงานโครงการ 2570' },
+    { href: 'ar_aging.html', icon: '🧾', label: 'อายุลูกหนี้' }
   ];
 
   var file = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
