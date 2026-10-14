@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สรุปผล Audit ชาร์ต</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap');
+*{box-sizing:border-box}
+body{margin:0;font-family:'Sarabun',sans-serif;background:#f4f6fa;color:#1f2937}
+.wrap{max-width:1400px;margin:0 auto;padding:20px 24px 32px}
+h1{text-align:center;font-size:26px;margin:8px 0 4px}
+.sub{text-align:center;color:#6b7280;margin:0 0 18px}
+.ca-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.kpi{background:#1f3864;color:#fff;border-radius:10px;padding:16px;text-align:center}
+.kpi .l{font-size:15px;opacity:.9}.kpi .v{font-size:32px;font-weight:700;color:#ffe066;margin:6px 0}.kpi .n{font-size:12.5px;opacity:.85}
+.charts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{min-width:0;background:#fff;border-radius:10px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.card h3{margin:0 0 8px;text-align:center;font-size:16px}
+.cv{position:relative;height:380px}
+h2{text-align:center;font-size:19px;margin:28px 0 12px}
+.flow{display:flex;align-items:center;gap:8px}
+.step{flex:1;color:#fff;border-radius:6px;padding:16px 8px;text-align:center;font-weight:600;line-height:1.6}
+.step small{display:block;font-weight:500}
+.arr{font-size:24px;color:#111}
+.foot{text-align:right;color:#9ca3af;font-size:12px;margin-top:16px}
+.err{color:#b91c1c;text-align:center}
+@media(max-width:900px){.ca-kpis{grid-template-columns:1fr 1fr}.wrap{padding:12px}.charts{grid-template-columns:1fr}.flow{flex-direction:column}.arr{transform:rotate(90deg)}.step{width:100%}h1{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1 id="title">สรุปผล Audit ชาร์ต (OAiK_chart)</h1>
+<p class="sub">ข้อมูลรวม ไม่มีข้อมูลระบุตัวตน</p>
+<div class="ca-kpis" id="kpis"></div>
+<div class="charts">
+<div class="card"><h3>PDx ตามหมวด ICD-10 (หลัง audit)</h3><div class="cv"><canvas id="pdx"></canvas></div></div>
+<div class="card"><h3 id="sdxT">SDx ตามหมวด</h3><div class="cv"><canvas id="sdx"></canvas></div></div>
+<div class="card"><h3 id="procT">หัตถการ ICD-9</h3><div class="cv"><canvas id="proc"></canvas></div></div>
+</div>
+<h2>ขั้นตอนการทำงาน</h2>
+<div class="flow" id="flow"></div>
+<div class="foot">ไม่มี AN/HN/ชื่อ/วันเกิด – ข้อมูลรวมเท่านั้น (PDPA)</div>
+</div>
+<script>
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function f4(x){return Number(x).toFixed(4)}
+var PIE=['#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b','#e377c2','#7f7f7f','#bcbd22','#17becf'];
+var STEP=['#2e75b6','#548235','#bf9000','#c55a11','#7030a0'];
+fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()}).then(function(d){
+  document.getElementById('title').textContent='สรุปผล Audit ชาร์ต (OAiK_chart) – '+(d.scope_label||'');
+  var ba=d.before_after||{};var diff=Number(ba.diff||0);
+  var k=[['ชาร์ตที่ audit ครบ',String(d.total_charts),''],
+    ['Sum AdjRW หลัง audit',f4(d.adjrw_after_sum),'เฉลี่ย '+f4(d.adjrw_after_mean)+' ต่อชาร์ต'],
+    ['ก่อน-หลัง (มีทั้งสองแถว)',(diff>=0?'+':'')+f4(diff),(ba.charts||0)+' ชาร์ต: '+f4(ba.sum_before)+' -> '+f4(ba.sum_after)],
+    ['Audit note / ปรับรหัส',d.audit_note_charts+' / '+d.charts_with_code_adjustment,'DISCHT conflict / code adjust ให้ TGrp ผ่าน']];
+  var K=document.getElementById('kpis');
+  k.forEach(function(a){var c=el('div','kpi');c.appendChild(el('div','l',a[0]));c.appendChild(el('div','v',a[1]));c.appendChild(el('div','n',a[2]));K.appendChild(c)});
+  Chart.defaults.font.family="'Sarabun',sans-serif";
+  var p=d.pdx_by_chapter||[];
+  new Chart(document.getElementById('pdx'),{type:'pie',data:{labels:p.map(function(x){return x.chapter}),datasets:[{data:p.map(function(x){return x.count}),backgroundColor:PIE,borderColor:'#fff'}]},
+    options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:12,font:{size:11}}},tooltip:{callbacks:{label:function(c){var x=p[c.dataIndex];return x.chapter+': '+x.count+' ('+x.pct+'%)'}}}}}});
+  function hbar(id,labels,vals,color,tips){new Chart(document.getElementById(id),{type:'bar',data:{labels:labels,datasets:[{data:vals,backgroundColor:color}]},
+    options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return tips[c.dataIndex]}}}},scales:{x:{beginAtZero:true,ticks:{precision:0}},y:{ticks:{font:{size:11}}}}}})}
+  var s=d.sdx_by_chapter||[];
+  document.getElementById('sdxT').textContent='SDx ตามหมวด (รวม '+d.sdx_total+' รหัส)';
+  hbar('sdx',s.map(function(x){return x.chapter}),s.map(function(x){return x.count}),'#5b9bd5',s.map(function(x){return x.count+' ('+x.pct+'%)'}));
+  var t=d.top_icd9||[];
+  document.getElementById('procT').textContent='หัตถการ ICD-9 (รวม '+d.proc_total+')';
+  hbar('proc',t.map(function(x){return x.code+' '+x.name}),t.map(function(x){return x.count}),'#ed7d31',t.map(function(x){return x.count+' ครั้ง'}));
+  var F=document.getElementById('flow');
+  (d.flow||[]).forEach(function(s,i){if(i)F.appendChild(el('div','arr','➜'));var b=el('div','step',s.title);b.style.background=STEP[i%STEP.length];b.appendChild(el('small','',s.sub));F.appendChild(b)});
+}).catch(function(e){document.getElementById('kpis').appendChild(el('p','err','โหลดข้อมูลไม่สำเร็จ: '+e.message))});
+</script>
+<script src="credit.js"></script>
+</body>
+</html>
