@@ -31,12 +31,6 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:'Sarabun',sans-serif;font-size:15px;line-height:1.6}
-header{background:var(--accent);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
-.logo-mark{width:48px;height:48px;background:rgba(255,255,255,0.25);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px}
-.sidebar{position:fixed;left:0;top:70px;bottom:0;width:260px;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;padding:20px 0;z-index:150}
-.sidebar.collapsed{transform:translateX(-100%)}
-.nav-item{display:flex;align-items:center;gap:12px;padding:12px 24px;color:var(--muted);text-decoration:none;font-weight:600;margin:4px 12px;border-radius:8px}
-.nav-item.active,.nav-item:hover{background:var(--accent-dim);color:var(--accent)}
 .main-content{margin-left:260px;padding:24px 28px}
 .section-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:4px 0 14px}
 .note{background:#FEF3C7;border:1px solid #FCD34D;color:#92400E;padding:10px 14px;border-radius:10px;font-size:.85rem;margin:0 0 20px}
@@ -46,6 +40,7 @@ header{background:var(--accent);padding:18px 24px;display:flex;align-items:cente
 .card .val{font-size:1.55rem;font-weight:700;color:var(--accent)}
 .card .sub{font-size:.75rem;color:var(--muted);margin-top:4px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid>*{min-width:0}
 @media(max-width:900px){.grid{grid-template-columns:1fr}.main-content{margin-left:0}}
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;box-shadow:0 4px 12px rgba(0,0,0,0.05)}
 .panel h2{font-size:1rem;margin:0 0 14px;font-weight:700}
@@ -64,32 +59,6 @@ tbody tr:hover{background:var(--accent-dim)}
 </style>
 </head>
 <body>
-<header>
-  <div style="display:flex;align-items:center;gap:16px;">
-    <button onclick="toggleSidebar()" style="background:none;border:none;color:white;font-size:28px;cursor:pointer;padding:4px;">☰</button>
-    <div class="logo-mark">🏥</div>
-    <div>
-      <div style="color:white;font-size:17px;font-weight:700;">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา</div>
-      <div style="color:rgba(255,255,255,0.85);font-size:13px;">ยาและเวชภัณฑ์ รพ.สต. — ประมาณการงบประมาณ</div>
-    </div>
-  </div>
-  <div style="text-align:right;color:white;">
-    <div id="clock" style="font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace;"></div>
-    <div id="date-display" style="font-size:13px;opacity:0.9;"></div>
-  </div>
-</header>
-
-<aside id="sidebar" class="sidebar">
-  <a href="index.html" class="nav-item">🏠 หน้าหลัก</a>
-  <a href="kpi_dashboard.html" class="nav-item">📊 KPI Dashboard</a>
-  <a href="fin_dashboard.html" class="nav-item">💰 KPI การเงิน</a>
-  <a href="fin_projection.html" class="nav-item">📈 Finance Projection</a>
-  <a href="opwalkin.html" class="nav-item">💰 พึงรับ-พึงจ่าย</a>
-  <a href="compare.html" class="nav-item">⏱ ระยะเวลารอคอย</a>
-  <a href="pcupayment.html" class="nav-item active">💊 ยาและเวชภัณฑ์ รพ.สต.</a>
-  <a href="ar_aging.html" class="nav-item">🧾 อายุลูกหนี้</a>
-</aside>
-
 <div class="main-content">
   <div class="section-label">มูลค่าเบิกยาและเวชภัณฑ์ รพ.สต. 5 แห่ง • ปีงบ 2560–2568 และประมาณการ 2570+</div>
 
@@ -248,16 +217,7 @@ function drawStation(st){
 }
 drawStation(DATA.stations[0]);
 
-function updateClock(){
-  const now=new Date();
-  const h=String(now.getHours()).padStart(2,'0'), m=String(now.getMinutes()).padStart(2,'0');
-  document.getElementById('clock').textContent=h+':'+m;
-  document.getElementById('date-display').textContent=
-    ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'][now.getDay()]+' '+now.getDate()+' '+
-    ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'][now.getMonth()]+' '+(now.getFullYear()+543);
-}
-setInterval(updateClock,10000); updateClock();
-function toggleSidebar(){document.getElementById('sidebar').classList.toggle('collapsed');}
 </script>
+<script src="credit.js"></script>
 </body>
 </html>
