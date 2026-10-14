@@ -182,6 +182,16 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
       <div style="flex:1;"><div style="font-size:17px; font-weight:700;">ยาและเวชภัณฑ์ รพ.สต.</div>
       <div style="margin-top:12px;"><div style="font-size:28px; font-weight:700; color:#7C3AED;">1.86M</div><div style="font-size:14px; color:#166534;">ฐานประมาณการ (บาท/ปี)</div></div></div></div>
     </a>
+    <a class="dash-card" href="chart_audit.html" style="border-top: 5px solid #1f3864;">
+      <div style="display:flex; gap:16px;"><div style="font-size:42px;">🩺</div>
+      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">สรุปผล Audit ชาร์ต</div>
+      <div style="margin:8px 0; font-size:14px; color:var(--muted);">ผล audit ชาร์ตผู้ป่วยใน · PDx/SDx/หัตถการ · AdjRW ก่อน-หลัง (ข้อมูลรวม)</div>
+      <div style="display:flex; gap:20px; font-size:15px;">
+        <div><span id="aud-charts" style="color:#1f3864; font-weight:700;">–</span><br><small>ชาร์ตที่ audit</small></div>
+        <div><span id="aud-adjrw" style="color:#16A34A; font-weight:700;">–</span><br><small>Sum AdjRW</small></div>
+        <div><span id="aud-diff" style="color:#C55A11; font-weight:700;">–</span><br><small>ก่อน-หลัง</small></div>
+      </div></div></div>
+    </a>
   </div>
   <div class="page-byline">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา<br>by <b>Suweerasak Riwlord, M.D.</b></div>
 </div>
@@ -195,6 +205,14 @@ function updateClock() {
 }
 setInterval(updateClock, 10000); updateClock();
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); }
+</script>
+<script>
+fetch('data/audit_stats.json?v=' + Date.now()).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (d) {
+  var ba = d.before_after || {}, df = Number(ba.diff);
+  if (d.total_charts != null) document.getElementById('aud-charts').textContent = d.total_charts;
+  if (d.adjrw_after_sum != null) document.getElementById('aud-adjrw').textContent = Number(d.adjrw_after_sum).toFixed(2);
+  if (!isNaN(df)) document.getElementById('aud-diff').textContent = (df >= 0 ? '+' : '') + df.toFixed(4);
+}).catch(function () {});
 </script>
 <script src="credit.js"></script>
 </body>
