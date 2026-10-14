@@ -6,18 +6,23 @@
 
   var PAGES = [
     { href: 'index.html', icon: '🏠', label: 'หน้าหลัก' },
-    { href: 'kpi_dashboard.html', icon: '📊', label: 'KPI Dashboard' },
+    { group: '💰 การเงิน' },
     { href: 'planfin_dashboard.html', icon: '📈', label: 'Planfin / การเงิน' },
     { href: 'uc_transfer_dashboard.html', icon: '🏦', label: 'เงินโอน UC / สปสช.' },
     { href: 'sso_dashboard.html', icon: '🛡️', label: 'ประกันสังคมจากแม่ข่าย' },
     { href: 'ppfs_dashboard.html', icon: '📑', label: 'PPFS NHSO' },
     { href: 'opwalkin.html', icon: '💰', label: 'พึงรับ-พึงจ่าย' },
+    { href: 'ar_aging.html', icon: '🧾', label: 'อายุลูกหนี้' },
+    { group: '📊 KPI และแผนงาน' },
+    { href: 'kpi_dashboard.html', icon: '📊', label: 'KPI Dashboard' },
+    { href: 'plan2570.html', icon: '📋', label: 'แผนงานโครงการ 2570' },
+    { group: '⏱ บริการ' },
     { href: 'compare.html', icon: '⏱', label: 'ระยะเวลารอคอย' },
     { href: 'bottleneck_dashboard.html', icon: '🔎', label: 'วิเคราะห์คอขวด', sub: true },
-    { href: 'pcupayment.html', icon: '💊', label: 'ยาและเวชภัณฑ์ รพ.สต.' },
-    { href: 'plan2570.html', icon: '📋', label: 'แผนงานโครงการ 2570' },
-    { href: 'ar_aging.html', icon: '🧾', label: 'อายุลูกหนี้' },
-    { href: 'chart_audit.html', icon: '🩺', label: 'Audit ชาร์ต' }
+    { group: '🩺 คุณภาพเวชระเบียน' },
+    { href: 'chart_audit.html', icon: '🩺', label: 'Audit ชาร์ต' },
+    { group: '💊 รพ.สต.' },
+    { href: 'pcupayment.html', icon: '💊', label: 'ยาและเวชภัณฑ์ รพ.สต.' }
   ];
 
   var file = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
@@ -43,6 +48,7 @@
       '#ptk-header .ptk-date{font-size:12px;opacity:.9}',
       '#ptk-sidebar{position:fixed;top:64px;left:0;bottom:0;width:260px;background:#fff;border-right:1px solid #E2E8F0;overflow-y:auto;padding:14px 0 24px;z-index:10040;transform:translateX(0);transition:transform .2s ease;font-family:Sarabun,"IBM Plex Sans Thai",Tahoma,sans-serif}',
       '#ptk-sidebar a{display:flex;align-items:center;gap:10px;padding:11px 18px;margin:3px 10px;border-radius:8px;color:#64748B;text-decoration:none;font-weight:600;font-size:14.5px}',
+      '#ptk-sidebar .ptk-group{margin:14px 20px 2px;font-size:11.5px;font-weight:700;letter-spacing:.3px;color:#94A3B8;text-transform:uppercase;cursor:default;user-select:none}',
       '#ptk-sidebar a.sub{font-size:13.5px;font-weight:500;padding-left:36px}',
       '#ptk-sidebar a:hover,#ptk-sidebar a.active{background:rgba(29,111,164,.08);color:#1D6FA4}',
       '#ptk-dim{display:none;position:fixed;inset:0;top:64px;background:rgba(15,23,42,.35);z-index:10030}',
@@ -110,6 +116,7 @@
     var a = document.createElement('aside');
     a.id = 'ptk-sidebar';
     a.innerHTML = PAGES.map(function (p) {
+      if (p.group) return '<div class="ptk-group">' + p.group + '</div>';
       return '<a href="' + p.href + '" class="'
         + (isActive(p.href) ? 'active' : '')
         + (p.sub ? ' sub' : '') + '">' + p.icon + ' ' + p.label + '</a>';
@@ -123,7 +130,7 @@
   function buildQuick() {
     var box = document.createElement('div');
     box.id = 'ptk-quick';
-    box.innerHTML = PAGES.map(function (p) {
+    box.innerHTML = PAGES.filter(function (p) { return !p.group; }).map(function (p) {
       return '<a href="' + p.href + '"' + (isActive(p.href) ? ' class="active"' : '') + '>'
         + p.icon + ' ' + p.label.replace(' / การเงิน', '').replace(' / สปสช.', '') + '</a>';
     }).join('');
