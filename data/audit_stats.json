@@ -1,0 +1,314 @@
+{
+ "rules": "aggregate only - no AN/HN/name/DOB",
+ "scope_label": "เริ่ม ตุลาคม 2569",
+ "skipped_summaries": 0,
+ "total_charts": 19,
+ "pdx_by_chapter": [
+  {
+   "chapter": "X Respiratory",
+   "count": 4,
+   "pct": 21.1
+  },
+  {
+   "chapter": "XIV Genitourinary",
+   "count": 4,
+   "pct": 21.1
+  },
+  {
+   "chapter": "IX Circulatory",
+   "count": 3,
+   "pct": 15.8
+  },
+  {
+   "chapter": "I Infectious & parasitic",
+   "count": 2,
+   "pct": 10.5
+  },
+  {
+   "chapter": "XVIII Symptoms & signs",
+   "count": 2,
+   "pct": 10.5
+  },
+  {
+   "chapter": "IV Endocrine & metabolic",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "chapter": "XI Digestive",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "chapter": "VIII Ear & mastoid",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "chapter": "XIX Injury & poisoning",
+   "count": 1,
+   "pct": 5.3
+  }
+ ],
+ "pdx_by_block3": [
+  {
+   "block": "J15",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "J18",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "B34",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "E87",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "I63",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "N10",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "A09",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "J10",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "K35",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "R56",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "I50",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "N17",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "I48",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "N39",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "N73",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "J20",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "H81",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "S71",
+   "count": 1,
+   "pct": 5.3
+  },
+  {
+   "block": "R11",
+   "count": 1,
+   "pct": 5.3
+  }
+ ],
+ "sdx_total": 42,
+ "sdx_by_chapter": [
+  {
+   "chapter": "IV Endocrine & metabolic",
+   "count": 14,
+   "pct": 33.3
+  },
+  {
+   "chapter": "IX Circulatory",
+   "count": 10,
+   "pct": 23.8
+  },
+  {
+   "chapter": "III Blood & immune",
+   "count": 3,
+   "pct": 7.1
+  },
+  {
+   "chapter": "XIV Genitourinary",
+   "count": 3,
+   "pct": 7.1
+  },
+  {
+   "chapter": "X Respiratory",
+   "count": 3,
+   "pct": 7.1
+  },
+  {
+   "chapter": "I Infectious & parasitic",
+   "count": 2,
+   "pct": 4.8
+  },
+  {
+   "chapter": "XIII Musculoskeletal",
+   "count": 2,
+   "pct": 4.8
+  },
+  {
+   "chapter": "XXII Special purposes",
+   "count": 1,
+   "pct": 2.4
+  },
+  {
+   "chapter": "V Mental & behavioural",
+   "count": 1,
+   "pct": 2.4
+  },
+  {
+   "chapter": "XXI Health status/contact",
+   "count": 1,
+   "pct": 2.4
+  },
+  {
+   "chapter": "XX External causes",
+   "count": 1,
+   "pct": 2.4
+  },
+  {
+   "chapter": "XVII Congenital",
+   "count": 1,
+   "pct": 2.4
+  }
+ ],
+ "proc_total": 10,
+ "top_icd9": [
+  {
+   "code": "57.94",
+   "count": 2,
+   "name": "Insert indwelling cath"
+  },
+  {
+   "code": "93.94",
+   "count": 2,
+   "name": "Nebulizer therapy"
+  },
+  {
+   "code": "87.44",
+   "count": 1,
+   "name": "Routine chest x-ray"
+  },
+  {
+   "code": "89.52",
+   "count": 1,
+   "name": "Electrocardiogram"
+  },
+  {
+   "code": "93.11",
+   "count": 1,
+   "name": "Assisting exercise"
+  },
+  {
+   "code": "96.04",
+   "count": 1,
+   "name": "Insert endotracheal tube"
+  },
+  {
+   "code": "96.07",
+   "count": 1,
+   "name": "Insert gastric tube NEC"
+  },
+  {
+   "code": "99.04",
+   "count": 1,
+   "name": "Packed cell transfusion"
+  }
+ ],
+ "adjrw_after_sum": 15.4006,
+ "adjrw_after_mean": 0.8106,
+ "rw_after_sum": 16.5627,
+ "before_after": {
+  "charts": 4,
+  "sum_before": 3.395,
+  "sum_after": 3.4654,
+  "diff": 0.0704,
+  "drg_changed": 2
+ },
+ "after_only_charts": 15,
+ "audit_note_charts": 3,
+ "audit_note_unknown": 0,
+ "discht_dist": {
+  "1": 16,
+  "4": 3
+ },
+ "tgrp_code_adjustments": 5,
+ "charts_with_code_adjustment": 5,
+ "final_warn_err": {
+  "warn": 0,
+  "err": 0
+ },
+ "mdc_dist": {
+  "04": 4,
+  "18": 1,
+  "10": 1,
+  "01": 2,
+  "11": 3,
+  "06": 3,
+  "05": 2,
+  "13": 1,
+  "03": 1,
+  "21": 1
+ },
+ "missing_json": 1,
+ "flow": [
+  {
+   "title": "De-ID",
+   "sub": "ปิดข้อมูลระบุตัวตน"
+  },
+  {
+   "title": "User review",
+   "sub": "ตรวจความถูกต้อง"
+  },
+  {
+   "title": "OAiK summary",
+   "sub": "สรุปชาร์ตและเสนอรหัส"
+  },
+  {
+   "title": "TGrp6305",
+   "sub": "คำนวณ DRG และ AdjRW"
+  },
+  {
+   "title": "Final summary",
+   "sub": "รายงานผล audit"
+  }
+ ]
+}
