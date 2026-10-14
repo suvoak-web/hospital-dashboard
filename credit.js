@@ -57,7 +57,7 @@
       '@media(min-width:901px){body.ptk-has-shell{margin-left:260px}#ptk-burger{visibility:hidden}}',
       /* full-width content: lift max-width caps on main page wrappers (desktop) */
       '@media(min-width:901px){body.ptk-has-shell > .wrap,body.ptk-has-shell > main,body.ptk-has-shell > .main,body.ptk-has-shell > .main-content,body.ptk-has-shell > .max-w-6xl,body.ptk-has-shell > .max-w-7xl{max-width:none !important;margin-left:0 !important;margin-right:0 !important;padding-left:24px !important;padding-right:24px !important;box-sizing:border-box}}',
-      '@media(max-width:900px){#ptk-sidebar{transform:translateX(-100%);box-shadow:8px 0 24px rgba(0,0,0,.12)}#ptk-sidebar.open{transform:translateX(0)}#ptk-dim.show{display:block}body.ptk-has-shell{margin-left:0 !important}#ptk-header .ptk-title{font-size:13.5px}#ptk-header .ptk-clock{display:none}}',
+      '@media(max-width:900px){#ptk-sidebar{transform:translateX(-100%);box-shadow:8px 0 24px rgba(0,0,0,.12)}#ptk-sidebar.open{transform:translateX(0)}#ptk-dim.show{display:block}body.ptk-has-shell{margin-left:0 !important}#ptk-header .ptk-left{flex:1}#ptk-header .ptk-left>div:last-child{min-width:0}#ptk-header .ptk-title{font-size:12.5px;white-space:normal;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}#ptk-header .ptk-sub{font-size:11px}#ptk-header .ptk-clock{display:none}}',
       '.kpi-row{grid-template-columns:1.3fr 1.3fr .85fr !important;gap:14px !important}',
       '@media(max-width:900px){.kpi-row{grid-template-columns:1fr !important}}',
       '.kpi.kpi-prog,.kpi.net{border-radius:16px !important;border:1px solid transparent !important;border-left:5px solid !important;padding:15px 16px 13px !important;box-shadow:0 6px 18px rgba(15,23,42,.05) !important}',
@@ -99,7 +99,7 @@
     h.innerHTML = '<div class="ptk-left">'
       + '<button type="button" id="ptk-burger" aria-label="เมนู">☰</button>'
       + '<div class="ptk-mark">🏥</div>'
-      + '<div><div class="ptk-title">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา</div>'
+      + '<div><div class="ptk-title" title="โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา</div>'
       + '<div class="ptk-sub">ระบบติดตามข้อมูลโรงพยาบาล</div></div></div>'
       + '<div class="ptk-clock"><div class="ptk-time" id="ptk-clock">--:--</div>'
       + '<div class="ptk-date" id="ptk-date"></div></div>';

@@ -13,8 +13,6 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: var(--text); font-family: 'Sarabun', sans-serif; font-size: 15px; line-height: 1.6; }
-header { background: var(--accent); padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-.logo-mark { width:48px; height:48px; background:rgba(255,255,255,0.25); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:26px; }
 .sidebar { position: fixed; left: 0; top: 70px; bottom: 0; width: 260px; background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; padding: 20px 0; z-index: 150; }
 .sidebar.collapsed { transform: translateX(-100%); }
 .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 24px; color: var(--muted); text-decoration: none; font-weight: 600; margin: 4px 12px; border-radius: 8px; }
@@ -40,20 +38,6 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
 </style>
 </head>
 <body>
-<header>
-  <div style="display:flex; align-items:center; gap: 16px;">
-    <button onclick="toggleSidebar()" style="background:none; border:none; color:white; font-size: 28px; cursor:pointer; padding: 4px;">☰</button>
-    <div class="logo-mark">🏥</div>
-    <div>
-      <div style="color:white; font-size:17px; font-weight:700;">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา</div>
-      <div style="color:rgba(255,255,255,0.85); font-size:13px;">ระบบติดตามข้อมูลโรงพยาบาล</div>
-    </div>
-  </div>
-  <div style="text-align:right; color:white;">
-    <div id="clock" style="font-size:22px; font-weight:700; font-family:'IBM Plex Mono', monospace;"></div>
-    <div id="date-display" style="font-size:13px; opacity:0.9;"></div>
-  </div>
-</header>
 <aside id="sidebar" class="sidebar">
   <a href="index.html" class="nav-item active">🏠 หน้าหลัก</a>
   <a href="kpi_dashboard.html" class="nav-item">📊 KPI Dashboard</a>
@@ -69,7 +53,6 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
   <a href="ar_aging.html" class="nav-item">🧾 อายุลูกหนี้</a>
 </aside>
 <div class="main-content">
-  <div class="section-label">ทางลัดทุกหน้า</div>
   <div class="quick">
     <a href="planfin_dashboard.html">📈 แผนเงินบำรุง / Planfin</a>
     <a href="kpi_dashboard.html">📊 KPI</a>
@@ -182,19 +165,26 @@ header { background: var(--accent); padding: 18px 24px; display: flex; align-ite
       <div style="flex:1;"><div style="font-size:17px; font-weight:700;">ยาและเวชภัณฑ์ รพ.สต.</div>
       <div style="margin-top:12px;"><div style="font-size:28px; font-weight:700; color:#7C3AED;">1.86M</div><div style="font-size:14px; color:#166534;">ฐานประมาณการ (บาท/ปี)</div></div></div></div>
     </a>
+    <a class="dash-card" href="chart_audit.html" style="border-top: 5px solid #1f3864;">
+      <div style="display:flex; gap:16px;"><div style="font-size:42px;">🩺</div>
+      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">สรุปผล Audit ชาร์ต</div>
+      <div style="margin:8px 0; font-size:14px; color:var(--muted);">ผล audit ชาร์ตผู้ป่วยใน · PDx/SDx/หัตถการ · AdjRW ก่อน-หลัง (ข้อมูลรวม)</div>
+      <div style="display:flex; gap:20px; font-size:15px;">
+        <div><span id="aud-charts" style="color:#1f3864; font-weight:700;">–</span><br><small>ชาร์ตที่ audit</small></div>
+        <div><span id="aud-adjrw" style="color:#16A34A; font-weight:700;">–</span><br><small>Sum AdjRW</small></div>
+        <div><span id="aud-diff" style="color:#C55A11; font-weight:700;">–</span><br><small>ก่อน-หลัง</small></div>
+      </div></div></div>
+    </a>
   </div>
   <div class="page-byline">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา<br>by <b>Suweerasak Riwlord, M.D.</b></div>
 </div>
 <script>
-function updateClock() {
-  const now = new Date();
-  const h = String(now.getHours()).padStart(2,'0');
-  const m = String(now.getMinutes()).padStart(2,'0');
-  document.getElementById('clock').textContent = `${h}:${m}`;
-  document.getElementById('date-display').textContent = `${['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'][now.getDay()]} ${now.getDate()} ${['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'][now.getMonth()]} ${now.getFullYear()+543}`;
-}
-setInterval(updateClock, 10000); updateClock();
-function toggleSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); }
+fetch('data/audit_stats.json?v=' + Date.now()).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (d) {
+  var ba = d.before_after || {}, df = Number(ba.diff);
+  if (d.total_charts != null) document.getElementById('aud-charts').textContent = d.total_charts;
+  if (d.adjrw_after_sum != null) document.getElementById('aud-adjrw').textContent = Number(d.adjrw_after_sum).toFixed(2);
+  if (!isNaN(df)) document.getElementById('aud-diff').textContent = (df >= 0 ? '+' : '') + df.toFixed(4);
+}).catch(function () {});
 </script>
 <script src="credit.js"></script>
 </body>
