@@ -280,7 +280,7 @@ select optgroup{font-weight:700}
       </div>
     </div>
     <div class="card">
-      <div class="card-ttl"><div class="dot" style="background:var(--red)"></div>ยอดพึงจ่ายรวม 4 เดือน แยกตามโรงพยาบาล (เรียงจากมากไปน้อย)</div>
+      <div class="card-ttl"><div class="dot" style="background:var(--red)"></div>ยอดพึงจ่ายรวม <span class="n-months">10</span> เดือน แยกตามโรงพยาบาล (เรียงจากมากไปน้อย)</div>
       <div class="ch" style="height:520px"><canvas id="cPayDetail"></canvas></div>
     </div>
     <div class="card" style="margin-top:14px">
@@ -357,7 +357,7 @@ select optgroup{font-weight:700}
 
     <!-- Bar chart: all counterparts side-by-side -->
     <div class="card">
-      <div class="card-ttl"><div class="dot" style="background:#7C3AED"></div>กราฟเปรียบเทียบทุกโรงพยาบาล (พึงรับ vs พึงจ่าย รวม 4 เดือน)</div>
+      <div class="card-ttl"><div class="dot" style="background:#7C3AED"></div>กราฟเปรียบเทียบทุกโรงพยาบาล (พึงรับ vs พึงจ่าย รวม <span class="n-months">10</span> เดือน)</div>
       <div class="ch" style="height:520px"><canvas id="cCmpAll"></canvas></div>
     </div>
   </div>
@@ -1238,7 +1238,7 @@ function renderPayChart() {
     data:{
       labels:sorted.map(([h])=>h),
       datasets:[{
-        label:"รวม 4 เดือน (บาท)",
+        label:"รวม " + SHEET_KEYS.length + " เดือน (บาท)",
         data:sorted.map(([,v])=>v),
         backgroundColor:sorted.map((_,i)=> i===0?"#8B0000": i<3?"#C0392B":"#E57373"),
         borderRadius:4
@@ -1657,6 +1657,7 @@ function init() {
   const _first = MONTHS_LBL[0].replace(/ /g,"").replace("2568","68").replace("2569","69");
   const _last  = MONTHS_LBL[MONTHS_LBL.length-1].replace(/ /g,"").replace("2568","68").replace("2569","69");
   document.getElementById("periodBadge").textContent = _first + "–" + _last;
+  document.querySelectorAll(".n-months").forEach(el => el.textContent = SHEET_KEYS.length);
   buildHospDropdown();
   document.getElementById("myBadge").style.display = state.currentHosp===MY_HOSP?"":"none";
   document.getElementById("pDt").valueAsDate = new Date();
