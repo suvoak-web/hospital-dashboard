@@ -5,154 +5,171 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f2744">
 <title>PPFS NHSO — อัตราจ่ายและสิทธิประโยชน์ พ.ศ. 2568</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Noto+Serif+Thai:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  :root, [data-theme="dark"] {
-    --bg:#0b1220; --card:#141c2e; --card2:#1a2438; --line:#2a3a52;
-    --text:#f2f5f9; --muted:#94a3b8; --accent:#5eead4; --gold:#e8c47a;
-    --blue:#93c5fd; --red:#fca5a5; --chip:#1c2840; --green:#99f6e4;
-    --warnbg:#2a1820; --warnborder:#5c3040; --header:#0b1220f2;
-    --elig:#5eead4; --boxbg:#132e2a; --refbg:#121c2c;
+  /* Calm palette shared with nhso_mis.html */
+  :root, [data-theme="light"] {
+    --bg:#F2F5F3; --card:#FFFFFF; --card2:#F7FAF8; --line:#DCE5E1;
+    --text:#1F3530; --muted:#5E716B; --accent:#3E8A78; --gold:#8A6A1F;
+    --blue:#3B6E96; --red:#B5523F; --chip:#E8EFEB; --green:#2F7A66;
+    --warnbg:#FBF0EC; --warnborder:#EBC9BF; --elig:#2F7A66; --boxbg:#EEF6F2; --refbg:#F0F4F2;
+    --soft:#E9F2EE; --ontint:#FFFFFF;
   }
-  [data-theme="light"] {
-    --bg:#f8f6f3; --card:#ffffff; --card2:#faf8f6; --line:#e7e2db;
-    --text:#1c1917; --muted:#78716c; --accent:#0f766e; --gold:#b45309;
-    --blue:#1d4ed8; --red:#dc2626; --chip:#f5f0eb; --green:#047857;
-    --warnbg:#fef2f2; --warnborder:#fecaca; --header:#fffcfa;
-    --elig:#0f766e; --boxbg:#f0fdfa; --refbg:#f5f5f4;
+  [data-theme="dark"] {
+    --bg:#111C19; --card:#172622; --card2:#1B2C27; --line:#2A3F39;
+    --text:#E3EDE9; --muted:#9DB2AB; --accent:#6FBFA9; --gold:#D9B86A;
+    --blue:#8FB5D6; --red:#E59A88; --chip:#1F332D; --green:#7FCFB8;
+    --warnbg:#2B1D1A; --warnborder:#5A3A33; --elig:#7FCFB8; --boxbg:#16302A; --refbg:#1A2A25;
+    --soft:#18302A; --ontint:#0E1F1A;
   }
-  * { box-sizing: border-box; }
+  * { box-sizing:border-box; }
   body {
     margin:0; background:var(--bg); color:var(--text);
-    font-family: "Sarabun","Noto Sans Thai","Segoe UI",sans-serif;
-    font-size:16px; line-height:1.45;
+    font-family:"IBM Plex Sans Thai","Sarabun","Noto Sans Thai",system-ui,sans-serif;
+    font-size:16px; line-height:1.55;
   }
-  header {
-    position:sticky; top:0; z-index:20;
-    background:var(--header); backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--line); padding:12px 14px 10px;
+  /* credit.js adds a page-link pill row to every page; the sidebar already covers it here */
+  #ptk-quick { display:none !important; }
+
+  .pg-head { padding:22px 18px 4px; }
+  .pg-head h1 {
+    margin:0; font-family:"Noto Serif Thai",Georgia,serif; font-weight:600;
+    font-size:clamp(26px,3.6vw,38px); line-height:1.25; letter-spacing:-.01em;
   }
-  h1 { margin:0; font-size:20px; letter-spacing:-.2px; }
-  .sub { color:var(--muted); font-size:13px; margin-top:2px; }
-  .theme-row { display:flex; justify-content:space-between; align-items:center; margin-top:8px; }
+  .pg-head h1::after { content:""; display:block; width:52px; height:4px; border-radius:4px; background:var(--accent); margin-top:12px; }
+  .theme-row { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:12px; flex-wrap:wrap; }
+  .sub { color:var(--muted); font-size:14.5px; }
   .theme-btn {
+    border:1px solid var(--line); background:var(--card); color:var(--muted);
+    border-radius:999px; padding:6px 14px; font:inherit; font-size:13px; cursor:pointer;
+  }
+  .theme-btn:hover { color:var(--text); border-color:var(--accent); }
+
+  .band {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));
+    background:var(--soft); border-radius:18px; margin:20px 18px 6px; padding:4px 0;
+  }
+  .fig { padding:14px 20px; border-left:1px solid var(--line); }
+  .fig:first-child { border-left:0; }
+  .fig .lab { font-size:13px; color:var(--muted); line-height:1.4; }
+  .fig .big { font-family:"Noto Serif Thai",Georgia,serif; font-weight:400; font-size:28px; line-height:1.2; margin-top:6px; font-variant-numeric:tabular-nums; }
+  .fig .big.warn { color:var(--red); } .fig .big.acc { color:var(--accent); }
+  .fig .d { font-size:12px; color:var(--muted); }
+  @media (max-width:560px){ .fig{border-left:0;border-top:1px solid var(--line)} .fig:first-child{border-top:0} }
+
+  .tabs { display:flex; flex-wrap:wrap; gap:8px; padding:8px; margin:18px 18px 0; background:var(--soft); border:1px solid var(--line); border-radius:16px; }
+  .tab {
     border:1px solid var(--line); background:var(--card); color:var(--text);
-    border-radius:999px; padding:6px 12px; font-size:13px;
+    border-radius:11px; padding:9px 18px; font:inherit; font-size:15px; font-weight:500; cursor:pointer;
+    transition:background .15s, border-color .15s;
   }
+  .tab:hover { border-color:var(--accent); }
+  .tab.on { background:var(--accent); border-color:var(--accent); color:var(--ontint); font-weight:600; }
+
+  .toolbar { position:sticky; top:0; z-index:20; background:var(--bg); padding:12px 18px 8px; border-bottom:1px solid var(--line); }
   .search {
-    margin-top:10px; width:100%; border:1px solid var(--line); background:var(--card);
-    color:var(--text); border-radius:14px; padding:13px 16px; font-size:16px;
-    outline: none; transition: border-color .15s ease;
+    width:100%; border:1px solid var(--line); background:var(--card); color:var(--text);
+    border-radius:12px; padding:11px 16px; font:inherit; font-size:15.5px; outline:none; transition:border-color .15s;
   }
-  .search:focus { border-color: var(--accent); }
-  .chips { display:flex; gap:8px; overflow:auto; padding:10px 14px 4px; }
+  .search:focus { border-color:var(--accent); }
+  .chips { display:flex; gap:6px; overflow-x:auto; padding:10px 0 2px; align-items:center; scrollbar-width:none; }
+  .chips-lab { font-size:13px; color:var(--muted); white-space:nowrap; margin-right:4px; }
   .chip {
-    border:1px solid var(--line); background:var(--chip); color:var(--text);
-    border-radius:999px; padding:8px 14px; white-space:nowrap; font-size:14px;
-    transition: background .15s ease, color .15s ease;
+    border:1px solid transparent; background:var(--chip); color:var(--text);
+    border-radius:999px; padding:6px 13px; white-space:nowrap; font:inherit; font-size:13.5px; cursor:pointer;
+    transition:background .15s, color .15s;
   }
-  .chip.on { background:var(--accent); color:#08332c; border-color:var(--accent); font-weight:700; }
-  main { padding:6px 14px 80px; max-width:880px; margin:0 auto; }
-  .section-title { margin:18px 0 10px; font-size:20px; font-weight:700; letter-spacing:-.2px; color:var(--text); }
-  .bundle {
-    background:var(--card); border:1px solid var(--line);
-    border-radius:14px; padding:12px 14px; margin-bottom:8px;
-    display:flex; justify-content:space-between; gap:12px; align-items:center;
-    color:var(--text);
-  }
-  .bundle .bname { font-size:18px; font-weight:700; letter-spacing:-0.2px; line-height:1.3; margin-bottom:2px; }
-  .bundle b { font-size:18px; color:var(--accent); }
-  .bundle small { color:var(--muted); display:block; }
+  .chip:hover { border-color:var(--accent); }
+  .chip.on { background:var(--text); color:var(--bg); font-weight:600; }
+  button:focus-visible, .search:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+
+  main { padding:6px 18px 80px; }
+  .count { color:var(--muted); font-size:13px; margin:12px 2px 10px; }
+  .section-title { margin:20px 0 12px; font-size:19px; font-weight:600; }
+
   .card {
-    background:var(--card); border:1px solid var(--line); border-radius:18px;
-    margin-bottom:12px; overflow:hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,.08);
-    transition: transform .15s ease, box-shadow .15s ease;
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    margin-bottom:10px; overflow:hidden; transition:box-shadow .15s, border-color .15s;
   }
-  .card.open { box-shadow: 0 4px 12px rgba(0,0,0,.12); }
-  .card.strict { border-color:#7a3340; }
+  .card:hover { border-color:color-mix(in srgb,var(--accent) 45%,var(--line)); }
+  .card.open { box-shadow:0 6px 20px color-mix(in srgb,var(--text) 10%,transparent); }
+  .card.strict { border-left:4px solid var(--red); }
   .card button.head {
-    width:100%; text-align:left; background:transparent; color:inherit; border:0;
-    padding:14px; display:grid; grid-template-columns:1fr auto; gap:8px; align-items:start;
+    width:100%; text-align:left; background:transparent; color:inherit; border:0; cursor:pointer; font:inherit;
+    padding:14px 18px; display:grid; grid-template-columns:1fr auto; gap:14px; align-items:start;
   }
   .svc { color:var(--blue); font-size:13px; }
-  .title { font-size:18px; font-weight:700; margin-top:3px; letter-spacing:-0.2px; line-height:1.3; }
-  .meta { color:var(--muted); font-size:13px; margin-top:4px; }
-  .eligible-preview {
-    margin-top:6px; font-size:13px; color:var(--elig);
-    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
-  }
-  .warn-preview {
-    margin-top:4px; font-size:12px; color:var(--red); font-weight:600;
-  }
-  .rate { text-align:right; }
-  .rate strong { display:block; font-size:22px; color:var(--accent); }
+  .title { font-size:17px; font-weight:600; margin-top:2px; line-height:1.4; }
+  .warn-preview { margin-top:4px; font-size:12.5px; color:var(--red); font-weight:600; }
+  .rate { text-align:right; white-space:nowrap; }
+  .rate strong { display:block; font-family:"Noto Serif Thai",Georgia,serif; font-weight:400; font-size:24px; color:var(--accent); line-height:1.2; font-variant-numeric:tabular-nums; }
   .rate span { color:var(--muted); font-size:12px; }
-  .badge {
-    display:inline-block; margin-top:6px; margin-right:6px; font-size:12px;
-    border-radius:999px; padding:4px 9px; background:#334155; color:#f1f5f9;
-  }
-  .badge.hi { background:#422006; color:#fde68a; }
-  .badge.vol { background:#134e4a; color:#99f6e4; }
-  .badge.off { background:#450a0a; color:#fecaca; }
-  .badge.warn { background:#7f1d1d; color:#fecaca; }
-  .detail { display:none; border-top:1px solid var(--line); padding:12px 14px 14px; background:var(--card2); }
+  .badges { margin-top:8px; display:flex; flex-wrap:wrap; gap:6px; }
+  .badge { font-size:12px; border-radius:999px; padding:2px 10px; background:var(--chip); color:var(--muted); }
+  .badge.hi { background:color-mix(in srgb,var(--gold) 16%,transparent); color:var(--gold); }
+  .badge.vol { background:color-mix(in srgb,var(--accent) 15%,transparent); color:var(--green); }
+  .badge.warn { background:color-mix(in srgb,var(--red) 14%,transparent); color:var(--red); }
+  .more { font-size:12.5px; color:var(--muted); margin-top:8px; }
+  .card.open .more { display:none; }
+  .detail { display:none; border-top:1px solid var(--line); padding:14px 18px 16px; background:var(--card2); }
   .card.open .detail { display:block; }
-  .kv { margin:0 0 8px; }
-  .kv em { color:var(--gold); font-style:normal; font-weight:700; display:block; font-size:13px; }
-  .eligible-box {
-    background:var(--boxbg); border:1px solid var(--elig); border-radius:10px;
-    padding:10px 12px; margin-bottom:10px; color:var(--text);
+  .kv { margin:0 0 10px; }
+  .kv em { color:var(--gold); font-style:normal; font-weight:600; display:block; font-size:13px; }
+  .eligible-box { background:var(--boxbg); border-left:3px solid var(--elig); border-radius:8px; padding:10px 14px; margin-bottom:10px; }
+  .eligible-box em { color:var(--elig); font-style:normal; font-weight:600; display:block; font-size:13px; }
+  .must-box { background:var(--warnbg); border-left:3px solid var(--red); border-radius:8px; padding:10px 14px; margin-bottom:12px; }
+  .must-box em { color:var(--red); font-style:normal; font-weight:600; display:block; font-size:13px; }
+  .ref { margin-top:8px; padding:8px 12px; border-radius:8px; background:var(--refbg); color:var(--muted); font-size:13px; }
+
+  .bundle {
+    background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px 18px; margin-bottom:10px;
+    display:flex; justify-content:space-between; gap:14px; align-items:center;
   }
-  .eligible-box em { color:var(--elig); font-style:normal; font-weight:700; display:block; font-size:13px; }
-  .must-box {
-    background:var(--warnbg); border:1px solid var(--warnborder); border-radius:10px;
-    padding:10px 12px; margin-bottom:10px;
-  }
-  .must-box em { color:#ff9a9a; font-style:normal; font-weight:700; display:block; font-size:13px; }
-  .ref {
-    margin-top:8px; padding:8px 10px; border-radius:10px; background:var(--refbg);
-    color:var(--blue); font-size:13px;
-  }
-  .count { color:var(--muted); font-size:13px; margin:8px 0; }
-  footer {
-    color:var(--muted); font-size:12px; padding:8px 2px 24px; line-height:1.5;
-  }
-  .tabs { display:flex; gap:8px; margin-top:10px; }
-  .tab {
-    flex:1; border:1px solid var(--line); background:var(--card); color:var(--text);
-    border-radius:10px; padding:9px; font-size:14px;
-  }
-  .tab.on { background:#e8dcc8; color:#3f3428; font-weight:700; border-color:#d4c4a8; }
-  #bundles, #rules { display:none; }
-  .rule {
-    background:var(--card); border:1px solid var(--line); border-radius:14px;
-    padding:12px 14px; margin-bottom:8px;
-  }
+  .bundle .bname { font-size:17px; font-weight:600; line-height:1.35; margin-bottom:2px; }
+  .bundle b { display:block; font-family:"Noto Serif Thai",Georgia,serif; font-weight:400; font-size:24px; color:var(--accent); }
+  .bundle small { color:var(--muted); display:block; font-size:13px; }
+  .bundle .rate small { font-size:12px; }
+
+  .rule { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 18px; margin-bottom:10px; }
   .rule strong { color:var(--gold); }
-  .rule.warn { border-color:var(--warnborder); background:var(--warnbg); color:var(--text); }
+  .rule.warn { border-left:4px solid var(--red); background:var(--warnbg); }
+  #bundles, #rules { display:none; }
+  footer { color:var(--muted); font-size:12.5px; padding:16px 2px 24px; line-height:1.7; }
+  footer a { color:var(--accent); }
 
   /* Shell compatibility with credit.js */
-  body.ptk-has-shell header { top: 64px; }
-  body.ptk-has-shell main { margin-left: 0; }
-  /* PPFS is a reading list: cap width (beats credit.js full-width rule) */
+  body.ptk-has-shell .toolbar { top:64px; }
+  body.ptk-has-shell main { margin-left:0; }
   @media (min-width:901px){ html body.ptk-has-shell > main { max-width:1200px !important; margin-left:0 !important; margin-right:0 !important; } }
+  @media (min-width:901px){
+    .pg-head { padding:24px 24px 4px; max-width:1200px; }
+    .band, .tabs { margin-left:24px; margin-right:24px; max-width:1152px; }
+    .toolbar { padding-left:24px; padding-right:24px; }
+    .toolbar > * { max-width:1152px; }
+  }
+  @media (max-width:600px){ .toolbar { position:static; } }
+  @media (max-width:600px){ .pg-head{padding:16px 14px 0} .band,.tabs{margin-left:14px;margin-right:14px} .toolbar{padding:10px 14px 6px} main{padding:6px 14px 60px} .tab{padding:8px 13px;font-size:14px} .card button.head{padding:12px 14px} }
 </style>
 </head>
 <body>
-<header>
-  <h1>PPFS NHSO</h1>
+<div class="pg-head">
+  <h1>PPFS NHSO อัตราจ่ายสร้างเสริมสุขภาพ</h1>
   <div class="theme-row">
-    <div class="sub">PP Fee Schedule สปสช. · มีผล 1 ตุลาคม 2568</div>
-    <button class="theme-btn" id="themeBtn">ธีมสว่าง</button>
+    <div class="sub">PP Fee Schedule สปสช. พ.ศ. 2568 · มีผล 1 ตุลาคม 2568 · จ่ายตามรายการ คนไทยทุกสิทธิ</div>
+    <button class="theme-btn" id="themeBtn" type="button">ธีมมืด</button>
   </div>
-  <div class="tabs">
-    <button class="tab on" data-view="list">รายการจ่าย</button>
-    <button class="tab" data-view="bundles">ชุดโอกาส</button>
-    <button class="tab" data-view="rules">สิทธิและเงื่อนไข</button>
-  </div>
-  <input class="search" id="q" placeholder="ค้นหา เช่น ฝากครรภ์, HPV, IGRA, ธาตุเหล็ก">
-</header>
-<div class="chips" id="chips"></div>
+</div>
+<div class="band" id="band"></div>
+<div class="tabs" role="tablist">
+  <button class="tab on" data-view="list" type="button">รายการจ่าย</button>
+  <button class="tab" data-view="bundles" type="button">ชุดโอกาส</button>
+  <button class="tab" data-view="rules" type="button">สิทธิและเงื่อนไข</button>
+</div>
+<div class="toolbar" id="toolbar">
+  <input class="search" id="q" type="search" placeholder="ค้นหา เช่น ฝากครรภ์, HPV, IGRA, ธาตุเหล็ก" aria-label="ค้นหารายการ">
+  <div class="chips" id="chips" role="group" aria-label="กรองตามหมวด"><span class="chips-lab">กรอง:</span></div>
+</div>
 <main>
   <div id="list"></div>
   <div id="bundles"></div>
@@ -175,13 +192,14 @@ const chips = document.getElementById("chips");
 groups.forEach(g => {
   const b = document.createElement("button");
   b.className = "chip" + (g===filter?" on":"");
+  b.type = "button";
   b.textContent = g;
   b.onclick = () => { filter = g; renderChips(); render(); };
   b.dataset.g = g;
   chips.appendChild(b);
 });
 function renderChips(){
-  [...chips.children].forEach(c => c.classList.toggle("on", c.dataset.g===filter));
+  [...chips.querySelectorAll(".chip")].forEach(c => c.classList.toggle("on", c.dataset.g===filter));
 }
 function money(n){
   return Number(n).toLocaleString("th-TH", {minimumFractionDigits: n%1?2:0, maximumFractionDigits:2});
@@ -200,15 +218,17 @@ function renderList(){
   const box = document.getElementById("list");
   box.innerHTML = `<div class="count">พบ ${rows.length} รายการ จาก ${DATA.items.length}</div>` + rows.map(it => `
     <article class="card ${it.strict?'strict':''}" data-id="${it.id}">
-      <button class="head">
+      <button class="head" type="button" aria-expanded="false">
         <div>
           <div class="svc">${it.service} · ${it.group}</div>
           <div class="title">${it.sub}</div>
-          <div class="eligible-preview">ผู้ได้รับสิทธิ: ${it.eligible}</div>
-          ${it.strict?'<div class="warn-preview">ห้ามขาด / ถ้าไม่ครบไม่ได้เงิน</div>':''}
-          <span class="badge ${it.tier==='ตั๋วสูง'?'hi':it.tier==='ปริมาณสูง'?'vol':'off'}">${it.tier}</span>
-          <span class="badge">${it.verify==='ต้อง'?'ต้องยืนยันตัวตน':'ยกเว้นยืนยันตัวตน'}</span>
-          ${it.strict?'<span class="badge warn">เข้มงวด</span>':''}
+          ${it.strict?'<div class="warn-preview">ห้ามขาดรายการใด ถ้าไม่ครบไม่ได้เงิน</div>':''}
+          <div class="badges">
+            ${it.strict?'<span class="badge warn">เข้มงวด</span>':''}
+            <span class="badge ${it.tier==='ตั๋วสูง'?'hi':it.tier==='ปริมาณสูง'?'vol':'off'}">${it.tier}</span>
+            <span class="badge">${it.verify==='ต้อง'?'ต้องยืนยันตัวตน':'ยกเว้นยืนยันตัวตน'}</span>
+          </div>
+          <div class="more">กดเพื่อดูผู้ได้รับสิทธิและเงื่อนไข</div>
         </div>
         <div class="rate"><strong>${money(it.rate)}</strong><span>${it.unit}</span></div>
       </button>
@@ -221,7 +241,7 @@ function renderList(){
         <div class="ref">อ้างอิงเล่มรวมหน้า ${it.page} · เอกสารหมายเลข 1 แนบท้ายประกาศ PPFS พ.ศ. 2568 · หลักฐานเรียกเก็บอยู่ในเอกสารหมายเลข 2 ตั้งแต่หน้า 892</div>
       </div>
     </article>`).join("");
-  box.querySelectorAll(".head").forEach(btn => btn.onclick = () => btn.closest(".card").classList.toggle("open"));
+  box.querySelectorAll(".head").forEach(btn => btn.onclick = () => { const on = btn.closest(".card").classList.toggle("open"); btn.setAttribute("aria-expanded", on); });
 }
 function renderBundles(){
   document.getElementById("bundles").innerHTML = `<div class="section-title">มูลค่าต่อคนเมื่อทำครบเงื่อนไข</div>` + DATA.bundles.map(b => `
@@ -247,8 +267,7 @@ function render(){
   document.getElementById("list").style.display = view==="list" ? "block" : "none";
   document.getElementById("bundles").style.display = view==="bundles" ? "block" : "none";
   document.getElementById("rules").style.display = view==="rules" ? "block" : "none";
-  document.getElementById("chips").style.display = view==="list" ? "flex" : "none";
-  document.getElementById("q").style.display = view==="list" ? "block" : "none";
+  document.getElementById("toolbar").style.display = view==="list" ? "block" : "none";
   if (view==="list") renderList();
   if (view==="bundles") renderBundles();
   if (view==="rules") renderRules();
@@ -265,13 +284,35 @@ const themeBtn = document.getElementById("themeBtn");
 function applyTheme(t){
   root.setAttribute("data-theme", t);
   themeBtn.textContent = t === "dark" ? "ธีมสว่าง" : "ธีมมืด";
-  try { localStorage.setItem("ppfs-theme", t); } catch(e){}
+  try { localStorage.setItem("ppfs-theme-v2", t); } catch(e){}
 }
-const saved = (function(){ try { return localStorage.getItem("ppfs-theme"); } catch(e){ return null; } })();
-applyTheme(saved || "dark");
+// v2 key: everyone starts from the calm light theme (or their system dark mode) once
+const saved = (function(){ try { return localStorage.getItem("ppfs-theme-v2"); } catch(e){ return null; } })();
+const sysDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+applyTheme(saved || (sysDark ? "dark" : "light"));
 themeBtn.onclick = () => applyTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
 
 document.getElementById("q").oninput = renderList;
+
+// summary band
+(function(){
+  const it = DATA.items, nf = n => Number(n).toLocaleString("th-TH");
+  const topB = DATA.bundles.slice().sort((a,b)=>b.value-a.value)[0];
+  const figs = [
+    ["รายการที่จ่ายตามรายการ", nf(it.length), "", "รายการ"],
+    ["เข้มงวด ขาดอย่างเดียวไม่ได้เงิน", nf(it.filter(x=>x.strict).length), "warn", "รายการ"],
+    ["ปริมาณสูง ทำบ่อย เงินรวมมาก", nf(it.filter(x=>x.tier==="ปริมาณสูง").length), "acc", "รายการ"],
+    ["ชุดโอกาสมูลค่าสูงสุดต่อคน", nf(topB.value), "acc", topB.name]
+  ];
+  const band = document.getElementById("band");
+  figs.forEach(([lab,val,cls,d]) => {
+    const f = document.createElement("div"); f.className = "fig";
+    const a = document.createElement("div"); a.className = "lab"; a.textContent = lab;
+    const b = document.createElement("div"); b.className = "big " + cls; b.textContent = val;
+    const c = document.createElement("div"); c.className = "d"; c.textContent = d;
+    f.append(a,b,c); band.appendChild(f);
+  });
+})();
 render();
 </script>
   <script src="credit.js"></script>
