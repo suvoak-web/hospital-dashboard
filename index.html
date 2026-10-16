@@ -208,10 +208,12 @@ fetch('data/solar.json?v=' + Date.now()).then(function (r) { if (!r.ok) throw 0;
   var rt = d.realtime || {}, sm = d.summary || {}, TARIFF = 4.2, f = function (n, k) { return Number(n).toLocaleString('th-TH', { maximumFractionDigits: k == null ? 0 : k }); };
   var total = rt.total_kwh || sm.pv_kwh;
   if (total) document.getElementById('sol-power').textContent = f(total / 1000, 1);
-  var gm = d.grid && d.grid.monthly && d.grid.monthly[d.grid.monthly.length - 1];
-  if (gm && gm.both_days) { document.getElementById('sol-day').textContent = f(gm.both_pv_kwh / (gm.both_grid_kwh + gm.both_pv_kwh) * 100) + '%'; document.getElementById('sol-day-lbl').textContent = 'ของไฟทั้ง รพ.'; }
+  var gms = (d.grid && d.grid.monthly) || [], gg = 0, gp = 0;
+  gms.forEach(function (m) { gg += m.both_grid_kwh || 0; gp += m.both_pv_kwh || 0; });
+  if (gp) { document.getElementById('sol-day').textContent = f(gp / (gg + gp) * 100) + '%'; document.getElementById('sol-day-lbl').textContent = 'ของไฟทั้ง รพ.'; }
   else if (sm.use_kwh) document.getElementById('sol-day').textContent = f(sm.self_kwh / sm.use_kwh * 100) + '%';
-  if (sm.pv_kwh && total) document.getElementById('sol-save').textContent = '฿' + f(total * TARIFF / 1000, 0) + 'K';
+  if (sm.pv_kwh && total) var outK = d.grid && d.grid.zero_intervals ? d.grid.zero_intervals * 66 * 0.25 : 0;
+  document.getElementById('sol-save').textContent = '฿' + f((total - outK) * TARIFF / 1000, 0) + 'K';
   document.getElementById('sol-upd').textContent = d.sample ? 'ข้อมูลตัวอย่าง' : (d.report_date ? 'รายงานล่าสุด ' + new Date(d.report_date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' }) : '');
 }).catch(function () {});
 </script>

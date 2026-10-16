@@ -191,6 +191,7 @@ def day_from_hours(hs):
 
 def build_grid(ami, info, solar_daily):
     """สรุปมิเตอร์หลักของ รพ. รวมกับไฟโซลาร์ → ไฟทั้งโรงพยาบาล"""
+    first_pv = min(solar_daily) if solar_daily else "0000"
     days = defaultdict(lambda: {"kwh": 0.0, "peak_kwh": 0.0, "n": 0, "max15": 0.0, "max_at": None, "hours": [0.0] * 24})
     for (d, hm), (v, peak) in ami.items():
         x = days[d]
@@ -233,6 +234,9 @@ def build_grid(ami, info, solar_daily):
         "profile_workday": profile(lambda x: x["workday"]), "profile_holiday": profile(lambda x: not x["workday"]),
         "min_midday_kwh_per_h": r2(lowest[2]) if lowest else None,
         "min_15min_kwh": r2(min(v for v, _ in ami.values())),
+        # ช่วง 15 นาทีกลางวันที่มิเตอร์หลักแทบเป็นศูนย์ = โซลาร์มากกว่าไฟที่ทั้ง รพ. ใช้ อาจมีไฟไหลออกไปการไฟฟ้า
+        "zero_intervals": sum(1 for (d, hm), (v, _) in ami.items() if v <= 0.5 and 8 <= int(hm[:2]) < 17 and d >= first_pv),
+        "zero_days": len({d for (d, hm), (v, _) in ami.items() if v <= 0.5 and 8 <= int(hm[:2]) < 17 and d >= first_pv}),
     }
 
 
