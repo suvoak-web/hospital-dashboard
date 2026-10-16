@@ -201,11 +201,17 @@ def main():
     daily = {}
     for d, hs in hourly_days.items():
         daily[d] = day_from_hours(hs)
+    today_bkk = datetime.now(BKK).strftime("%Y-%m-%d")
     for d, rec in daily_rows.items():
         if d in daily and daily[d]["complete"]:
             daily[d].update({k: v for k, v in rec.items() if v is not None and k not in daily[d]})
             continue
-        base = {"last_hour": "23:00", "complete": True}
+        hourly_part = daily.get(d)
+        if hourly_part and (rec.get("pv_kwh") or 0) < (hourly_part["pv_kwh"] or 0):
+            continue  # รายงานรายชั่วโมงของวันนี้ใหม่กว่าแถวในรายงานรายเดือน
+        # แถวของวันนี้ในรายงานรายเดือน (export ระหว่างวัน) ยังไม่ครบวัน
+        partial = d == today_bkk or (hourly_part is not None and not hourly_part["complete"])
+        base = {"last_hour": None if partial else "23:00", "complete": not partial}
         base.update(rec)
         if base.get("self_kwh") is None and base.get("pv_kwh") is not None and base.get("export_kwh") is not None:
             base["self_kwh"] = base["pv_kwh"] - base["export_kwh"]

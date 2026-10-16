@@ -197,7 +197,7 @@ function render(d){
   // ----- ส่วนหัว -----
   if (d.report_date) $('updated').textContent = 'รายงานล่าสุด ' + thDate(d.report_date);
   $('health').className = 'pill ' + (d.report_complete ? 'ok' : 'warn');
-  $('health').innerHTML = '<i></i>' + (d.report_complete ? 'ข้อมูลครบทั้งวัน' : 'วันล่าสุดมีข้อมูลถึง ' + (d.report_last_hour || '—') + ' น.');
+  $('health').innerHTML = '<i></i>' + (d.report_complete ? 'ข้อมูลครบทั้งวัน' : d.report_last_hour ? 'วันล่าสุดมีข้อมูลถึง ' + d.report_last_hour + ' น.' : 'วันล่าสุดยังไม่ครบวัน');
   var notes = [];
   if (d.sample) notes.push('ตอนนี้เป็น<b>ข้อมูลตัวอย่าง</b>');
   var miss = (sm.missing_months || []).map(function(m){ return mLabel(m); });
@@ -214,7 +214,7 @@ function render(d){
   var knownSave = (sm.self_kwh || 0) * TARIFF;
   var unknownKwh = Math.max(0, total - (sm.pv_kwh || 0));
   $('tSave').textContent = fmt(knownSave + unknownKwh * selfRate * TARIFF);
-  $('tSaveSub').textContent = unknownKwh > 1 ? 'จากรายงาน ฿' + fmt(knownSave) + ' + ประมาณช่วงที่ไม่มีรายงาน' : 'โซลาร์ที่ใช้เอง ' + fmt(sm.self_kwh) + ' kWh';
+  $('tSaveSub').textContent = unknownKwh > total * 0.01 ? 'จากรายงาน ฿' + fmt(knownSave) + ' + ประมาณช่วงที่ไม่มีรายงาน' : 'โซลาร์ที่ใช้เอง ' + fmt(sm.self_kwh) + ' kWh';
   var share = sm.use_kwh ? sm.self_kwh / sm.use_kwh * 100 : null;
   $('tShare').textContent = fmt(share);
   $('tShareSub').textContent = 'ใช้เองได้ ' + fmt(selfRate * 100) + '% ของที่ผลิต ที่เหลือส่งคืนกริด';
@@ -281,7 +281,8 @@ function render(d){
   } else { $('mixBox').hidden = true; $('mixNone').hidden = false; $('lgUse').hidden = true; }
   $('dPv').textContent = fmt(hpv, 1); $('dPeak').textContent = fmt(d.peak_kw, 1);
   $('dExp').textContent = fmt(hexp, 1); $('dSave').textContent = fmt(Math.max(0, hpv - hexp) * TARIFF);
-  $('hourNote').textContent = d.report_complete ? '' : 'รายงานวันนี้ export ระหว่างวัน มีข้อมูลถึง ' + (d.report_last_hour || '—') + ' น. — export หลัง 19:00 น. จะได้ครบทั้งวัน';
+  var lastH = hourly.length ? hourly[hourly.length - 1].h : null;
+  $('hourNote').textContent = lastH && lastH !== '23:00' ? 'รายงานรายชั่วโมงวันนี้ export ระหว่างวัน มีข้อมูลถึง ' + lastH + ' น. — export หลัง 19:00 น. จะได้ครบทั้งวัน' : '';
   new Chart($('cHour'), {
     data: { labels: hourly.map(function(r){ return r.h; }), datasets: [
       { type: 'bar', label: 'โซลาร์', data: hourly.map(function(r){ return r.pv_kwh; }), backgroundColor: '#D97706', borderRadius: 4, order: 2 },
