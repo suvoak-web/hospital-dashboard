@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 """แปลงไฟล์รายงานที่ export จาก FusionSolar ให้เป็น data/solar.json
 
-วางไฟล์ .xlsx ไว้ในโฟลเดอร์ data/solar/reports/ (ชื่อไฟล์อะไรก็ได้)
-- Plant Report รายวัน   → ข้อมูลรายชั่วโมง: ผลิต (PV Yield), ส่งออก (Export), ซื้อเข้า (Import), รายได้
-- Inverter Report รายวัน → ผลิตวันนี้ / สะสม / กำลังสูงสุด ของแต่ละอินเวอร์เตอร์ (วันที่อ่านจากชื่อไฟล์ เช่น _16-10-2026)
+วางไฟล์ .xlsx ไว้ในโฟลเดอร์ data/solar/reports/ (ชื่อไฟล์อะไรก็ได้) รองรับ 4 แบบ
+- Plant Report รายวัน    → แถวละ 1 ชั่วโมง  (ผลิต, ส่งออก, ซื้อเข้า)          ใช้ทำกราฟรายชั่วโมง
+- Plant Report รายเดือน  → แถวละ 1 วัน     (ผลิต, ใช้ไฟ, ใช้เอง, กำลังสูงสุด, CO₂) ใช้ทำกราฟรายวัน/รายเดือน
+- Inverter Report รายวัน  → ผลิต/สะสม/กำลังสูงสุด ของแต่ละเครื่อง  (วันที่จากชื่อไฟล์ เช่น _16-10-2026)
+- Inverter Report รายเดือน → ผลิตของแต่ละเครื่องในเดือนนั้น         (เดือนจากชื่อไฟล์ เช่น _04-2026)
 
-สคริปต์อ่านทุกไฟล์ใหม่ทุกครั้ง ถ้าวันเดียวกันมีหลายไฟล์ (เช่น export ตอนสายแล้ว export ซ้ำตอนเย็น)
-จะใช้ไฟล์ที่มีข้อมูลครบกว่า ไม่ต้องลบไฟล์เก่า
+สคริปต์อ่านทุกไฟล์ใหม่ทุกครั้ง ถ้าข้อมูลวันเดียวกันมาจากหลายไฟล์ จะใช้ชุดที่ครบกว่า ไม่ต้องลบไฟล์เก่า
 
     pip install openpyxl
     python3 scripts/import_solar_reports.py
 """
+import calendar
 import json
 import re
 import sys
@@ -35,6 +37,10 @@ def num(v):
         return None
 
 
+def r2(x):
+    return None if x is None else round(x, 2)
+
+
 def norm(h):
     return re.sub(r"[^a-z0-9]", "", str(h or "").lower())
 
@@ -47,7 +53,7 @@ def rows_of(path):
 def find_header(rows, must):
     for i, r in enumerate(rows[:10]):
         keys = [norm(c) for c in r]
-        if all(any(m in k for k in keys) for m in must):
+        if all(any(k.startswith(m) for k in keys) for m in must):
             return i, keys
     return None, None
 
@@ -60,70 +66,95 @@ def col(keys, *names):
     return None
 
 
+def getter(row, keys):
+    def g(*names):
+        c = col(keys, *names)
+        return num(row[c]) if c is not None and c < len(row) else None
+    return g
+
+
+def parse_time(v):
+    if isinstance(v, datetime):
+        return v, len(str(v)) > 10
+    s = str(v or "").strip()
+    for fmt, hourly in (("%Y-%m-%d %H:%M:%S", True), ("%Y-%m-%d %H:%M", True), ("%Y-%m-%d", False)):
+        try:
+            return datetime.strptime(s, fmt), hourly
+        except ValueError:
+            pass
+    return None, None
+
+
 def parse_plant(rows):
-    """คืน {date: {"hours": {hh: {...}}}}"""
+    """คืน (hourly_days, daily_rows) — hourly_days: {date: {HH:00: {...}}}, daily_rows: {date: {...}}"""
     i, keys = find_header(rows, ["statisticalperiod", "pvyield"])
     if i is None:
         return None
     c_t = col(keys, "statisticalperiod")
-    c_pv = col(keys, "pvyield")
-    c_inv = col(keys, "inverteryield")
-    c_exp = col(keys, "export")
-    c_imp = col(keys, "import")
-    c_rev = col(keys, "revenue")
-    c_rad = col(keys, "globalirradiation")
-    days = defaultdict(dict)
+    hourly, daily = defaultdict(dict), {}
     for r in rows[i + 1:]:
-        t = r[c_t] if c_t is not None and c_t < len(r) else None
-        if isinstance(t, datetime):
-            dt = t
-        else:
-            try:
-                dt = datetime.strptime(str(t).strip()[:16], "%Y-%m-%d %H:%M")
-            except ValueError:
-                continue
-        get = lambda c: num(r[c]) if c is not None and c < len(r) else None  # noqa: E731
-        pv = get(c_pv)
+        dt, is_hour = parse_time(r[c_t] if c_t < len(r) else None)
+        if dt is None:
+            continue
+        g = getter(r, keys)
+        pv = g("pvyield")
         if pv is None:
-            pv = get(c_inv)
-        days[dt.strftime("%Y-%m-%d")][dt.strftime("%H:00")] = {
-            "pv_kwh": pv, "export_kwh": get(c_exp), "import_kwh": get(c_imp),
-            "revenue": get(c_rev), "radiation": get(c_rad),
-        }
-    return days
+            pv = g("inverteryield")
+        rec = {"pv_kwh": pv, "export_kwh": g("export"), "import_kwh": g("import"), "revenue": g("revenue")}
+        if is_hour:
+            hourly[dt.strftime("%Y-%m-%d")][dt.strftime("%H:00")] = rec
+        else:
+            rec.update({"use_kwh": g("consumption"), "self_kwh": g("selfconsumptionkwh"),
+                        "peak_kw": g("peakpower"), "co2_t": g("co2avoided", "coavoided"), "total_kwh": g("totalyield"),
+                        "irradiation": g("globalirradiation")})
+            if pv is not None or rec["use_kwh"] is not None:
+                daily[dt.strftime("%Y-%m-%d")] = rec
+    return hourly, daily
 
 
 def parse_inverters(rows):
-    i, keys = find_header(rows, ["devicename", "totalyield"])
+    i, keys = find_header(rows, ["devicename", "yield"])
     if i is None:
         return None
-    c_n, c_y, c_t = col(keys, "devicename"), col(keys, "yield"), col(keys, "totalyield")
-    c_p, c_h, c_cap = col(keys, "peakacpower"), col(keys, "gridconnectionduration"), col(keys, "totalstringcapacity")
+    c_n = col(keys, "devicename")
     out = []
     for r in rows[i + 1:]:
-        if c_n is None or c_n >= len(r) or not r[c_n]:
+        if c_n >= len(r) or not r[c_n]:
             continue
-        g = lambda c: num(r[c]) if c is not None and c < len(r) else None  # noqa: E731
-        out.append({"name": str(r[c_n]).strip(), "day_kwh": g(c_y), "total_kwh": g(c_t),
-                    "peak_kw": g(c_p), "hours": g(c_h), "capacity_kwp": g(c_cap)})
+        g = getter(r, keys)
+        out.append({"name": str(r[c_n]).strip(), "kwh": g("yield"), "total_kwh": g("totalyield"),
+                    "peak_kw": g("peakacpower"), "hours": g("gridconnectionduration")})
     return out
 
 
-def date_from_name(name):
-    m = re.search(r"(\d{1,2})-(\d{1,2})-(\d{4})", name)
+def period_from_name(name):
+    """('day', 'YYYY-MM-DD') หรือ ('month', 'YYYY-MM') จากชื่อไฟล์"""
+    m = re.search(r"(?<!\d)(\d{1,2})-(\d{1,2})-(\d{4})(?!\d)", name)
     if m:
         d, mo, y = map(int, m.groups())
-        return f"{y:04d}-{mo:02d}-{d:02d}"
-    m = re.search(r"(\d{4})-(\d{2})-(\d{2})", name)
-    return "-".join(m.groups()) if m else None
+        return "day", f"{y:04d}-{mo:02d}-{d:02d}"
+    m = re.search(r"(?<!\d)(\d{1,2})-(\d{4})(?!\d)", name)
+    if m:
+        mo, y = map(int, m.groups())
+        return "month", f"{y:04d}-{mo:02d}"
+    return None, None
 
 
 def filled(hours):
     return sum(1 for h in hours.values() if h.get("pv_kwh") is not None or h.get("import_kwh") is not None)
 
 
-def r2(x):
-    return None if x is None else round(x, 2)
+def day_from_hours(hs):
+    pv = sum(h["pv_kwh"] or 0 for h in hs.values())
+    meter = any(h["import_kwh"] is not None or h["export_kwh"] is not None for h in hs.values())
+    exp = sum(h["export_kwh"] or 0 for h in hs.values())
+    imp = sum(h["import_kwh"] or 0 for h in hs.values())
+    last = max((k for k, v in hs.items() if v.get("pv_kwh") is not None or v.get("import_kwh") is not None), default=None)
+    return {
+        "pv_kwh": pv, "export_kwh": exp if meter else None, "import_kwh": imp if meter else None,
+        "use_kwh": pv - exp + imp if meter else None, "self_kwh": pv - exp if meter else None,
+        "revenue": sum(h["revenue"] or 0 for h in hs.values()), "last_hour": last, "complete": last == "23:00",
+    }
 
 
 def main():
@@ -131,8 +162,10 @@ def main():
     if not files:
         sys.exit(f"ไม่พบไฟล์ .xlsx ใน {REPORTS}")
 
-    plant = {}      # date -> hours
-    invs = {}       # date -> list
+    hourly_days = {}            # date -> {hour: rec}
+    daily_rows = {}             # date -> rec (จากรายงานรายเดือน)
+    inv_day = {}                # date -> [..]
+    inv_month = {}              # YYYY-MM -> [..]
     skipped = []
     for f in files:
         try:
@@ -142,98 +175,130 @@ def main():
             continue
         p = parse_plant(rows)
         if p:
-            for d, hours in p.items():
-                old = plant.get(d)
-                if old is None or (filled(hours), sum(h["pv_kwh"] or 0 for h in hours.values())) >= \
-                        (filled(old), sum(h["pv_kwh"] or 0 for h in old.values())):
-                    plant[d] = hours
+            hours, days = p
+            for d, hs in hours.items():
+                if d not in hourly_days or filled(hs) >= filled(hourly_days[d]):
+                    hourly_days[d] = hs
+            daily_rows.update(days)
             continue
         inv = parse_inverters(rows)
         if inv:
-            d = date_from_name(f.name)
-            if not d:
-                skipped.append(f"{f.name}: Inverter Report แต่หาวันที่จากชื่อไฟล์ไม่เจอ")
-                continue
-            tot = sum(x["total_kwh"] or 0 for x in inv)
-            if d not in invs or tot >= sum(x["total_kwh"] or 0 for x in invs[d]):
-                invs[d] = inv
+            kind, key = period_from_name(f.name)
+            if kind == "day":
+                if key not in inv_day or sum(x["kwh"] or 0 for x in inv) >= sum(x["kwh"] or 0 for x in inv_day[key]):
+                    inv_day[key] = inv
+            elif kind == "month":
+                inv_month[key] = inv
+            else:
+                skipped.append(f"{f.name}: Inverter Report แต่หาวันที่/เดือนจากชื่อไฟล์ไม่เจอ")
             continue
         skipped.append(f"{f.name}: ไม่รู้จักรูปแบบไฟล์ (ต้องเป็น Plant Report หรือ Inverter Report)")
 
-    if not plant and not invs:
+    if not (hourly_days or daily_rows or inv_day or inv_month):
         sys.exit("ไม่มีไฟล์ที่อ่านได้:\n  " + "\n  ".join(skipped))
 
-    # สรุปรายวัน
-    daily = []
-    for d in sorted(plant):
-        hs = plant[d]
-        pv = sum(h["pv_kwh"] or 0 for h in hs.values())
-        exp = sum(h["export_kwh"] or 0 for h in hs.values())
-        imp = sum(h["import_kwh"] or 0 for h in hs.values())
-        has_meter = any(h["import_kwh"] is not None or h["export_kwh"] is not None for h in hs.values())
-        last = max((h for h, v in hs.items() if v.get("pv_kwh") is not None or v.get("import_kwh") is not None), default=None)
-        daily.append({
-            "d": d, "pv_kwh": r2(pv), "export_kwh": r2(exp) if has_meter else None,
-            "import_kwh": r2(imp) if has_meter else None,
-            "use_kwh": r2(pv - exp + imp) if has_meter else None,
-            "revenue": r2(sum(h["revenue"] or 0 for h in hs.values())),
-            "last_hour": last, "complete": last == "23:00",
-        })
+    # รวมข้อมูลรายวัน: แถวจากรายงานรายเดือน (สรุปทั้งวัน) มาก่อน ยกเว้นรายงานรายชั่วโมงของวันนั้นครบวัน
+    daily = {}
+    for d, hs in hourly_days.items():
+        daily[d] = day_from_hours(hs)
+    for d, rec in daily_rows.items():
+        if d in daily and daily[d]["complete"]:
+            daily[d].update({k: v for k, v in rec.items() if v is not None and k not in daily[d]})
+            continue
+        base = {"last_hour": "23:00", "complete": True}
+        base.update(rec)
+        if base.get("self_kwh") is None and base.get("pv_kwh") is not None and base.get("export_kwh") is not None:
+            base["self_kwh"] = base["pv_kwh"] - base["export_kwh"]
+        daily[d] = base
 
-    latest = max(list(plant) + list(invs))
-    hs = plant.get(latest, {})
+    dates = sorted(daily)
+    latest = max(dates + list(inv_day)) if (dates or inv_day) else None
+
+    # รายเดือน: ต่อเนื่องตั้งแต่เดือนแรกถึงเดือนล่าสุด เดือนที่ไม่มีรายงานเป็น null
+    months = sorted({d[:7] for d in dates} | set(inv_month))
+    monthly = []
+    if months:
+        y, m = map(int, months[0].split("-"))
+        ly, lm = map(int, months[-1].split("-"))
+        while (y, m) <= (ly, lm):
+            key = f"{y:04d}-{m:02d}"
+            ds = [daily[d] for d in dates if d.startswith(key)]
+            rec = {"m": key, "days": len(ds), "days_in_month": calendar.monthrange(y, m)[1]}
+            if ds:
+                s = lambda k: r2(sum(x.get(k) or 0 for x in ds)) if any(x.get(k) is not None for x in ds) else None  # noqa: E731
+                rec.update({"pv_kwh": s("pv_kwh"), "use_kwh": s("use_kwh"), "self_kwh": s("self_kwh"),
+                            "export_kwh": s("export_kwh"), "import_kwh": s("import_kwh"), "co2_t": s("co2_t"),
+                            "peak_kw": r2(max((x.get("peak_kw") or 0 for x in ds), default=0)) or None})
+            elif key in inv_month:
+                rec.update({"pv_kwh": r2(sum(x["kwh"] or 0 for x in inv_month[key])), "days": None})
+            else:
+                rec["pv_kwh"] = None
+            monthly.append(rec)
+            y, m = (y + 1, 1) if m == 12 else (y, m + 1)
+
+    # รายชั่วโมงของวันล่าสุดที่มีรายงานรายชั่วโมง
+    hdate = max(hourly_days) if hourly_days else None
     hourly = []
-    for h in sorted(hs):
-        v = hs[h]
+    for h in sorted(hourly_days.get(hdate, {})):
+        v = hourly_days[hdate][h]
         meter = v["import_kwh"] is not None or v["export_kwh"] is not None
-        pv = v["pv_kwh"] or 0
         hourly.append({
             "h": h, "pv_kwh": r2(v["pv_kwh"]),
-            "use_kwh": r2(pv - (v["export_kwh"] or 0) + (v["import_kwh"] or 0)) if meter else None,
+            "use_kwh": r2((v["pv_kwh"] or 0) - (v["export_kwh"] or 0) + (v["import_kwh"] or 0)) if meter else None,
             "grid_kwh": r2(v["export_kwh"]), "import_kwh": r2(v["import_kwh"]),
         })
-    # ตัดชั่วโมงท้ายที่ยังไม่มีข้อมูล (export ระหว่างวัน)
     while hourly and hourly[-1]["pv_kwh"] is None and hourly[-1]["import_kwh"] is None:
         hourly.pop()
 
-    monthly = defaultdict(lambda: {"pv_kwh": 0, "days": 0})
-    for r in daily:
-        m = monthly[r["d"][:7]]
-        m["pv_kwh"] += r["pv_kwh"] or 0
-        m["days"] += 1
-
-    today = next((r for r in daily if r["d"] == latest), None)
-    inv_latest = invs.get(latest) or (invs[max(invs)] if invs else [])
-    month_key = latest[:7]
+    today = daily.get(latest, {})
+    inv_latest = inv_day.get(latest) or (inv_day[max(inv_day)] if inv_day else [])
+    total_inv = sum(x["total_kwh"] or 0 for x in inv_latest) if inv_latest and all(x["total_kwh"] is not None for x in inv_latest) else None
+    total_plant = max((daily[d].get("total_kwh") or 0 for d in dates), default=0) or None
+    total_sum = sum(daily[d].get("pv_kwh") or 0 for d in dates)
+    total_kwh = max(v for v in (total_inv, total_plant, total_sum) if v is not None)
+    mkey = latest[:7] if latest else None
+    mrec = next((x for x in monthly if x["m"] == mkey), {})
 
     out = {
         "source": "report",
         "sample": False,
         "plant": "รพ.พระทองคำ",
+        "first_date": dates[0] if dates else None,
         "report_date": latest,
-        "report_complete": bool(today and today["complete"]),
-        "report_last_hour": today["last_hour"] if today else None,
+        "report_complete": bool(today.get("complete")),
+        "report_last_hour": today.get("last_hour"),
         "updated": datetime.now(BKK).isoformat(timespec="minutes"),
-        "peak_kw": r2(sum(x["peak_kw"] or 0 for x in inv_latest)) if inv_latest else None,
+        "peak_kw": r2(today.get("peak_kw") or (sum(x["peak_kw"] or 0 for x in inv_latest) if inv_latest else None)),
         "realtime": {
-            "day_kwh": today["pv_kwh"] if today else r2(sum(x["day_kwh"] or 0 for x in inv_latest)),
-            "month_kwh": r2(monthly[month_key]["pv_kwh"]) if month_key in monthly else None,
-            "month_days": monthly[month_key]["days"] if month_key in monthly else 0,
-            "total_kwh": r2(sum(x["total_kwh"] or 0 for x in inv_latest)) if inv_latest else None,
-            "day_export_kwh": today["export_kwh"] if today else None,
-            "day_income": today["revenue"] if today else None,
+            "day_kwh": r2(today.get("pv_kwh")),
+            "day_export_kwh": r2(today.get("export_kwh")),
+            "day_use_kwh": r2(today.get("use_kwh")),
+            "month_kwh": mrec.get("pv_kwh"),
+            "month_days": mrec.get("days"),
+            "total_kwh": r2(total_kwh),
         },
-        "hourly_date": latest,
+        "summary": {  # รวมเฉพาะวันที่มีรายงานรายวัน/รายเดือน
+            "days": len(dates),
+            **{k: r2(sum(daily[d].get(k) or 0 for d in dates))
+               for k in ("pv_kwh", "use_kwh", "self_kwh", "export_kwh", "import_kwh")},
+            "co2_t": r2(sum(daily[d].get("co2_t") or 0 for d in dates)),
+            "missing_months": [x["m"] for x in monthly if not x.get("pv_kwh")],
+        },
+        "hourly_date": hdate,
         "hourly": hourly,
-        "daily": daily[-62:],
-        "monthly": [{"m": k, "pv_kwh": r2(v["pv_kwh"]), "days": v["days"]} for k, v in sorted(monthly.items())],
-        "inverters": [{"name": x["name"], "day_kwh": r2(x["day_kwh"]), "total_kwh": r2(x["total_kwh"]),
+        "daily": [dict({"d": d}, **{k: r2(v) if isinstance(v, float) else v for k, v in daily[d].items()
+                                     if k in ("pv_kwh", "use_kwh", "self_kwh", "export_kwh", "import_kwh", "peak_kw", "complete")})
+                  for d in dates[-400:]],
+        "monthly": monthly,
+        "inverters": [{"name": x["name"], "day_kwh": r2(x["kwh"]), "total_kwh": r2(x["total_kwh"]),
                        "peak_kw": r2(x["peak_kw"]), "hours": r2(x["hours"])} for x in inv_latest],
+        "inverter_monthly": [{"m": k, "items": [{"name": x["name"], "kwh": r2(x["kwh"]), "peak_kw": r2(x["peak_kw"]),
+                                                "hours": r2(x["hours"])} for x in v]} for k, v in sorted(inv_month.items())],
         "errors": skipped,
     }
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    print(f"wrote {OUT}: {len(daily)} วัน, รายงานล่าสุด {latest}"
-          + (f" (ถึง {out['report_last_hour']})" if out["report_last_hour"] else ""))
+    have = [x["m"] for x in monthly if x["pv_kwh"] is not None]
+    print(f"wrote {OUT}: {len(dates)} วัน, เดือนที่มีข้อมูล {', '.join(have)}, ล่าสุด {latest}")
     for s in skipped:
         print("  ข้าม:", s)
 
