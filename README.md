@@ -31,7 +31,7 @@ https://suvoak-web.github.io/hospital-dashboard/
 
 ## ☀️ พลังงานแสงอาทิตย์ (`solar_dashboard.html`)
 
-ดึงข้อมูลจาก Huawei FusionSolar อัตโนมัติทุกชั่วโมง 06:00–19:00 ผ่าน GitHub Actions (`.github/workflows/solar.yml` → `scripts/fetch_solar.py` → `data/solar.json`)
+ดึงข้อมูลจาก Huawei FusionSolar อัตโนมัติวันละครั้ง (ประมาณ 19:35 น.) ผ่าน GitHub Actions (`.github/workflows/solar.yml` → `scripts/fetch_solar.py` → `data/solar.json`)
 จนกว่าจะตั้งค่าเสร็จ หน้าเว็บจะแสดงข้อมูลตัวอย่างพร้อมป้ายบอก
 
 **ตั้งค่าครั้งแรก**
