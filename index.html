@@ -67,6 +67,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Sarabun', sans-s
     <a href="pcupayment.html">💊 ยา รพ.สต.</a>
     <a href="plan2570.html">📋 แผนงานโครงการ 2570</a>
     <a href="ar_aging.html">🧾 อายุลูกหนี้</a>
+    <a href="solar_dashboard.html">☀️ โซลาร์เซลล์</a>
   </div>
 
   <div class="section-label">DASHBOARD ที่พร้อมใช้งาน</div>
@@ -176,6 +177,16 @@ body { background: var(--bg); color: var(--text); font-family: 'Sarabun', sans-s
         <div><span id="aud-diff" style="color:#C55A11; font-weight:700;">–</span><br><small>ก่อน-หลัง</small></div>
       </div></div></div>
     </a>
+    <a class="dash-card" href="solar_dashboard.html" style="border-top: 5px solid #D97706;">
+      <div style="display:flex; gap:16px;"><div style="font-size:42px;">☀️</div>
+      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">พลังงานแสงอาทิตย์ (Solar PV)</div>
+      <div style="margin:8px 0; font-size:14px; color:var(--muted);">ข้อมูลจาก FusionSolar · <span id="sol-upd">–</span></div>
+      <div style="display:flex; gap:20px; font-size:15px;">
+        <div><span id="sol-power" style="color:#B45309; font-weight:700;">–</span><br><small>kW ตอนนี้</small></div>
+        <div><span id="sol-day" style="color:#1D6FA4; font-weight:700;">–</span><br><small>kWh วันนี้</small></div>
+        <div><span id="sol-save" style="color:#16A34A; font-weight:700;">–</span><br><small>ประหยัดวันนี้</small></div>
+      </div></div></div>
+    </a>
     <a class="dash-card" href="pcupayment.html" style="border-top: 5px solid #7C3AED;">
       <div style="display:flex; gap:16px;"><div style="font-size:42px;">💊</div>
       <div style="flex:1;"><div style="font-size:17px; font-weight:700;">ยาและเวชภัณฑ์ รพ.สต.</div>
@@ -190,6 +201,15 @@ fetch('data/audit_stats.json?v=' + Date.now()).then(function (r) { if (!r.ok) th
   if (d.total_charts != null) document.getElementById('aud-charts').textContent = d.total_charts;
   if (d.adjrw_after_sum != null) document.getElementById('aud-adjrw').textContent = Number(d.adjrw_after_sum).toFixed(2);
   if (!isNaN(df)) document.getElementById('aud-diff').textContent = (df >= 0 ? '+' : '') + df.toFixed(4);
+}).catch(function () {});
+</script>
+<script>
+fetch('data/solar.json?v=' + Date.now()).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (d) {
+  var rt = d.realtime || {}, TARIFF = 4.2, f = function (n, k) { return Number(n).toLocaleString('th-TH', { maximumFractionDigits: k || 0 }); };
+  if (d.power_kw != null) document.getElementById('sol-power').textContent = f(d.power_kw, 1);
+  if (rt.day_kwh != null) document.getElementById('sol-day').textContent = f(rt.day_kwh);
+  if (rt.day_kwh != null) document.getElementById('sol-save').textContent = '฿' + f(rt.day_income > 0 ? rt.day_income : rt.day_kwh * TARIFF);
+  document.getElementById('sol-upd').textContent = d.sample ? 'ข้อมูลตัวอย่าง' : (d.updated ? 'อัปเดต ' + new Date(d.updated).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + ' น.' : '');
 }).catch(function () {});
 </script>
 <script src="credit.js"></script>

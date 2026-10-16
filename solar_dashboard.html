@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>พลังงานแสงอาทิตย์ — รพ.พระทองคำฯ</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{--bg:#F4F6F9;--surface:#fff;--border:#E2E8F0;--text:#1A2332;--muted:#64748B;--accent:#1D6FA4;--solar:#D97706;--solar-text:#B45309;--use:#1D6FA4;--green:#16A34A}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Sarabun',system-ui,sans-serif;font-size:15px;line-height:1.55}
+.wrap{max-width:1280px;margin:0 auto;padding:20px 24px 8px}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:16px}
+.head h1{margin:0;font-size:1.5rem}
+.head p{margin:2px 0 0;color:var(--muted);font-size:.9rem}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:999px;font-size:.82rem;font-weight:700}
+.pill i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.ok{background:#DCFCE7;color:#14532D}.ok i{background:var(--green)}
+.warn{background:#FEF3C7;color:#78350F}.warn i{background:#D97706}
+.bad{background:#FEE2E2;color:#7F1D1D}.bad i{background:#DC2626}
+.sample{background:#FFEDD5;color:#7C2D12;border:1px dashed #FDBA74;border-radius:10px;padding:10px 14px;font-size:.9rem;margin-bottom:16px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px}
+.kpi{border-top:4px solid var(--border)}
+.kpi .lbl{font-size:.8rem;color:var(--muted);font-weight:600}
+.kpi .val{font-family:'IBM Plex Mono',monospace;font-size:1.75rem;font-weight:600;line-height:1.2;margin-top:4px}
+.kpi .val small{font-size:.85rem;color:var(--muted);font-weight:500}
+.kpi .sub{font-size:.8rem;color:var(--muted);margin-top:2px}
+.row{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px}
+.row>.wide{flex:999 1 560px;min-width:0}
+.row>.side{flex:1 1 300px;min-width:0}
+h2{font-size:1.02rem;margin:0 0 4px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.82rem;color:var(--muted);margin-bottom:8px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend b{width:14px;height:10px;border-radius:2px;display:inline-block}
+.chart{position:relative;height:280px}
+.note{font-size:.82rem;color:var(--muted);margin:8px 0 0}
+.mix{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:6px}
+.bar{height:14px;border-radius:999px;background:#C7DDF0;overflow:hidden;margin:10px 0 6px}
+.bar span{display:block;height:100%;background:var(--solar)}
+.inv{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border:1px solid var(--border);border-radius:10px;margin-top:8px}
+.inv .n{font-weight:700}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;border-top:1px solid var(--border);margin-top:14px;padding-top:12px}
+.grid2 small{display:block;color:var(--muted);font-size:.75rem}
+.foot{font-size:.8rem;color:var(--muted);margin:4px 0 0}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div>
+      <h1>☀️ พลังงานแสงอาทิตย์ (Solar PV)</h1>
+      <p>รพ.พระทองคำเฉลิมพระเกียรติ 80 พรรษา · ข้อมูลจาก Huawei FusionSolar · <span id="updated">—</span></p>
+    </div>
+    <span id="health" class="pill ok"><i></i>กำลังโหลด…</span>
+  </div>
+
+  <div id="sampleNote" class="sample" hidden>ตอนนี้เป็น<b>ข้อมูลตัวอย่าง</b> — จะเปลี่ยนเป็นข้อมูลจริงอัตโนมัติเมื่อตั้งค่าบัญชี FusionSolar ใน GitHub แล้ว (ดู README)</div>
+
+  <div class="kpis">
+    <div class="card kpi" style="border-top-color:var(--solar)"><div class="lbl">กำลังผลิตขณะนี้</div><div class="val" style="color:var(--solar-text)"><span id="kPower">—</span> <small>kW</small></div><div class="sub" id="kPowerSub">รวมทุกอินเวอร์เตอร์</div></div>
+    <div class="card kpi" style="border-top-color:var(--solar)"><div class="lbl">ผลิตไฟวันนี้</div><div class="val"><span id="kDay">—</span> <small>kWh</small></div><div class="sub" id="kDaySub">&nbsp;</div></div>
+    <div class="card kpi" style="border-top-color:var(--green)"><div class="lbl">ประหยัดค่าไฟวันนี้</div><div class="val">฿<span id="kSave">—</span></div><div class="sub" id="kSaveSub">&nbsp;</div></div>
+    <div class="card kpi" style="border-top-color:var(--accent)"><div class="lbl">ผลิตเดือนนี้</div><div class="val"><span id="kMonth">—</span> <small>MWh</small></div><div class="sub" id="kMonthSub">&nbsp;</div></div>
+    <div class="card kpi" style="border-top-color:#0F6E56"><div class="lbl">ลด CO₂ สะสม</div><div class="val"><span id="kCo2">—</span> <small>ตัน</small></div><div class="sub" id="kCo2Sub">&nbsp;</div></div>
+  </div>
+
+  <div class="row">
+    <div class="card wide">
+      <h2>ไฟจากโซลาร์ เทียบกับไฟที่ รพ. ใช้ — รายชั่วโมงวันนี้</h2>
+      <div class="legend"><span><b style="background:var(--solar)"></b>ผลิตจากโซลาร์ (kWh)</span><span id="lgUse"><b style="background:var(--use);height:3px"></b>รพ. ใช้ไฟ (kWh)</span></div>
+      <div class="chart"><canvas id="cHour" role="img" aria-label="กราฟพลังงานรายชั่วโมงวันนี้"></canvas></div>
+      <p class="note" id="hourNote">&nbsp;</p>
+    </div>
+    <div class="card side">
+      <h2>ไฟที่ รพ. ใช้วันนี้มาจากไหน</h2>
+      <div id="mixBox">
+        <div class="mix"><div class="mono" style="font-size:2.4rem;font-weight:600;color:var(--solar-text)" id="mixPct">—</div><div style="color:var(--muted);font-size:.9rem">ของไฟที่ใช้<br>มาจากโซลาร์</div></div>
+        <div class="bar"><span id="mixBar" style="width:0"></span></div>
+        <div style="display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted)"><span id="mixPv">โซลาร์ —</span><span id="mixGrid">การไฟฟ้า —</span></div>
+      </div>
+      <p class="note" id="mixNone" hidden>ยังไม่มีข้อมูลการใช้ไฟของ รพ. (ต้องติดตั้งมิเตอร์วัดไฟเชื่อมกับ FusionSolar)</p>
+      <div class="grid2">
+        <div><small>ผลิตสะสมตั้งแต่ติดตั้ง</small><b class="mono" id="kTotal">—</b></div>
+        <div><small>ประหยัดสะสม (ประมาณ)</small><b class="mono" id="kTotalSave">—</b></div>
+        <div><small>เทียบเท่าปลูกต้นไม้</small><b class="mono" id="kTrees">—</b></div>
+        <div><small>ส่งไฟคืนกริดวันนี้</small><b class="mono" id="kGrid">—</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="card wide">
+      <h2>พลังงานที่ผลิตได้รายเดือน (MWh)</h2>
+      <p class="note" style="margin:0 0 8px" id="monthNote">&nbsp;</p>
+      <div class="chart"><canvas id="cMonth" role="img" aria-label="กราฟพลังงานที่ผลิตได้รายเดือน"></canvas></div>
+    </div>
+    <div class="card side">
+      <h2>สถานะอินเวอร์เตอร์</h2>
+      <div id="invList"><p class="note">—</p></div>
+      <p class="note"><a href="https://intl.fusionsolar.huawei.com/" target="_blank" rel="noopener">เปิดใน FusionSolar →</a></p>
+    </div>
+  </div>
+
+  <p class="foot">ค่าไฟที่ประหยัดคำนวณที่ <span id="fTariff"></span> บาท/kWh (ถ้า FusionSolar ไม่ได้ตั้งราคาไว้) · CO₂ คำนวณจาก <span id="fEf"></span> kgCO₂/kWh · ต้นไม้ 1 ต้นดูดซับ ~9 kgCO₂/ปี · ข้อมูลอัปเดตทุกชั่วโมง 06:00–19:00</p>
+</div>
+
+<script>
+// ===== ปรับค่าตรงนี้ให้ตรงกับ รพ. =====
+var TARIFF = 4.2;      // บาท/kWh — ค่าไฟเฉลี่ยจากบิลการไฟฟ้าของ รพ.
+var EF = 0.4999;       // kgCO2/kWh — Grid Emission Factor ของไทย (อบก.)
+var TREE_KG = 9;       // kgCO2 ที่ต้นไม้ 1 ต้นดูดซับต่อปี (ค่าประมาณ)
+// =======================================
+
+var TH_M = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+function $(id){ return document.getElementById(id); }
+function fmt(n, d){ return n == null || isNaN(n) ? '—' : Number(n).toLocaleString('th-TH', {minimumFractionDigits: d||0, maximumFractionDigits: d||0}); }
+function sum(a, k){ return a.reduce(function(s, r){ return s + (Number(r[k]) || 0); }, 0); }
+function has(a, k){ return a.some(function(r){ return r[k] != null; }); }
+
+$('fTariff').textContent = TARIFF;
+$('fEf').textContent = EF;
+
+fetch('data/solar.json?v=' + Date.now()).then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); }).then(render).catch(function(){
+  $('health').className = 'pill bad'; $('health').innerHTML = '<i></i>โหลดข้อมูลไม่ได้';
+});
+
+function render(d){
+  var rt = d.realtime || {}, hourly = d.hourly || [], monthly = d.monthly || [], inv = d.inverters || [];
+  $('sampleNote').hidden = !d.sample;
+
+  if (d.updated) {
+    var u = new Date(d.updated);
+    $('updated').textContent = 'อัปเดต ' + u.toLocaleString('th-TH', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) + ' น.';
+  }
+  var hs = { 1: ['bad','ระบบออฟไลน์'], 2: ['warn','มีอุปกรณ์ผิดปกติ'], 3: ['ok','ระบบทำงานปกติ'] }[rt.health] || ['warn','ไม่ทราบสถานะ'];
+  $('health').className = 'pill ' + hs[0]; $('health').innerHTML = '<i></i>' + hs[1];
+
+  // KPI
+  $('kPower').textContent = fmt(d.power_kw, 1);
+  var dayKwh = rt.day_kwh;
+  $('kDay').textContent = fmt(dayKwh);
+  var dayBaht = rt.day_income > 0 ? rt.day_income : (dayKwh || 0) * TARIFF;
+  $('kSave').textContent = fmt(dayBaht);
+  $('kSaveSub').textContent = rt.day_income > 0 ? 'ตามราคาที่ตั้งใน FusionSolar' : 'คิดที่ ' + TARIFF + ' บาท/kWh';
+  $('kMonth').textContent = fmt((rt.month_kwh || 0) / 1000, 1);
+  $('kMonthSub').textContent = 'ประหยัด ~฿' + fmt((rt.month_kwh || 0) * TARIFF);
+  var co2t = (rt.total_kwh || 0) * EF / 1000;
+  $('kCo2').textContent = fmt(co2t, 1);
+  $('kCo2Sub').textContent = 'จากไฟที่ผลิตสะสม';
+  $('kTotal').textContent = fmt((rt.total_kwh || 0) / 1000, 1) + ' MWh';
+  $('kTotalSave').textContent = '฿' + fmt(rt.total_income > 0 ? rt.total_income : (rt.total_kwh || 0) * TARIFF);
+  $('kTrees').textContent = fmt(co2t * 1000 / TREE_KG) + ' ต้น/ปี';
+  $('kGrid').textContent = has(hourly, 'grid_kwh') ? fmt(sum(hourly, 'grid_kwh')) + ' kWh' : '—';
+
+  // สัดส่วนไฟ
+  var hasUse = has(hourly, 'use_kwh') && sum(hourly, 'use_kwh') > 0;
+  if (hasUse) {
+    var pv = sum(hourly, 'pv_kwh'), use = sum(hourly, 'use_kwh'), pct = Math.min(100, pv / use * 100);
+    $('mixPct').textContent = fmt(pct) + '%';
+    $('mixBar').style.width = pct + '%';
+    $('mixPv').textContent = 'โซลาร์ ' + fmt(Math.min(pv, use)) + ' kWh';
+    $('mixGrid').textContent = 'การไฟฟ้า ' + fmt(Math.max(0, use - pv)) + ' kWh';
+    var peak = hourly.reduce(function(b, r){ var p = r.use_kwh ? r.pv_kwh / r.use_kwh : 0; return p > b.p ? {p: p, h: r.h} : b; }, {p: 0, h: ''});
+    $('hourNote').textContent = 'ช่วง ' + peak.h + ' น. โซลาร์จ่ายไฟได้ ' + fmt(peak.p * 100) + '% ของที่ รพ. ใช้';
+  } else {
+    $('mixBox').hidden = true; $('mixNone').hidden = false; $('lgUse').hidden = true;
+    $('hourNote').textContent = 'แสดงเฉพาะไฟที่ผลิตได้';
+  }
+
+  Chart.defaults.font.family = 'Sarabun, system-ui, sans-serif'; Chart.defaults.color = '#64748B';
+
+  new Chart($('cHour'), {
+    data: {
+      labels: hourly.map(function(r){ return r.h; }),
+      datasets: [
+        { type: 'bar', label: 'โซลาร์', data: hourly.map(function(r){ return r.pv_kwh; }), backgroundColor: '#D97706', borderRadius: 4, order: 2 },
+        hasUse ? { type: 'line', label: 'รพ. ใช้ไฟ', data: hourly.map(function(r){ return r.use_kwh; }), borderColor: '#1D6FA4', backgroundColor: '#1D6FA4', borderWidth: 2.5, pointRadius: 2, tension: .3, order: 1 } : null
+      ].filter(Boolean)
+    },
+    options: { maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label + ': ' + fmt(c.parsed.y) + ' kWh'; } } } },
+      scales: { y: { beginAtZero: true, grid: { color: '#EEF2F6' } }, x: { grid: { display: false } } } }
+  });
+
+  var yr = monthly.length ? monthly[0].m.slice(0, 4) : '';
+  var totalY = sum(monthly, 'pv_kwh');
+  $('monthNote').textContent = yr ? 'ปี ' + (Number(yr) + 543) + ' · รวม ' + fmt(totalY / 1000, 1) + ' MWh · ประหยัด ~฿' + fmt(totalY * TARIFF) : '';
+  new Chart($('cMonth'), {
+    type: 'bar',
+    data: { labels: monthly.map(function(r){ return TH_M[Number(r.m.slice(5, 7)) - 1]; }),
+      datasets: [{ label: 'ผลิต', data: monthly.map(function(r){ return r.pv_kwh == null ? null : r.pv_kwh / 1000; }), backgroundColor: monthly.map(function(r, i){ return i === monthly.length - 1 ? 'rgba(217,119,6,.5)' : '#D97706'; }), borderRadius: 4 }] },
+    options: { maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return fmt(c.parsed.y, 1) + ' MWh'; } } } },
+      scales: { y: { beginAtZero: true, grid: { color: '#EEF2F6' } }, x: { grid: { display: false } } } }
+  });
+
+  // อินเวอร์เตอร์ (ใช้ textContent เพราะชื่อมาจาก API)
+  var box = $('invList'); box.innerHTML = '';
+  if (!inv.length) box.innerHTML = '<p class="note">ไม่มีข้อมูล</p>';
+  inv.forEach(function(x){
+    var row = document.createElement('div'); row.className = 'inv';
+    var l = document.createElement('div'); l.className = 'n'; l.textContent = x.name;
+    var r = document.createElement('div'); r.style.textAlign = 'right';
+    var kw = document.createElement('div'); kw.className = 'mono'; kw.textContent = fmt(x.kw, 1) + ' kW';
+    var st = document.createElement('span'); st.className = 'pill ' + (x.on ? 'ok' : 'bad'); st.style.fontSize = '.72rem'; st.style.padding = '2px 8px';
+    st.textContent = x.on ? 'ทำงาน' : 'หยุด';
+    r.appendChild(kw); r.appendChild(st); row.appendChild(l); row.appendChild(r); box.appendChild(row);
+  });
+  if (d.power_kw != null && inv.length) $('kPowerSub').textContent = 'รวม ' + inv.length + ' อินเวอร์เตอร์';
+}
+</script>
+<script src="credit.js"></script>
+</body>
+</html>

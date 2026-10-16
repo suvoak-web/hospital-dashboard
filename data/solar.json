@@ -1,0 +1,36 @@
+{
+ "sample": true,
+ "station": "NE=76434926",
+ "updated": "2026-10-16T18:05+07:00",
+ "power_kw": 4.6,
+ "realtime": {"day_kwh": 2837, "month_kwh": 28600, "total_kwh": 1284000, "day_income": 0, "total_income": 0, "health": 3},
+ "hourly_date": "2026-10-16",
+ "hourly": [
+  {"h": "06:00", "pv_kwh": 12, "use_kwh": 290},
+  {"h": "07:00", "pv_kwh": 70, "use_kwh": 325},
+  {"h": "08:00", "pv_kwh": 165, "use_kwh": 385},
+  {"h": "09:00", "pv_kwh": 270, "use_kwh": 440},
+  {"h": "10:00", "pv_kwh": 355, "use_kwh": 465},
+  {"h": "11:00", "pv_kwh": 405, "use_kwh": 475},
+  {"h": "12:00", "pv_kwh": 415, "use_kwh": 475},
+  {"h": "13:00", "pv_kwh": 390, "use_kwh": 465},
+  {"h": "14:00", "pv_kwh": 330, "use_kwh": 450},
+  {"h": "15:00", "pv_kwh": 240, "use_kwh": 420},
+  {"h": "16:00", "pv_kwh": 135, "use_kwh": 380},
+  {"h": "17:00", "pv_kwh": 45, "use_kwh": 340},
+  {"h": "18:00", "pv_kwh": 5, "use_kwh": 320}
+ ],
+ "monthly": [
+  {"m": "2026-01", "pv_kwh": 55000}, {"m": "2026-02", "pv_kwh": 61000}, {"m": "2026-03", "pv_kwh": 66000},
+  {"m": "2026-04", "pv_kwh": 58000}, {"m": "2026-05", "pv_kwh": 50000}, {"m": "2026-06", "pv_kwh": 47000},
+  {"m": "2026-07", "pv_kwh": 46000}, {"m": "2026-08", "pv_kwh": 49000}, {"m": "2026-09", "pv_kwh": 51000},
+  {"m": "2026-10", "pv_kwh": 28600}
+ ],
+ "inverters": [
+  {"name": "INV-01", "kw": 1.4, "on": true},
+  {"name": "INV-02", "kw": 1.3, "on": true},
+  {"name": "INV-03", "kw": 1.2, "on": true},
+  {"name": "INV-04", "kw": 0.7, "on": true}
+ ],
+ "errors": []
+}
