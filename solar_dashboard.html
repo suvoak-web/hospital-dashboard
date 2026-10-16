@@ -60,6 +60,16 @@ tr.missing td{color:#94A3B8}
 .inv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;margin-top:8px}
 .inv .n{font-weight:700}
 .foot{font-size:.8rem;color:var(--muted);margin:18px 0 0}
+.advice{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.adv{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.adv h3{margin:0;font-size:1rem;line-height:1.4}
+.adv .why{font-size:.88rem;color:var(--text);margin:0}
+.adv ul{margin:0;padding-left:20px;font-size:.88rem;color:#334155}
+.adv li{margin:2px 0}
+.tag{align-self:flex-start;font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:999px}
+.tag.now{background:#DCFCE7;color:#14532D}.tag.plan{background:#DBEAFE;color:#1E3A8A}.tag.watch{background:#F1F5F9;color:#334155}
+.adv-sum{background:#0F3D5E;color:#fff;border-radius:14px;padding:16px 20px;font-size:.95rem;line-height:1.7;margin-bottom:14px}
+.adv-sum b{color:#FCD34D}
 a{color:var(--accent)}
 </style>
 </head>
@@ -171,7 +181,12 @@ a{color:var(--accent)}
     </div>
   </div>
 
-  <p class="foot">ไฟที่ใช้ = ผลิตได้ − ส่งคืนกริด + ซื้อจากการไฟฟ้า (วัดที่มิเตอร์ของอาคารอุบัติเหตุและฉุกเฉิน ไม่ใช่ไฟทั้งโรงพยาบาล) · ประหยัด = ไฟโซลาร์ × <span id="fTariff"></span> บาท/kWh — ไฟที่อาคาร ER ใช้ไม่หมดไหลไปอาคารอื่นใน รพ. ยกเว้นช่วงที่มิเตอร์หลักเป็นศูนย์ (เที่ยงวันหยุดหน้าหนาว) ซึ่งอาจไหลออกไปการไฟฟ้า จึงหักออกแบบระมัดระวัง · CO₂ = ผลิตสะสม × <span id="fEf"></span> kgCO₂/kWh · ต้นไม้ 1 ต้นดูดซับ ~<span id="fTree"></span> kgCO₂/ปี</p>
+  <div class="section">คำแนะนำภาพรวม</div>
+  <div class="adv-sum" id="advSum">—</div>
+  <div class="advice" id="advList"></div>
+  <p class="note">คำแนะนำคำนวณจากข้อมูลมิเตอร์และรายงานโซลาร์ที่มีอยู่ ตัวเลขจะปรับตามข้อมูลที่อัปโหลดเพิ่ม · เรื่องที่เกี่ยวกับระบบไฟฟ้าและการต่อเชื่อมกับการไฟฟ้าควรปรึกษาวิศวกรไฟฟ้าหรือบริษัทผู้ติดตั้งก่อนดำเนินการ</p>
+
+  <p class="foot">ไฟที่อาคารใช้ = ผลิตได้ − ส่งไปอาคารอื่น + ซื้อเพิ่ม (วัดที่มิเตอร์ของอาคารอุบัติเหตุและฉุกเฉิน ไม่ใช่ไฟทั้งโรงพยาบาล) · ประหยัด = ไฟโซลาร์ × <span id="fTariff"></span> บาท/kWh — ไฟที่อาคาร ER ใช้ไม่หมดไหลไปอาคารอื่นใน รพ. ยกเว้นช่วงที่มิเตอร์หลักเป็นศูนย์ (เที่ยงวันหยุดหน้าหนาว) ซึ่งอาจไหลออกไปการไฟฟ้า จึงหักออกแบบระมัดระวัง · CO₂ = ผลิตสะสม × <span id="fEf"></span> kgCO₂/kWh · ต้นไม้ 1 ต้นดูดซับ ~<span id="fTree"></span> kgCO₂/ปี</p>
 </div>
 
 <script>
@@ -232,6 +247,7 @@ function render(d){
   if (notes.length) { $('notice').hidden = false; $('notice').innerHTML = notes.join('<br>'); }
 
   renderGrid(d);
+  renderAdvice(d);
 
   // ----- ภาพรวมตั้งแต่เริ่ม -----
   if (d.first_date) $('secTotal').textContent = 'ภาพรวมตั้งแต่เริ่มใช้งาน ' + thDate(d.first_date);
@@ -418,6 +434,91 @@ function renderGrid(d){
     options: { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
       plugins: { legend: { display: false }, tooltip: { callbacks: { label: kwhTip(0) } } },
       scales: { y: { beginAtZero: true, grid: { color: '#EEF2F6' } }, x: { grid: { display: false }, ticks: { maxTicksLimit: 8 } } } } });
+}
+
+function renderAdvice(d){
+  var g = d.grid || null, sm = d.summary || {}, monthly = d.monthly || [];
+  var items = [], sumParts = [];
+  var total = (d.realtime || {}).total_kwh || sm.pv_kwh || 0;
+  function card(tag, tagText, title, why, bullets){ items.push({ tag: tag, tagText: tagText, title: title, why: why, bullets: bullets }); }
+
+  // ภาพรวม
+  var outKwh = g && g.zero_intervals ? g.zero_intervals * 66 * 0.25 : 0;
+  var both = g ? g.daily.filter(function(x){ return x.total_kwh != null; }) : [];
+  var share = both.length ? sum(both, 'pv_kwh') / (sum(both, 'kwh') + sum(both, 'pv_kwh')) * 100 : null;
+  sumParts.push('ระบบโซลาร์อาคาร ER ผลิตไฟได้ <b>' + fmt(total / 1000, 1) + ' MWh</b> ช่วยประหยัดค่าไฟประมาณ <b>฿' + fmt((total - outKwh) * TARIFF) + '</b>');
+  if (share != null) sumParts.push('คิดเป็น <b>' + fmt(share) + '%</b> ของไฟที่ทั้งโรงพยาบาลใช้');
+  var im = d.inverter_monthly || [], maxDiff = 0;
+  im.forEach(function(m){ var v = m.items.map(function(x){ return x.kwh || 0; }); if (v.length === 2 && Math.max(v[0], v[1])) maxDiff = Math.max(maxDiff, Math.abs(v[0] - v[1]) / Math.max(v[0], v[1]) * 100); });
+  sumParts.push(im.length ? 'อุปกรณ์ทำงานสม่ำเสมอ (อินเวอร์เตอร์สองเครื่องต่างกันไม่เกิน ' + fmt(maxDiff, 1) + '%)' : '');
+  sumParts.push('โอกาสประหยัดเพิ่มอยู่ที่ <b>การจัดเวลาการใช้ไฟ</b> มากกว่าการแก้ที่ตัวระบบ');
+  $('advSum').innerHTML = sumParts.filter(Boolean).join(' · ');
+
+  if (g && g.profile_workday) {
+    var w = g.profile_workday, top = g.monthly.reduce(function(a, b){ return (b.max_kw || 0) > (a.max_kw || 0) ? b : a; });
+    var ph = 0; for (var h = 6; h < 18; h++) if (w[h] > w[ph]) ph = h;
+    var before = w[ph - 2] || w[ph - 1];
+    card('now', 'ทำได้ทันที', 'ลดไฟกระชากตอน ' + (ph < 10 ? '0' : '') + ph + ':00 น. เพื่อลดค่า Demand Charge',
+      'วันทำงานการซื้อไฟพุ่งจากประมาณ ' + fmt(before) + ' kWh ต่อชั่วโมงตอน ' + (ph - 2 < 10 ? '0' : '') + (ph - 2) + ':00 น. เป็น ' + fmt(w[ph]) + ' kWh ตอน ' + (ph < 10 ? '0' : '') + ph + ':00 น. และความต้องการไฟสูงสุดของปีคือ ' + fmt(top.max_kw) + ' kW (' + thDate(top.max_at.split(' ')[0]) + ' ' + top.max_at.split(' ')[1] + ' น.) ค่าความต้องการไฟสูงสุดนี้ใช้คิด Demand Charge ทั้งเดือน',
+      ['ทยอยเปิดเครื่องปรับอากาศทีละโซน ห่างกัน 10–15 นาที แทนการเปิดพร้อมกัน',
+       'ทยอยเริ่มเปิดแอร์โซนใหญ่ตั้งแต่ก่อน 09:00 น. ซึ่งยังเป็นช่วง Off-Peak (ค่าไฟถูกกว่า) ไม่ให้ทุกเครื่องเริ่มพร้อมกันตอนเปิดบริการ',
+       'หลีกเลี่ยงการเปิดเครื่องใหญ่ (เครื่องนึ่ง เครื่องซักผ้า ปั๊ม) ช่วง 08:30–10:00 น.']);
+  }
+
+  if (g && g.profile_workday) {
+    var noon = (g.profile_workday[11] + g.profile_workday[12]) / 2, aft = (g.profile_workday[14] + g.profile_workday[15]) / 2;
+    card('now', 'ทำได้ทันที', 'ย้ายงานที่ใช้ไฟมากไปช่วง 11:00–13:00 น.',
+      'ช่วงเที่ยงโซลาร์ผลิตได้มากที่สุด การซื้อไฟลดเหลือประมาณ ' + fmt(noon) + ' kWh ต่อชั่วโมง แต่ช่วงบ่าย 14:00–16:00 น. กลับขึ้นไปที่ ' + fmt(aft) + ' kWh งานที่เลื่อนเวลาได้ควรทำตอนเที่ยง เพื่อใช้ไฟโซลาร์แทนไฟ Peak',
+      ['ตั้งเวลาเครื่องซักอบผ้า เครื่องนึ่งฆ่าเชื้อ (Autoclave) และการสูบน้ำขึ้นถังสูงให้อยู่ช่วงเที่ยง',
+       'ชาร์จอุปกรณ์หรือรถไฟฟ้า (ถ้ามี) ช่วง 10:00–14:00 น.',
+       'วันหยุดช่วงเที่ยงการซื้อไฟต่ำมาก เหมาะกับงานบำรุงรักษาที่ใช้ไฟมาก']);
+  }
+
+  if (g && g.zero_intervals) {
+    card('plan', 'ต้องวางแผน', 'ไฟเหลือช่วงเที่ยงวันหยุดหน้าหนาว ' + g.zero_days + ' วัน',
+      'มิเตอร์หลักลดถึงศูนย์ ' + g.zero_intervals + ' ช่วง (ช่วงละ 15 นาที) แปลว่าโซลาร์ผลิตได้มากกว่าที่ทั้ง รพ. ใช้ ไฟส่วนเกินสูงสุดประมาณ ' + fmt(outKwh) + ' kWh อาจไหลออกไปการไฟฟ้าโดยไม่ได้ค่าตอบแทน',
+      ['ช่วง ม.ค.–มี.ค. ให้นัดงานใช้ไฟมากไว้วันเสาร์–อาทิตย์ช่วงเที่ยง เช่น สูบน้ำเติมถัง ทำน้ำร้อน ซักผ้าก้อนใหญ่',
+       'สอบถามผู้ติดตั้งว่าตั้งค่ากันไฟไหลย้อน (Zero Export) ไว้หรือไม่ และตรวจระเบียบการไฟฟ้าเรื่องการจ่ายไฟย้อนเข้าระบบ',
+       'ถ้าจะขยายระบบในอนาคต ต้องคิดเรื่องไฟเหลือวันหยุดตั้งแต่ตอนออกแบบ']);
+  }
+
+  var withUse = monthly.filter(function(m){ return m.pv_kwh && m.days >= 20; });
+  if (withUse.length >= 3) {
+    var best = withUse.reduce(function(a, b){ return b.pv_kwh / b.days > a.pv_kwh / a.days ? b : a; });
+    var worst = withUse.reduce(function(a, b){ return b.pv_kwh / b.days < a.pv_kwh / a.days ? b : a; });
+    var drop = (1 - (worst.pv_kwh / worst.days) / (best.pv_kwh / best.days)) * 100;
+    card('watch', 'ดูแลต่อเนื่อง', 'ดูแลแผงให้ผลิตได้เต็มที่',
+      'ผลิตได้เฉลี่ยสูงสุด ' + fmt(best.pv_kwh / best.days) + ' kWh/วัน (' + mLabel(best.m, true) + ') ต่ำสุด ' + fmt(worst.pv_kwh / worst.days) + ' kWh/วัน (' + mLabel(worst.m, true) + ') ต่างกัน ' + fmt(drop) + '% ส่วนใหญ่มาจากฤดูฝน แต่ฝุ่นบนแผงก็ทำให้ผลิตลดลงได้',
+      ['ล้างแผงปีละ 2 ครั้ง: ก่อนหน้าร้อน (ก.พ.) และหลังหน้าฝน (พ.ย.) เปรียบเทียบยอดผลิตรายวันก่อน–หลังล้าง',
+       'ดูตารางอินเวอร์เตอร์ทุกเดือน ถ้าสองเครื่องต่างกันเกิน 5% ให้ช่างตรวจแผงหรือสาย',
+       'อินเวอร์เตอร์ทั้งสองถึงกำลังสูงสุด 33 kW ทุกเดือน (ถูกจำกัดกำลังในวันแดดจัด) ถ้าจะเพิ่มแผงต้องเพิ่มอินเวอร์เตอร์ด้วย']);
+  }
+
+  if (g && g.profile_workday) {
+    var minNoonWd = Math.min.apply(null, g.profile_workday.slice(10, 15));
+    card('plan', 'ต้องวางแผน', 'ศักยภาพขยายระบบโซลาร์',
+      'วันทำงานช่วงสาย–บ่ายยังซื้อไฟอย่างน้อยประมาณ ' + fmt(minNoonWd) + ' kWh ต่อชั่วโมง ถ้าติดโซลาร์เพิ่มประมาณขนาดนี้ (kW) ไฟวันทำงานจะถูกใช้หมด แต่วันหยุดหน้าหนาวจะมีไฟเหลือมากขึ้น',
+      ['ให้ผู้ออกแบบใช้ข้อมูลมิเตอร์ 15 นาทีในหน้านี้ประกอบการคำนวณขนาดที่เหมาะสม',
+       'เปรียบเทียบความคุ้มค่า 3 ทางเลือก: เพิ่มแผงพร้อมกันไฟย้อน / เพิ่มแผงพร้อมแบตเตอรี่ / ไม่ขยายแต่จัดเวลาการใช้ไฟ',
+       'อาคารที่มีหลังคาว่างและใช้ไฟกลางวันมาก (เช่น OPD) เหมาะเป็นจุดติดตั้งถัดไป']);
+  }
+
+  card('watch', 'ดูแลต่อเนื่อง', 'ติดตามผลทุกเดือน',
+    'ข้อมูลยิ่งครบ คำแนะนำยิ่งแม่น และใช้ติดตามผลของมาตรการข้างต้นได้',
+    ['ต้นเดือนอัปโหลด Plant Report, Inverter Report และรายงาน AMI ของเดือนก่อนเข้าโฟลเดอร์ data/solar/reports',
+     'ส่งบิลค่าไฟ 1–2 ใบ เพื่อปรับให้คิดค่าประหยัดตามอัตรา TOU และ Demand Charge จริง (ตอนนี้ใช้ค่าเฉลี่ย ' + TARIFF + ' บาท/kWh)',
+     'หลังเริ่มมาตรการลดไฟกระชาก ดูการ์ด "ความต้องการไฟสูงสุด" ว่าลดลงหรือไม่']);
+
+  var box = $('advList'); box.innerHTML = '';
+  items.forEach(function(it){
+    var c = document.createElement('div'); c.className = 'adv';
+    var t = document.createElement('span'); t.className = 'tag ' + it.tag; t.textContent = it.tagText;
+    var h = document.createElement('h3'); h.textContent = it.title;
+    var p = document.createElement('p'); p.className = 'why'; p.textContent = it.why;
+    var ul = document.createElement('ul');
+    it.bullets.forEach(function(b){ var li = document.createElement('li'); li.textContent = b; ul.appendChild(li); });
+    c.appendChild(t); c.appendChild(h); c.appendChild(p); c.appendChild(ul); box.appendChild(c);
+  });
 }
 </script>
 <script src="credit.js"></script>
