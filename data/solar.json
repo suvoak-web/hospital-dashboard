@@ -5,32 +5,32 @@
  "first_date": "2026-01-24",
  "report_date": "2026-10-16",
  "report_complete": false,
- "report_last_hour": null,
- "updated": "2026-10-16T13:41+07:00",
+ "report_last_hour": "22:00",
+ "updated": "2026-10-16T23:37+07:00",
  "peak_kw": 65.34,
  "realtime": {
-  "day_kwh": 104.17,
-  "day_export_kwh": 12.5,
-  "day_use_kwh": 182.91,
-  "month_kwh": 5235.9,
+  "day_kwh": 267.77,
+  "day_export_kwh": 40.68,
+  "day_use_kwh": 502.99,
+  "month_kwh": 5399.5,
   "month_days": 16,
-  "total_kwh": 95349.32
+  "total_kwh": 95508.49
  },
  "summary": {
   "days": 266,
-  "pv_kwh": 95344.89,
-  "use_kwh": 121236.44,
-  "self_kwh": 64310.95,
-  "export_kwh": 31033.94,
-  "import_kwh": 56925.49,
-  "co2_t": 45.29,
+  "pv_kwh": 95508.49,
+  "use_kwh": 121556.52,
+  "self_kwh": 64446.37,
+  "export_kwh": 31062.12,
+  "import_kwh": 57110.15,
+  "co2_t": 45.24,
   "missing_months": []
  },
  "hourly_date": "2026-10-16",
  "hourly": [
   {
    "h": "00:00",
-   "pv_kwh": null,
+   "pv_kwh": 0.0,
    "use_kwh": 14.29,
    "grid_kwh": 0.0,
    "import_kwh": 14.29
@@ -97,6 +97,97 @@
    "use_kwh": 40.48,
    "grid_kwh": 8.13,
    "import_kwh": 7.07
+  },
+  {
+   "h": "10:00",
+   "pv_kwh": 25.48,
+   "use_kwh": 41.06,
+   "grid_kwh": 2.87,
+   "import_kwh": 18.45
+  },
+  {
+   "h": "11:00",
+   "pv_kwh": 28.24,
+   "use_kwh": 41.22,
+   "grid_kwh": 3.5,
+   "import_kwh": 16.48
+  },
+  {
+   "h": "12:00",
+   "pv_kwh": 41.15,
+   "use_kwh": 30.31,
+   "grid_kwh": 16.89,
+   "import_kwh": 6.05
+  },
+  {
+   "h": "13:00",
+   "pv_kwh": 20.72,
+   "use_kwh": 37.55,
+   "grid_kwh": 2.51,
+   "import_kwh": 19.34
+  },
+  {
+   "h": "14:00",
+   "pv_kwh": 29.05,
+   "use_kwh": 35.74,
+   "grid_kwh": 3.09,
+   "import_kwh": 9.78
+  },
+  {
+   "h": "15:00",
+   "pv_kwh": 14.36,
+   "use_kwh": 34.18,
+   "grid_kwh": 0.17,
+   "import_kwh": 19.99
+  },
+  {
+   "h": "16:00",
+   "pv_kwh": 8.53,
+   "use_kwh": 20.97,
+   "grid_kwh": 0.0,
+   "import_kwh": 12.44
+  },
+  {
+   "h": "17:00",
+   "pv_kwh": 1.61,
+   "use_kwh": 16.32,
+   "grid_kwh": 0.0,
+   "import_kwh": 14.71
+  },
+  {
+   "h": "18:00",
+   "pv_kwh": 0.0,
+   "use_kwh": 14.97,
+   "grid_kwh": 0.0,
+   "import_kwh": 14.97
+  },
+  {
+   "h": "19:00",
+   "pv_kwh": null,
+   "use_kwh": 14.45,
+   "grid_kwh": 0.0,
+   "import_kwh": 14.45
+  },
+  {
+   "h": "20:00",
+   "pv_kwh": null,
+   "use_kwh": 13.81,
+   "grid_kwh": 0.0,
+   "import_kwh": 13.81
+  },
+  {
+   "h": "21:00",
+   "pv_kwh": null,
+   "use_kwh": 14.09,
+   "grid_kwh": 0.0,
+   "import_kwh": 14.09
+  },
+  {
+   "h": "22:00",
+   "pv_kwh": null,
+   "use_kwh": 12.92,
+   "grid_kwh": 0.0,
+   "import_kwh": 12.92
   }
  ],
  "daily": [
@@ -2752,13 +2843,12 @@
   },
   {
    "d": "2026-10-16",
-   "complete": false,
-   "pv_kwh": 104.17,
-   "export_kwh": 12.5,
-   "import_kwh": 91.24,
-   "use_kwh": 182.91,
-   "self_kwh": 91.67,
-   "peak_kw": 65.34
+   "pv_kwh": 267.77,
+   "export_kwh": 40.68,
+   "import_kwh": 275.9,
+   "use_kwh": 502.99,
+   "self_kwh": 227.09,
+   "complete": false
   }
  ],
  "monthly": [
@@ -2874,12 +2964,12 @@
    "m": "2026-10",
    "days": 16,
    "days_in_month": 31,
-   "pv_kwh": 5235.9,
-   "use_kwh": 7408.04,
-   "self_kwh": 3862.71,
-   "export_kwh": 1373.19,
-   "import_kwh": 3545.33,
-   "co2_t": 2.49,
+   "pv_kwh": 5399.5,
+   "use_kwh": 7728.12,
+   "self_kwh": 3998.13,
+   "export_kwh": 1401.37,
+   "import_kwh": 3729.99,
+   "co2_t": 2.44,
    "peak_kw": 66.0
   }
  ],
