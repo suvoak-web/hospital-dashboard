@@ -28,3 +28,25 @@ https://suvoak-web.github.io/hospital-dashboard/
 2. ไปที่ Settings → Pages
 3. เลือก Source: `main` branch, folder `/root`
 4. Save → รอสักครู่ ได้ URL สาธารณะ
+
+## ☀️ พลังงานแสงอาทิตย์ (`solar_dashboard.html`)
+
+ข้อมูลมาจากรายงานที่ export จาก Huawei FusionSolar (ใช้สิทธิ์ผู้ใช้ทั่วไปได้ ไม่ต้องเป็นผู้ดูแล)
+
+**อัปเดตข้อมูลประจำวัน (ประมาณ 1 นาที)**
+1. ใน FusionSolar export **Plant Report** และ **Inverter Report** แบบรายวัน เป็น .xlsx — แนะนำให้ export หลังแดดหมด (ประมาณ 19:00 น.) จะได้ข้อมูลครบวัน
+2. เปิดโฟลเดอร์ [`data/solar/reports`](data/solar/reports) ใน GitHub → **Add file → Upload files** → ลากทั้ง 2 ไฟล์มาวาง → **Commit changes**
+3. รอ 1–2 นาที ระบบ (`.github/workflows/solar_reports.yml`) จะแปลงไฟล์เป็น `data/solar.json` ให้เอง แล้วหน้าเว็บจะแสดงข้อมูลใหม่
+
+ไม่ต้องเปลี่ยนชื่อไฟล์ และไม่ต้องลบไฟล์เก่า (ถ้าวันเดียวกันมีหลายไฟล์ จะใช้ไฟล์ที่ข้อมูลครบกว่า) วันที่ของ Inverter Report อ่านจากชื่อไฟล์ เช่น `_16-10-2026`
+แปลงเองในเครื่องได้ด้วย `pip install openpyxl && python3 scripts/import_solar_reports.py`
+
+**ตัวเลขที่คำนวณ**
+- ไฟที่ใช้ ณ จุดติดมิเตอร์ = PV Yield − Export + Import (รายชั่วโมงจาก Plant Report)
+- ค่าไฟที่ประหยัด = (PV Yield − Export) × `TARIFF` + Revenue จากการขายไฟคืนในรายงาน
+- CO₂ = พลังงานสะสม (Total Yield ของอินเวอร์เตอร์) × `EF`
+
+แก้ `TARIFF` (บาท/kWh) และ `EF` ได้ที่ต้นสคริปต์ใน `solar_dashboard.html` (และ `TARIFF` ใน `index.html`)
+
+**ทางเลือก: ดึงอัตโนมัติผ่าน API** — ถ้าผู้ดูแลระบบ FusionSolar สร้างบัญชี Northbound ให้ (System → Company Management → Northbound Management)
+ใส่ secrets `FUSIONSOLAR_USER` / `FUSIONSOLAR_SYSTEM_CODE` แล้ว `.github/workflows/solar.yml` จะดึงข้อมูลเองวันละครั้ง (19:35 น.) โดยไม่ต้องอัปโหลดไฟล์ ถ้ายังไม่ใส่ secrets workflow นี้จะข้ามไปเฉย ๆ

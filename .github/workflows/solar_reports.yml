@@ -1,0 +1,34 @@
+name: แปลงรายงานโซลาร์ (อัปโหลดไฟล์)
+
+# ทำงานเองเมื่อมีไฟล์ใหม่ใน data/solar/reports/ (อัปโหลดผ่านหน้าเว็บ GitHub ได้)
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/solar/reports/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: solar-data
+  cancel-in-progress: false
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install openpyxl
+      - name: แปลงไฟล์ Plant / Inverter Report เป็น data/solar.json
+        run: python3 scripts/import_solar_reports.py
+      - name: บันทึกผล
+        run: |
+          git config user.name "solar-bot"
+          git config user.email "solar-bot@users.noreply.github.com"
+          git add data/solar.json
+          git diff --cached --quiet || (git commit -m "อัปเดตข้อมูลโซลาร์จากรายงาน" && git pull --rebase && git push)

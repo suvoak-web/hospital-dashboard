@@ -23,7 +23,9 @@
     { group: '🩺 คุณภาพเวชระเบียน' },
     { href: 'chart_audit.html', icon: '🩺', label: 'Audit ชาร์ต' },
     { group: '💊 รพ.สต.' },
-    { href: 'pcupayment.html', icon: '💊', label: 'ยาและเวชภัณฑ์ รพ.สต.' }
+    { href: 'pcupayment.html', icon: '💊', label: 'ยาและเวชภัณฑ์ รพ.สต.' },
+    { group: '⚡ พลังงาน' },
+    { href: 'solar_dashboard.html', icon: '☀️', label: 'พลังงานแสงอาทิตย์' }
   ];
 
   var file = (location.pathname.split('/').pop() || 'index.html').toLowerCase();

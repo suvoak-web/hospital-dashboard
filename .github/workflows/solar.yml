@@ -1,0 +1,36 @@
+name: อัปเดตข้อมูลโซลาร์ (FusionSolar)
+
+on:
+  schedule:
+    # วันละครั้ง 19:35 เวลาไทย (12:35 UTC) หลังแดดหมด จะได้ยอดของทั้งวัน
+    - cron: "35 12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: solar-data
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: ดึงข้อมูลจาก FusionSolar
+        env:
+          FUSIONSOLAR_USER: ${{ secrets.FUSIONSOLAR_USER }}
+          FUSIONSOLAR_SYSTEM_CODE: ${{ secrets.FUSIONSOLAR_SYSTEM_CODE }}
+          FUSIONSOLAR_BASE: ${{ vars.FUSIONSOLAR_BASE }}
+          FUSIONSOLAR_STATION: ${{ vars.FUSIONSOLAR_STATION }}
+        run: python3 scripts/fetch_solar.py
+      - name: บันทึกไฟล์ถ้ามีการเปลี่ยนแปลง
+        run: |
+          git config user.name "solar-bot"
+          git config user.email "solar-bot@users.noreply.github.com"
+          git add data/solar.json
+          git diff --cached --quiet || (git commit -m "อัปเดตข้อมูลโซลาร์ $(TZ=Asia/Bangkok date '+%Y-%m-%d %H:%M')" && git pull --rebase && git push)

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>พลังงานแสงอาทิตย์ — รพ.พระทองคำฯ</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{--bg:#F4F6F9;--surface:#fff;--border:#E2E8F0;--line:#EEF2F6;--text:#1A2332;--muted:#64748B;--accent:#1D6FA4;
+  --solar:#D97706;--solar-soft:#FCD9A0;--solar-text:#B45309;--use:#1D6FA4;--green:#16A34A}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Sarabun',system-ui,sans-serif;font-size:15px;line-height:1.55}
+.wrap{max-width:1280px;margin:0 auto;padding:20px 24px 8px}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:16px}
+.head h1{margin:0;font-size:1.5rem}
+.head p{margin:2px 0 0;color:var(--muted);font-size:.9rem}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:999px;font-size:.82rem;font-weight:700}
+.pill i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.ok{background:#DCFCE7;color:#14532D}.ok i{background:var(--green)}
+.warn{background:#FEF3C7;color:#78350F}.warn i{background:#D97706}
+.bad{background:#FEE2E2;color:#7F1D1D}.bad i{background:#DC2626}
+.notice{background:#FFF7ED;color:#7C2D12;border:1px dashed #FDBA74;border-radius:10px;padding:10px 14px;font-size:.9rem;margin-bottom:16px}
+.section{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:22px 0 10px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px}
+.kpi{border-top:4px solid var(--border)}
+.kpi .lbl{font-size:.82rem;color:var(--muted);font-weight:600}
+.kpi .val{font-family:'IBM Plex Mono',monospace;font-size:1.75rem;font-weight:600;line-height:1.2;margin-top:4px}
+.kpi .val small{font-size:.85rem;color:var(--muted);font-weight:500}
+.kpi .sub{font-size:.8rem;color:var(--muted);margin-top:2px}
+.row{display:flex;flex-wrap:wrap;gap:16px;margin-top:16px}
+.row>.wide{flex:999 1 560px;min-width:0}
+.row>.side{flex:1 1 300px;min-width:0}
+.card-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px}
+h2{font-size:1.02rem;margin:0}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.82rem;color:var(--muted);margin:6px 0 8px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend b{width:14px;height:10px;border-radius:2px;display:inline-block}
+.chart{position:relative;height:300px}
+.chart.sm{height:260px}
+.note{font-size:.82rem;color:var(--muted);margin:8px 0 0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:.82rem;font-weight:700;padding:0 14px;min-height:36px;border-radius:999px;border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tbl{overflow-x:auto;margin-top:14px}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th{font-size:.75rem;color:var(--muted);font-weight:700;text-align:right;padding:8px 10px;background:#F8FAFC;white-space:nowrap}
+td{padding:8px 10px;border-top:1px solid var(--line);text-align:right;font-family:'IBM Plex Mono',monospace;font-size:.85rem;white-space:nowrap}
+th:first-child,td:first-child{text-align:left;font-family:'Sarabun',sans-serif;font-size:.9rem}
+tr.total td{background:#F8FAFC;font-weight:700}
+tr.missing td{color:#94A3B8}
+.share{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.share .bar{width:60px;height:8px;border-radius:99px;background:#DCE8F3;overflow:hidden}
+.share .bar span{display:block;height:100%;background:var(--solar)}
+.mix{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:6px}
+.mixbar{height:14px;border-radius:999px;background:#C7DDF0;overflow:hidden;margin:10px 0 6px}
+.mixbar span{display:block;height:100%;background:var(--solar)}
+.inv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;margin-top:8px}
+.inv .n{font-weight:700}
+.foot{font-size:.8rem;color:var(--muted);margin:18px 0 0}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div>
+      <h1>☀️ พลังงานแสงอาทิตย์ (Solar PV)</h1>
+      <p>รพ.พระทองคำเฉลิมพระเกียรติ 80 พรรษา · ข้อมูลจากรายงาน Huawei FusionSolar · <span id="updated">—</span></p>
+    </div>
+    <span id="health" class="pill ok"><i></i>กำลังโหลด…</span>
+  </div>
+
+  <div id="notice" class="notice" hidden></div>
+
+  <div class="section" id="secTotal">ภาพรวมตั้งแต่เริ่มใช้งาน</div>
+  <div class="kpis">
+    <div class="card kpi" style="border-top-color:var(--solar)"><div class="lbl">ผลิตไฟฟ้าสะสม</div><div class="val" style="color:var(--solar-text)"><span id="tPv">—</span> <small>MWh</small></div><div class="sub" id="tPvSub">&nbsp;</div></div>
+    <div class="card kpi" style="border-top-color:var(--green)"><div class="lbl">ประหยัดค่าไฟ</div><div class="val">฿<span id="tSave">—</span></div><div class="sub" id="tSaveSub">&nbsp;</div></div>
+    <div class="card kpi" style="border-top-color:var(--accent)"><div class="lbl">ไฟที่ใช้มาจากโซลาร์</div><div class="val"><span id="tShare">—</span><small>%</small></div><div class="sub" id="tShareSub">&nbsp;</div></div>
+    <div class="card kpi" style="border-top-color:#0F6E56"><div class="lbl">ลดการปล่อย CO₂</div><div class="val"><span id="tCo2">—</span> <small>ตัน</small></div><div class="sub" id="tCo2Sub">&nbsp;</div></div>
+  </div>
+
+  <div class="section">รายเดือน</div>
+  <div class="card">
+    <h2>ผลิตได้ เทียบกับไฟที่ใช้ — รายเดือน (kWh)</h2>
+    <div class="legend"><span><b style="background:var(--solar)"></b>โซลาร์ที่ใช้เอง</span><span><b style="background:var(--solar-soft)"></b>โซลาร์ส่งคืนกริด</span><span><b style="background:var(--use);height:3px"></b>ไฟที่ใช้ ณ จุดติดมิเตอร์</span></div>
+    <div class="chart"><canvas id="cMonth" role="img" aria-label="กราฟรายเดือน: ไฟฟ้าจากโซลาร์ที่ใช้เอง ส่งคืนกริด และไฟที่ใช้"></canvas></div>
+    <p class="note" id="monthNote">&nbsp;</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>เดือน</th><th>วันที่มีข้อมูล</th><th>ผลิตได้ (kWh)</th><th>ใช้ไฟ (kWh)</th><th>ใช้เองจากโซลาร์</th><th>ส่งคืนกริด</th><th>ซื้อจากการไฟฟ้า</th><th>ไฟที่ใช้มาจากโซลาร์</th><th>ประหยัด (฿)</th></tr></thead>
+        <tbody id="monthRows"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">รายวัน</div>
+  <div class="card">
+    <div class="card-head">
+      <h2 id="dayTitle">รายวัน (kWh)</h2>
+      <div class="chips" id="monthChips" role="group" aria-label="เลือกเดือน"></div>
+    </div>
+    <div class="legend"><span><b style="background:var(--solar)"></b>ใช้เอง</span><span><b style="background:var(--solar-soft)"></b>ส่งคืนกริด</span><span><b style="background:var(--use);height:3px"></b>ไฟที่ใช้</span></div>
+    <div class="chart sm"><canvas id="cDay" role="img" aria-label="กราฟรายวันของเดือนที่เลือก"></canvas></div>
+    <p class="note" id="dayNote">&nbsp;</p>
+  </div>
+
+  <div class="row">
+    <div class="card wide">
+      <h2 id="hourTitle">รายชั่วโมง</h2>
+      <div class="legend"><span><b style="background:var(--solar)"></b>ผลิตจากโซลาร์ (kWh)</span><span id="lgUse"><b style="background:var(--use);height:3px"></b>ไฟที่ใช้ (kWh)</span></div>
+      <div class="chart sm"><canvas id="cHour" role="img" aria-label="กราฟรายชั่วโมงของวันล่าสุด"></canvas></div>
+      <p class="note" id="hourNote">&nbsp;</p>
+    </div>
+    <div class="card side">
+      <h2 id="mixTitle">ไฟที่ใช้วันล่าสุดมาจากไหน</h2>
+      <div id="mixBox">
+        <div class="mix"><div class="mono" style="font-size:2.4rem;font-weight:600;color:var(--solar-text)" id="mixPct">—</div><div style="color:var(--muted);font-size:.9rem">ของไฟที่ใช้<br>มาจากโซลาร์</div></div>
+        <div class="mixbar"><span id="mixBar" style="width:0"></span></div>
+        <div style="display:flex;justify-content:space-between;gap:8px;font-size:.82rem;color:var(--muted)"><span id="mixPv">โซลาร์ —</span><span id="mixGrid">การไฟฟ้า —</span></div>
+      </div>
+      <p class="note" id="mixNone" hidden>ไม่มีข้อมูลการใช้ไฟ</p>
+      <div class="note" style="border-top:1px solid var(--border);padding-top:12px;margin-top:14px">
+        <div>ผลิตได้ <b class="mono" id="dPv">—</b> kWh · กำลังสูงสุด <b class="mono" id="dPeak">—</b> kW</div>
+        <div>ส่งไฟคืนกริด <b class="mono" id="dExp">—</b> kWh · ประหยัด ฿<b class="mono" id="dSave">—</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">อินเวอร์เตอร์</div>
+  <div class="row" style="margin-top:0">
+    <div class="card wide">
+      <h2>ผลิตได้ของแต่ละเครื่อง รายเดือน (kWh)</h2>
+      <p class="note" style="margin-top:2px">สองเครื่องควรผลิตได้ใกล้กัน ถ้าต่างกันเกิน 5% ควรให้ช่างตรวจแผงหรือสาย</p>
+      <div class="tbl"><table><thead id="invHead"></thead><tbody id="invRows"></tbody></table></div>
+    </div>
+    <div class="card side">
+      <h2 id="invTitle">วันล่าสุด</h2>
+      <div id="invList"><p class="note">—</p></div>
+      <p class="note"><a href="https://intl.fusionsolar.huawei.com/" target="_blank" rel="noopener">เปิดใน FusionSolar →</a></p>
+    </div>
+  </div>
+
+  <p class="foot">ไฟที่ใช้ = ผลิตได้ − ส่งคืนกริด + ซื้อจากการไฟฟ้า (วัด ณ จุดติดมิเตอร์ของระบบโซลาร์ อาจไม่ใช่ไฟทั้งโรงพยาบาล) · ประหยัด = ไฟโซลาร์ที่ใช้เอง × <span id="fTariff"></span> บาท/kWh ไม่รวมไฟที่ส่งคืนกริด · CO₂ = ผลิตสะสม × <span id="fEf"></span> kgCO₂/kWh · ต้นไม้ 1 ต้นดูดซับ ~<span id="fTree"></span> kgCO₂/ปี</p>
+</div>
+
+<script>
+// ===== ปรับค่าตรงนี้ให้ตรงกับ รพ. =====
+var TARIFF = 4.2;      // บาท/kWh — ค่าไฟเฉลี่ยจากบิลการไฟฟ้าของ รพ.
+var EF = 0.4999;       // kgCO2/kWh — Grid Emission Factor ของไทย (อบก.)
+var TREE_KG = 9;       // kgCO2 ที่ต้นไม้ 1 ต้นดูดซับต่อปี (ค่าประมาณ)
+// =======================================
+
+var TH_M = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+var TH_MF = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+function $(id){ return document.getElementById(id); }
+function fmt(n, d){ return n == null || isNaN(n) ? '—' : Number(n).toLocaleString('th-TH', {minimumFractionDigits: d||0, maximumFractionDigits: d||0}); }
+function sum(a, k){ return a.reduce(function(s, r){ return s + (Number(r[k]) || 0); }, 0); }
+function has(a, k){ return a.some(function(r){ return r[k] != null; }); }
+function mLabel(m, full){ var y = Number(m.slice(0, 4)) + 543, i = Number(m.slice(5, 7)) - 1; return full ? TH_MF[i] + ' ' + y : TH_M[i] + ' ' + String(y).slice(2); }
+function thDate(iso){ var p = iso.split('-'); return Number(p[2]) + ' ' + TH_M[Number(p[1]) - 1] + ' ' + (Number(p[0]) + 543); }
+function td(text){ var c = document.createElement('td'); c.textContent = text; return c; }
+function shareCell(p){
+  var c = document.createElement('td');
+  if (p == null) { c.textContent = '—'; return c; }
+  var w = document.createElement('div'); w.className = 'share';
+  var t = document.createElement('span'); t.textContent = fmt(p) + '%';
+  var b = document.createElement('div'); b.className = 'bar';
+  var f = document.createElement('span'); f.style.width = Math.min(100, p) + '%';
+  b.appendChild(f); w.appendChild(t); w.appendChild(b); c.appendChild(w); return c;
+}
+var kwhTip = function(d){ return function(c){ return c.dataset.label + ': ' + fmt(c.parsed.y, d) + ' kWh'; }; };
+var stackedOpts = function(extra){ return { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+  plugins: { legend: { display: false }, tooltip: { callbacks: Object.assign({ label: kwhTip(0) }, extra || {}) } },
+  scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, grid: { color: '#EEF2F6' } } } }; };
+function pvDatasets(rows){ return [
+  { type: 'bar', label: 'ใช้เอง', data: rows.map(function(m){ return m.self_kwh != null ? m.self_kwh : m.pv_kwh; }), backgroundColor: '#D97706', stack: 'pv', order: 2 },
+  { type: 'bar', label: 'ส่งคืนกริด', data: rows.map(function(m){ return m.export_kwh; }), backgroundColor: '#FCD9A0', stack: 'pv', order: 2, borderRadius: { topLeft: 4, topRight: 4 } },
+  { type: 'line', label: 'ไฟที่ใช้', data: rows.map(function(m){ return m.use_kwh; }), borderColor: '#1D6FA4', backgroundColor: '#1D6FA4', borderWidth: 2.5, pointRadius: 2.5, tension: .25, order: 1, stack: 'use' }
+]; }
+
+$('fTariff').textContent = TARIFF; $('fEf').textContent = EF; $('fTree').textContent = TREE_KG;
+
+fetch('data/solar.json?v=' + Date.now()).then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); }).then(render).catch(function(e){
+  console.error(e); $('health').className = 'pill bad'; $('health').innerHTML = '<i></i>โหลดข้อมูลไม่ได้';
+});
+
+var dayChart = null;
+
+function render(d){
+  var rt = d.realtime || {}, sm = d.summary || {}, monthly = d.monthly || [], daily = d.daily || [], hourly = d.hourly || [];
+  Chart.defaults.font.family = 'Sarabun, system-ui, sans-serif'; Chart.defaults.color = '#64748B';
+
+  // ----- ส่วนหัว -----
+  if (d.report_date) $('updated').textContent = 'รายงานล่าสุด ' + thDate(d.report_date);
+  $('health').className = 'pill ' + (d.report_complete ? 'ok' : 'warn');
+  $('health').innerHTML = '<i></i>' + (d.report_complete ? 'ข้อมูลครบทั้งวัน' : d.report_last_hour ? 'วันล่าสุดมีข้อมูลถึง ' + d.report_last_hour + ' น.' : 'วันล่าสุดยังไม่ครบวัน');
+  var notes = [];
+  if (d.sample) notes.push('ตอนนี้เป็น<b>ข้อมูลตัวอย่าง</b>');
+  var miss = (sm.missing_months || []).map(function(m){ return mLabel(m); });
+  if (miss.length) notes.push('ยังไม่มีรายงานเดือน <b>' + miss.join(', ') + '</b> — export Plant Report และ Inverter Report รายเดือนของเดือนเหล่านี้มาเพิ่ม ตัวเลขรายเดือนจะครบ');
+  if (notes.length) { $('notice').hidden = false; $('notice').innerHTML = notes.join('<br>'); }
+
+  // ----- ภาพรวมตั้งแต่เริ่ม -----
+  if (d.first_date) $('secTotal').textContent = 'ภาพรวมตั้งแต่เริ่มใช้งาน ' + thDate(d.first_date);
+  var total = rt.total_kwh || sm.pv_kwh || 0;
+  $('tPv').textContent = fmt(total / 1000, 1);
+  $('tPvSub').textContent = 'ตามมิเตอร์อินเวอร์เตอร์ ณ ' + (d.report_date ? thDate(d.report_date) : '—');
+  // ประหยัด: วันที่มีรายงานรู้ยอดใช้เองจริง ช่วงที่ไม่มีรายงานประมาณด้วยสัดส่วนใช้เองเฉลี่ย
+  var selfRate = sm.pv_kwh ? sm.self_kwh / sm.pv_kwh : 0;
+  var knownSave = (sm.self_kwh || 0) * TARIFF;
+  var unknownKwh = Math.max(0, total - (sm.pv_kwh || 0));
+  $('tSave').textContent = fmt(knownSave + unknownKwh * selfRate * TARIFF);
+  $('tSaveSub').textContent = unknownKwh > total * 0.01 ? 'จากรายงาน ฿' + fmt(knownSave) + ' + ประมาณช่วงที่ไม่มีรายงาน' : 'โซลาร์ที่ใช้เอง ' + fmt(sm.self_kwh) + ' kWh';
+  var share = sm.use_kwh ? sm.self_kwh / sm.use_kwh * 100 : null;
+  $('tShare').textContent = fmt(share);
+  $('tShareSub').textContent = 'ใช้เองได้ ' + fmt(selfRate * 100) + '% ของที่ผลิต ที่เหลือส่งคืนกริด';
+  var co2 = total * EF / 1000;
+  $('tCo2').textContent = fmt(co2, 1);
+  $('tCo2Sub').textContent = 'เทียบเท่าต้นไม้ ~' + fmt(co2 * 1000 / TREE_KG) + ' ต้นดูดซับใน 1 ปี';
+
+  // ----- รายเดือน -----
+  new Chart($('cMonth'), {
+    data: { labels: monthly.map(function(m){ return mLabel(m.m) + (m.days != null && m.days < m.days_in_month && m.pv_kwh ? '*' : ''); }), datasets: pvDatasets(monthly) },
+    options: stackedOpts()
+  });
+  var partial = monthly.filter(function(m){ return m.pv_kwh && m.days != null && m.days < m.days_in_month; }).map(function(m){ return mLabel(m.m) + ' มี ' + m.days + ' วัน'; });
+  $('monthNote').textContent = (partial.length ? '* ข้อมูลไม่เต็มเดือน: ' + partial.join(', ') + ' · ' : '') + (miss.length ? 'เดือนที่ว่างคือยังไม่มีรายงาน' : '');
+
+  var body = $('monthRows'); body.innerHTML = '';
+  monthly.forEach(function(m){
+    var tr = document.createElement('tr');
+    if (!m.pv_kwh) tr.className = 'missing';
+    var sh = m.use_kwh ? m.self_kwh / m.use_kwh * 100 : null;
+    [td(mLabel(m.m, true)), td(m.pv_kwh ? (m.days != null ? m.days + '/' + m.days_in_month : '—') : 'ไม่มีรายงาน'),
+     td(fmt(m.pv_kwh)), td(fmt(m.use_kwh)), td(fmt(m.self_kwh)), td(fmt(m.export_kwh)), td(fmt(m.import_kwh)),
+     m.pv_kwh ? shareCell(sh) : td('—'), td(m.self_kwh != null ? fmt(m.self_kwh * TARIFF) : '—')].forEach(function(c){ tr.appendChild(c); });
+    body.appendChild(tr);
+  });
+  var tr = document.createElement('tr'); tr.className = 'total';
+  [td('รวมที่มีรายงาน'), td(fmt(sm.days) + ' วัน'), td(fmt(sm.pv_kwh)), td(fmt(sm.use_kwh)), td(fmt(sm.self_kwh)), td(fmt(sm.export_kwh)), td(fmt(sm.import_kwh)),
+   shareCell(share), td(fmt(knownSave))].forEach(function(c){ tr.appendChild(c); });
+  body.appendChild(tr);
+
+  // ----- รายวัน (เลือกเดือน) -----
+  var withDays = monthly.filter(function(m){ return daily.some(function(x){ return x.d.slice(0, 7) === m.m; }); });
+  var def = withDays.slice().reverse().find(function(m){ return m.days >= 7; }) || withDays[withDays.length - 1];
+  var chips = $('monthChips');
+  withDays.forEach(function(m){
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = mLabel(m.m);
+    b.setAttribute('aria-pressed', 'false'); b.dataset.m = m.m;
+    b.addEventListener('click', function(){ showDays(m); });
+    chips.appendChild(b);
+  });
+  function showDays(m){
+    Array.prototype.forEach.call(chips.children, function(b){ b.setAttribute('aria-pressed', String(b.dataset.m === m.m)); });
+    var ds = daily.filter(function(x){ return x.d.slice(0, 7) === m.m; });
+    $('dayTitle').textContent = 'รายวัน — ' + mLabel(m.m, true) + ' (kWh)';
+    var best = ds.reduce(function(b, x){ return !b || (x.pv_kwh || 0) > b.pv_kwh ? x : b; }, null);
+    var avg = ds.length ? sum(ds, 'pv_kwh') / ds.length : 0;
+    $('dayNote').textContent = ds.length ? 'เฉลี่ย ' + fmt(avg, 1) + ' kWh/วัน · สูงสุด ' + fmt(best.pv_kwh, 1) + ' kWh วันที่ ' + Number(best.d.slice(8)) + (ds.some(function(x){ return !x.complete; }) ? ' · วันที่ยังไม่ครบวันแสดงเท่าที่มี' : '') : '';
+    var cfg = { labels: ds.map(function(x){ return Number(x.d.slice(8)); }), datasets: pvDatasets(ds) };
+    if (dayChart) { dayChart.data = cfg; dayChart.update(); return; }
+    dayChart = new Chart($('cDay'), { data: cfg, options: stackedOpts({ title: function(it){ return 'วันที่ ' + it[0].label; }, label: kwhTip(1) }) });
+  }
+  if (def) showDays(def);
+
+  // ----- รายชั่วโมงวันล่าสุด -----
+  var hd = d.hourly_date ? thDate(d.hourly_date) : '';
+  $('hourTitle').textContent = 'รายชั่วโมง — ' + hd;
+  $('mixTitle').textContent = 'ไฟที่ใช้วันที่ ' + hd.replace(/ \d{4}$/, '') + ' มาจากไหน';
+  var hasUse = has(hourly, 'use_kwh') && sum(hourly, 'use_kwh') > 0;
+  var hpv = sum(hourly, 'pv_kwh'), hexp = sum(hourly, 'grid_kwh');
+  if (hasUse) {
+    var use = sum(hourly, 'use_kwh'), self = hpv - hexp, pct = Math.min(100, Math.max(0, self / use * 100));
+    $('mixPct').textContent = fmt(pct) + '%'; $('mixBar').style.width = pct + '%';
+    $('mixPv').textContent = 'โซลาร์ ' + fmt(self, 1) + ' kWh'; $('mixGrid').textContent = 'การไฟฟ้า ' + fmt(Math.max(0, use - self), 1) + ' kWh';
+  } else { $('mixBox').hidden = true; $('mixNone').hidden = false; $('lgUse').hidden = true; }
+  $('dPv').textContent = fmt(hpv, 1); $('dPeak').textContent = fmt(d.peak_kw, 1);
+  $('dExp').textContent = fmt(hexp, 1); $('dSave').textContent = fmt(Math.max(0, hpv - hexp) * TARIFF);
+  var lastH = hourly.length ? hourly[hourly.length - 1].h : null;
+  $('hourNote').textContent = lastH && lastH !== '23:00' ? 'รายงานรายชั่วโมงวันนี้ export ระหว่างวัน มีข้อมูลถึง ' + lastH + ' น. — export หลัง 19:00 น. จะได้ครบทั้งวัน' : '';
+  new Chart($('cHour'), {
+    data: { labels: hourly.map(function(r){ return r.h; }), datasets: [
+      { type: 'bar', label: 'โซลาร์', data: hourly.map(function(r){ return r.pv_kwh; }), backgroundColor: '#D97706', borderRadius: 4, order: 2 },
+      hasUse ? { type: 'line', label: 'ไฟที่ใช้', data: hourly.map(function(r){ return r.use_kwh; }), borderColor: '#1D6FA4', backgroundColor: '#1D6FA4', borderWidth: 2.5, pointRadius: 2, tension: .3, order: 1 } : null
+    ].filter(Boolean) },
+    options: { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: kwhTip(1) } } },
+      scales: { y: { beginAtZero: true, grid: { color: '#EEF2F6' } }, x: { grid: { display: false } } } }
+  });
+
+  // ----- อินเวอร์เตอร์รายเดือน -----
+  var im = d.inverter_monthly || [], names = [];
+  im.forEach(function(m){ m.items.forEach(function(x){ if (names.indexOf(x.name) < 0) names.push(x.name); }); });
+  var hr = document.createElement('tr');
+  ['เดือน'].concat(names, names.length === 2 ? ['ต่างกัน'] : []).forEach(function(h){ var th = document.createElement('th'); th.textContent = h; hr.appendChild(th); });
+  $('invHead').appendChild(hr);
+  if (!im.length) { var r0 = document.createElement('tr'), c0 = td('ยังไม่มี Inverter Report รายเดือน'); c0.colSpan = 4; r0.appendChild(c0); $('invRows').appendChild(r0); }
+  im.forEach(function(m){
+    var row = document.createElement('tr'); row.appendChild(td(mLabel(m.m, true)));
+    var vals = names.map(function(n){ var x = m.items.find(function(i){ return i.name === n; }); return x ? x.kwh : null; });
+    vals.forEach(function(v){ row.appendChild(td(fmt(v, 1))); });
+    if (names.length === 2) {
+      var diff = vals[0] && vals[1] ? Math.abs(vals[0] - vals[1]) / Math.max(vals[0], vals[1]) * 100 : null;
+      var c = td(diff == null ? '—' : fmt(diff, 1) + '%');
+      if (diff > 5) { c.style.color = '#B91C1C'; c.style.fontWeight = '700'; }
+      row.appendChild(c);
+    }
+    $('invRows').appendChild(row);
+  });
+
+  // ----- อินเวอร์เตอร์วันล่าสุด -----
+  var inv = d.inverters || [];
+  if (d.report_date) $('invTitle').textContent = 'วันที่ ' + thDate(d.report_date);
+  var box = $('invList'); box.innerHTML = '';
+  if (!inv.length) box.innerHTML = '<p class="note">ไม่มีข้อมูล</p>';
+  inv.forEach(function(x){
+    var row = document.createElement('div'); row.className = 'inv';
+    var l = document.createElement('div');
+    var n = document.createElement('div'); n.className = 'n'; n.textContent = x.name; l.appendChild(n);
+    var s = document.createElement('div'); s.className = 'note'; s.style.margin = '0';
+    s.textContent = 'สะสม ' + fmt((x.total_kwh || 0) / 1000, 1) + ' MWh · สูงสุด ' + fmt(x.peak_kw, 1) + ' kW'; l.appendChild(s);
+    var r = document.createElement('div'); r.className = 'mono'; r.style.whiteSpace = 'nowrap'; r.textContent = fmt(x.day_kwh, 1) + ' kWh';
+    row.appendChild(l); row.appendChild(r); box.appendChild(row);
+  });
+}
+</script>
+<script src="credit.js"></script>
+</body>
+</html>
