@@ -73,7 +73,9 @@ def ms(dt):
 
 def main():
     if not USER or not CODE:
-        sys.exit("ต้องตั้งค่า FUSIONSOLAR_USER และ FUSIONSOLAR_SYSTEM_CODE ก่อน")
+        # ยังไม่มีบัญชี API — ใช้วิธีอัปโหลดรายงาน (import_solar_reports.py) แทน จึงจบเฉย ๆ ไม่ให้ workflow ขึ้นว่าล้มเหลว
+        print("ยังไม่ได้ตั้งค่า FUSIONSOLAR_USER / FUSIONSOLAR_SYSTEM_CODE — ข้ามการดึงผ่าน API")
+        return
 
     old = {}
     if OUT.exists():

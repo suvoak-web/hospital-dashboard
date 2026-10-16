@@ -1,36 +1,127 @@
 {
- "sample": true,
- "station": "NE=76434926",
- "updated": "2026-10-16T18:05+07:00",
- "power_kw": 4.6,
- "realtime": {"day_kwh": 2837, "month_kwh": 28600, "total_kwh": 1284000, "day_income": 0, "total_income": 0, "health": 3},
+ "source": "report",
+ "sample": false,
+ "plant": "รพ.พระทองคำ",
+ "report_date": "2026-10-16",
+ "report_complete": false,
+ "report_last_hour": "09:00",
+ "updated": "2026-10-16T10:54+07:00",
+ "peak_kw": 65.34,
+ "realtime": {
+  "day_kwh": 98.63,
+  "month_kwh": 98.63,
+  "month_days": 1,
+  "total_kwh": 95349.32,
+  "day_export_kwh": 11.65,
+  "day_income": 46.6
+ },
  "hourly_date": "2026-10-16",
  "hourly": [
-  {"h": "06:00", "pv_kwh": 12, "use_kwh": 290},
-  {"h": "07:00", "pv_kwh": 70, "use_kwh": 325},
-  {"h": "08:00", "pv_kwh": 165, "use_kwh": 385},
-  {"h": "09:00", "pv_kwh": 270, "use_kwh": 440},
-  {"h": "10:00", "pv_kwh": 355, "use_kwh": 465},
-  {"h": "11:00", "pv_kwh": 405, "use_kwh": 475},
-  {"h": "12:00", "pv_kwh": 415, "use_kwh": 475},
-  {"h": "13:00", "pv_kwh": 390, "use_kwh": 465},
-  {"h": "14:00", "pv_kwh": 330, "use_kwh": 450},
-  {"h": "15:00", "pv_kwh": 240, "use_kwh": 420},
-  {"h": "16:00", "pv_kwh": 135, "use_kwh": 380},
-  {"h": "17:00", "pv_kwh": 45, "use_kwh": 340},
-  {"h": "18:00", "pv_kwh": 5, "use_kwh": 320}
+  {
+   "h": "00:00",
+   "pv_kwh": null,
+   "use_kwh": 14.29,
+   "grid_kwh": 0.0,
+   "import_kwh": 14.29
+  },
+  {
+   "h": "01:00",
+   "pv_kwh": null,
+   "use_kwh": 12.63,
+   "grid_kwh": 0.0,
+   "import_kwh": 12.63
+  },
+  {
+   "h": "02:00",
+   "pv_kwh": null,
+   "use_kwh": 10.88,
+   "grid_kwh": 0.0,
+   "import_kwh": 10.88
+  },
+  {
+   "h": "03:00",
+   "pv_kwh": null,
+   "use_kwh": 10.66,
+   "grid_kwh": 0.0,
+   "import_kwh": 10.66
+  },
+  {
+   "h": "04:00",
+   "pv_kwh": null,
+   "use_kwh": 10.56,
+   "grid_kwh": 0.0,
+   "import_kwh": 10.56
+  },
+  {
+   "h": "05:00",
+   "pv_kwh": null,
+   "use_kwh": 10.03,
+   "grid_kwh": 0.0,
+   "import_kwh": 10.03
+  },
+  {
+   "h": "06:00",
+   "pv_kwh": 3.53,
+   "use_kwh": 11.11,
+   "grid_kwh": 0.0,
+   "import_kwh": 7.58
+  },
+  {
+   "h": "07:00",
+   "pv_kwh": 18.73,
+   "use_kwh": 17.2,
+   "grid_kwh": 2.56,
+   "import_kwh": 1.03
+  },
+  {
+   "h": "08:00",
+   "pv_kwh": 34.83,
+   "use_kwh": 37.56,
+   "grid_kwh": 0.96,
+   "import_kwh": 3.69
+  },
+  {
+   "h": "09:00",
+   "pv_kwh": 41.54,
+   "use_kwh": 40.48,
+   "grid_kwh": 8.13,
+   "import_kwh": 7.07
+  }
+ ],
+ "daily": [
+  {
+   "d": "2026-10-16",
+   "pv_kwh": 98.63,
+   "export_kwh": 11.65,
+   "import_kwh": 88.42,
+   "use_kwh": 175.4,
+   "revenue": 46.6,
+   "last_hour": "09:00",
+   "complete": false
+  }
  ],
  "monthly": [
-  {"m": "2026-01", "pv_kwh": 55000}, {"m": "2026-02", "pv_kwh": 61000}, {"m": "2026-03", "pv_kwh": 66000},
-  {"m": "2026-04", "pv_kwh": 58000}, {"m": "2026-05", "pv_kwh": 50000}, {"m": "2026-06", "pv_kwh": 47000},
-  {"m": "2026-07", "pv_kwh": 46000}, {"m": "2026-08", "pv_kwh": 49000}, {"m": "2026-09", "pv_kwh": 51000},
-  {"m": "2026-10", "pv_kwh": 28600}
+  {
+   "m": "2026-10",
+   "pv_kwh": 98.63,
+   "days": 1
+  }
  ],
  "inverters": [
-  {"name": "INV-01", "kw": 1.4, "on": true},
-  {"name": "INV-02", "kw": 1.3, "on": true},
-  {"name": "INV-03", "kw": 1.2, "on": true},
-  {"name": "INV-04", "kw": 0.7, "on": true}
+  {
+   "name": "Inverter(COM2-13)",
+   "day_kwh": 52.16,
+   "total_kwh": 47688.66,
+   "peak_kw": 32.73,
+   "hours": 4.08
+  },
+  {
+   "name": "Inverter(COM2-12)",
+   "day_kwh": 52.01,
+   "total_kwh": 47660.66,
+   "peak_kw": 32.61,
+   "hours": 4.08
+  }
  ],
  "errors": []
 }

@@ -31,17 +31,22 @@ https://suvoak-web.github.io/hospital-dashboard/
 
 ## ☀️ พลังงานแสงอาทิตย์ (`solar_dashboard.html`)
 
-ดึงข้อมูลจาก Huawei FusionSolar อัตโนมัติวันละครั้ง (ประมาณ 19:35 น.) ผ่าน GitHub Actions (`.github/workflows/solar.yml` → `scripts/fetch_solar.py` → `data/solar.json`)
-จนกว่าจะตั้งค่าเสร็จ หน้าเว็บจะแสดงข้อมูลตัวอย่างพร้อมป้ายบอก
+ข้อมูลมาจากรายงานที่ export จาก Huawei FusionSolar (ใช้สิทธิ์ผู้ใช้ทั่วไปได้ ไม่ต้องเป็นผู้ดูแล)
 
-**ตั้งค่าครั้งแรก**
-1. ล็อกอิน FusionSolar ด้วยบัญชีผู้ดูแลบริษัท → System → Company Management → Northbound Management → Add
-   ตั้งชื่อผู้ใช้ (ต้องไม่ซ้ำบัญชีเว็บ) และรหัสผ่าน เปิด Basic APIs และเลือกสถานีของ รพ.
-2. GitHub repo → Settings → Secrets and variables → Actions → New repository secret
-   - `FUSIONSOLAR_USER` = ชื่อผู้ใช้ Northbound
-   - `FUSIONSOLAR_SYSTEM_CODE` = รหัสผ่าน Northbound
-3. (ถ้าจำเป็น) แท็บ Variables: `FUSIONSOLAR_BASE` ถ้าบัญชีอยู่โดเมนอื่น (ค่าเริ่มต้น `https://intl.fusionsolar.huawei.com`), `FUSIONSOLAR_STATION` (ค่าเริ่มต้น `NE=76434926`)
-4. Actions → "อัปเดตข้อมูลโซลาร์" → Run workflow เพื่อทดสอบ
+**อัปเดตข้อมูลประจำวัน (ประมาณ 1 นาที)**
+1. ใน FusionSolar export **Plant Report** และ **Inverter Report** แบบรายวัน เป็น .xlsx — แนะนำให้ export หลังแดดหมด (ประมาณ 19:00 น.) จะได้ข้อมูลครบวัน
+2. เปิดโฟลเดอร์ [`data/solar/reports`](data/solar/reports) ใน GitHub → **Add file → Upload files** → ลากทั้ง 2 ไฟล์มาวาง → **Commit changes**
+3. รอ 1–2 นาที ระบบ (`.github/workflows/solar_reports.yml`) จะแปลงไฟล์เป็น `data/solar.json` ให้เอง แล้วหน้าเว็บจะแสดงข้อมูลใหม่
 
-ค่าไฟต่อหน่วย (`TARIFF`) และค่า CO₂ (`EF`) แก้ได้ที่ต้นสคริปต์ใน `solar_dashboard.html` (และ `TARIFF` ใน `index.html`)
-หมายเหตุ: กราฟเทียบ "ไฟที่ รพ. ใช้" จะแสดงเมื่อมีมิเตอร์วัดไฟเชื่อมกับ FusionSolar เท่านั้น
+ไม่ต้องเปลี่ยนชื่อไฟล์ และไม่ต้องลบไฟล์เก่า (ถ้าวันเดียวกันมีหลายไฟล์ จะใช้ไฟล์ที่ข้อมูลครบกว่า) วันที่ของ Inverter Report อ่านจากชื่อไฟล์ เช่น `_16-10-2026`
+แปลงเองในเครื่องได้ด้วย `pip install openpyxl && python3 scripts/import_solar_reports.py`
+
+**ตัวเลขที่คำนวณ**
+- ไฟที่ใช้ ณ จุดติดมิเตอร์ = PV Yield − Export + Import (รายชั่วโมงจาก Plant Report)
+- ค่าไฟที่ประหยัด = (PV Yield − Export) × `TARIFF` + Revenue จากการขายไฟคืนในรายงาน
+- CO₂ = พลังงานสะสม (Total Yield ของอินเวอร์เตอร์) × `EF`
+
+แก้ `TARIFF` (บาท/kWh) และ `EF` ได้ที่ต้นสคริปต์ใน `solar_dashboard.html` (และ `TARIFF` ใน `index.html`)
+
+**ทางเลือก: ดึงอัตโนมัติผ่าน API** — ถ้าผู้ดูแลระบบ FusionSolar สร้างบัญชี Northbound ให้ (System → Company Management → Northbound Management)
+ใส่ secrets `FUSIONSOLAR_USER` / `FUSIONSOLAR_SYSTEM_CODE` แล้ว `.github/workflows/solar.yml` จะดึงข้อมูลเองวันละครั้ง (19:35 น.) โดยไม่ต้องอัปโหลดไฟล์ ถ้ายังไม่ใส่ secrets workflow นี้จะข้ามไปเฉย ๆ
