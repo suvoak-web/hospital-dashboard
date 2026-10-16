@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>พลังงานแสงอาทิตย์ — รพ.พระทองคำฯ</title>
+<title>Solar PV อาคารอุบัติเหตุและฉุกเฉิน — รพ.พระทองคำฯ</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
@@ -67,7 +67,7 @@ a{color:var(--accent)}
 <div class="wrap">
   <div class="head">
     <div>
-      <h1>☀️ พลังงานแสงอาทิตย์ (Solar PV)</h1>
+      <h1>☀️ Solar PV อาคารอุบัติเหตุและฉุกเฉิน</h1>
       <p>รพ.พระทองคำเฉลิมพระเกียรติ 80 พรรษา · ข้อมูลจากรายงาน Huawei FusionSolar · <span id="updated">—</span></p>
     </div>
     <span id="health" class="pill ok"><i></i>กำลังโหลด…</span>
@@ -86,7 +86,7 @@ a{color:var(--accent)}
   <div class="section">รายเดือน</div>
   <div class="card">
     <h2>ผลิตได้ เทียบกับไฟที่ใช้ — รายเดือน (kWh)</h2>
-    <div class="legend"><span><b style="background:var(--solar)"></b>โซลาร์ที่ใช้เอง</span><span><b style="background:var(--solar-soft)"></b>โซลาร์ส่งคืนกริด</span><span><b style="background:var(--use);height:3px"></b>ไฟที่ใช้ ณ จุดติดมิเตอร์</span></div>
+    <div class="legend"><span><b style="background:var(--solar)"></b>โซลาร์ที่ใช้เอง</span><span><b style="background:var(--solar-soft)"></b>โซลาร์ส่งคืนกริด</span><span><b style="background:var(--use);height:3px"></b>ไฟที่อาคารใช้</span></div>
     <div class="chart"><canvas id="cMonth" role="img" aria-label="กราฟรายเดือน: ไฟฟ้าจากโซลาร์ที่ใช้เอง ส่งคืนกริด และไฟที่ใช้"></canvas></div>
     <p class="note" id="monthNote">&nbsp;</p>
     <div class="tbl">
@@ -144,7 +144,7 @@ a{color:var(--accent)}
     </div>
   </div>
 
-  <p class="foot">ไฟที่ใช้ = ผลิตได้ − ส่งคืนกริด + ซื้อจากการไฟฟ้า (วัด ณ จุดติดมิเตอร์ของระบบโซลาร์ อาจไม่ใช่ไฟทั้งโรงพยาบาล) · ประหยัด = ไฟโซลาร์ที่ใช้เอง × <span id="fTariff"></span> บาท/kWh ไม่รวมไฟที่ส่งคืนกริด · CO₂ = ผลิตสะสม × <span id="fEf"></span> kgCO₂/kWh · ต้นไม้ 1 ต้นดูดซับ ~<span id="fTree"></span> kgCO₂/ปี</p>
+  <p class="foot">ไฟที่ใช้ = ผลิตได้ − ส่งคืนกริด + ซื้อจากการไฟฟ้า (วัดที่มิเตอร์ของอาคารอุบัติเหตุและฉุกเฉิน ไม่ใช่ไฟทั้งโรงพยาบาล) · ประหยัด = ไฟโซลาร์ที่ใช้เอง × <span id="fTariff"></span> บาท/kWh ไม่รวมไฟที่ส่งคืนกริด · CO₂ = ผลิตสะสม × <span id="fEf"></span> kgCO₂/kWh · ต้นไม้ 1 ต้นดูดซับ ~<span id="fTree"></span> kgCO₂/ปี</p>
 </div>
 
 <script>

@@ -25,7 +25,7 @@
     { group: '💊 รพ.สต.' },
     { href: 'pcupayment.html', icon: '💊', label: 'ยาและเวชภัณฑ์ รพ.สต.' },
     { group: '⚡ พลังงาน' },
-    { href: 'solar_dashboard.html', icon: '☀️', label: 'พลังงานแสงอาทิตย์' }
+    { href: 'solar_dashboard.html', icon: '☀️', label: 'Solar PV อาคาร ER' }
   ];
 
   var file = (location.pathname.split('/').pop() || 'index.html').toLowerCase();

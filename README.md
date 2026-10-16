@@ -29,7 +29,7 @@ https://suvoak-web.github.io/hospital-dashboard/
 3. เลือก Source: `main` branch, folder `/root`
 4. Save → รอสักครู่ ได้ URL สาธารณะ
 
-## ☀️ พลังงานแสงอาทิตย์ (`solar_dashboard.html`)
+## ☀️ Solar PV อาคารอุบัติเหตุและฉุกเฉิน (`solar_dashboard.html`)
 
 ข้อมูลมาจากรายงานที่ export จาก Huawei FusionSolar (ใช้สิทธิ์ผู้ใช้ทั่วไปได้ ไม่ต้องเป็นผู้ดูแล)
 
@@ -42,7 +42,7 @@ https://suvoak-web.github.io/hospital-dashboard/
 แปลงเองในเครื่องได้ด้วย `pip install openpyxl && python3 scripts/import_solar_reports.py`
 
 **ตัวเลขที่คำนวณ**
-- ไฟที่ใช้ ณ จุดติดมิเตอร์ = PV Yield − Export + Import (รายชั่วโมงจาก Plant Report)
+- ไฟที่อาคารใช้ = PV Yield − Export + Import (รายชั่วโมงจาก Plant Report)
 - ค่าไฟที่ประหยัด = (PV Yield − Export) × `TARIFF` + Revenue จากการขายไฟคืนในรายงาน
 - CO₂ = พลังงานสะสม (Total Yield ของอินเวอร์เตอร์) × `EF`
 
