@@ -6,7 +6,7 @@
  "report_date": "2026-10-16",
  "report_complete": false,
  "report_last_hour": null,
- "updated": "2026-10-16T11:49+07:00",
+ "updated": "2026-10-16T11:51+07:00",
  "peak_kw": 65.34,
  "realtime": {
   "day_kwh": 104.17,
@@ -2965,6 +2965,108 @@
      "kwh": 5986.2,
      "peak_kw": 33.0,
      "hours": 371.42
+    }
+   ]
+  },
+  {
+   "m": "2026-05",
+   "items": [
+    {
+     "name": "Inverter(COM2-12)",
+     "kwh": 5937.1,
+     "peak_kw": 33.0,
+     "hours": 391.67
+    },
+    {
+     "name": "Inverter(COM2-13)",
+     "kwh": 5924.32,
+     "peak_kw": 33.0,
+     "hours": 389.83
+    }
+   ]
+  },
+  {
+   "m": "2026-06",
+   "items": [
+    {
+     "name": "Inverter(COM2-12)",
+     "kwh": 5857.63,
+     "peak_kw": 33.0,
+     "hours": 385.83
+    },
+    {
+     "name": "Inverter(COM2-13)",
+     "kwh": 5825.7,
+     "peak_kw": 33.0,
+     "hours": 383.75
+    }
+   ]
+  },
+  {
+   "m": "2026-07",
+   "items": [
+    {
+     "name": "Inverter(COM2-12)",
+     "kwh": 5413.05,
+     "peak_kw": 33.0,
+     "hours": 392.33
+    },
+    {
+     "name": "Inverter(COM2-13)",
+     "kwh": 5383.54,
+     "peak_kw": 33.0,
+     "hours": 389.92
+    }
+   ]
+  },
+  {
+   "m": "2026-08",
+   "items": [
+    {
+     "name": "Inverter(COM2-12)",
+     "kwh": 4617.31,
+     "peak_kw": 33.0,
+     "hours": 384.5
+    },
+    {
+     "name": "Inverter(COM2-13)",
+     "kwh": 4582.85,
+     "peak_kw": 33.0,
+     "hours": 382.5
+    }
+   ]
+  },
+  {
+   "m": "2026-09",
+   "items": [
+    {
+     "name": "Inverter(COM2-12)",
+     "kwh": 4636.33,
+     "peak_kw": 33.0,
+     "hours": 359.33
+    },
+    {
+     "name": "Inverter(COM2-13)",
+     "kwh": 4613.9,
+     "peak_kw": 33.0,
+     "hours": 356.92
+    }
+   ]
+  },
+  {
+   "m": "2026-10",
+   "items": [
+    {
+     "name": "Inverter(COM2-13)",
+     "kwh": 2636.15,
+     "peak_kw": 33.0,
+     "hours": 181.0
+    },
+    {
+     "name": "Inverter(COM2-12)",
+     "kwh": 2625.09,
+     "peak_kw": 33.0,
+     "hours": 181.83
     }
    ]
   }
