@@ -50,8 +50,8 @@ def rows_of(path):
     return [list(r) for r in ws.iter_rows(values_only=True)]
 
 
-def find_header(rows, must):
-    for i, r in enumerate(rows[:10]):
+def find_header(rows, must, limit=10):
+    for i, r in enumerate(rows[:limit]):
         keys = [norm(c) for c in r]
         if all(any(k.startswith(m) for k in keys) for m in must):
             return i, keys
@@ -127,6 +127,38 @@ def parse_inverters(rows):
     return out
 
 
+def parse_ami(rows):
+    """มิเตอร์ AMI ของการไฟฟ้า (Billing Monthly kWh Report) → {(date, HH:MM): (kwh, is_peak)} ช่วงละ 15 นาที"""
+    head = " ".join(str(c) for r in rows[:12] for c in r if c)
+    i, keys = find_header(rows, ["time", "ratea", "total"], limit=60)
+    if i is None:
+        return None
+    info = {"meter": None, "tariff": None}
+    for r in rows[:i]:
+        cells = [str(c).strip() if c is not None else "" for c in r]
+        for j, c in enumerate(cells):
+            nxt = next((x for x in cells[j + 1:] if x), None)
+            if c.startswith("Meter No") and nxt:
+                info["meter"] = nxt
+            if c.startswith("Tariff") and nxt:
+                info["tariff"] = nxt
+    c_t, c_a, c_tot = col(keys, "time"), col(keys, "ratea"), col(keys, "total")
+    out = {}
+    for r in rows[i + 1:]:
+        t = str(r[c_t] or "").strip()
+        mt = re.match(r"(\d{2})/(\d{2})/(\d{4}) (\d{2})[.:](\d{2})", t)
+        if not mt:
+            continue
+        v = num(r[c_tot]) if c_tot < len(r) else None
+        if v is None:
+            continue
+        d, mo, y, hh, mm = map(int, mt.groups())
+        end = datetime(y, mo, d) + timedelta(hours=hh, minutes=mm)   # เวลาสิ้นสุดช่วง 15 นาที
+        start = end - timedelta(minutes=15)
+        out[(start.strftime("%Y-%m-%d"), start.strftime("%H:%M"))] = (v, num(r[c_a]) is not None if c_a < len(r) else False)
+    return info, out if "Metering" in head or out else None
+
+
 def period_from_name(name):
     """('day', 'YYYY-MM-DD') หรือ ('month', 'YYYY-MM') จากชื่อไฟล์"""
     m = re.search(r"(?<!\d)(\d{1,2})-(\d{1,2})-(\d{4})(?!\d)", name)
@@ -157,6 +189,53 @@ def day_from_hours(hs):
     }
 
 
+def build_grid(ami, info, solar_daily):
+    """สรุปมิเตอร์หลักของ รพ. รวมกับไฟโซลาร์ → ไฟทั้งโรงพยาบาล"""
+    days = defaultdict(lambda: {"kwh": 0.0, "peak_kwh": 0.0, "n": 0, "max15": 0.0, "max_at": None, "hours": [0.0] * 24})
+    for (d, hm), (v, peak) in ami.items():
+        x = days[d]
+        x["kwh"] += v
+        x["n"] += 1
+        if peak:
+            x["peak_kwh"] += v
+        x["hours"][int(hm[:2])] += v
+        if v > x["max15"]:
+            x["max15"], x["max_at"] = v, hm
+    daily = []
+    for d in sorted(days):
+        x = days[d]
+        sd = solar_daily.get(d, {})
+        complete = x["n"] >= 96
+        rec = {"d": d, "kwh": r2(x["kwh"]), "peak_kwh": r2(x["peak_kwh"]), "off_kwh": r2(x["kwh"] - x["peak_kwh"]),
+               "max_kw": r2(x["max15"] * 4), "max_at": x["max_at"], "workday": x["peak_kwh"] > 0, "complete": complete,
+               "pv_kwh": r2(sd.get("pv_kwh")) if sd.get("complete") else None, "hours": [r2(h) for h in x["hours"]]}
+        rec["total_kwh"] = r2(x["kwh"] + rec["pv_kwh"]) if complete and rec["pv_kwh"] is not None else None
+        daily.append(rec)
+    months = []
+    for m in sorted({x["d"][:7] for x in daily}):
+        ds = [x for x in daily if x["d"].startswith(m)]
+        both = [x for x in ds if x["total_kwh"] is not None]
+        mx = max(ds, key=lambda x: x["max_kw"] or 0)
+        months.append({
+            "m": m, "days": sum(1 for x in ds if x["complete"]),
+            "kwh": r2(sum(x["kwh"] for x in ds)), "peak_kwh": r2(sum(x["peak_kwh"] for x in ds)),
+            "off_kwh": r2(sum(x["off_kwh"] for x in ds)), "max_kw": mx["max_kw"], "max_at": f"{mx['d']} {mx['max_at']}",
+            "both_days": len(both), "both_grid_kwh": r2(sum(x["kwh"] for x in both)), "both_pv_kwh": r2(sum(x["pv_kwh"] for x in both)),
+        })
+    def profile(sel):
+        ds = [x for x in daily if x["complete"] and sel(x)]
+        return [r2(sum(x["hours"][h] for x in ds) / len(ds)) for h in range(24)] if ds else None
+    lowest = min(((x["d"], h, x["hours"][h]) for x in daily if x["complete"] for h in range(9, 16)), key=lambda t: t[2], default=None)
+    return {
+        "meter": info.get("meter"), "tariff": info.get("tariff"),
+        "first_date": daily[0]["d"], "last_date": daily[-1]["d"],
+        "daily": daily[-400:], "monthly": months,
+        "profile_workday": profile(lambda x: x["workday"]), "profile_holiday": profile(lambda x: not x["workday"]),
+        "min_midday_kwh_per_h": r2(lowest[2]) if lowest else None,
+        "min_15min_kwh": r2(min(v for v, _ in ami.values())),
+    }
+
+
 def main():
     files = sorted(REPORTS.glob("*.xlsx")) if REPORTS.exists() else []
     if not files:
@@ -166,6 +245,8 @@ def main():
     daily_rows = {}             # date -> rec (จากรายงานรายเดือน)
     inv_day = {}                # date -> [..]
     inv_month = {}              # YYYY-MM -> [..]
+    ami = {}                    # (date, HH:MM) -> (kwh, is_peak)
+    ami_info = {}
     skipped = []
     for f in files:
         try:
@@ -181,6 +262,11 @@ def main():
                     hourly_days[d] = hs
             daily_rows.update(days)
             continue
+        a = parse_ami(rows)
+        if a and a[1]:
+            ami_info.update({k: v for k, v in a[0].items() if v})
+            ami.update(a[1])
+            continue
         inv = parse_inverters(rows)
         if inv:
             kind, key = period_from_name(f.name)
@@ -192,7 +278,7 @@ def main():
             else:
                 skipped.append(f"{f.name}: Inverter Report แต่หาวันที่/เดือนจากชื่อไฟล์ไม่เจอ")
             continue
-        skipped.append(f"{f.name}: ไม่รู้จักรูปแบบไฟล์ (ต้องเป็น Plant Report หรือ Inverter Report)")
+        skipped.append(f"{f.name}: ไม่รู้จักรูปแบบไฟล์ (ต้องเป็น Plant Report, Inverter Report หรือรายงาน AMI ของการไฟฟ้า)")
 
     if not (hourly_days or daily_rows or inv_day or inv_month):
         sys.exit("ไม่มีไฟล์ที่อ่านได้:\n  " + "\n  ".join(skipped))
@@ -302,6 +388,7 @@ def main():
                                                 "hours": r2(x["hours"])} for x in v]} for k, v in sorted(inv_month.items())],
         "errors": skipped,
     }
+    out["grid"] = build_grid(ami, ami_info, daily) if ami else None
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     have = [x["m"] for x in monthly if x["pv_kwh"] is not None]
     print(f"wrote {OUT}: {len(dates)} วัน, เดือนที่มีข้อมูล {', '.join(have)}, ล่าสุด {latest}")

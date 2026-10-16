@@ -79,19 +79,46 @@ a{color:var(--accent)}
   <div class="kpis">
     <div class="card kpi" style="border-top-color:var(--solar)"><div class="lbl">ผลิตไฟฟ้าสะสม</div><div class="val" style="color:var(--solar-text)"><span id="tPv">—</span> <small>MWh</small></div><div class="sub" id="tPvSub">&nbsp;</div></div>
     <div class="card kpi" style="border-top-color:var(--green)"><div class="lbl">ประหยัดค่าไฟ</div><div class="val">฿<span id="tSave">—</span></div><div class="sub" id="tSaveSub">&nbsp;</div></div>
-    <div class="card kpi" style="border-top-color:var(--accent)"><div class="lbl">ไฟที่ใช้มาจากโซลาร์</div><div class="val"><span id="tShare">—</span><small>%</small></div><div class="sub" id="tShareSub">&nbsp;</div></div>
+    <div class="card kpi" style="border-top-color:var(--accent)"><div class="lbl">ไฟของอาคาร ER มาจากโซลาร์</div><div class="val"><span id="tShare">—</span><small>%</small></div><div class="sub" id="tShareSub">&nbsp;</div></div>
     <div class="card kpi" style="border-top-color:#0F6E56"><div class="lbl">ลดการปล่อย CO₂</div><div class="val"><span id="tCo2">—</span> <small>ตัน</small></div><div class="sub" id="tCo2Sub">&nbsp;</div></div>
+  </div>
+
+  <div id="gridSec" hidden>
+  <div class="section">ไฟฟ้าทั้งโรงพยาบาล — มิเตอร์หลักการไฟฟ้า <span id="gMeter"></span></div>
+  <div class="kpis">
+    <div class="card kpi" style="border-top-color:#334155"><div class="lbl">ใช้ไฟทั้ง รพ. เฉลี่ย</div><div class="val"><span id="gUse">—</span> <small>kWh/วัน</small></div><div class="sub" id="gUseSub">&nbsp;</div></div>
+    <div class="card kpi" style="border-top-color:var(--accent)"><div class="lbl">ซื้อจากการไฟฟ้า</div><div class="val"><span id="gBuy">—</span> <small>kWh</small></div><div class="sub" id="gBuySub">&nbsp;</div></div>
+    <div class="card kpi" style="border-top-color:var(--solar)"><div class="lbl">โซลาร์ช่วยแบ่งไฟทั้ง รพ.</div><div class="val" style="color:var(--solar-text)"><span id="gShare">—</span><small>%</small></div><div class="sub" id="gShareSub">&nbsp;</div></div>
+    <div class="card kpi" style="border-top-color:#B91C1C"><div class="lbl">ความต้องการไฟสูงสุด</div><div class="val"><span id="gMax">—</span> <small>kW</small></div><div class="sub" id="gMaxSub">&nbsp;</div></div>
+  </div>
+  <div class="row">
+    <div class="card wide">
+      <div class="card-head">
+        <h2 id="gDayTitle">ไฟทั้ง รพ. รายวัน (kWh)</h2>
+        <div class="chips" id="gChips" role="group" aria-label="เลือกเดือน"></div>
+      </div>
+      <div class="legend"><span><b style="background:#1D6FA4"></b>ซื้อจากการไฟฟ้า</span><span><b style="background:var(--solar)"></b>โซลาร์</span></div>
+      <div class="chart sm"><canvas id="cGridDay" role="img" aria-label="กราฟไฟฟ้าทั้งโรงพยาบาลรายวัน แยกไฟที่ซื้อและไฟจากโซลาร์"></canvas></div>
+      <p class="note" id="gDayNote">&nbsp;</p>
+    </div>
+    <div class="card side">
+      <h2>ซื้อไฟเฉลี่ยรายชั่วโมง (kWh)</h2>
+      <div class="legend"><span><b style="background:#334155;height:3px"></b>วันทำงาน</span><span><b style="background:#94A3B8;height:3px"></b>วันหยุด</span></div>
+      <div class="chart sm"><canvas id="cProfile" role="img" aria-label="กราฟการซื้อไฟเฉลี่ยรายชั่วโมง วันทำงานเทียบวันหยุด"></canvas></div>
+      <p class="note">ช่วงสาย–บ่ายที่เส้นยุบลงคือช่วงที่โซลาร์ช่วยลดการซื้อไฟ · Peak (TOU) = จ.–ศ. 09:00–22:00 น.</p>
+    </div>
+  </div>
   </div>
 
   <div class="section">รายเดือน</div>
   <div class="card">
     <h2>ผลิตได้ เทียบกับไฟที่ใช้ — รายเดือน (kWh)</h2>
-    <div class="legend"><span><b style="background:var(--solar)"></b>โซลาร์ที่ใช้เอง</span><span><b style="background:var(--solar-soft)"></b>โซลาร์ส่งคืนกริด</span><span><b style="background:var(--use);height:3px"></b>ไฟที่อาคารใช้</span></div>
+    <div class="legend"><span><b style="background:var(--solar)"></b>โซลาร์ที่ใช้เอง</span><span><b style="background:var(--solar-soft)"></b>ส่งไปอาคารอื่น</span><span><b style="background:var(--use);height:3px"></b>ไฟที่อาคารใช้</span></div>
     <div class="chart"><canvas id="cMonth" role="img" aria-label="กราฟรายเดือน: ไฟฟ้าจากโซลาร์ที่ใช้เอง ส่งคืนกริด และไฟที่ใช้"></canvas></div>
     <p class="note" id="monthNote">&nbsp;</p>
     <div class="tbl">
       <table>
-        <thead><tr><th>เดือน</th><th>วันที่มีข้อมูล</th><th>ผลิตได้ (kWh)</th><th>ใช้ไฟ (kWh)</th><th>ใช้เองจากโซลาร์</th><th>ส่งคืนกริด</th><th>ซื้อจากการไฟฟ้า</th><th>ไฟที่ใช้มาจากโซลาร์</th><th>ประหยัด (฿)</th></tr></thead>
+        <thead><tr><th>เดือน</th><th>วันที่มีข้อมูล</th><th>ผลิตได้ (kWh)</th><th>ER ใช้ไฟ (kWh)</th><th>ER ใช้เอง</th><th>ส่งไปอาคารอื่น</th><th>ER ซื้อเพิ่ม</th><th>ไฟ ER จากโซลาร์</th><th>ประหยัด (฿)</th></tr></thead>
         <tbody id="monthRows"></tbody>
       </table>
     </div>
@@ -103,7 +130,7 @@ a{color:var(--accent)}
       <h2 id="dayTitle">รายวัน (kWh)</h2>
       <div class="chips" id="monthChips" role="group" aria-label="เลือกเดือน"></div>
     </div>
-    <div class="legend"><span><b style="background:var(--solar)"></b>ใช้เอง</span><span><b style="background:var(--solar-soft)"></b>ส่งคืนกริด</span><span><b style="background:var(--use);height:3px"></b>ไฟที่ใช้</span></div>
+    <div class="legend"><span><b style="background:var(--solar)"></b>ใช้เอง</span><span><b style="background:var(--solar-soft)"></b>ส่งไปอาคารอื่น</span><span><b style="background:var(--use);height:3px"></b>ไฟที่ใช้</span></div>
     <div class="chart sm"><canvas id="cDay" role="img" aria-label="กราฟรายวันของเดือนที่เลือก"></canvas></div>
     <p class="note" id="dayNote">&nbsp;</p>
   </div>
@@ -125,7 +152,7 @@ a{color:var(--accent)}
       <p class="note" id="mixNone" hidden>ไม่มีข้อมูลการใช้ไฟ</p>
       <div class="note" style="border-top:1px solid var(--border);padding-top:12px;margin-top:14px">
         <div>ผลิตได้ <b class="mono" id="dPv">—</b> kWh · กำลังสูงสุด <b class="mono" id="dPeak">—</b> kW</div>
-        <div>ส่งไฟคืนกริด <b class="mono" id="dExp">—</b> kWh · ประหยัด ฿<b class="mono" id="dSave">—</b></div>
+        <div>ส่งไปอาคารอื่น <b class="mono" id="dExp">—</b> kWh · ประหยัด ฿<b class="mono" id="dSave">—</b></div>
       </div>
     </div>
   </div>
@@ -144,7 +171,7 @@ a{color:var(--accent)}
     </div>
   </div>
 
-  <p class="foot">ไฟที่ใช้ = ผลิตได้ − ส่งคืนกริด + ซื้อจากการไฟฟ้า (วัดที่มิเตอร์ของอาคารอุบัติเหตุและฉุกเฉิน ไม่ใช่ไฟทั้งโรงพยาบาล) · ประหยัด = ไฟโซลาร์ที่ใช้เอง × <span id="fTariff"></span> บาท/kWh ไม่รวมไฟที่ส่งคืนกริด · CO₂ = ผลิตสะสม × <span id="fEf"></span> kgCO₂/kWh · ต้นไม้ 1 ต้นดูดซับ ~<span id="fTree"></span> kgCO₂/ปี</p>
+  <p class="foot">ไฟที่ใช้ = ผลิตได้ − ส่งคืนกริด + ซื้อจากการไฟฟ้า (วัดที่มิเตอร์ของอาคารอุบัติเหตุและฉุกเฉิน ไม่ใช่ไฟทั้งโรงพยาบาล) · ประหยัด = ไฟโซลาร์ทั้งหมด × <span id="fTariff"></span> บาท/kWh (มิเตอร์หลักไม่เคยลดถึงศูนย์ ไฟโซลาร์จึงถูกใช้ภายใน รพ. ทั้งหมด) · CO₂ = ผลิตสะสม × <span id="fEf"></span> kgCO₂/kWh · ต้นไม้ 1 ต้นดูดซับ ~<span id="fTree"></span> kgCO₂/ปี</p>
 </div>
 
 <script>
@@ -178,7 +205,7 @@ var stackedOpts = function(extra){ return { maintainAspectRatio: false, interact
   scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, grid: { color: '#EEF2F6' } } } }; };
 function pvDatasets(rows){ return [
   { type: 'bar', label: 'ใช้เอง', data: rows.map(function(m){ return m.self_kwh != null ? m.self_kwh : m.pv_kwh; }), backgroundColor: '#D97706', stack: 'pv', order: 2 },
-  { type: 'bar', label: 'ส่งคืนกริด', data: rows.map(function(m){ return m.export_kwh; }), backgroundColor: '#FCD9A0', stack: 'pv', order: 2, borderRadius: { topLeft: 4, topRight: 4 } },
+  { type: 'bar', label: 'ส่งไปอาคารอื่น', data: rows.map(function(m){ return m.export_kwh; }), backgroundColor: '#FCD9A0', stack: 'pv', order: 2, borderRadius: { topLeft: 4, topRight: 4 } },
   { type: 'line', label: 'ไฟที่ใช้', data: rows.map(function(m){ return m.use_kwh; }), borderColor: '#1D6FA4', backgroundColor: '#1D6FA4', borderWidth: 2.5, pointRadius: 2.5, tension: .25, order: 1, stack: 'use' }
 ]; }
 
@@ -204,20 +231,21 @@ function render(d){
   if (miss.length) notes.push('ยังไม่มีรายงานเดือน <b>' + miss.join(', ') + '</b> — export Plant Report และ Inverter Report รายเดือนของเดือนเหล่านี้มาเพิ่ม ตัวเลขรายเดือนจะครบ');
   if (notes.length) { $('notice').hidden = false; $('notice').innerHTML = notes.join('<br>'); }
 
+  renderGrid(d);
+
   // ----- ภาพรวมตั้งแต่เริ่ม -----
   if (d.first_date) $('secTotal').textContent = 'ภาพรวมตั้งแต่เริ่มใช้งาน ' + thDate(d.first_date);
   var total = rt.total_kwh || sm.pv_kwh || 0;
   $('tPv').textContent = fmt(total / 1000, 1);
   $('tPvSub').textContent = 'ตามมิเตอร์อินเวอร์เตอร์ ณ ' + (d.report_date ? thDate(d.report_date) : '—');
-  // ประหยัด: วันที่มีรายงานรู้ยอดใช้เองจริง ช่วงที่ไม่มีรายงานประมาณด้วยสัดส่วนใช้เองเฉลี่ย
+  // ประหยัด: ไฟโซลาร์ทั้งหมดถูกใช้ภายใน รพ. (มิเตอร์หลักไม่เคยลดถึงศูนย์)
   var selfRate = sm.pv_kwh ? sm.self_kwh / sm.pv_kwh : 0;
-  var knownSave = (sm.self_kwh || 0) * TARIFF;
-  var unknownKwh = Math.max(0, total - (sm.pv_kwh || 0));
-  $('tSave').textContent = fmt(knownSave + unknownKwh * selfRate * TARIFF);
-  $('tSaveSub').textContent = unknownKwh > total * 0.01 ? 'จากรายงาน ฿' + fmt(knownSave) + ' + ประมาณช่วงที่ไม่มีรายงาน' : 'โซลาร์ที่ใช้เอง ' + fmt(sm.self_kwh) + ' kWh';
+  var knownSave = (sm.pv_kwh || 0) * TARIFF;
+  $('tSave').textContent = fmt(total * TARIFF);
+  $('tSaveSub').textContent = 'ไฟโซลาร์ทั้งหมดใช้ภายใน รพ. × ' + TARIFF + ' บาท/kWh';
   var share = sm.use_kwh ? sm.self_kwh / sm.use_kwh * 100 : null;
   $('tShare').textContent = fmt(share);
-  $('tShareSub').textContent = 'ใช้เองได้ ' + fmt(selfRate * 100) + '% ของที่ผลิต ที่เหลือส่งคืนกริด';
+  $('tShareSub').textContent = 'อาคาร ER ใช้เอง ' + fmt(selfRate * 100) + '% ของที่ผลิต ที่เหลือส่งไปอาคารอื่นใน รพ.';
   var co2 = total * EF / 1000;
   $('tCo2').textContent = fmt(co2, 1);
   $('tCo2Sub').textContent = 'เทียบเท่าต้นไม้ ~' + fmt(co2 * 1000 / TREE_KG) + ' ต้นดูดซับใน 1 ปี';
@@ -237,7 +265,7 @@ function render(d){
     var sh = m.use_kwh ? m.self_kwh / m.use_kwh * 100 : null;
     [td(mLabel(m.m, true)), td(m.pv_kwh ? (m.days != null ? m.days + '/' + m.days_in_month : '—') : 'ไม่มีรายงาน'),
      td(fmt(m.pv_kwh)), td(fmt(m.use_kwh)), td(fmt(m.self_kwh)), td(fmt(m.export_kwh)), td(fmt(m.import_kwh)),
-     m.pv_kwh ? shareCell(sh) : td('—'), td(m.self_kwh != null ? fmt(m.self_kwh * TARIFF) : '—')].forEach(function(c){ tr.appendChild(c); });
+     m.pv_kwh ? shareCell(sh) : td('—'), td(m.pv_kwh ? fmt(m.pv_kwh * TARIFF) : '—')].forEach(function(c){ tr.appendChild(c); });
     body.appendChild(tr);
   });
   var tr = document.createElement('tr'); tr.className = 'total';
@@ -280,7 +308,7 @@ function render(d){
     $('mixPv').textContent = 'โซลาร์ ' + fmt(self, 1) + ' kWh'; $('mixGrid').textContent = 'การไฟฟ้า ' + fmt(Math.max(0, use - self), 1) + ' kWh';
   } else { $('mixBox').hidden = true; $('mixNone').hidden = false; $('lgUse').hidden = true; }
   $('dPv').textContent = fmt(hpv, 1); $('dPeak').textContent = fmt(d.peak_kw, 1);
-  $('dExp').textContent = fmt(hexp, 1); $('dSave').textContent = fmt(Math.max(0, hpv - hexp) * TARIFF);
+  $('dExp').textContent = fmt(hexp, 1); $('dSave').textContent = fmt(hpv * TARIFF);
   var lastH = hourly.length ? hourly[hourly.length - 1].h : null;
   $('hourNote').textContent = lastH && lastH !== '23:00' ? 'รายงานรายชั่วโมงวันนี้ export ระหว่างวัน มีข้อมูลถึง ' + lastH + ' น. — export หลัง 19:00 น. จะได้ครบทั้งวัน' : '';
   new Chart($('cHour'), {
@@ -326,6 +354,54 @@ function render(d){
     var r = document.createElement('div'); r.className = 'mono'; r.style.whiteSpace = 'nowrap'; r.textContent = fmt(x.day_kwh, 1) + ' kWh';
     row.appendChild(l); row.appendChild(r); box.appendChild(row);
   });
+}
+
+function renderGrid(d){
+  var g = d.grid; if (!g || !g.daily || !g.daily.length) return;
+  $('gridSec').hidden = false;
+  $('gMeter').textContent = (g.meter ? 'เลขที่ ' + g.meter : '') + (g.tariff ? ' · อัตรา ' + g.tariff : '');
+  var gm = g.monthly[g.monthly.length - 1];
+  var both = g.daily.filter(function(x){ return x.total_kwh != null && x.d.slice(0, 7) === gm.m; });
+  var bGrid = sum(both, 'kwh'), bPv = sum(both, 'pv_kwh');
+  $('gUse').textContent = both.length ? fmt((bGrid + bPv) / both.length) : '—';
+  $('gUseSub').textContent = mLabel(gm.m, true) + ' · ซื้อ ' + fmt(bGrid / Math.max(1, both.length)) + ' + โซลาร์ ' + fmt(bPv / Math.max(1, both.length));
+  $('gBuy').textContent = fmt(gm.kwh);
+  $('gBuySub').textContent = gm.days + ' วัน · Peak ' + fmt(gm.peak_kwh / gm.kwh * 100) + '% · Off-Peak ' + fmt(gm.off_kwh / gm.kwh * 100) + '%';
+  $('gShare').textContent = both.length ? fmt(bPv / (bGrid + bPv) * 100) : '—';
+  $('gShareSub').textContent = 'โซลาร์ ' + fmt(bPv) + ' kWh จากไฟที่ใช้ทั้งหมด ' + fmt(bGrid + bPv) + ' kWh';
+  $('gMax').textContent = fmt(gm.max_kw);
+  var ma = gm.max_at.split(' ');
+  $('gMaxSub').textContent = 'วันที่ ' + thDate(ma[0]).replace(/ \d{4}$/, '') + ' ช่วง ' + ma[1] + ' น. (เฉลี่ย 15 นาที)';
+
+  var months = g.monthly.map(function(m){ return m.m; });
+  var chips = $('gChips'), chart = null;
+  function show(m){
+    Array.prototype.forEach.call(chips.children, function(b){ b.setAttribute('aria-pressed', String(b.dataset.m === m)); });
+    var ds = g.daily.filter(function(x){ return x.d.slice(0, 7) === m; });
+    $('gDayTitle').textContent = 'ไฟทั้ง รพ. รายวัน — ' + mLabel(m, true) + ' (kWh)';
+    var wd = ds.filter(function(x){ return x.complete && x.workday; }), hd = ds.filter(function(x){ return x.complete && !x.workday; });
+    $('gDayNote').textContent = 'วันทำงานซื้อไฟเฉลี่ย ' + fmt(sum(wd, 'kwh') / Math.max(1, wd.length)) + ' kWh · วันหยุด ' + fmt(sum(hd, 'kwh') / Math.max(1, hd.length)) + ' kWh' + (ds.some(function(x){ return !x.complete; }) ? ' · วันสุดท้ายยังไม่ครบวัน' : '');
+    var cfg = { labels: ds.map(function(x){ return Number(x.d.slice(8)) + (x.workday ? '' : ' (หยุด)'); }), datasets: [
+      { label: 'ซื้อจากการไฟฟ้า', data: ds.map(function(x){ return x.kwh; }), backgroundColor: '#1D6FA4', stack: 's' },
+      { label: 'โซลาร์', data: ds.map(function(x){ return x.pv_kwh; }), backgroundColor: '#D97706', stack: 's', borderRadius: { topLeft: 3, topRight: 3 } }
+    ] };
+    if (chart) { chart.data = cfg; chart.update(); return; }
+    chart = new Chart($('cGridDay'), { type: 'bar', data: cfg, options: stackedOpts({ title: function(it){ return 'วันที่ ' + it[0].label; } }) });
+  }
+  if (months.length > 1) months.forEach(function(m){
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.textContent = mLabel(m); b.dataset.m = m;
+    b.setAttribute('aria-pressed', 'false'); b.addEventListener('click', function(){ show(m); }); chips.appendChild(b);
+  });
+  show(months[months.length - 1]);
+
+  var hrs = []; for (var h = 0; h < 24; h++) hrs.push((h < 10 ? '0' : '') + h + ':00');
+  new Chart($('cProfile'), { type: 'line', data: { labels: hrs, datasets: [
+      { label: 'วันทำงาน', data: g.profile_workday || [], borderColor: '#334155', backgroundColor: '#334155', borderWidth: 2.5, pointRadius: 0, tension: .3 },
+      { label: 'วันหยุด', data: g.profile_holiday || [], borderColor: '#94A3B8', backgroundColor: '#94A3B8', borderWidth: 2, borderDash: [5, 4], pointRadius: 0, tension: .3 }
+    ] },
+    options: { maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: kwhTip(0) } } },
+      scales: { y: { beginAtZero: true, grid: { color: '#EEF2F6' } }, x: { grid: { display: false }, ticks: { maxTicksLimit: 8 } } } } });
 }
 </script>
 <script src="credit.js"></script>

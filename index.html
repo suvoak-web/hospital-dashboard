@@ -183,7 +183,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Sarabun', sans-s
       <div style="margin:8px 0; font-size:14px; color:var(--muted);">ข้อมูลจาก FusionSolar · <span id="sol-upd">–</span></div>
       <div style="display:flex; gap:20px; font-size:15px;">
         <div><span id="sol-power" style="color:#B45309; font-weight:700;">–</span><br><small>MWh ผลิตสะสม</small></div>
-        <div><span id="sol-day" style="color:#1D6FA4; font-weight:700;">–</span><br><small>ไฟที่ใช้จากโซลาร์</small></div>
+        <div><span id="sol-day" style="color:#1D6FA4; font-weight:700;">–</span><br><small id="sol-day-lbl">ไฟที่ใช้จากโซลาร์</small></div>
         <div><span id="sol-save" style="color:#16A34A; font-weight:700;">–</span><br><small>ประหยัดค่าไฟสะสม</small></div>
       </div></div></div>
     </a>
@@ -208,8 +208,10 @@ fetch('data/solar.json?v=' + Date.now()).then(function (r) { if (!r.ok) throw 0;
   var rt = d.realtime || {}, sm = d.summary || {}, TARIFF = 4.2, f = function (n, k) { return Number(n).toLocaleString('th-TH', { maximumFractionDigits: k == null ? 0 : k }); };
   var total = rt.total_kwh || sm.pv_kwh;
   if (total) document.getElementById('sol-power').textContent = f(total / 1000, 1);
-  if (sm.use_kwh) document.getElementById('sol-day').textContent = f(sm.self_kwh / sm.use_kwh * 100) + '%';
-  if (sm.pv_kwh && total) document.getElementById('sol-save').textContent = '฿' + f(((sm.self_kwh || 0) + Math.max(0, total - sm.pv_kwh) * (sm.self_kwh / sm.pv_kwh)) * TARIFF / 1000, 0) + 'K';
+  var gm = d.grid && d.grid.monthly && d.grid.monthly[d.grid.monthly.length - 1];
+  if (gm && gm.both_days) { document.getElementById('sol-day').textContent = f(gm.both_pv_kwh / (gm.both_grid_kwh + gm.both_pv_kwh) * 100) + '%'; document.getElementById('sol-day-lbl').textContent = 'ของไฟทั้ง รพ.'; }
+  else if (sm.use_kwh) document.getElementById('sol-day').textContent = f(sm.self_kwh / sm.use_kwh * 100) + '%';
+  if (sm.pv_kwh && total) document.getElementById('sol-save').textContent = '฿' + f(total * TARIFF / 1000, 0) + 'K';
   document.getElementById('sol-upd').textContent = d.sample ? 'ข้อมูลตัวอย่าง' : (d.report_date ? 'รายงานล่าสุด ' + new Date(d.report_date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' }) : '');
 }).catch(function () {});
 </script>
