@@ -41,6 +41,7 @@ tr.fund-row.on td{background:#dbeafe}
       <button class="tab" id="tYear" onclick="setView('year')">เฉพาะทั้งปี</button>
       <button class="tab" id="tQ" onclick="setView('q')">เฉพาะไตรมาส</button>
       <button class="tab" id="t70" onclick="setView('y70')">ปี 2570</button>
+      <button class="tab" id="tMis" onclick="setView('mis')">เทียบ MIS</button>
     </div>
   </div>
   <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
@@ -129,6 +130,45 @@ tr.fund-row.on td{background:#dbeafe}
       </thead>
       <tbody id="fundBody"></tbody>
     </table>
+  </div>
+
+  <div id="misBlock" class="card p-4 mb-5 border-t-4 border-teal-700">
+    <div class="flex flex-wrap justify-between gap-2 mb-3">
+      <div>
+        <h3 class="font-semibold">ข้อมูลจาก NHSO-MIS — ย้อนหลัง 10 ปี และกองทุนที่ยังไม่อยู่ในตาราง</h3>
+        <p class="text-xs text-slate-500">ดึงจาก mishos.nhso.go.th รายงาน ID 1825 (รายปี), 1826 (รายกองทุนย่อย), 505 (รายเดือน) เมื่อ 20 ต.ค. 2569 · หน่วยล้านบาท · ตัวเลขด้านบนของหน้านี้ไม่ได้เปลี่ยน</p>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+      <div>
+        <p class="text-xs text-slate-400 mb-1">เงินโอน สปสช. ทั้งปี ปีงบ 2560–2569 ตาม MIS (เทา = งบลงทุน)</p>
+        <canvas id="cMis10" height="170"></canvas>
+        <p class="text-xs text-amber-700 mt-2">ปี 66 ใน MIS ไม่มีเดือน ต.ค. 65 จึงต่ำกว่าตัวเลขในหน้านี้ (54.78) ราว 6.4 ล้าน</p>
+      </div>
+      <div class="overflow-x-auto">
+        <p class="text-xs text-slate-400 mb-1">กองทุนที่มีเงินโอนแต่ยังไม่อยู่ในตารางรายกองทุนด้านบน (ทั้งปีเท่านั้น MIS ไม่แยกไตรมาสรายกองทุน)</p>
+        <table class="w-full text-sm">
+          <thead class="bg-teal-800 text-white"><tr><th class="text-left p-2">กองทุน</th><th class="text-right p-2">66</th><th class="text-right p-2">67</th><th class="text-right p-2">68</th><th class="text-right p-2">69</th></tr></thead>
+          <tbody id="misExtraBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="overflow-x-auto mb-4">
+      <h4 class="font-semibold text-sm mb-1">เทียบตัวเลขในหน้านี้กับ MIS ปี 66–69</h4>
+      <p class="text-xs text-slate-400 mb-2">ช่องสีเหลือง = ต่างกันตั้งแต่ 0.05 ล้านบาทขึ้นไป · ปี 68–69 ยอดรวมตรงกันทุกไตรมาส · ปี 66–67 หน้านี้ครบกว่า MIS</p>
+      <table class="w-full text-sm">
+        <thead class="bg-slate-800 text-white"><tr><th class="text-left p-2">รายการ</th><th class="text-right p-2">66 หน้านี้</th><th class="text-right p-2">66 MIS</th><th class="text-right p-2">67 หน้านี้</th><th class="text-right p-2">67 MIS</th><th class="text-right p-2">68 หน้านี้</th><th class="text-right p-2">68 MIS</th><th class="text-right p-2">69 หน้านี้</th><th class="text-right p-2">69 MIS</th></tr></thead>
+        <tbody id="misRecBody"></tbody>
+      </table>
+    </div>
+    <div class="overflow-x-auto">
+      <h4 class="font-semibold text-sm mb-1">เงินโอนรายเดือนตาม MIS (ID 505)</h4>
+      <p class="text-xs text-slate-400 mb-2">ปี 63 ไม่แสดงเพราะ MIS นับซ้ำสองเท่า · ปี 64 MIS ไม่มีข้อมูลรายเดือน</p>
+      <table class="w-full text-sm">
+        <thead class="bg-slate-800 text-white"><tr id="misMonHead"></tr></thead>
+        <tbody id="misMonBody"></tbody>
+      </table>
+    </div>
   </div>
   <div id="detail" class="card p-4 mb-5 hidden">
     <div class="flex justify-between items-start gap-2 mb-3">
@@ -274,6 +314,31 @@ function openFund(id){
   });
   document.getElementById('detail').scrollIntoView({behavior:'smooth',block:'start'});
 }
+
+// ---- NHSO-MIS block (pulled 20 Oct 2569) ----
+const misData={"mis": {"years": ["2560", "2561", "2562", "2563", "2564", "2565", "2566", "2567", "2568", "2569"], "total": [54.13, 56.83, 62.77, 61.09, 59.89, 63.04, 48.35, 55.14, 50.0, 52.13], "capex": [2.83, 4.65, 2.33, 2.47, 5.15, 4.94, 1.51, 5.1, 3.87, 1.98]}, "rec": [{"k": "total", "name": "เงินเข้าบัญชีทั้งก้อน", "page": [54.78, 56.8, 50.0, 52.13], "mis": [48.35, 55.14, 50.0, 52.13]}, {"k": "op", "name": "OP เหมาจ่าย", "page": [27.21, 24.62, 24.94, 23.11], "mis": [27.18, 24.54, 24.91, 23.04]}, {"k": "ipc", "name": "IP CAP เงินสด", "page": [10.85, 11.9, 10.25, 14.33], "mis": [9.24, 11.9, 10.25, 14.33]}, {"k": "pp", "name": "PP", "page": [7.99, 8.23, 7.21, 7.52], "mis": [7.72, 8.08, 7.2, 7.5]}, {"k": "central", "name": "Central Reimburse", "page": [1.27, 3.37, 1.28, 2.23], "mis": [1.12, 2.34, 1.26, 2.21]}, {"k": "thai", "name": "แพทย์แผนไทย", "page": [0.01, 1.09, 0.26, 1.35], "mis": [0.01, 1.07, 0.25, 1.32]}, {"k": "primary", "name": "ปฐมภูมิเพิ่มเติม", "page": [0, 0, 0.03, 0.82], "mis": [0.0, 0.0, 0.03, 0.48]}, {"k": "rehab", "name": "ฟื้นฟูสมรรถภาพ", "page": [0.25, 0.73, 0.14, 0.26], "mis": [0.05, 0.73, 0.14, 0.26]}, {"k": "ncd", "name": "NCD / DM-HT", "page": [1.1, 0.35, 0.27, 0.23], "mis": [0.39, 0.35, 0.27, 0.23]}, {"k": "aids", "name": "กองทุนเอดส์", "page": [0.03, 0.05, 0.05, 0.08], "mis": [0.03, 0.04, 0.05, 0.08]}, {"k": "capex", "name": "งบลงทุนค่าเสื่อม", "page": [1.51, 5.1, 3.87, 1.98], "mis": [1.51, 5.1, 3.87, 1.98]}], "extra": [{"name": "สวัสดิการรักษาพยาบาลพนักงานส่วนท้องถิ่น", "v": [0.37, 0.65, 0.53, 0.4, 0.4, 0.3, 0.33, 0.91, 1.0, 0.67]}, {"name": "ค่ารักษาผู้ประกันตนคนพิการ (ประกันสังคม)", "v": [0.0, 0.0, 0.05, 0.01, -0.02, 0.03, 0.05, 0.04, -0.01, 0.01]}, {"name": "เงินช่วยเหลือเบื้องต้น (ม.41)", "v": [0.0, 0.0, 0.02, 0.0, 0.0, 0.01, 0.28, 0.03, 0.01, 0.0]}, {"name": "กำไรสะสม / ตามมติบอร์ด / งบกลาง", "v": [1.16, 2.75, 0.4, 0.12, 0.01, 0.32, 0.0, 0.0, 0.76, 0.01]}, {"name": "งบ CF (OP/IP/PP_CF)", "v": [0.0, 0.87, 4.03, 1.05, 0.31, 0.0, 0.25, 0.0, 0.0, 0.0]}, {"name": "พรก.กู้เงิน / บริการ COVID-19", "v": [0.0, 0.0, 0.0, 0.0, 0.51, 6.7, 0.19, 0.0, 0.0, 0.0]}, {"name": "ผู้สูงอายุภาวะพึ่งพิง (LTC)", "v": [0.1, 0.22, 0.21, 0.1, 0.06, 0.0, 0.0, 0.0, 0.0, 0.0]}], "monthly": {"2562": [13.95, 15.28, 0.82, 20.27, 1.2, 2.27, 1.7, 1.19, 1.4, 0.97, 1.17, 2.55], "2565": [23.56, 6.45, 2.65, 19.14, 1.17, 0.84, 2.78, 0.85, 0.7, 1.21, 0.97, 2.72], "2566": [null, 0.11, 20.95, 17.09, 0.2, 1.96, 0.99, 0.74, 0.63, 1.75, 1.08, 2.85], "2567": [9.45, 2.62, 10.89, 1.26, 1.23, 6.43, 0.78, 0.8, 5.85, 12.11, 1.35, 2.36], "2568": [0.84, 7.93, 14.65, 1.25, 11.87, 4.06, 3.04, 3.08, 1.34, 0.99, 0.95, 0.01], "2569": [17.02, 1.54, 2.65, 1.0, 7.91, 12.26, 3.58, 0.99, 0.88, 0.97, 1.18, 2.15]}};
+(function(){
+  const f2=v=>v==null?'—':v.toFixed(2);
+  const mi=misData.mis, i66=mi.years.indexOf('2566');
+  new Chart(document.getElementById('cMis10'),{
+    type:'bar',
+    data:{labels:mi.years,datasets:[
+      {label:'ไม่รวมงบลงทุน',data:mi.total.map((t,i)=>+(t-mi.capex[i]).toFixed(2)),backgroundColor:'#0F766E',stack:'s'},
+      {label:'งบลงทุน',data:mi.capex,backgroundColor:'#94A3B8',stack:'s'}
+    ]},
+    options:{responsive:true,plugins:{legend:{position:'bottom',labels:{boxWidth:10}},tooltip:{callbacks:{footer:items=>'รวม '+mi.total[items[0].dataIndex].toFixed(2)}}},scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}
+  });
+  document.getElementById('misExtraBody').innerHTML=misData.extra.filter(r=>r.v.slice(i66).some(x=>Math.abs(x)>=0.005)).map(r=>
+    '<tr class="border-t"><td class="p-2">'+r.name+'</td>'+r.v.slice(i66).map(x=>'<td class="text-right p-2">'+(Math.abs(x)<0.005?'—':x.toFixed(2))+'</td>').join('')+'</tr>').join('');
+  document.getElementById('misRecBody').innerHTML=misData.rec.map(r=>{
+    let c='';for(let i=0;i<4;i++){const d=Math.abs(r.page[i]-r.mis[i])>=0.05;
+      c+='<td class="text-right p-2">'+f2(r.page[i])+'</td><td class="text-right p-2 '+(d?'bg-amber-100 font-semibold':'text-slate-500')+'">'+f2(r.mis[i])+'</td>';}
+    return '<tr class="border-t'+(r.k==='total'?' bg-slate-50 font-semibold':'')+'"><td class="p-2">'+r.name+'</td>'+c+'</tr>';}).join('');
+  const mon=['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.'];
+  document.getElementById('misMonHead').innerHTML='<th class="text-left p-2">ปี</th>'+mon.map(x=>'<th class="text-right p-2">'+x+'</th>').join('')+'<th class="text-right p-2">รวม</th>';
+  document.getElementById('misMonBody').innerHTML=Object.keys(misData.monthly).sort().map(y=>{const L=misData.monthly[y];const t=L.reduce((a,b)=>a+(b||0),0);
+    return '<tr class="border-t'+(y==='2569'?' bg-emerald-50':'')+'"><td class="p-2">'+y+'</td>'+L.map(v=>'<td class="text-right p-2'+(v>=10?' font-semibold text-teal-800':'')+'">'+(v==null?'—':v.toFixed(2))+'</td>').join('')+'<td class="text-right p-2 font-semibold">'+t.toFixed(2)+'</td></tr>';}).join('');
+})();
 function closeDetail(){
   document.getElementById('detail').classList.add('hidden');
   document.querySelectorAll('.fund-row').forEach(function(r){ r.classList.remove('on'); });
@@ -283,12 +348,14 @@ function setView(v){
   document.getElementById('tYear').classList.toggle('on', v==='year');
   document.getElementById('tQ').classList.toggle('on', v==='q');
   document.getElementById('t70').classList.toggle('on', v==='y70');
+  document.getElementById('tMis').classList.toggle('on', v==='mis');
   document.getElementById('y70Block').style.display = (v==='both' || v==='y70') ? '' : 'none';
+  document.getElementById('misBlock').style.display = (v==='both' || v==='mis') ? '' : 'none';
   document.getElementById('yearBlock').style.display = (v==='both' || v==='year') ? '' : 'none';
   document.getElementById('qBlock').style.display = (v==='both' || v==='q') ? '' : 'none';
-  document.getElementById('fundTable').style.display = (v==='y70') ? 'none' : '';
+  document.getElementById('fundTable').style.display = (v==='y70' || v==='mis') ? 'none' : '';
   const detail=document.getElementById('detail');
-  if(v==='y70') detail.classList.add('hidden');
+  if(v==='y70' || v==='mis') detail.classList.add('hidden');
 }
 </script>
 <script src="credit.js"></script>
