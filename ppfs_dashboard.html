@@ -246,13 +246,13 @@ function renderRules(){
 
 function renderAnnounce(){
   const keyPoints = [
-    ["ประกาศหลักที่ใช้เบิก PP ตามรายการ", "PPFS 2568 (หน้า 870–906) มีผล 1 ต.ค. 2568 คนไทยทุกสิทธิ"],
+    ["ประกาศหลักที่ใช้เบิก PP ตามรายการ", "PPFS 2568 มีผล 1 ต.ค. 2568 คนไทยทุกสิทธิ"],
     ["อัตราที่ต้องระวัง", "การตรวจหลังคลอดในตารางหน่วยบางแห่งเขียน 150 บาท แต่ PPFS จ่าย 450 บาท/ครั้ง"],
     ["PPB (เหมาจ่าย)", "65% ตามจำนวนลงทะเบียน + 35% ตามผลงาน 5 รายการ (พัฒนาการ, ชั่งน้ำหนัก, ฟลูออไรด์, หลุมร่องฟัน, ซึมเศร้า)"],
     ["ภาวะพึ่งพิง", "ไม่เกิน 10,442 บาท/คน/ปี ห้ามซ้ำกับ Home ward หรือ Palliative care"],
     ["ฮอร์โมนยืนยันเพศสภาพ", "มีรายการแล็บและยาชัดเจน อัตราแล็บอ้างอิง Fee Schedule ต้องแสดงตน"],
     ["เพิ่มเติมปี 2569", "ธนาคารนมแม่ และมิตรภาพบำบัด (จาก PP ฉบับ 2)"],
-    ["นอก PPFS แต่เกี่ยวข้อง", "DM/HT (หน้า 730–744), ปฐมภูมิ NCD (หน้า 752–759), PPBKK, PP NCDs"],
+    ["นอก PPFS แต่เกี่ยวข้อง", "DM/HT, ปฐมภูมิ NCD, PPBKK, PP NCDs"],
     ["ปี 2570", "มีมติบอร์ดเรื่องจัดสรรงบ PPB + PPFS แต่ยังไม่พบประกาศอัตราจ่ายรายการใหม่มาแทนฉบับ 2568 ในเล่มรวม"]
   ];
   const announces = [
@@ -288,17 +288,14 @@ function renderAnnounce(){
   html += announces.map(a => `
     <div class="bundle">
       <div>
-        <div class="bname">${a[1]} <span style="font-size:13px;color:var(--muted);font-weight:500;">(${a[0]} · ปี ${a[3]})</span></div>
+        <div class="bname">${a[1]} <span style="font-size:13px;color:var(--muted);font-weight:500;">(ปี ${a[3]})</span></div>
         <small>${a[2]}</small>
-        <small>หน้า ${a[4]} · มีผล ${a[5]} · สิทธิ: ${a[6]}</small>
+        <small>มีผล ${a[5]} · สิทธิ: ${a[6]}</small>
         <small>วิธีจ่าย: ${a[7]}</small>
         <small>${a[8]}</small>
       </div>
     </div>
   `).join("");
-
-  html += `<div class="section-title">อ้างอิงหน้าในเล่มรวม</div>`;
-  html += pages.map(([p, n]) => `<div class="rule"><strong>หน้า ${p}</strong><br>${n}</div>`).join("");
 
   document.getElementById("announce").innerHTML = html;
 }
