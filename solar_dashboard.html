@@ -70,6 +70,11 @@ tr.missing td{color:#94A3B8}
 .tag.now{background:#DCFCE7;color:#14532D}.tag.plan{background:#DBEAFE;color:#1E3A8A}.tag.watch{background:#F1F5F9;color:#334155}
 .adv-sum{background:#0F3D5E;color:#fff;border-radius:14px;padding:16px 20px;font-size:.95rem;line-height:1.7;margin-bottom:14px}
 .adv-sum b{color:#FCD34D}
+.upload{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;border-radius:999px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;font-size:.88rem}
+.upload:hover{background:#155A86;color:#fff}
+.howto{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 16px;margin:-4px 0 16px;font-size:.9rem}
+.howto summary{cursor:pointer;font-weight:700;color:var(--accent);min-height:28px;display:list-item}
+.howto ol{margin:8px 0;padding-left:22px}
 a{color:var(--accent)}
 </style>
 </head>
@@ -80,8 +85,23 @@ a{color:var(--accent)}
       <h1>☀️ Solar PV อาคารอุบัติเหตุและฉุกเฉิน</h1>
       <p>รพ.พระทองคำเฉลิมพระเกียรติ 80 พรรษา · ข้อมูลจากรายงาน Huawei FusionSolar · <span id="updated">—</span></p>
     </div>
-    <span id="health" class="pill ok"><i></i>กำลังโหลด…</span>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px">
+      <span id="health" class="pill ok"><i></i>กำลังโหลด…</span>
+      <a class="upload" href="https://github.com/suvoak-web/hospital-dashboard/upload/main/data/solar/reports" target="_blank" rel="noopener" title="เปิดหน้าอัปโหลดไฟล์ของ GitHub (ต้องล็อกอินบัญชีที่มีสิทธิ์แก้ repo)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"></path></svg>
+        อัปโหลดรายงาน Excel
+      </a>
+    </div>
   </div>
+  <details class="howto">
+    <summary>วิธีอัปเดตข้อมูล</summary>
+    <ol>
+      <li>Export จาก FusionSolar: <b>Plant Report</b> และ <b>Inverter Report</b> (รายวันหรือรายเดือน) · จาก AMI การไฟฟ้า: <b>Billing Monthly kWh Report</b></li>
+      <li>กดปุ่ม <b>อัปโหลดรายงาน Excel</b> → ลากไฟล์ .xlsx มาวาง (หลายไฟล์พร้อมกันได้ ไม่ต้องเปลี่ยนชื่อ) → กด <b>Commit changes</b></li>
+      <li>รอ 2–3 นาที แล้วรีเฟรชหน้านี้ — ระบบแปลงไฟล์และอัปเดตกราฟให้เอง</li>
+    </ol>
+    <p class="note" style="margin:0">ต้องล็อกอิน GitHub ด้วยบัญชีที่มีสิทธิ์แก้ไข repo นี้ · ไฟล์ที่อัปโหลดจะเก็บใน repo ซึ่งเปิดเป็นสาธารณะ</p>
+  </details>
 
   <div id="notice" class="notice" hidden></div>
 
@@ -123,7 +143,7 @@ a{color:var(--accent)}
   <div class="section">รายเดือน</div>
   <div class="card">
     <h2>ผลิตได้ เทียบกับไฟที่ใช้ — รายเดือน (kWh)</h2>
-    <div class="legend"><span><b style="background:var(--solar)"></b>โซลาร์ที่ใช้เอง</span><span><b style="background:var(--solar-soft)"></b>ส่งไปอาคารอื่น</span><span><b style="background:var(--use);height:3px"></b>ไฟที่อาคารใช้</span></div>
+    <div class="legend"><span><b style="background:var(--solar)"></b>โซลาร์ที่ใช้เอง</span><span><b style="background:var(--solar-soft)"></b>ส่งไปอาคารอื่น</span><span id="lgPvOnly" hidden><b style="background:#D9770655;border:1px solid var(--solar)"></b>ผลิตได้ (ไม่มี Plant Report แยกการใช้)</span><span><b style="background:var(--use);height:3px"></b>ไฟที่อาคารใช้</span></div>
     <div class="chart"><canvas id="cMonth" role="img" aria-label="กราฟรายเดือน: ไฟฟ้าจากโซลาร์ที่ใช้เอง ส่งคืนกริด และไฟที่ใช้"></canvas></div>
     <p class="note" id="monthNote">&nbsp;</p>
     <div class="tbl">
@@ -140,7 +160,7 @@ a{color:var(--accent)}
       <h2 id="dayTitle">รายวัน (kWh)</h2>
       <div class="chips" id="monthChips" role="group" aria-label="เลือกเดือน"></div>
     </div>
-    <div class="legend"><span><b style="background:var(--solar)"></b>ใช้เอง</span><span><b style="background:var(--solar-soft)"></b>ส่งไปอาคารอื่น</span><span><b style="background:var(--use);height:3px"></b>ไฟที่ใช้</span></div>
+    <div class="legend"><span><b style="background:var(--solar)"></b>ใช้เอง</span><span><b style="background:var(--solar-soft)"></b>ส่งไปอาคารอื่น</span><span class="lgPvOnly2" hidden><b style="background:#D9770655;border:1px solid var(--solar)"></b>ผลิตได้ (ยังไม่แยกการใช้)</span><span><b style="background:var(--use);height:3px"></b>ไฟที่ใช้</span></div>
     <div class="chart sm"><canvas id="cDay" role="img" aria-label="กราฟรายวันของเดือนที่เลือก"></canvas></div>
     <p class="note" id="dayNote">&nbsp;</p>
   </div>
@@ -219,8 +239,9 @@ var stackedOpts = function(extra){ return { maintainAspectRatio: false, interact
   plugins: { legend: { display: false }, tooltip: { callbacks: Object.assign({ label: kwhTip(0) }, extra || {}) } },
   scales: { x: { stacked: true, grid: { display: false } }, y: { stacked: true, beginAtZero: true, grid: { color: '#EEF2F6' } } } }; };
 function pvDatasets(rows){ return [
-  { type: 'bar', label: 'ใช้เอง', data: rows.map(function(m){ return m.self_kwh != null ? m.self_kwh : m.pv_kwh; }), backgroundColor: '#D97706', stack: 'pv', order: 2 },
-  { type: 'bar', label: 'ส่งไปอาคารอื่น', data: rows.map(function(m){ return m.export_kwh; }), backgroundColor: '#FCD9A0', stack: 'pv', order: 2, borderRadius: { topLeft: 4, topRight: 4 } },
+  { type: 'bar', label: 'ใช้เอง', data: rows.map(function(m){ return m.self_kwh != null ? m.self_kwh : (m.export_kwh == null ? null : m.pv_kwh); }), backgroundColor: '#D97706', stack: 'pv', order: 2 },
+  { type: 'bar', label: 'ส่งไปอาคารอื่น', data: rows.map(function(m){ return m.export_kwh; }), backgroundColor: '#FCD9A0', stack: 'pv', order: 2 },
+  { type: 'bar', label: 'ผลิตได้ (ยังไม่แยกการใช้)', data: rows.map(function(m){ var r = (m.pv_kwh || 0) - (m.self_kwh || 0) - (m.export_kwh || 0); return m.self_kwh == null && m.export_kwh == null ? m.pv_kwh : (r > 0.5 ? r : null); }), backgroundColor: '#D9770655', borderColor: '#D97706', borderWidth: 1, stack: 'pv', order: 2 },
   { type: 'line', label: 'ไฟที่ใช้', data: rows.map(function(m){ return m.use_kwh; }), borderColor: '#1D6FA4', backgroundColor: '#1D6FA4', borderWidth: 2.5, pointRadius: 2.5, tension: .25, order: 1, stack: 'use' }
 ]; }
 
@@ -246,6 +267,13 @@ function render(d){
   if (miss.length) notes.push('ยังไม่มีรายงานเดือน <b>' + miss.join(', ') + '</b> — export Plant Report และ Inverter Report รายเดือนของเดือนเหล่านี้มาเพิ่ม ตัวเลขรายเดือนจะครบ');
   if (notes.length) { $('notice').hidden = false; $('notice').innerHTML = notes.join('<br>'); }
 
+  var pvOnly = sm.inverter_only_days || [];
+  if (pvOnly.length) {
+    if ($('lgPvOnly')) $('lgPvOnly').hidden = false;
+    Array.prototype.forEach.call(document.querySelectorAll('.lgPvOnly2'), function(e){ e.hidden = false; });
+    notes.push('วันที่ ' + pvOnly.map(function(x){ return Number(x.slice(8)) + ' ' + TH_M[Number(x.slice(5, 7)) - 1]; }).join(', ') + ' มีแค่ Inverter Report จึงรู้ยอดผลิต แต่ยังไม่รู้ไฟที่อาคารใช้ — อัปโหลด Plant Report ของวันเหล่านี้เพิ่มจะได้ข้อมูลครบ');
+    $('notice').hidden = false; $('notice').innerHTML = notes.join('<br>');
+  }
   renderGrid(d);
   renderAdvice(d);
 
@@ -254,7 +282,7 @@ function render(d){
   var total = rt.total_kwh || sm.pv_kwh || 0;
   $('tPv').textContent = fmt(total / 1000, 1);
   $('tPvSub').textContent = 'ตามมิเตอร์อินเวอร์เตอร์ ณ ' + (d.report_date ? thDate(d.report_date) : '—');
-  var selfRate = sm.pv_kwh ? sm.self_kwh / sm.pv_kwh : 0;
+  var selfRate = (sm.pv_meter_kwh || sm.pv_kwh) ? sm.self_kwh / (sm.pv_meter_kwh || sm.pv_kwh) : 0;
   var knownSave = (sm.pv_kwh || 0) * TARIFF;
   // ช่วงที่มิเตอร์หลักเป็นศูนย์ อาจมีไฟไหลออกไปการไฟฟ้า: หักแบบระมัดระวัง (กำลังสูงสุด 66 kW × 15 นาที ต่อช่วง)
   var outKwh = d.grid && d.grid.zero_intervals ? d.grid.zero_intervals * 66 * 0.25 : 0;

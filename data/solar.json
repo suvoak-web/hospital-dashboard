@@ -3,27 +3,34 @@
  "sample": false,
  "plant": "รพ.พระทองคำ",
  "first_date": "2026-01-24",
- "report_date": "2026-10-16",
- "report_complete": false,
- "report_last_hour": "22:00",
- "updated": "2026-10-16T23:37+07:00",
- "peak_kw": 65.34,
+ "report_date": "2026-10-20",
+ "report_complete": true,
+ "report_last_hour": null,
+ "updated": "2026-10-20T23:28+07:00",
+ "peak_kw": 66.0,
  "realtime": {
-  "day_kwh": 267.77,
-  "day_export_kwh": 40.68,
-  "day_use_kwh": 502.99,
-  "month_kwh": 5399.5,
-  "month_days": 16,
-  "total_kwh": 95508.49
+  "day_kwh": 389.48,
+  "day_export_kwh": null,
+  "day_use_kwh": null,
+  "month_kwh": 6860.82,
+  "month_days": 20,
+  "total_kwh": 96974.24
  },
  "summary": {
-  "days": 266,
-  "pv_kwh": 95508.49,
+  "days": 270,
+  "pv_kwh": 96969.81,
   "use_kwh": 121556.52,
   "self_kwh": 64446.37,
   "export_kwh": 31062.12,
   "import_kwh": 57110.15,
   "co2_t": 45.24,
+  "pv_meter_kwh": 95508.49,
+  "inverter_only_days": [
+   "2026-10-17",
+   "2026-10-18",
+   "2026-10-19",
+   "2026-10-20"
+  ],
   "missing_months": []
  },
  "hourly_date": "2026-10-16",
@@ -2849,6 +2856,50 @@
    "use_kwh": 502.99,
    "self_kwh": 227.09,
    "complete": false
+  },
+  {
+   "d": "2026-10-17",
+   "pv_kwh": 381.2,
+   "export_kwh": null,
+   "import_kwh": null,
+   "use_kwh": null,
+   "self_kwh": null,
+   "peak_kw": 66.0,
+   "complete": true,
+   "inverter_only": true
+  },
+  {
+   "d": "2026-10-18",
+   "pv_kwh": 337.92,
+   "export_kwh": null,
+   "import_kwh": null,
+   "use_kwh": null,
+   "self_kwh": null,
+   "peak_kw": 66.0,
+   "complete": true,
+   "inverter_only": true
+  },
+  {
+   "d": "2026-10-19",
+   "pv_kwh": 352.72,
+   "export_kwh": null,
+   "import_kwh": null,
+   "use_kwh": null,
+   "self_kwh": null,
+   "peak_kw": 66.0,
+   "complete": true,
+   "inverter_only": true
+  },
+  {
+   "d": "2026-10-20",
+   "pv_kwh": 389.48,
+   "export_kwh": null,
+   "import_kwh": null,
+   "use_kwh": null,
+   "self_kwh": null,
+   "peak_kw": 66.0,
+   "complete": true,
+   "inverter_only": true
   }
  ],
  "monthly": [
@@ -2962,9 +3013,9 @@
   },
   {
    "m": "2026-10",
-   "days": 16,
+   "days": 20,
    "days_in_month": 31,
-   "pv_kwh": 5399.5,
+   "pv_kwh": 6860.82,
    "use_kwh": 7728.12,
    "self_kwh": 3998.13,
    "export_kwh": 1401.37,
@@ -2976,17 +3027,17 @@
  "inverters": [
   {
    "name": "Inverter(COM2-13)",
-   "day_kwh": 52.16,
-   "total_kwh": 47688.66,
-   "peak_kw": 32.73,
-   "hours": 4.08
+   "day_kwh": 195.08,
+   "total_kwh": 48501.52,
+   "peak_kw": 33.0,
+   "hours": 11.67
   },
   {
    "name": "Inverter(COM2-12)",
-   "day_kwh": 52.01,
-   "total_kwh": 47660.66,
-   "peak_kw": 32.61,
-   "hours": 4.08
+   "day_kwh": 194.4,
+   "total_kwh": 48472.72,
+   "peak_kw": 33.0,
+   "hours": 11.75
   }
  ],
  "inverter_monthly": [

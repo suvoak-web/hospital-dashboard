@@ -307,6 +307,14 @@ def main():
             base["self_kwh"] = base["pv_kwh"] - base["export_kwh"]
         daily[d] = base
 
+    # วันที่มีแค่ Inverter Report รายวัน (ไม่มี Plant Report): รู้ยอดผลิต แต่ไม่รู้การใช้ไฟ/ส่งออก
+    for d, inv in inv_day.items():
+        if d not in daily:
+            hrs = max((x["hours"] or 0 for x in inv), default=0)
+            daily[d] = {"pv_kwh": sum(x["kwh"] or 0 for x in inv), "export_kwh": None, "import_kwh": None,
+                        "use_kwh": None, "self_kwh": None, "peak_kw": sum(x["peak_kw"] or 0 for x in inv) or None,
+                        "last_hour": None, "complete": hrs >= 10 or d < datetime.now(BKK).strftime("%Y-%m-%d"),
+                        "inverter_only": True}
     dates = sorted(daily)
     latest = max(dates + list(inv_day)) if (dates or inv_day) else None
 
@@ -378,12 +386,14 @@ def main():
             **{k: r2(sum(daily[d].get(k) or 0 for d in dates))
                for k in ("pv_kwh", "use_kwh", "self_kwh", "export_kwh", "import_kwh")},
             "co2_t": r2(sum(daily[d].get("co2_t") or 0 for d in dates)),
+            "pv_meter_kwh": r2(sum(daily[d].get("pv_kwh") or 0 for d in dates if daily[d].get("use_kwh") is not None)),
+            "inverter_only_days": [d for d in dates if daily[d].get("inverter_only")],
             "missing_months": [x["m"] for x in monthly if not x.get("pv_kwh")],
         },
         "hourly_date": hdate,
         "hourly": hourly,
         "daily": [dict({"d": d}, **{k: r2(v) if isinstance(v, float) else v for k, v in daily[d].items()
-                                     if k in ("pv_kwh", "use_kwh", "self_kwh", "export_kwh", "import_kwh", "peak_kw", "complete")})
+                                     if k in ("pv_kwh", "use_kwh", "self_kwh", "export_kwh", "import_kwh", "peak_kw", "complete", "inverter_only")})
                   for d in dates[-400:]],
         "monthly": monthly,
         "inverters": [{"name": x["name"], "day_kwh": r2(x["kwh"]), "total_kwh": r2(x["total_kwh"]),
