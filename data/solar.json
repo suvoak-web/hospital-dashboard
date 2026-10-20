@@ -3,191 +3,193 @@
  "sample": false,
  "plant": "รพ.พระทองคำ",
  "first_date": "2026-01-24",
- "report_date": "2026-10-16",
+ "report_date": "2026-10-20",
  "report_complete": false,
  "report_last_hour": "22:00",
- "updated": "2026-10-16T23:37+07:00",
- "peak_kw": 65.34,
+ "updated": "2026-10-20T23:31+07:00",
+ "peak_kw": 66.0,
  "realtime": {
-  "day_kwh": 267.77,
-  "day_export_kwh": 40.68,
-  "day_use_kwh": 502.99,
-  "month_kwh": 5399.5,
-  "month_days": 16,
-  "total_kwh": 95508.49
+  "day_kwh": 389.48,
+  "day_export_kwh": 48.88,
+  "day_use_kwh": 588.26,
+  "month_kwh": 6860.82,
+  "month_days": 20,
+  "total_kwh": 96974.24
  },
  "summary": {
-  "days": 266,
-  "pv_kwh": 95508.49,
-  "use_kwh": 121556.52,
-  "self_kwh": 64446.37,
-  "export_kwh": 31062.12,
-  "import_kwh": 57110.15,
+  "days": 270,
+  "pv_kwh": 96969.81,
+  "use_kwh": 123462.9,
+  "self_kwh": 65406.06,
+  "export_kwh": 31563.75,
+  "import_kwh": 58056.84,
   "co2_t": 45.24,
+  "pv_meter_kwh": 96969.81,
+  "inverter_only_days": [],
   "missing_months": []
  },
- "hourly_date": "2026-10-16",
+ "hourly_date": "2026-10-20",
  "hourly": [
   {
    "h": "00:00",
    "pv_kwh": 0.0,
-   "use_kwh": 14.29,
+   "use_kwh": 16.28,
    "grid_kwh": 0.0,
-   "import_kwh": 14.29
+   "import_kwh": 16.28
   },
   {
    "h": "01:00",
    "pv_kwh": null,
-   "use_kwh": 12.63,
+   "use_kwh": 14.56,
    "grid_kwh": 0.0,
-   "import_kwh": 12.63
+   "import_kwh": 14.56
   },
   {
    "h": "02:00",
    "pv_kwh": null,
-   "use_kwh": 10.88,
+   "use_kwh": 11.77,
    "grid_kwh": 0.0,
-   "import_kwh": 10.88
+   "import_kwh": 11.77
   },
   {
    "h": "03:00",
    "pv_kwh": null,
-   "use_kwh": 10.66,
+   "use_kwh": 10.8,
    "grid_kwh": 0.0,
-   "import_kwh": 10.66
+   "import_kwh": 10.8
   },
   {
    "h": "04:00",
    "pv_kwh": null,
-   "use_kwh": 10.56,
+   "use_kwh": 10.3,
    "grid_kwh": 0.0,
-   "import_kwh": 10.56
+   "import_kwh": 10.3
   },
   {
    "h": "05:00",
    "pv_kwh": null,
-   "use_kwh": 10.03,
+   "use_kwh": 10.44,
    "grid_kwh": 0.0,
-   "import_kwh": 10.03
+   "import_kwh": 10.44
   },
   {
    "h": "06:00",
-   "pv_kwh": 3.53,
-   "use_kwh": 11.11,
+   "pv_kwh": 3.46,
+   "use_kwh": 11.42,
    "grid_kwh": 0.0,
-   "import_kwh": 7.58
+   "import_kwh": 7.96
   },
   {
    "h": "07:00",
-   "pv_kwh": 18.73,
-   "use_kwh": 17.2,
-   "grid_kwh": 2.56,
-   "import_kwh": 1.03
+   "pv_kwh": 18.81,
+   "use_kwh": 20.3,
+   "grid_kwh": 0.24,
+   "import_kwh": 1.73
   },
   {
    "h": "08:00",
-   "pv_kwh": 34.83,
-   "use_kwh": 37.56,
-   "grid_kwh": 0.96,
-   "import_kwh": 3.69
+   "pv_kwh": 35.42,
+   "use_kwh": 44.3,
+   "grid_kwh": 0.03,
+   "import_kwh": 8.91
   },
   {
    "h": "09:00",
-   "pv_kwh": 41.54,
-   "use_kwh": 40.48,
-   "grid_kwh": 8.13,
-   "import_kwh": 7.07
+   "pv_kwh": 47.99,
+   "use_kwh": 45.21,
+   "grid_kwh": 3.74,
+   "import_kwh": 0.96
   },
   {
    "h": "10:00",
-   "pv_kwh": 25.48,
-   "use_kwh": 41.06,
-   "grid_kwh": 2.87,
-   "import_kwh": 18.45
+   "pv_kwh": 53.66,
+   "use_kwh": 48.3,
+   "grid_kwh": 8.98,
+   "import_kwh": 3.62
   },
   {
    "h": "11:00",
-   "pv_kwh": 28.24,
-   "use_kwh": 41.22,
-   "grid_kwh": 3.5,
-   "import_kwh": 16.48
+   "pv_kwh": 52.53,
+   "use_kwh": 47.77,
+   "grid_kwh": 8.27,
+   "import_kwh": 3.51
   },
   {
    "h": "12:00",
-   "pv_kwh": 41.15,
-   "use_kwh": 30.31,
-   "grid_kwh": 16.89,
-   "import_kwh": 6.05
+   "pv_kwh": 46.6,
+   "use_kwh": 31.95,
+   "grid_kwh": 16.84,
+   "import_kwh": 2.19
   },
   {
    "h": "13:00",
-   "pv_kwh": 20.72,
-   "use_kwh": 37.55,
-   "grid_kwh": 2.51,
-   "import_kwh": 19.34
+   "pv_kwh": 43.92,
+   "use_kwh": 45.49,
+   "grid_kwh": 9.17,
+   "import_kwh": 10.74
   },
   {
    "h": "14:00",
-   "pv_kwh": 29.05,
-   "use_kwh": 35.74,
-   "grid_kwh": 3.09,
-   "import_kwh": 9.78
+   "pv_kwh": 42.56,
+   "use_kwh": 47.9,
+   "grid_kwh": 1.61,
+   "import_kwh": 6.95
   },
   {
    "h": "15:00",
-   "pv_kwh": 14.36,
-   "use_kwh": 34.18,
-   "grid_kwh": 0.17,
-   "import_kwh": 19.99
+   "pv_kwh": 31.64,
+   "use_kwh": 42.11,
+   "grid_kwh": 0.0,
+   "import_kwh": 10.47
   },
   {
    "h": "16:00",
-   "pv_kwh": 8.53,
-   "use_kwh": 20.97,
+   "pv_kwh": 11.71,
+   "use_kwh": 25.25,
    "grid_kwh": 0.0,
-   "import_kwh": 12.44
+   "import_kwh": 13.54
   },
   {
    "h": "17:00",
-   "pv_kwh": 1.61,
-   "use_kwh": 16.32,
+   "pv_kwh": 1.18,
+   "use_kwh": 18.86,
    "grid_kwh": 0.0,
-   "import_kwh": 14.71
+   "import_kwh": 17.68
   },
   {
    "h": "18:00",
-   "pv_kwh": 0.0,
-   "use_kwh": 14.97,
+   "pv_kwh": null,
+   "use_kwh": 18.11,
    "grid_kwh": 0.0,
-   "import_kwh": 14.97
+   "import_kwh": 18.11
   },
   {
    "h": "19:00",
    "pv_kwh": null,
-   "use_kwh": 14.45,
+   "use_kwh": 17.46,
    "grid_kwh": 0.0,
-   "import_kwh": 14.45
+   "import_kwh": 17.46
   },
   {
    "h": "20:00",
    "pv_kwh": null,
-   "use_kwh": 13.81,
+   "use_kwh": 18.07,
    "grid_kwh": 0.0,
-   "import_kwh": 13.81
+   "import_kwh": 18.07
   },
   {
    "h": "21:00",
    "pv_kwh": null,
-   "use_kwh": 14.09,
+   "use_kwh": 16.21,
    "grid_kwh": 0.0,
-   "import_kwh": 14.09
+   "import_kwh": 16.21
   },
   {
    "h": "22:00",
    "pv_kwh": null,
-   "use_kwh": 12.92,
+   "use_kwh": 15.4,
    "grid_kwh": 0.0,
-   "import_kwh": 12.92
+   "import_kwh": 15.4
   }
  ],
  "daily": [
@@ -2849,6 +2851,42 @@
    "use_kwh": 502.99,
    "self_kwh": 227.09,
    "complete": false
+  },
+  {
+   "d": "2026-10-17",
+   "pv_kwh": 381.2,
+   "export_kwh": 225.72,
+   "import_kwh": 199.88,
+   "use_kwh": 355.36,
+   "self_kwh": 155.48,
+   "complete": true
+  },
+  {
+   "d": "2026-10-18",
+   "pv_kwh": 337.92,
+   "export_kwh": 171.46,
+   "import_kwh": 186.02,
+   "use_kwh": 352.48,
+   "self_kwh": 166.46,
+   "complete": true
+  },
+  {
+   "d": "2026-10-19",
+   "pv_kwh": 352.72,
+   "export_kwh": 55.57,
+   "import_kwh": 313.13,
+   "use_kwh": 610.28,
+   "self_kwh": 297.15,
+   "complete": true
+  },
+  {
+   "d": "2026-10-20",
+   "pv_kwh": 389.48,
+   "export_kwh": 48.88,
+   "import_kwh": 247.66,
+   "use_kwh": 588.26,
+   "self_kwh": 340.6,
+   "complete": false
   }
  ],
  "monthly": [
@@ -2962,13 +3000,13 @@
   },
   {
    "m": "2026-10",
-   "days": 16,
+   "days": 20,
    "days_in_month": 31,
-   "pv_kwh": 5399.5,
-   "use_kwh": 7728.12,
-   "self_kwh": 3998.13,
-   "export_kwh": 1401.37,
-   "import_kwh": 3729.99,
+   "pv_kwh": 6860.82,
+   "use_kwh": 9634.5,
+   "self_kwh": 4957.82,
+   "export_kwh": 1903.0,
+   "import_kwh": 4676.68,
    "co2_t": 2.44,
    "peak_kw": 66.0
   }
@@ -2976,17 +3014,17 @@
  "inverters": [
   {
    "name": "Inverter(COM2-13)",
-   "day_kwh": 52.16,
-   "total_kwh": 47688.66,
-   "peak_kw": 32.73,
-   "hours": 4.08
+   "day_kwh": 195.08,
+   "total_kwh": 48501.52,
+   "peak_kw": 33.0,
+   "hours": 11.67
   },
   {
    "name": "Inverter(COM2-12)",
-   "day_kwh": 52.01,
-   "total_kwh": 47660.66,
-   "peak_kw": 32.61,
-   "hours": 4.08
+   "day_kwh": 194.4,
+   "total_kwh": 48472.72,
+   "peak_kw": 33.0,
+   "hours": 11.75
   }
  ],
  "inverter_monthly": [

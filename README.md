@@ -35,10 +35,10 @@ https://suvoak-web.github.io/hospital-dashboard/
 
 **อัปเดตข้อมูลประจำวัน (ประมาณ 1 นาที)**
 1. ใน FusionSolar export **Plant Report** และ **Inverter Report** แบบรายวัน เป็น .xlsx — แนะนำให้ export หลังแดดหมด (ประมาณ 19:00 น.) จะได้ข้อมูลครบวัน
-2. เปิดโฟลเดอร์ [`data/solar/reports`](data/solar/reports) ใน GitHub → **Add file → Upload files** → ลากทั้ง 2 ไฟล์มาวาง → **Commit changes**
+2. กดปุ่ม **อัปโหลดรายงาน Excel** บนหน้าโซลาร์ (หรือเปิดโฟลเดอร์ [`data/solar/reports`](data/solar/reports) → **Add file → Upload files**) → ลากไฟล์มาวาง → **Commit changes**
 3. รอ 1–2 นาที ระบบ (`.github/workflows/solar_reports.yml`) จะแปลงไฟล์เป็น `data/solar.json` ให้เอง แล้วหน้าเว็บจะแสดงข้อมูลใหม่
 
-ไม่ต้องเปลี่ยนชื่อไฟล์ และไม่ต้องลบไฟล์เก่า (ถ้าวันเดียวกันมีหลายไฟล์ จะใช้ไฟล์ที่ข้อมูลครบกว่า) วันที่ของ Inverter Report อ่านจากชื่อไฟล์ เช่น `_16-10-2026`
+ถ้าส่งแค่ Inverter Report ระบบจะนับยอดผลิตให้ แต่ไฟที่อาคารใช้/ส่งไปอาคารอื่นต้องมาจาก Plant Report · ไม่ต้องเปลี่ยนชื่อไฟล์ และไม่ต้องลบไฟล์เก่า (ถ้าวันเดียวกันมีหลายไฟล์ จะใช้ไฟล์ที่ข้อมูลครบกว่า) วันที่ของ Inverter Report อ่านจากชื่อไฟล์ เช่น `_16-10-2026`
 แปลงเองในเครื่องได้ด้วย `pip install openpyxl && python3 scripts/import_solar_reports.py`
 
 **มิเตอร์หลักของการไฟฟ้า (AMI)** — export "Billing Monthly kWh Report" รายเดือนจากระบบ AMI ของ PEA (.xlsx ข้อมูลทุก 15 นาที) แล้วอัปโหลดเข้าโฟลเดอร์เดียวกัน หน้าเว็บจะแสดงส่วน "ไฟฟ้าทั้งโรงพยาบาล": ไฟที่ใช้ทั้ง รพ. (= ซื้อจาก PEA + โซลาร์), สัดส่วนที่โซลาร์ช่วย, Peak/Off-Peak, ความต้องการไฟสูงสุด และรูปแบบการซื้อไฟรายชั่วโมง
