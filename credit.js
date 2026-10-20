@@ -57,7 +57,10 @@
       '#ptk-sidebar a:hover,#ptk-sidebar a.active{background:rgba(29,111,164,.08);color:#1D6FA4}',
       '#ptk-sidebar a.sub:hover,#ptk-sidebar a.sub.active{border-left-color:#1D6FA4}',
       '#ptk-dim{display:none;position:fixed;inset:0;top:64px;background:rgba(15,23,42,.35);z-index:10030}',
-      '#ptk-quick{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px;font-family:Sarabun,"IBM Plex Sans Thai",Tahoma,sans-serif}',
+      /* quick pills: always a direct child of body right after the sidebar, so every page gets the same position */
+      'body.ptk-has-shell > #ptk-quick{display:flex;flex-wrap:wrap;gap:8px;margin:0 !important;padding:16px 24px 12px !important;box-sizing:border-box;width:auto;max-width:none;position:static;float:none;font-family:Sarabun,"IBM Plex Sans Thai",Tahoma,sans-serif}',
+      '#ptk-quick a{flex:0 0 auto;white-space:nowrap;line-height:1.35;box-sizing:border-box}',
+      '@media(max-width:900px){body.ptk-has-shell > #ptk-quick{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding:10px 12px 8px !important;gap:6px}}',
       '#ptk-quick a{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:999px;border:1px solid #E2E8F0;background:#fff;color:#1A2332;text-decoration:none;font-weight:700;font-size:13px}',
       '#ptk-quick a:hover,#ptk-quick a.active{background:#1D6FA4;color:#fff;border-color:#1D6FA4}',
       'body.ptk-has-shell{padding-top:64px !important}',
@@ -139,9 +142,9 @@
       return '<a href="' + p.href + '"' + (isActive(p.href) ? ' class="active"' : '') + '>'
         + p.icon + ' ' + p.label.replace(' / การเงิน', '').replace(' / สปสช.', '') + '</a>';
     }).join('');
-    var host = document.querySelector('.main-content, .main, .wrap, main');
-    if (host) host.insertBefore(box, host.firstChild);
-    else document.body.insertBefore(box, document.getElementById('ptk-sidebar').nextSibling);
+    document.body.insertBefore(box, document.getElementById('ptk-sidebar').nextSibling);
+    var act = box.querySelector('a.active');
+    if (act && window.innerWidth <= 900) box.scrollLeft = Math.max(0, act.offsetLeft - box.offsetLeft - 12);
   }
 
   function tick() {
