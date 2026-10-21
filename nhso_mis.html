@@ -132,6 +132,7 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
 .pt #tb-svc td.grp{color:var(--pt-mute);font-size:13px}
 .pt td.flag::after{content:"▲";color:var(--pt-warn);font-size:10px;margin-left:3px;vertical-align:1px}
 .pt td.absent::after{content:"ยังไม่มี";color:var(--pt-bad)}
+.pt td.hold::after{content:"รอตรวจสอบ";color:var(--pt-mute);font-size:12px}
 .pt .pills{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
 .pt .pills button{font:inherit;font-size:13px;border:1px solid var(--pt-line);background:var(--pt-bg);color:var(--pt-ink);border-radius:999px;padding:3px 12px;cursor:pointer}
 .pt .pills button[aria-pressed=true]{background:var(--pt-jade);border-color:var(--pt-jade);color:#fff}
@@ -213,7 +214,7 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
  <div class="fig"><div class="lab">บริการที่มีการเบิกในปีงบ 2569</div><div class="big" id="t-svc-n" data-source="svc_kpi" data-field="active69" data-row="0">—</div><div class="d">จากบริการที่ติดตาม</div></div>
  <div class="fig"><div class="lab">ถ้าทำได้เท่าค่ากลาง รพ.ในจังหวัด</div><div class="big ok" id="t-svc-gap" data-source="svc_kpi" data-field="gap_total_mb" data-row="0">—</div><div class="d">ล้านบาทต่อปีที่เพิ่มได้ ดูแท็บ “เทียบ รพ.ในจังหวัด”</div></div>
 </div>
-<div class="panel" id="c-svc"><h3>ยอดชดเชยแต่ละบริการ ปีงบ 2560–2569</h3><p class="note">พันบาท รวมจากรายงานรายเดือนใน MIS (เช่น ID 1107 อวัยวะเทียม, 1625 OPAE, 1102 Palliative, 882 ฝากครรภ์, 1529 กรมบัญชีกลาง) สีเข้มคือปีที่ได้มากที่สุดของบริการนั้น ▲ คือปีที่ยอดสูงกว่าระดับปกติของบริการนั้นมาก (เช่น ปีที่มีนโยบายกระตุ้น) นับรวมตามจริง คลิกแถวเพื่อดูกราฟ</p>
+<div class="panel" id="c-svc"><h3>ยอดชดเชยแต่ละบริการ ปีงบ 2560–2569</h3><p class="note">พันบาท รวมจากรายงานรายเดือนใน MIS (เช่น ID 1107 อวัยวะเทียม, 1625 OPAE, 1102 Palliative, 882 ฝากครรภ์, 1529 กรมบัญชีกลาง) สีเข้มคือปีที่ได้มากที่สุดของบริการนั้น ▲ คือปีที่ยอดสูงกว่าระดับปกติของบริการนั้นมาก (เช่น ปีที่มีนโยบายกระตุ้น) นับรวมตามจริง ยกเว้น Walk-in ปีงบ 2567 ที่พักไว้รอตรวจกับ Statement คลิกแถวเพื่อดูกราฟ</p>
 <div class="tbl wide"><table class="heat" id="tb-svc" data-source="svc_grid" data-row-key="service"><thead><tr><th data-field="service">บริการ</th><th data-field="group">กลุ่ม</th><th class="n" data-field="y2560">2560</th><th class="n" data-field="y2561">2561</th><th class="n" data-field="y2562">2562</th><th class="n" data-field="y2563">2563</th><th class="n" data-field="y2564">2564</th><th class="n" data-field="y2565">2565</th><th class="n" data-field="y2566">2566</th><th class="n" data-field="y2567">2567</th><th class="n" data-field="y2568">2568</th><th class="n" data-field="y2569">2569</th><th class="n" data-field="chg">เทียบปีก่อน %</th></tr></thead><tbody></tbody></table></div></div>
 <div class="grid">
  <div class="panel" id="c-svcd"><h3 id="svc-d-title">รายละเอียดรายปี</h3><p class="note">แท่ง = ยอดชดเชย (บาท) · เส้น = จำนวนครั้ง/ราย · แท่งสีทราย = ปีที่สูงกว่าระดับปกติ</p><div class="chart" id="ch-svcd" data-source="svc_fy"></div></div>
@@ -471,11 +472,11 @@ document.querySelector('.pt nav [data-tab="sub"]').addEventListener('click',()=>
 })();
 </script>
 <script>
-dash.calc('svc_grid',{inputs:['svc_fy'],title:'ยอดบริการรายปี (พันบาท)',description:'รวมยอดรายเดือนเป็นปีงบ หน่วยพันบาท f = ปีที่สูงกว่าระดับปกติ',
- fn:(svc_fy)=>{const by={};for(const r of svc_fy){const o=by[r.service]||(by[r.service]={service:r.service,group:r.group});o['y'+r.fy]=Math.round(Number(r.amount)/1000);if(Number(r.flag))o['f'+r.fy]=1;}
+dash.calc('svc_grid',{inputs:['svc_fy'],title:'ยอดบริการรายปี (พันบาท)',description:'รวมยอดรายเดือนเป็นปีงบ หน่วยพันบาท f = ปีที่สูงกว่าระดับปกติ; Walk-in ปีงบ 2567 พักไว้รอตรวจกับ Statement',
+ fn:(svc_fy)=>{const HOLD=['OP Walk-in (รักษาทุกที่)|2567'];const by={};for(const r of svc_fy){const o=by[r.service]||(by[r.service]={service:r.service,group:r.group});const held=HOLD.includes(r.service+'|'+r.fy);o['y'+r.fy]=held?null:Math.round(Number(r.amount)/1000);if(held){o['h'+r.fy]=1;continue}if(Number(r.flag))o['f'+r.fy]=1;}
   return Object.values(by).map(o=>{o.chg=o.y2568&&o.y2569!=null?Math.round((o.y2569/o.y2568-1)*1000)/10:null;return o}).sort((a,b)=>(b.y2569||0)-(a.y2569||0));}});
-dash.calc('svc_flagged',{inputs:['svc_fy'],title:'ปีที่ยอดสูงกว่าระดับปกติ',description:'ปีที่ยอดสูงกว่าค่ากลางปีอื่นของบริการเดียวกันเกิน 3 เท่า',
- fn:(svc_fy)=>svc_fy.filter(r=>Number(r.flag)).map(r=>({service:r.service,fy:r.fy,amount_k:Math.round(r.amount/1000),typical_k:Math.round(r.typical/1000),times:Math.round(r.amount/r.typical*10)/10})).sort((a,b)=>b.amount_k-a.amount_k)});
+dash.calc('svc_flagged',{inputs:['svc_fy'],title:'ปีที่ยอดสูงกว่าระดับปกติ',description:'ปีที่ยอดสูงกว่าค่ากลางปีอื่นของบริการเดียวกันเกิน 3 เท่า ไม่รวม Walk-in ปีงบ 2567 ที่พักไว้รอตรวจสอบ',
+ fn:(svc_fy)=>svc_fy.filter(r=>Number(r.flag)&&!(r.service==='OP Walk-in (รักษาทุกที่)'&&r.fy===2567)).map(r=>({service:r.service,fy:r.fy,amount_k:Math.round(r.amount/1000),typical_k:Math.round(r.typical/1000),times:Math.round(r.amount/r.typical*10)/10})).sort((a,b)=>b.amount_k-a.amount_k)});
 dash.calc('svc_gap',{inputs:['svc_peers'],title:'ช่องว่างรายบริการเทียบค่ากลางจังหวัด',description:'ปีล่าสุดของแต่ละบริการ: อันดับของเรา ค่ากลางของโรงพยาบาลในจังหวัด และส่วนต่าง',
  fn:(svc_peers)=>{const names=[...new Set(svc_peers.map(r=>r.service))];
   return names.map(s=>{const rs=svc_peers.filter(r=>r.service===s);const fy=Math.max(...rs.map(r=>r.fy));const cur=rs.filter(r=>r.fy===fy).sort((a,b)=>b.amount-a.amount);
@@ -510,13 +511,13 @@ function drawSvc(){
  const d=document.getElementById('t-svc-d');d.textContent=kr&&kr.svc_chg!=null?pf(kr.svc_chg)+' จากปีงบ 2568':'—';d.classList.toggle('ok',!!kr&&kr.svc_chg>=0);d.classList.toggle('bad',!!kr&&kr.svc_chg<0);
  if(g.status==='ok'&&!S.svc&&g.data[0])S.svc=g.data[0].service;
  if(!vis('svc'))return;
- if(g.status==='ok'){const tb=rowsTable('tb-svc',g.data,[['service',''],['group','grp'],...FYS.map(y=>['y'+y,r=>'n'+(r['f'+y]?' flag':'')+(r['y'+y]===0?' z':''),nf]),['chg',r=>'n '+(r.chg==null?'':r.chg>=0?'ok':'bad'),v=>pf(v).replace('%','')]],r=>{S.svc=r.service;drawSvc()},r=>r.service===S.svc);
+ if(g.status==='ok'){const tb=rowsTable('tb-svc',g.data,[['service',''],['group','grp'],...FYS.map(y=>['y'+y,r=>'n'+(r['h'+y]?' hold':r['f'+y]?' flag':'')+(r['y'+y]===0?' z':''),nf]),['chg',r=>'n '+(r.chg==null?'':r.chg>=0?'ok':'bad'),v=>pf(v).replace('%','')]],r=>{S.svc=r.service;drawSvc()},r=>r.service===S.svc);
   [...tb.children].forEach((tr,i)=>{const r=g.data[i];const mx=Math.max(1,...FYS.map(y=>r['y'+y]||0));FYS.forEach((y,j)=>{const v=r['y'+y];const c=tr.children[2+j];if(v){c.classList.add('hv');c.style.setProperty('--h',(v/mx).toFixed(2));if(v/mx>0.75)c.classList.add('hi')}})})}
  else document.querySelector('#tb-svc tbody').replaceChildren();
  if(fl.status==='ok')rowsTable('tb-svcf',fl.data,[['service',''],['fy','n'],['amount_k','n',nf],['typical_k','n',nf],['times','n',v=>v+'×']]);
  const el=document.getElementById('ch-svcd');
  if(fy.status!=='ok'){fail(el,fy.status);return}
- const rows=fy.data.filter(r=>r.service===S.svc).sort((a,b)=>a.fy-b.fy);
+ const rows=fy.data.filter(r=>r.service===S.svc&&!(r.service==='OP Walk-in (รักษาทุกที่)'&&r.fy===2567)).sort((a,b)=>a.fy-b.fy);
  document.getElementById('svc-d-title').textContent='รายละเอียดรายปี: '+(S.svc||'');
  el.replaceChildren();const W=Math.max(300,el.clientWidth),H=260;
  const svg=d3.select(el).append('svg').attr('width','100%').attr('viewBox',`0 0 ${W} ${H}`);
