@@ -6,11 +6,11 @@
 <title>NHSO-MIS for Hospital | รพ.พระทองคำ</title>
 <meta name="description" content="Dashboard รายได้จากระบบหลักประกันสุขภาพ รพ.พระทองคำ เฉลิมพระเกียรติ 80 พรรษา (22456) ปีงบ 2560–2569 จาก NHSO-MIS">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Noto+Serif+Thai:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <style>
 :root{--color-bg:#F2F5F3;--color-panel:#FFFFFF;--color-fg:#1F3530;--color-fg-muted:#5E716B;
---font-anthropic-sans:"IBM Plex Sans Thai",system-ui,sans-serif;--font-anthropic-serif:"Noto Serif Thai",Georgia,serif;color-scheme:light}
+--font-anthropic-sans:"Sarabun",Tahoma,system-ui,sans-serif;--font-anthropic-serif:"Sarabun",Tahoma,system-ui,sans-serif;color-scheme:light}
 @media (prefers-color-scheme:dark){:root{--color-bg:#111C19;--color-panel:#172622;--color-fg:#E3EDE9;--color-fg-muted:#9DB2AB;color-scheme:dark}}
 html,body{margin:0;background:var(--color-bg)}
 #dash-root{padding:24px var(--dash-gutter) 48px}
@@ -51,15 +51,15 @@ window.dash=(function(){
 --pt-jade:#3E8A78;--pt-sky:#6E9CC2;--pt-lilac:#9C8CC4;--pt-sand:#C9A35E;--pt-mint:#7FBFAE;--pt-rose:#C98B9E;
 --pt-ok:#3E8A78;--pt-bad:#C4675A;--pt-warn:#B88A2E;
 --pt-soft:color-mix(in srgb,var(--pt-jade) 7%,var(--pt-panel));--pt-muted-bar:color-mix(in srgb,var(--color-fg) 16%,var(--pt-panel));--pt-grid:color-mix(in srgb,var(--color-fg) 8%,transparent);
---pt-serif:var(--font-anthropic-serif);--pt-sans:var(--font-anthropic-sans);
-font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:auto;line-height:1.6;font-size:15px}
+--pt-sans:"Sarabun",var(--font-anthropic-sans),Tahoma,sans-serif;--pt-serif:var(--pt-sans);
+font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:auto;line-height:1.65;font-size:16px}
 .pt *{box-sizing:border-box}
 .pt .hd{padding:clamp(8px,2vw,20px) 0 0}
 .pt .org{color:var(--pt-mute);font-size:13px;margin:0 0 6px}
-.pt h1{font-family:var(--pt-serif);font-weight:600;font-size:clamp(28px,4.2vw,46px);line-height:1.2;margin:0 0 8px;letter-spacing:-.01em;color:var(--pt-ink)}
+.pt h1{font-family:var(--pt-serif);font-weight:700;font-size:clamp(28px,4vw,42px);line-height:1.3;margin:0 0 8px;letter-spacing:0;color:var(--pt-ink)}
 .pt h1::after{content:"";display:block;width:56px;height:4px;border-radius:4px;background:var(--pt-jade);margin-top:14px}
 .pt .sub{color:var(--pt-mute);font-size:15px;margin:10px 0 0}
-.pt .take{font-family:var(--pt-serif);font-weight:300;font-size:clamp(16px,1.7vw,19px);line-height:1.75;color:var(--pt-mute);max-width:62ch;margin:28px 0 34px;padding-left:18px;border-left:3px solid var(--pt-jade)}
+.pt .take{font-family:var(--pt-sans);font-weight:400;font-size:clamp(16px,1.6vw,18px);line-height:1.8;color:var(--pt-ink);max-width:62ch;margin:28px 0 34px;padding-left:18px;border-left:3px solid var(--pt-jade)}
 .pt nav{display:flex;flex-wrap:wrap;gap:8px;padding:8px;background:var(--pt-soft);border:1px solid var(--pt-line);border-radius:16px;margin-bottom:30px}
 .pt nav button{font:inherit;font-size:15.5px;font-weight:500;background:var(--pt-panel);border:1px solid var(--pt-line);border-radius:11px;padding:10px 18px;color:var(--pt-ink);cursor:pointer;transition:background .15s,border-color .15s}
 .pt nav button:hover{border-color:var(--pt-jade);background:color-mix(in srgb,var(--pt-jade) 8%,var(--pt-panel))}
@@ -69,20 +69,20 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
 .pt .fig{padding:18px 24px;border-left:1px solid var(--pt-line)}
 .pt .fig:first-child{border-left:0}
 @media (max-width:640px){.pt .fig{border-left:0;border-top:1px solid var(--pt-line)}.pt .fig:first-child{border-top:0}}
-.pt .fig .lab{font-size:13px;color:var(--pt-mute);line-height:1.45}
-.pt .fig .big{font-family:var(--pt-serif);font-weight:300;font-size:clamp(26px,2.8vw,34px);line-height:1.15;margin:8px 0 4px;font-variant-numeric:tabular-nums}
+.pt .fig .lab{font-size:14px;color:var(--pt-mute);line-height:1.45}
+.pt .fig .big{font-family:var(--pt-serif);font-weight:600;font-size:clamp(26px,2.6vw,32px);line-height:1.15;margin:8px 0 4px;font-variant-numeric:tabular-nums}
 .pt .fig .d{font-size:12.5px;color:var(--pt-mute);font-variant-numeric:tabular-nums}
 .pt .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:22px;margin-bottom:22px}
 .pt .panel{background:var(--pt-panel);border:1px solid var(--pt-line);border-radius:18px;padding:24px 26px;margin-bottom:22px}
 .pt .grid .panel{margin-bottom:0}
-.pt .panel h3{font-size:16px;font-weight:600;margin:0 0 4px;line-height:1.4}
-.pt .panel .note{font-size:13px;color:var(--pt-mute);margin:0 0 18px;max-width:72ch}
+.pt .panel h3{font-size:17.5px;font-weight:600;margin:0 0 4px;line-height:1.4}
+.pt .panel .note{font-size:14px;color:var(--pt-mute);margin:0 0 18px;max-width:72ch}
 .pt .chart{position:relative;min-height:240px}
 .pt .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--pt-mute);margin:-6px 0 10px}
 .pt .legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
 .pt .tbl{max-height:470px;overflow:auto;margin:0 -8px}
 .pt .tbl.wide{max-height:580px}
-.pt table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.pt table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
 .pt th{position:sticky;top:0;background:var(--pt-panel);text-align:left;font-weight:500;color:var(--pt-mute);padding:8px 10px;border-bottom:1px solid var(--pt-line);cursor:pointer;white-space:nowrap;z-index:1}
 .pt th[aria-sort]{color:var(--pt-ink)}
 .pt td{padding:8px 10px;border-bottom:1px solid var(--pt-grid)}
@@ -111,7 +111,7 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
 .pt .acts{margin:0;padding:0;list-style:none;counter-reset:a}
 .pt .acts li{counter-increment:a;display:grid;grid-template-columns:34px 1fr;gap:6px;padding:14px 0;border-top:1px solid var(--pt-grid);line-height:1.7}
 .pt .acts li:first-child{border-top:0}
-.pt .acts li::before{content:counter(a);font-family:var(--pt-serif);font-size:22px;font-weight:300;color:var(--pt-jade);line-height:1.3}
+.pt .acts li::before{content:counter(a);font-family:var(--pt-serif);font-size:20px;font-weight:700;color:var(--pt-jade);line-height:1.3}
 .pt .acts b{font-weight:600}
 .pt .src{font-size:12.5px;color:var(--pt-mute);margin:34px 0 10px;line-height:1.7;max-width:80ch}
 .pt section[hidden]{display:none}
@@ -284,7 +284,7 @@ const named=location.hash.slice(1);const nb=named&&document.querySelector(`.pt n
 function showTip(ev,lines){tip.replaceChildren();lines.forEach((l,i)=>{const d=document.createElement('div');if(i===0)d.className='t';d.textContent=l;tip.appendChild(d)});
  tip.style.display='block';const pr=root.getBoundingClientRect();let x=ev.clientX-pr.left+14,y=ev.clientY-pr.top+14;if(x+tip.offsetWidth>pr.width)x=ev.clientX-pr.left-tip.offsetWidth-14;tip.style.left=x+'px';tip.style.top=y+'px';}
 const hide=()=>tip.style.display='none';
-function axis(g){g.attr('font-size',null).attr('font-family',null);g.selectAll('text').style('fill','var(--pt-mute)').style('font-size','12px');g.selectAll('line,path').style('stroke','var(--pt-line)');}
+function axis(g){g.attr('font-size',null).attr('font-family',null);g.selectAll('text').style('fill','var(--pt-mute)').style('font-size','13px');g.selectAll('line,path').style('stroke','var(--pt-line)');}
 function grid(svg,y,x0,x1){svg.append('g').selectAll('line').data(y.ticks(4)).join('line').attr('x1',x0).attr('x2',x1).attr('y1',y).attr('y2',y).style('stroke','var(--pt-grid)');}
 function fail(el){el.replaceChildren();const d=document.createElement('div');d.className='fail';d.textContent='โหลดข้อมูลไม่สำเร็จ';el.appendChild(d)}
 
@@ -323,10 +323,10 @@ function hbars(el,rows,nk,vk,ref,fmt){el.replaceChildren();const W=el.clientWidt
  const svg=d3.select(el).append('svg').attr('width','100%').attr('viewBox',`0 0 ${W} ${H}`);
  const x=d3.scaleLinear([0,d3.max(rows,r=>r[vk])*1.05],[m.l,W-m.r]);const y=d3.scaleBand(rows.map(r=>r[nk]),[m.t,H-m.b]).padding(.3);
  svg.append('g').selectAll('text').data(rows).join('text').attr('x',m.l-8).attr('y',r=>y(r[nk])+y.bandwidth()/2).attr('dy','.35em').attr('text-anchor','end')
- .style('font-size','12.5px').style('fill',r=>r.is_self?'var(--pt-ink)':'var(--pt-mute)').attr('font-weight',r=>r.is_self?600:400).text(r=>r[nk].length>24?r[nk].slice(0,23)+'…':r[nk]);
+ .style('font-size','13px').style('fill',r=>r.is_self?'var(--pt-ink)':'var(--pt-mute)').attr('font-weight',r=>r.is_self?600:400).text(r=>r[nk].length>24?r[nk].slice(0,23)+'…':r[nk]);
  svg.append('g').selectAll('rect').data(rows).join('rect').attr('x',m.l).attr('y',r=>y(r[nk])).attr('height',y.bandwidth()).attr('width',r=>Math.max(0,x(r[vk])-m.l)).attr('rx',Math.min(6,y.bandwidth()/2))
  .style('fill',r=>r.is_self?'var(--pt-jade)':'var(--pt-muted-bar)');
- svg.append('g').selectAll('text').data(rows).join('text').attr('x',r=>x(r[vk])+6).attr('y',r=>y(r[nk])+y.bandwidth()/2).attr('dy','.35em').style('font-size','12px').style('fill','var(--pt-mute)').text(r=>fmt(r[vk]));
+ svg.append('g').selectAll('text').data(rows).join('text').attr('x',r=>x(r[vk])+6).attr('y',r=>y(r[nk])+y.bandwidth()/2).attr('dy','.35em').style('font-size','13px').style('fill','var(--pt-mute)').text(r=>fmt(r[vk]));
  if(ref!=null)svg.append('line').attr('x1',x(ref)).attr('x2',x(ref)).attr('y1',m.t).attr('y2',H-m.b).style('stroke','var(--pt-ink)').style('opacity',.5).attr('stroke-dasharray','4 4');
  el.style.minHeight=H+'px';}
 
@@ -426,7 +426,7 @@ function trend(){const el=$('#ch-subtrend');const all=rows();if(!all.length)retu
  svg.append('g').selectAll('line').data(ys.ticks(4)).join('line').attr('x1',m.l).attr('x2',W-m.r).attr('y1',ys).attr('y2',ys).style('stroke','var(--pt-grid)');
  const ga=svg.append('g').attr('transform',`translate(${m.l},0)`).call(d3.axisLeft(ys).ticks(4).tickSize(0).tickPadding(8).tickFormat(d3.format('~s')));
  const gb=svg.append('g').attr('transform',`translate(0,${H-m.b})`).call(d3.axisBottom(xs).tickSize(0).tickPadding(10));
- [ga,gb].forEach(g=>{g.attr('font-size',null).attr('font-family',null);g.selectAll('text').style('fill','var(--pt-mute)').style('font-size','12px');g.select('.domain').remove()});
+ [ga,gb].forEach(g=>{g.attr('font-size',null).attr('font-family',null);g.selectAll('text').style('fill','var(--pt-mute)').style('font-size','13px');g.select('.domain').remove()});
  const bw=Math.min(30,xs.bandwidth()),off=(xs.bandwidth()-bw)/2;
  svg.append('g').selectAll('rect').data(data.filter(d=>!d.have)).join('rect').attr('x',d=>xs(d.y)+off).attr('width',bw).attr('y',m.t).attr('height',H-m.t-m.b).attr('rx',6).style('fill','none').style('stroke','var(--pt-line)').attr('stroke-dasharray','3 4');
  svg.append('g').selectAll('rect').data(data.filter(d=>d.v!=null)).join('rect').attr('x',d=>xs(d.y)+off).attr('width',bw).attr('y',d=>ys(d.v)).attr('height',d=>ys(0)-ys(d.v)).attr('rx',Math.min(6,bw/2)).style('fill',d=>d.y===2569?'var(--pt-jade)':'color-mix(in srgb,var(--pt-jade) 40%,var(--pt-panel))');
