@@ -3,22 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0f2744">
+<meta name="theme-color" content="#1D6FA4">
 <title>PPFS NHSO — อัตราจ่ายและสิทธิประโยชน์ พ.ศ. 2568</title>
 <style>
-  :root, [data-theme="dark"] {
-    --bg:#0b1220; --card:#141c2e; --card2:#1a2438; --line:#2a3a52;
-    --text:#f2f5f9; --muted:#94a3b8; --accent:#5eead4; --gold:#e8c47a;
-    --blue:#93c5fd; --red:#fca5a5; --chip:#1c2840; --green:#99f6e4;
-    --warnbg:#2a1820; --warnborder:#5c3040; --header:#0b1220f2;
-    --elig:#5eead4; --boxbg:#132e2a; --refbg:#121c2c;
-  }
-  [data-theme="light"] {
-    --bg:#f8f6f3; --card:#ffffff; --card2:#faf8f6; --line:#e7e2db;
-    --text:#1c1917; --muted:#78716c; --accent:#0f766e; --gold:#b45309;
-    --blue:#1d4ed8; --red:#dc2626; --chip:#f5f0eb; --green:#047857;
-    --warnbg:#fef2f2; --warnborder:#fecaca; --header:#fffcfa;
-    --elig:#0f766e; --boxbg:#f0fdfa; --refbg:#f5f5f4;
+  /* Light palette shared with the other dashboard pages (index / uc_transfer / sso) */
+  :root {
+    --bg:#F4F6F9; --card:#FFFFFF; --card2:#F8FAFC; --line:#E2E8F0;
+    --text:#1A2332; --muted:#64748B; --accent:#1D6FA4; --gold:#B45309;
+    --blue:#1D6FA4; --red:#DC2626; --chip:#FFFFFF; --green:#0F766E;
+    --warnbg:#FEF2F2; --warnborder:#FECACA; --header:rgba(255,255,255,.96);
+    --elig:#0F766E; --boxbg:#F0FDFA; --refbg:#EFF6FF;
+    color-scheme: light;
   }
   * { box-sizing: border-box; }
   body {
@@ -34,23 +29,21 @@
   h1 { margin:0; font-size:20px; letter-spacing:-.2px; }
   .sub { color:var(--muted); font-size:13px; margin-top:2px; }
   .theme-row { display:flex; justify-content:space-between; align-items:center; margin-top:8px; }
-  .theme-btn {
-    border:1px solid var(--line); background:var(--card); color:var(--text);
-    border-radius:999px; padding:6px 12px; font-size:13px;
-  }
   .search {
     margin-top:10px; width:100%; border:1px solid var(--line); background:var(--card);
     color:var(--text); border-radius:14px; padding:13px 16px; font-size:16px;
     outline: none; transition: border-color .15s ease;
   }
-  .search:focus { border-color: var(--accent); }
+  .search:focus { border-color: var(--accent); box-shadow:0 0 0 3px rgba(29,111,164,.12); }
+  .search::placeholder { color:#94A3B8; }
   .chips { display:flex; gap:8px; overflow:auto; padding:10px 14px 4px; }
   .chip {
     border:1px solid var(--line); background:var(--chip); color:var(--text);
     border-radius:999px; padding:8px 14px; white-space:nowrap; font-size:14px;
     transition: background .15s ease, color .15s ease;
   }
-  .chip.on { background:var(--accent); color:#08332c; border-color:var(--accent); font-weight:700; }
+  .chip.on { background:var(--accent); color:#fff; border-color:var(--accent); font-weight:700; }
+  .chip:hover:not(.on) { border-color:var(--accent); color:var(--accent); }
   main { padding:6px 14px 80px; max-width:880px; margin:0 auto; }
   .section-title { margin:18px 0 10px; font-size:20px; font-weight:700; letter-spacing:-.2px; color:var(--text); }
   .bundle {
@@ -65,11 +58,11 @@
   .card {
     background:var(--card); border:1px solid var(--line); border-radius:18px;
     margin-bottom:12px; overflow:hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    box-shadow: 0 1px 2px rgba(15,23,42,.05);
     transition: transform .15s ease, box-shadow .15s ease;
   }
-  .card.open { box-shadow: 0 4px 12px rgba(0,0,0,.12); }
-  .card.strict { border-color:#7a3340; }
+  .card.open { box-shadow: 0 6px 18px rgba(15,23,42,.08); }
+  .card.strict { border-color:#FCA5A5; border-left:4px solid #DC2626; }
   .card button.head {
     width:100%; text-align:left; background:transparent; color:inherit; border:0;
     padding:14px; display:grid; grid-template-columns:1fr auto; gap:8px; align-items:start;
@@ -89,12 +82,12 @@
   .rate span { color:var(--muted); font-size:12px; }
   .badge {
     display:inline-block; margin-top:6px; margin-right:6px; font-size:12px;
-    border-radius:999px; padding:4px 9px; background:#334155; color:#f1f5f9;
+    border-radius:999px; padding:4px 9px; background:#F1F5F9; color:#334155; border:1px solid #E2E8F0;
   }
-  .badge.hi { background:#422006; color:#fde68a; }
-  .badge.vol { background:#134e4a; color:#99f6e4; }
-  .badge.off { background:#450a0a; color:#fecaca; }
-  .badge.warn { background:#7f1d1d; color:#fecaca; }
+  .badge.hi { background:#FEF3C7; color:#92400E; border-color:#FDE68A; }
+  .badge.vol { background:#CCFBF1; color:#115E59; border-color:#99F6E4; }
+  .badge.off { background:#F1F5F9; color:#475569; border-color:#E2E8F0; }
+  .badge.warn { background:#FEE2E2; color:#B91C1C; border-color:#FECACA; }
   .detail { display:none; border-top:1px solid var(--line); padding:12px 14px 14px; background:var(--card2); }
   .card.open .detail { display:block; }
   .kv { margin:0 0 8px; }
@@ -108,7 +101,7 @@
     background:var(--warnbg); border:1px solid var(--warnborder); border-radius:10px;
     padding:10px 12px; margin-bottom:10px;
   }
-  .must-box em { color:#ff9a9a; font-style:normal; font-weight:700; display:block; font-size:13px; }
+  .must-box em { color:#B91C1C; font-style:normal; font-weight:700; display:block; font-size:13px; }
   .ref {
     margin-top:8px; padding:8px 10px; border-radius:10px; background:var(--refbg);
     color:var(--blue); font-size:13px;
@@ -122,7 +115,9 @@
     flex:1; border:1px solid var(--line); background:var(--card); color:var(--text);
     border-radius:10px; padding:9px; font-size:14px;
   }
-  .tab.on { background:#e8dcc8; color:#3f3428; font-weight:700; border-color:#d4c4a8; }
+  .tab.on { background:var(--accent); color:#fff; font-weight:700; border-color:var(--accent); }
+  .tab { cursor:pointer; }
+  .tab:hover:not(.on) { border-color:var(--accent); color:var(--accent); }
   #bundles, #rules, #announce { display:none; }
   .rule {
     background:var(--card); border:1px solid var(--line); border-radius:14px;
@@ -134,6 +129,8 @@
   /* Shell compatibility with credit.js */
   body.ptk-has-shell header { top: 64px; }
   body.ptk-has-shell main { margin-left: 0; }
+  /* PPFS is a reading list: cap width at 1200px, left-aligned (beats credit.js full-width rule) */
+  @media (min-width:901px){ html body.ptk-has-shell > main, html body.ptk-has-shell > header:not(#ptk-header), html body.ptk-has-shell > #chips { max-width:1200px !important; margin-left:0 !important; margin-right:0 !important; } }
 </style>
 </head>
 <body>
@@ -141,7 +138,6 @@
   <h1>PPFS NHSO</h1>
   <div class="theme-row">
     <div class="sub">PP Fee Schedule สปสช. · มีผล 1 ตุลาคม 2568</div>
-    <button class="theme-btn" id="themeBtn">ธีมสว่าง</button>
   </div>
   <div class="tabs">
     <button class="tab on" data-view="list">รายการจ่าย</button>
@@ -317,18 +313,6 @@ document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
   document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x===t));
   render();
 });
-
-// theme
-const root = document.documentElement;
-const themeBtn = document.getElementById("themeBtn");
-function applyTheme(t){
-  root.setAttribute("data-theme", t);
-  themeBtn.textContent = t === "dark" ? "ธีมสว่าง" : "ธีมมืด";
-  try { localStorage.setItem("ppfs-theme", t); } catch(e){}
-}
-const saved = (function(){ try { return localStorage.getItem("ppfs-theme"); } catch(e){ return null; } })();
-applyTheme(saved || "dark");
-themeBtn.onclick = () => applyTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
 
 document.getElementById("q").oninput = renderList;
 render();
