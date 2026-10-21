@@ -130,7 +130,7 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
 .pt #tb-gap tr.sel td{background:color-mix(in srgb,var(--pt-jade) 10%,var(--pt-panel))}
 .pt #tb-svc td.z{color:color-mix(in srgb,var(--pt-mute) 55%,transparent)}
 .pt #tb-svc td.grp{color:var(--pt-mute);font-size:13px}
-.pt td.flag::after{content:"ผิดปกติ";color:var(--pt-warn);font-size:12px}
+.pt td.flag::after{content:"▲";color:var(--pt-warn);font-size:10px;margin-left:3px;vertical-align:1px}
 .pt td.absent::after{content:"ยังไม่มี";color:var(--pt-bad)}
 .pt .pills{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
 .pt .pills button{font:inherit;font-size:13px;border:1px solid var(--pt-line);background:var(--pt-bg);color:var(--pt-ink);border-radius:999px;padding:3px 12px;cursor:pointer}
@@ -213,11 +213,11 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
  <div class="fig"><div class="lab">บริการที่มีการเบิกในปีงบ 2569</div><div class="big" id="t-svc-n" data-source="svc_kpi" data-field="active69" data-row="0">—</div><div class="d">จากบริการที่ติดตาม</div></div>
  <div class="fig"><div class="lab">ถ้าทำได้เท่าค่ากลาง รพ.ในจังหวัด</div><div class="big ok" id="t-svc-gap" data-source="svc_kpi" data-field="gap_total_mb" data-row="0">—</div><div class="d">ล้านบาทต่อปีที่เพิ่มได้ ดูแท็บ “เทียบ รพ.ในจังหวัด”</div></div>
 </div>
-<div class="panel" id="c-svc"><h3>ยอดชดเชยแต่ละบริการ ปีงบ 2560–2569</h3><p class="note">พันบาท รวมจากรายงานรายเดือนใน MIS (เช่น ID 1107 อวัยวะเทียม, 1625 OPAE, 1102 Palliative, 882 ฝากครรภ์, 1529 กรมบัญชีกลาง) สีเข้มคือปีที่ได้มากที่สุดของบริการนั้น ช่อง “ผิดปกติ” คือปีที่ MIS ส่งตัวเลขสูงเกินระดับปกติของ รพ. มาก จึงไม่นำมารวม คลิกแถวเพื่อดูกราฟ</p>
+<div class="panel" id="c-svc"><h3>ยอดชดเชยแต่ละบริการ ปีงบ 2560–2569</h3><p class="note">พันบาท รวมจากรายงานรายเดือนใน MIS (เช่น ID 1107 อวัยวะเทียม, 1625 OPAE, 1102 Palliative, 882 ฝากครรภ์, 1529 กรมบัญชีกลาง) สีเข้มคือปีที่ได้มากที่สุดของบริการนั้น ▲ คือปีที่ยอดสูงกว่าระดับปกติของบริการนั้นมาก (เช่น ปีที่มีนโยบายกระตุ้น) นับรวมตามจริง คลิกแถวเพื่อดูกราฟ</p>
 <div class="tbl wide"><table class="heat" id="tb-svc" data-source="svc_grid" data-row-key="service"><thead><tr><th data-field="service">บริการ</th><th data-field="group">กลุ่ม</th><th class="n" data-field="y2560">2560</th><th class="n" data-field="y2561">2561</th><th class="n" data-field="y2562">2562</th><th class="n" data-field="y2563">2563</th><th class="n" data-field="y2564">2564</th><th class="n" data-field="y2565">2565</th><th class="n" data-field="y2566">2566</th><th class="n" data-field="y2567">2567</th><th class="n" data-field="y2568">2568</th><th class="n" data-field="y2569">2569</th><th class="n" data-field="chg">เทียบปีก่อน %</th></tr></thead><tbody></tbody></table></div></div>
 <div class="grid">
- <div class="panel" id="c-svcd"><h3 id="svc-d-title">รายละเอียดรายปี</h3><p class="note">แท่ง = ยอดชดเชย (บาท) · เส้น = จำนวนครั้ง/ราย · แท่งจาง = ปีที่ตัวเลขผิดปกติ</p><div class="chart" id="ch-svcd" data-source="svc_fy"></div></div>
- <div class="panel" id="c-svcf"><h3>ปีที่ตัวเลขผิดปกติ</h3><p class="note">ยอดที่ MIS แสดงเทียบกับระดับปกติ (ค่ากลางปีอื่น) ของบริการเดียวกัน ควรตรวจกับ Statement จริงก่อนใช้</p>
+ <div class="panel" id="c-svcd"><h3 id="svc-d-title">รายละเอียดรายปี</h3><p class="note">แท่ง = ยอดชดเชย (บาท) · เส้น = จำนวนครั้ง/ราย · แท่งสีทราย = ปีที่สูงกว่าระดับปกติ</p><div class="chart" id="ch-svcd" data-source="svc_fy"></div></div>
+ <div class="panel" id="c-svcf"><h3>ปีที่ยอดสูงกว่าระดับปกติ</h3><p class="note">เทียบกับค่ากลางของปีอื่นในบริการเดียวกัน ส่วนใหญ่มาจากนโยบายกระตุ้นในปีนั้น ถ้าไม่ใช่ ควรตรวจกับ Statement</p>
  <div class="tbl"><table id="tb-svcf" data-source="svc_flagged" data-row-key="service,fy"><thead><tr><th data-field="service">บริการ</th><th class="n" data-field="fy">ปีงบ</th><th class="n" data-field="amount_k">ยอดที่ MIS แสดง (พันบาท)</th><th class="n" data-field="typical_k">ระดับปกติ (พันบาท)</th><th class="n" data-field="times">เท่า</th></tr></thead><tbody></tbody></table></div></div>
 </div>
 </section>
@@ -471,10 +471,10 @@ document.querySelector('.pt nav [data-tab="sub"]').addEventListener('click',()=>
 })();
 </script>
 <script>
-dash.calc('svc_grid',{inputs:['svc_fy'],title:'ยอดบริการรายปี (พันบาท)',description:'รวมยอดรายเดือนเป็นปีงบ หน่วยพันบาท ตัดปีที่ผิดปกติออก',
- fn:(svc_fy)=>{const by={};for(const r of svc_fy){const o=by[r.service]||(by[r.service]={service:r.service,group:r.group});o['y'+r.fy]=Number(r.flag)?null:Math.round(Number(r.amount)/1000);if(Number(r.flag))o['f'+r.fy]=1;}
+dash.calc('svc_grid',{inputs:['svc_fy'],title:'ยอดบริการรายปี (พันบาท)',description:'รวมยอดรายเดือนเป็นปีงบ หน่วยพันบาท f = ปีที่สูงกว่าระดับปกติ',
+ fn:(svc_fy)=>{const by={};for(const r of svc_fy){const o=by[r.service]||(by[r.service]={service:r.service,group:r.group});o['y'+r.fy]=Math.round(Number(r.amount)/1000);if(Number(r.flag))o['f'+r.fy]=1;}
   return Object.values(by).map(o=>{o.chg=o.y2568&&o.y2569!=null?Math.round((o.y2569/o.y2568-1)*1000)/10:null;return o}).sort((a,b)=>(b.y2569||0)-(a.y2569||0));}});
-dash.calc('svc_flagged',{inputs:['svc_fy'],title:'ปีที่ตัวเลขผิดปกติ',description:'ปีที่ยอดสูงกว่าค่ากลางปีอื่นของบริการเดียวกันเกิน 3 เท่า',
+dash.calc('svc_flagged',{inputs:['svc_fy'],title:'ปีที่ยอดสูงกว่าระดับปกติ',description:'ปีที่ยอดสูงกว่าค่ากลางปีอื่นของบริการเดียวกันเกิน 3 เท่า',
  fn:(svc_fy)=>svc_fy.filter(r=>Number(r.flag)).map(r=>({service:r.service,fy:r.fy,amount_k:Math.round(r.amount/1000),typical_k:Math.round(r.typical/1000),times:Math.round(r.amount/r.typical*10)/10})).sort((a,b)=>b.amount_k-a.amount_k)});
 dash.calc('svc_gap',{inputs:['svc_peers'],title:'ช่องว่างรายบริการเทียบค่ากลางจังหวัด',description:'ปีล่าสุดของแต่ละบริการ: อันดับของเรา ค่ากลางของโรงพยาบาลในจังหวัด และส่วนต่าง',
  fn:(svc_peers)=>{const names=[...new Set(svc_peers.map(r=>r.service))];
@@ -520,7 +520,7 @@ function drawSvc(){
  document.getElementById('svc-d-title').textContent='รายละเอียดรายปี: '+(S.svc||'');
  el.replaceChildren();const W=Math.max(300,el.clientWidth),H=260;
  const svg=d3.select(el).append('svg').attr('width','100%').attr('viewBox',`0 0 ${W} ${H}`);
- const okr=rows.filter(r=>!Number(r.flag));
+ const okr=rows;
  const yA=d3.scaleLinear([0,(d3.max(okr,r=>r.amount)||1)*1.1],[H-28,12]).nice();
  const yV=d3.scaleLinear([0,(d3.max(okr,r=>r.visits)||1)*1.1],[H-28,12]).nice();
  const lw=Math.max(...yA.ticks(4).map(v=>tw(svg,fmtAxis(v))))+10,rw=Math.max(...yV.ticks(4).map(v=>tw(svg,nf(v))))+10;
@@ -531,12 +531,12 @@ function drawSvc(){
  T(svg.append('g').selectAll('text').data(yV.ticks(4)).join('text').attr('x',W-rw+6).attr('y',d=>yV(d)+4).text(nf));
  T(svg.append('g').selectAll('text').data(FYS).join('text').attr('x',d=>x(d)+x.bandwidth()/2).attr('y',H-8).attr('text-anchor','middle').text(d=>String(d).slice(2)));
  svg.append('g').selectAll('rect').data(rows).join('rect').attr('x',r=>x(r.fy)).attr('width',x.bandwidth()).attr('rx',4)
-  .attr('y',r=>Number(r.flag)?12:yA(r.amount)).attr('height',r=>Number(r.flag)?H-40:yA(0)-yA(r.amount))
-  .style('fill',r=>Number(r.flag)?'var(--pt-muted-bar)':'var(--pt-jade)').style('opacity',r=>Number(r.flag)?0.5:1);
- svg.append('path').datum(okr).attr('fill','none').style('stroke','var(--pt-sand)').attr('stroke-width',2).attr('stroke-linejoin','round').attr('stroke-linecap','round').attr('d',d3.line(r=>x(r.fy)+x.bandwidth()/2,r=>yV(r.visits)));
- svg.append('g').selectAll('circle').data(okr).join('circle').attr('cx',r=>x(r.fy)+x.bandwidth()/2).attr('cy',r=>yV(r.visits)).attr('r',3.5).style('fill','var(--pt-sand)');
+  .attr('y',r=>yA(r.amount)).attr('height',r=>yA(0)-yA(r.amount))
+  .style('fill',r=>Number(r.flag)?'var(--pt-sand)':'var(--pt-jade)');
+ svg.append('path').datum(okr).attr('fill','none').style('stroke','var(--pt-sky)').attr('stroke-width',2).attr('stroke-linejoin','round').attr('stroke-linecap','round').attr('d',d3.line(r=>x(r.fy)+x.bandwidth()/2,r=>yV(r.visits)));
+ svg.append('g').selectAll('circle').data(okr).join('circle').attr('cx',r=>x(r.fy)+x.bandwidth()/2).attr('cy',r=>yV(r.visits)).attr('r',3.5).style('fill','var(--pt-sky)');
  svg.append('g').selectAll('rect').data(rows).join('rect').attr('x',r=>x(r.fy)-x.step()*x.paddingInner()/2).attr('width',x.step()).attr('y',0).attr('height',H).attr('fill','transparent')
-  .on('mousemove',(e,r)=>showTip(e,['ปีงบ '+r.fy,'ยอด '+nf(Math.round(r.amount))+' บาท'+(Number(r.flag)?' (ผิดปกติ)':''),'จำนวน '+nf(r.visits)])).on('mouseleave',hide);
+  .on('mousemove',(e,r)=>showTip(e,['ปีงบ '+r.fy,'ยอด '+nf(Math.round(r.amount))+' บาท'+(Number(r.flag)?' (สูงกว่าปกติ)':''),'จำนวน '+nf(r.visits)])).on('mouseleave',hide);
 }
 
 function drawGap(){
