@@ -104,6 +104,9 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
 .pt #tb-sub td:first-child,.pt #tb-sub th:first-child{position:sticky;left:0;background:var(--pt-panel);z-index:2}
 .pt #tb-sub tbody tr{cursor:pointer}
 .pt #tb-sub td,.pt #tb-sub th{white-space:nowrap}
+.pt #tb-sub td.subn{white-space:normal;min-width:13rem;max-width:20rem;line-height:1.35}
+.pt #tb-sub td.subn::after{content:attr(data-g);display:block;font-size:12px;color:var(--pt-mute)}
+.pt #tb-tsub th.latest{color:var(--pt-ink);font-weight:600}
 @media (max-width:700px){.pt nav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.pt nav button{white-space:nowrap;flex:none}}
 .pt #tb-sub tr.sel td{background:color-mix(in srgb,var(--pt-jade) 10%,var(--pt-panel))}
 .pt .tip{position:absolute;pointer-events:none;background:var(--pt-panel);border:1px solid var(--pt-line);border-radius:10px;box-shadow:0 6px 24px color-mix(in srgb,var(--color-fg) 12%,transparent);padding:8px 12px;font-size:12.5px;white-space:nowrap;display:none;z-index:5}
@@ -125,6 +128,12 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
 .pt #tb-tsub tr.tot td{font-weight:600;border-top:1px solid var(--pt-line)}
 .pt #tb-svc td:first-child,.pt #tb-svc th:first-child{position:sticky;left:0;background:var(--pt-panel);z-index:2}
 .pt #tb-svc td,.pt #tb-svc th{white-space:nowrap}
+.pt #tb-svc td:first-child{white-space:normal;min-width:12rem;max-width:16rem;line-height:1.35}
+.pt #tb-svc td.svcn::after{content:attr(data-g);display:block;font-size:12px;color:var(--pt-mute);font-weight:400}
+.pt #tb-svc th.latest,.pt #tb-parts th.latest{color:var(--pt-ink);font-weight:600}
+.pt .tg{display:inline-flex;align-items:center;gap:6px;color:var(--pt-mute);cursor:pointer}
+.pt .ctl .tg input{accent-color:var(--pt-jade);width:16px;height:16px;min-width:0;padding:0;margin:0}
+.pt .cnt{color:var(--pt-mute)}
 .pt #tb-svc tbody tr,.pt #tb-gap tbody tr{cursor:pointer}
 .pt #tb-svc tr.sel td:first-child{font-weight:600;box-shadow:inset 3px 0 0 var(--pt-jade)}
 .pt #tb-gap tr.sel td{background:color-mix(in srgb,var(--pt-jade) 10%,var(--pt-panel))}
@@ -178,7 +187,7 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
 <p class="callout" id="tmon-note">ปี 2563 ไม่แสดงเพราะ MIS นับซ้ำ · ปี 2564 MIS ไม่มีรายเดือน · ปี 2566 ไม่มีเดือน ต.ค. 65</p>
 <div class="tbl"><table class="heat" id="tb-tmon" data-source="transfer_m" data-row-key="fy"><thead><tr><th data-field="fy">ปีงบ</th><th class="n" data-field="m10">ต.ค.</th><th class="n" data-field="m11">พ.ย.</th><th class="n" data-field="m12">ธ.ค.</th><th class="n" data-field="m01">ม.ค.</th><th class="n" data-field="m02">ก.พ.</th><th class="n" data-field="m03">มี.ค.</th><th class="n" data-field="m04">เม.ย.</th><th class="n" data-field="m05">พ.ค.</th><th class="n" data-field="m06">มิ.ย.</th><th class="n" data-field="m07">ก.ค.</th><th class="n" data-field="m08">ส.ค.</th><th class="n" data-field="m09">ก.ย.</th><th class="n" data-field="total">รวม</th></tr></thead><tbody></tbody></table></div></div>
 <div class="panel" id="c-tsub"><h3>เงินโอนแยกกองทุน ปีงบ 2560–2569</h3><p class="note">ล้านบาท (รายงาน ID 1826) จัดกลุ่มกองทุนย่อยโดย Claude ช่องว่าง (—) คือปีที่ไม่มีเงินโอนรายการนั้น</p>
-<div class="tbl wide"><table id="tb-tsub" data-source="transfer_sub" data-row-key="key"><thead><tr><th data-field="name">กองทุน</th><th class="n" data-field="y2560">2560</th><th class="n" data-field="y2561">2561</th><th class="n" data-field="y2562">2562</th><th class="n" data-field="y2563">2563</th><th class="n" data-field="y2564">2564</th><th class="n" data-field="y2565">2565</th><th class="n" data-field="y2566">2566</th><th class="n" data-field="y2567">2567</th><th class="n" data-field="y2568">2568</th><th class="n" data-field="y2569">2569</th></tr></thead><tbody></tbody></table></div></div>
+<div class="tbl wide"><table id="tb-tsub" data-source="transfer_sub" data-row-key="key"><thead><tr><th data-field="name">กองทุน</th><th class="n latest" data-field="y2569">2569*</th><th class="n" data-field="y2568">2568</th><th class="n" data-field="y2567">2567</th><th class="n" data-field="y2566">2566</th><th class="n" data-field="y2565">2565</th><th class="n" data-field="y2564">2564</th><th class="n" data-field="y2563">2563</th><th class="n" data-field="y2562">2562</th><th class="n" data-field="y2561">2561</th><th class="n" data-field="y2560">2560</th></tr></thead><tbody></tbody></table></div></div>
 </section>
 
 <section id="ip" hidden>
@@ -217,8 +226,10 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
  <div class="fig"><div class="lab">ถ้าทำได้เท่าค่ากลาง รพ.ในจังหวัด</div><div class="big ok" id="t-svc-gap" data-source="svc_kpi" data-field="gap_total_mb" data-row="0">—</div><div class="d">ล้านบาทต่อปีที่เพิ่มได้ ดูแท็บ “เทียบ รพ.ในจังหวัด”</div></div>
 </div>
 <p class="callout" id="svc-fy69-note">* ปีงบ 2569 ยังไม่ใช่ยอดปิดปี ดึงจาก MIS เมื่อ 22 ต.ค. 2569 นับตามเดือนที่ส่งข้อมูล รายงานส่วนใหญ่มีถึงเดือนที่ส่ง ก.ย. 2569 แต่บริการปลายปีที่ส่งเบิกหลัง 30 ก.ย. 2569 MIS จะนับเป็นปีงบ 2570 · ผู้ป่วยในตามเดือนที่จำหน่ายมีถึง มิ.ย. 2569 · บางรายงานสิ้นสุดก่อน ก.ย. (ฝากครรภ์ ก.ค., ทันตกรรม/อัลตราซาวด์หญิงตั้งครรภ์ ส.ค., FIT ม.ค., Homeward ก.พ.) · ข้อมูลเดือนท้ายและการปรับยอดปลายปีอาจยังเพิ่มได้ ควรดึงใหม่ราว ธ.ค. 2569–ม.ค. 2570</p>
-<div class="panel" id="c-svc"><h3>ยอดชดเชยแต่ละบริการ ปีงบ 2560–2569</h3><p class="note">พันบาท รวมจากรายงานรายเดือนใน MIS (เช่น ID 1107 อวัยวะเทียม, 1625 OPAE, 1102 Palliative, 882 ฝากครรภ์, 1529 กรมบัญชีกลาง) สีเข้มคือปีที่ได้มากที่สุดของบริการนั้น ▲ คือปีที่ยอดสูงกว่าระดับปกติของบริการนั้นมาก (เช่น ปีที่มีนโยบายกระตุ้น) นับรวมตามจริง ยกเว้น Walk-in ปีงบ 2567 ที่พักไว้รอตรวจกับ Statement คลิกแถวเพื่อดูกราฟ</p>
-<div class="tbl wide"><table class="heat" id="tb-svc" data-source="svc_grid" data-row-key="service"><thead><tr><th data-field="service">บริการ</th><th data-field="group">กลุ่ม</th><th class="n" data-field="y2560">2560</th><th class="n" data-field="y2561">2561</th><th class="n" data-field="y2562">2562</th><th class="n" data-field="y2563">2563</th><th class="n" data-field="y2564">2564</th><th class="n" data-field="y2565">2565</th><th class="n" data-field="y2566">2566</th><th class="n" data-field="y2567">2567</th><th class="n" data-field="y2568">2568</th><th class="n" data-field="y2569">2569*</th><th class="n" data-field="chg">เทียบปีก่อน %</th></tr></thead><tbody></tbody></table></div></div>
+<div class="panel" id="c-svc"><h3>ยอดชดเชยแต่ละบริการ ปีงบ 2560–2569</h3><p class="note">พันบาท รวมจากรายงานรายเดือนใน MIS (เช่น ID 1107 อวัยวะเทียม, 1625 OPAE, 1102 Palliative, 882 ฝากครรภ์, 1529 กรมบัญชีกลาง) ปีล่าสุดอยู่ซ้ายสุด สีเข้มคือปีที่ได้มากที่สุดของบริการนั้น ▲ คือปีที่ยอดสูงกว่าระดับปกติของบริการนั้นมาก (เช่น ปีที่มีนโยบายกระตุ้น) นับรวมตามจริง ยกเว้น Walk-in ปีงบ 2567 ที่พักไว้รอตรวจกับ Statement คลิกแถวเพื่อดูกราฟ</p>
+<div class="ctl" id="svc-ctl"><span class="seg" role="group" aria-label="ช่วงปี"><button id="yr5" aria-pressed="true">5 ปีล่าสุด</button><button id="yr10" aria-pressed="false">10 ปี</button></span><label class="tg"><input type="checkbox" id="svc-hide0" checked> ซ่อนบริการที่ไม่มียอดปี 2569</label><span id="svc-count" class="cnt"></span></div>
+<div class="pills" id="svc-grp" role="group" aria-label="หมวด"></div>
+<div class="tbl wide"><table class="heat" id="tb-svc" data-source="svc_grid" data-row-key="service"><thead><tr id="svc-head"></tr></thead><tbody></tbody></table></div></div>
 <div class="grid">
  <div class="panel" id="c-svcd"><h3 id="svc-d-title">รายละเอียดรายปี</h3><p class="note">แท่ง = ยอดชดเชย (บาท) · เส้น = จำนวนครั้ง/ราย · แท่งสีทราย = ปีที่สูงกว่าระดับปกติ</p><div class="chart" id="ch-svcd" data-source="svc_fy"></div></div>
  <div class="panel" id="c-parts"><h3 id="parts-title">รายการย่อย</h3><p class="note" id="parts-note">คลิกแถวในตารางบนเพื่อดูรายการย่อยของบริการนั้น</p>
@@ -242,6 +253,7 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
  <select id="f-cat" aria-label="หมวด"><option value="">ทุกหมวด</option></select>
  <select id="f-st" aria-label="สถานะ"><option value="">ทุกสถานะ</option></select>
  <input id="f-q" type="search" placeholder="ค้นหารหัสหรือชื่อรายการ" aria-label="ค้นหา">
+ <span class="seg" role="group" aria-label="ช่วงปี"><button id="sy5" aria-pressed="true">5 ปีล่าสุด</button><button id="syall" aria-pressed="false">ทุกปี</button></span>
  <span class="seg" role="group" aria-label="หน่วย"><button id="u-amt" aria-pressed="true">บาท</button><button id="u-vis" aria-pressed="false">ครั้ง</button></span>
  <span id="f-count" style="color:var(--pt-mute)"></span>
 </div>
@@ -397,7 +409,7 @@ function draw(){
    const tb=$('#tb-tmon tbody');tb.replaceChildren();T.slice().sort((a,b)=>b.fy-a.fy).forEach(r=>{const tr=document.createElement('tr');const c0=document.createElement('td');c0.textContent=r.fy;tr.appendChild(c0);
     ms.forEach(k=>{const td=document.createElement('td');const v=r[k];td.className='n'+(v==null?' na':' hv'+(v/mx>.45?' hi':''));if(v!=null)td.style.setProperty('--h',Math.min(1,v/mx));td.textContent=v==null?'—':d3.format(',.2f')(v);tr.appendChild(td)});
     const t=document.createElement('td');t.className='n';t.style.fontWeight='600';t.textContent=d3.format(',.2f')(r.total);tr.appendChild(t);tb.appendChild(tr)});}
-  if(ok('transfer_sub')){const S=dash.data('transfer_sub').data;const ys=['y2560','y2561','y2562','y2563','y2564','y2565','y2566','y2567','y2568','y2569'];
+  if(ok('transfer_sub')){const S=dash.data('transfer_sub').data;const ys=['y2569','y2568','y2567','y2566','y2565','y2564','y2563','y2562','y2561','y2560'];
    const tb=$('#tb-tsub tbody');tb.replaceChildren();S.forEach(r=>{const tr=document.createElement('tr');tr.dataset.key=r.key;if(r.key==='total')tr.className='tot';const c0=document.createElement('td');c0.textContent=r.name;tr.appendChild(c0);
     ys.forEach(k=>{const td=document.createElement('td');const v=r[k];td.className='n'+(Math.abs(v)<0.0005?' na':'');td.textContent=Math.abs(v)<0.0005?'—':d3.format(',.2f')(v);tr.appendChild(td)});tb.appendChild(tr)});}
  }
@@ -434,7 +446,8 @@ const $=s=>document.querySelector(s);const YRS=[2560,2561,2562,2563,2564,2565,25
 let unit='amt',sel=null,filled=false;
 const tip=$('#tip');const nf=d3.format(',.0f');
 const stCls={'เพิ่มขึ้น':'ok','ใหม่ปี 2569':'ok','ลดลง':'bad','หยุดเบิกปี 2569':'bad','เคยเบิก ปัจจุบันไม่มี':'warn'};
-function head(){const tr=$('#sub-head');tr.replaceChildren();const cols=[['sub_fund','รหัส'],['name','รายการ'],['category','หมวด'],...YRS.filter(y=>HAVE.has(y)).map(y=>[unit+'_'+y,String(y)]),['chg_2569_pct','68→69'],['status','สถานะ']];
+const SY=()=>[...YRS].reverse().filter(y=>HAVE.has(y)).slice(0,window.__subAll?99:5);
+function head(){const tr=$('#sub-head');tr.replaceChildren();const ys=SY();const cols=[['sub_fund','รหัส'],['name','รายการ'],[unit+'_'+ys[0],ys[0]+'*'],['chg_2569_pct','68→69'],['status','สถานะ'],...ys.slice(1).map(y=>[unit+'_'+y,String(y)])];
  cols.forEach(([f,t])=>{const th=document.createElement('th');th.dataset.field=f;th.textContent=t;if(/^(amt|vis)_|chg/.test(f))th.className='n';th.addEventListener('click',()=>sortBy(f,th));tr.appendChild(th)});}
 let sortF=null,sortAsc=false;
 function sortBy(f,th){sortAsc=sortF===f?!sortAsc:false;sortF=f;document.querySelectorAll('#sub-head th').forEach(x=>x.removeAttribute('aria-sort'));th.setAttribute('aria-sort',sortAsc?'ascending':'descending');render();}
@@ -451,10 +464,11 @@ function render(){const all=rows();if(!all.length)return;
  const tb=$('#tb-sub tbody');tb.replaceChildren();
  r.forEach(x=>{const tr=document.createElement('tr');tr.dataset.key=x.sub_fund;if(x.sub_fund===sel)tr.className='sel';
   const add=(t,cls)=>{const td=document.createElement('td');if(cls)td.className=cls;td.textContent=t;tr.appendChild(td);return td};
-  add(x.sub_fund);add(x.name);add(x.category);
-  YRS.filter(y=>HAVE.has(y)).forEach(y=>{const v=x[unit+'_'+y];add(v==null?'—':nf(v),v==null?'n na':'n')});
+  const ys=SY();const yv=y=>{const v=x[unit+'_'+y];add(v==null?'—':nf(v),v==null?'n na':'n')};
+  add(x.sub_fund);const nm=add(x.name,'subn');nm.dataset.g=x.category;yv(ys[0]);
   add(x.chg_2569_pct==null?'—':d3.format('+.0%')(x.chg_2569_pct),'n '+(x.chg_2569_pct==null?'na':x.chg_2569_pct>=0?'ok':'bad'));
   const td=add('');const ch=document.createElement('span');ch.className='chip '+(stCls[x.status]||'');ch.textContent=x.status;td.appendChild(ch);
+  ys.slice(1).forEach(yv);
   tb.appendChild(tr)});}
 function trend(){const el=$('#ch-subtrend');const all=rows();if(!all.length)return;if(!sel)sel=all[0].sub_fund;const x=all.find(r=>r.sub_fund===sel);if(!x)return;
  $('#sub-trend-title').textContent='แนวโน้มรายปี: '+x.name+' ('+x.sub_fund+')';
@@ -475,6 +489,7 @@ function trend(){const el=$('#ch-subtrend');const all=rows();if(!all.length)retu
 dash.onData(()=>{const sc=dash.data('sub_calc');if(sc.status==='ok'){const v=sc.data[0];[['#t-sub-n','active_2569'],['#t-sub-up','up'],['#t-sub-down','down'],['#t-sub-gone','gone']].forEach(([id,k])=>{$(id).textContent=nf(v[k])})}
  if($('#sub').hidden)return;render();trend();});
 document.querySelector('.pt nav [data-tab="sub"]').addEventListener('click',()=>setTimeout(()=>{render();trend()},0));
+[['sy5',false],['syall',true]].forEach(([id,v])=>$('#'+id).addEventListener('click',()=>{window.__subAll=v;$('#sy5').setAttribute('aria-pressed',String(!v));$('#syall').setAttribute('aria-pressed',String(v));head();render()}));
 })();
 </script>
 <script>
@@ -521,9 +536,22 @@ function drawSvc(){
  const d=document.getElementById('t-svc-d');d.textContent=kr&&kr.svc_chg!=null?pf(kr.svc_chg)+' จากปีงบ 2568':'—';d.classList.toggle('ok',!!kr&&kr.svc_chg>=0);d.classList.toggle('bad',!!kr&&kr.svc_chg<0);
  if(g.status==='ok'&&!S.svc&&g.data[0])S.svc=g.data[0].service;
  if(!vis('svc'))return;
- if(g.status==='ok'){const tb=rowsTable('tb-svc',g.data,[['service',''],['group','grp'],...FYS.map(y=>['y'+y,r=>'n'+(r['h'+y]?' hold':r['f'+y]?' flag':'')+(r['y'+y]===0?' z':''),nf]),['chg',r=>'n '+(r.chg==null?'':r.chg>=0?'ok':'bad'),v=>pf(v).replace('%','')]],r=>{S.svc=r.service;drawSvc()},r=>r.service===S.svc);
-  [...tb.children].forEach((tr,i)=>{const r=g.data[i];const mx=Math.max(1,...FYS.map(y=>r['y'+y]||0));FYS.forEach((y,j)=>{const v=r['y'+y];const c=tr.children[2+j];if(v){c.classList.add('hv');c.style.setProperty('--h',(v/mx).toFixed(2));if(v/mx>0.75)c.classList.add('hi')}})})}
- else document.querySelector('#tb-svc tbody').replaceChildren();
+ const YS=[...FYS].reverse().slice(0,S.yrs||5);
+ const head=document.getElementById('svc-head');head.replaceChildren();
+ const th=(t,f,c)=>{const e=document.createElement('th');e.textContent=t;e.dataset.field=f;if(c)e.className=c;head.appendChild(e)};
+ th('บริการ','service');th('2569*','y2569','n latest');th('เทียบปีก่อน %','chg','n');YS.slice(1).forEach(y=>th(String(y),'y'+y,'n'));
+ const grp=document.getElementById('svc-grp');
+ if(g.status==='ok'){
+  const groups=[...new Set(g.data.map(r=>r.group))];
+  grp.replaceChildren();[['','ทั้งหมด'],...groups.map(x=>[x,x])].forEach(([v,l])=>{const b=document.createElement('button');b.textContent=l;b.setAttribute('aria-pressed',String((S.grp||'')===v));b.addEventListener('click',()=>{S.grp=v;drawSvc()});grp.appendChild(b)});
+  const hide0=document.getElementById('svc-hide0').checked;
+  const inGrp=g.data.filter(r=>!S.grp||r.group===S.grp);const rows=inGrp.filter(r=>!hide0||r.y2569>0||r.h2569);
+  const hid=inGrp.length-rows.length;document.getElementById('svc-count').textContent=hid?'ซ่อนอยู่ '+hid+' บริการ':'';
+  const cell=y=>['y'+y,r=>'n'+(r['h'+y]?' hold':r['f'+y]?' flag':'')+(r['y'+y]===0?' z':''),nf];
+  const tb=rowsTable('tb-svc',rows,[['service','svcn'],cell(2569),['chg',r=>'n '+(r.chg==null?'':r.chg>=0?'ok':'bad'),v=>pf(v).replace('%','')],...YS.slice(1).map(cell)],r=>{S.svc=r.service;drawSvc()},r=>r.service===S.svc);
+  const pos=[[2569,1],...YS.slice(1).map((y,j)=>[y,3+j])];
+  [...tb.children].forEach((tr,i)=>{const r=rows[i];tr.children[0].dataset.g=r.group;const mx=Math.max(1,...YS.map(y=>r['y'+y]||0));pos.forEach(([y,ci])=>{const v=r['y'+y];const c=tr.children[ci];if(v){c.classList.add('hv');c.style.setProperty('--h',(v/mx).toFixed(2));if(v/mx>0.75)c.classList.add('hi')}})})}
+ else {document.querySelector('#tb-svc tbody').replaceChildren();grp.replaceChildren()}
  if(fl.status==='ok')rowsTable('tb-svcf',fl.data,[['service',''],['fy','n'],['amount_k','n',nf],['typical_k','n',nf],['times','n',v=>v+'×']]);
 
  drawParts();
@@ -592,14 +620,16 @@ function drawParts(){
  ks.hidden=have.length<2;
  document.getElementById('parts-note').textContent=KNOTE[S.kind];
  const u=S.pu||'a';const rows=mine.filter(r=>r.kind===S.kind);
- const ys=FYS.filter(y=>rows.some(r=>r['a'+y]!=null||r['q'+y]!=null));
+ const ys=[...FYS].reverse().slice(0,S.yrs||5).filter(y=>rows.some(r=>r['a'+y]!=null||r['q'+y]!=null));
  head.replaceChildren();const th=(t,f,c)=>{const e=document.createElement('th');e.textContent=t;e.dataset.field=f;if(c)e.className=c;head.appendChild(e)};
- th(S.kind==='month'?'เดือน':S.kind==='unit'?'หน่วยบริการ':'รายการ','part');ys.forEach(y=>th(String(y),u+y,'n'));th('รวม',u+'_total','n');
+ th(S.kind==='month'?'เดือน':S.kind==='unit'?'หน่วยบริการ':'รายการ','part');ys.forEach((y,i)=>th(String(y)+(y===2569?'*':''),u+y,'n'+(i===0?' latest':'')));th('รวมทุกปี',u+'_total','n');
  const t=rowsTable('tb-parts',rows,[['part',''],...ys.map(y=>[u+y,r=>'n'+(r[u+y]===0?' z':''),nf]),[u+'_total','n',nf]]);
  [...t.children].forEach((tr,i)=>{tr.dataset.key=rows[i].key;const r=rows[i];const mx=Math.max(1,...ys.map(y=>r[u+y]||0));ys.forEach((y,j)=>{const v=r[u+y];const c=tr.children[1+j];if(v){c.classList.add('hv');c.style.setProperty('--h',(v/mx).toFixed(2));if(v/mx>0.75)c.classList.add('hi')}})});
 }
 [['pu-a','a'],['pu-q','q']].forEach(([id,uu])=>document.getElementById(id).addEventListener('click',()=>{S.pu=uu;document.getElementById('pu-a').setAttribute('aria-pressed',String(uu==='a'));document.getElementById('pu-q').setAttribute('aria-pressed',String(uu==='q'));drawParts()}));
 const all=()=>{drawSvc();drawGap()};
+[['yr5',5],['yr10',10]].forEach(([id,n])=>document.getElementById(id).addEventListener('click',()=>{S.yrs=n;document.getElementById('yr5').setAttribute('aria-pressed',String(n===5));document.getElementById('yr10').setAttribute('aria-pressed',String(n===10));drawSvc()}));
+document.getElementById('svc-hide0').addEventListener('change',()=>drawSvc());
 document.querySelectorAll('.pt nav button').forEach(b=>b.addEventListener('click',()=>setTimeout(all,0)));
 dash.onData(all);
 })();
