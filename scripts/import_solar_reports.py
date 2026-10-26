@@ -393,7 +393,7 @@ def main():
         "hourly_date": hdate,
         "hourly": hourly,
         "daily": [dict({"d": d}, **{k: r2(v) if isinstance(v, float) else v for k, v in daily[d].items()
-                                     if k in ("pv_kwh", "use_kwh", "self_kwh", "export_kwh", "import_kwh", "peak_kw", "complete", "inverter_only")})
+                                     if k in ("pv_kwh", "use_kwh", "self_kwh", "export_kwh", "import_kwh", "peak_kw", "complete", "inverter_only", "last_hour")})
                   for d in dates[-400:]],
         "monthly": monthly,
         "inverters": [{"name": x["name"], "day_kwh": r2(x["kwh"]), "total_kwh": r2(x["total_kwh"]),
