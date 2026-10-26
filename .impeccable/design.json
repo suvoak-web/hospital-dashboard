@@ -1,0 +1,402 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-26T07:45:00Z",
+  "title": "Design System: Chart audit sheet",
+  "extensions": {
+    "colorMeta": {
+      "cool-paper": {
+        "role": "neutral",
+        "displayName": "Cool Paper",
+        "canonical": "oklch(97.4% 0.004 236.5)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#232527",
+          "#404244",
+          "#5f6263",
+          "#808384",
+          "#a2a5a7",
+          "#c7cacc",
+          "#eceff1"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ledger Ink",
+        "canonical": "oklch(25.4% 0.036 247.9)",
+        "tonalRamp": [
+          "#010c19",
+          "#162636",
+          "#334455",
+          "#516375",
+          "#728597",
+          "#94a7bb",
+          "#b8cce0",
+          "#e2f0fe"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Caption Slate",
+        "canonical": "oklch(42.4% 0.036 239.8)",
+        "tonalRamp": [
+          "#000d19",
+          "#142735",
+          "#304554",
+          "#4f6474",
+          "#6f8696",
+          "#91a9ba",
+          "#b5cddf",
+          "#e1f1fd"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "oklch(90.1% 0.016 239.1)",
+        "tonalRamp": [
+          "#050c11",
+          "#1e262c",
+          "#3a434a",
+          "#59636a",
+          "#7a848b",
+          "#9ca7ae",
+          "#c0cbd3",
+          "#e5f0f8"
+        ]
+      },
+      "blue": {
+        "role": "primary",
+        "displayName": "Posted Blue",
+        "canonical": "oklch(41.1% 0.092 242.9)",
+        "tonalRamp": [
+          "#000c1b",
+          "#022840",
+          "#00466e",
+          "#2b6791",
+          "#4e88b5",
+          "#70acda",
+          "#9fd0f7",
+          "#e2f1fd"
+        ]
+      },
+      "bar": {
+        "role": "primary",
+        "displayName": "Rule Blue",
+        "canonical": "oklch(51.7% 0.113 242.5)",
+        "tonalRamp": [
+          "#000c1b",
+          "#012840",
+          "#154667",
+          "#0e679c",
+          "#3b89c0",
+          "#60ade6",
+          "#9ed0f7",
+          "#e2f1fd"
+        ]
+      },
+      "track": {
+        "role": "neutral",
+        "displayName": "Bar Track",
+        "canonical": "oklch(94.3% 0.014 231.2)",
+        "tonalRamp": [
+          "#060c10",
+          "#1e262b",
+          "#3b4448",
+          "#596368",
+          "#7a8489",
+          "#9ca7ac",
+          "#c0cbd1",
+          "#e5f0f6"
+        ]
+      },
+      "warn": {
+        "role": "secondary",
+        "displayName": "Follow-up Amber",
+        "canonical": "oklch(41.2% 0.090 59.3)",
+        "tonalRamp": [
+          "#170600",
+          "#3a1c01",
+          "#643400",
+          "#875427",
+          "#aa7549",
+          "#cf976b",
+          "#f6bb8e",
+          "#fdebdd"
+        ]
+      },
+      "warn-bg": {
+        "role": "secondary",
+        "displayName": "Amber Wash",
+        "canonical": "oklch(97.4% 0.020 74.7)",
+        "tonalRamp": [
+          "#100a03",
+          "#2b241a",
+          "#494136",
+          "#686055",
+          "#8a8175",
+          "#ada397",
+          "#d1c8bb",
+          "#f7ede0"
+        ]
+      },
+      "focus": {
+        "role": "primary",
+        "displayName": "Focus Blue",
+        "canonical": "oklch(47.8% 0.147 254.3)",
+        "tonalRamp": [
+          "#000a21",
+          "#02244b",
+          "#014180",
+          "#1361b2",
+          "#3b83d8",
+          "#5fa7ff",
+          "#a5cdfe",
+          "#e6f0fc"
+        ]
+      },
+      "selection": {
+        "role": "neutral",
+        "displayName": "Selection Wash",
+        "canonical": "oklch(89.0% 0.036 236.5)",
+        "tonalRamp": [
+          "#000d18",
+          "#122834",
+          "#2f4553",
+          "#4e6573",
+          "#6e8696",
+          "#90a9b9",
+          "#b4cdde",
+          "#e0f1fd"
+        ]
+      },
+      "error": {
+        "role": "tertiary",
+        "displayName": "Load Error",
+        "canonical": "oklch(39.6% 0.133 25.7)",
+        "tonalRamp": [
+          "#1f0001",
+          "#4d0004",
+          "#7a1718",
+          "#9f3c37",
+          "#c55e57",
+          "#ed8179",
+          "#feb3ab",
+          "#fde9e7"
+        ]
+      },
+      "error-bg": {
+        "role": "tertiary",
+        "displayName": "Error Wash",
+        "canonical": "oklch(95.7% 0.019 17.5)",
+        "tonalRamp": [
+          "#120808",
+          "#2d2122",
+          "#4c3e3e",
+          "#6b5d5d",
+          "#8d7e7e",
+          "#b0a1a1",
+          "#d5c5c5",
+          "#fbeaea"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The boxed follow-up count. 2.65rem under 720px."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "The spoken sentence. 1.65rem from 1100px; 1.12rem and line-height 1.6 under 720px."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section headings. The sheet name is a separate 1.7rem step."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Hints, notes, and the de-identification line at line-height 1.7."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Caption slate on English chapter lines, procedure headers, and small tables."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "spoken-rule",
+        "value": "0.55s cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The rule under the spoken sentence draws once from the left. Reduced motion removes the animation and leaves the rule in place."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sheet",
+        "value": "720px"
+      },
+      {
+        "name": "projector",
+        "value": "1100px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Spoken sentence",
+      "kind": "custom",
+      "refersTo": "spoken-sentence",
+      "description": "The sentence a manager reads aloud, with one 3px rule in rule blue under it.",
+      "html": "<p class=\"ds-lead\">ชุด audit นี้มีกี่ชาร์ต ส่วนต่าง AdjRW คิดจากชาร์ตที่เทียบได้ DRG ที่เปลี่ยน และรายการที่ยังต้องตรวจ</p>",
+      "css": ".ds-lead {\n  width: fit-content;\n  max-width: min(40em, 100%);\n  margin: 0;\n  font-family: \"Sarabun\", \"Noto Sans Thai\", Tahoma, sans-serif;\n  font-size: 1.4rem;\n  font-weight: 600;\n  line-height: 1.65;\n  color: var(--ink, #142433);\n  text-wrap: pretty;\n}\n.ds-lead::after {\n  content: \"\";\n  display: block;\n  height: 3px;\n  width: 100%;\n  margin-top: 12px;\n  background: var(--bar, #1a6ea3);\n  transform-origin: left center;\n  animation: ds-rule 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;\n}\n@keyframes ds-rule { from { transform: scaleX(0); } }\n@media (min-width: 1100px) { .ds-lead { font-size: 1.65rem; } }\n@media (max-width: 720px) { .ds-lead { font-size: 1.12rem; line-height: 1.6; } }\n@media (prefers-reduced-motion: reduce) { .ds-lead::after { animation: none; } }"
+    },
+    {
+      "name": "Follow-up count",
+      "kind": "custom",
+      "refersTo": "follow-up-count",
+      "description": "A posted count that does not need a person: posted-blue box, larger than the ledger.",
+      "html": "<ol class=\"ds-count\"><li><div><strong>ชาร์ตที่มีการปรับรหัส</strong></div><span class=\"ds-count-n\">5</span></li></ol>",
+      "css": ".ds-count {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  font-family: \"Sarabun\", \"Noto Sans Thai\", Tahoma, sans-serif;\n  color: var(--ink, #142433);\n}\n.ds-count li {\n  display: grid;\n  grid-template-columns: 1fr auto;\n  gap: 12px 18px;\n  align-items: center;\n  padding: 8px 0;\n  border-top: 1px solid var(--line, #d5e0e8);\n  border-bottom: 1px solid var(--line, #d5e0e8);\n}\n.ds-count strong { display: block; font-size: 1.05rem; line-height: 1.55; }\n.ds-count-n {\n  font-size: 4.25rem;\n  font-weight: 700;\n  line-height: 1.05;\n  font-variant-numeric: tabular-nums;\n  min-width: 1.6ch;\n  text-align: center;\n  border: 1px solid var(--blue, #0e4f78);\n  padding: 0 10px;\n  color: var(--blue, #0e4f78);\n}\n@media (max-width: 720px) {\n  .ds-count-n { font-size: 2.65rem; }\n  .ds-count li { padding: 4px 0; }\n}"
+    },
+    {
+      "name": "Follow-up alert",
+      "kind": "custom",
+      "refersTo": "follow-up-alert",
+      "description": "A count that needs a person: amber wash on the row, amber ink and a 1px amber box on the figure.",
+      "html": "<ol class=\"ds-alert\"><li><div><strong>สถานะจำหน่ายขัดแย้ง (Audit note)</strong></div><span class=\"ds-alert-n\">3</span></li></ol>",
+      "css": ".ds-alert {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  font-family: \"Sarabun\", \"Noto Sans Thai\", Tahoma, sans-serif;\n}\n.ds-alert li {\n  display: grid;\n  grid-template-columns: 1fr auto;\n  gap: 12px 18px;\n  align-items: center;\n  padding: 8px 0;\n  border-top: 1px solid var(--line, #d5e0e8);\n  border-bottom: 1px solid var(--line, #d5e0e8);\n  background: var(--warn-bg, #fff5e8);\n}\n.ds-alert strong {\n  display: block;\n  font-size: 1.05rem;\n  line-height: 1.55;\n  color: var(--warn, #6e3d0c);\n}\n.ds-alert-n {\n  font-size: 4.25rem;\n  font-weight: 700;\n  line-height: 1.05;\n  font-variant-numeric: tabular-nums;\n  min-width: 1.6ch;\n  text-align: center;\n  border: 1px solid var(--warn, #6e3d0c);\n  padding: 0 10px;\n  color: var(--warn, #6e3d0c);\n}\n@media (max-width: 720px) {\n  .ds-alert-n { font-size: 2.65rem; }\n  .ds-alert li { padding: 4px 0; }\n}"
+    },
+    {
+      "name": "Numeric ledger",
+      "kind": "custom",
+      "refersTo": "ledger",
+      "description": "Before, after, and delta as tabular figures, with the percent on a second line.",
+      "html": "<table class=\"ds-ledger\"><caption>ผลรวม AdjRW ของชาร์ตที่เทียบได้</caption><thead><tr><th>ก่อน audit</th><th>หลัง audit</th><th>ส่วนต่าง</th></tr></thead><tbody><tr><td>0.0000</td><td>0.0000</td><td>+0.0000<span>+0.00% ของผลรวมก่อน audit</span></td></tr></tbody></table>",
+      "css": ".ds-ledger {\n  width: 100%;\n  border-collapse: collapse;\n  font-family: \"Sarabun\", \"Noto Sans Thai\", Tahoma, sans-serif;\n  color: var(--ink, #142433);\n}\n.ds-ledger caption {\n  text-align: left;\n  caption-side: top;\n  font-weight: 700;\n  font-size: 1.05rem;\n  margin: 0 0 8px;\n  line-height: 1.55;\n}\n.ds-ledger th {\n  text-align: left;\n  font-weight: 600;\n  font-size: 0.95rem;\n  color: var(--muted, #3c5160);\n  padding: 0 12px 8px 0;\n  line-height: 1.5;\n}\n.ds-ledger td {\n  font-size: 1.7rem;\n  font-weight: 700;\n  line-height: 1.25;\n  font-variant-numeric: tabular-nums;\n  padding: 12px 12px 4px 0;\n  border-top: 1px solid var(--line, #d5e0e8);\n  vertical-align: bottom;\n}\n.ds-ledger td span {\n  display: block;\n  margin-top: 4px;\n  font-size: 0.9rem;\n  font-weight: 600;\n  color: var(--muted, #3c5160);\n  line-height: 1.5;\n}\n@media (min-width: 720px) { .ds-ledger td { font-size: 2.15rem; } }"
+    },
+    {
+      "name": "Text bar",
+      "kind": "custom",
+      "refersTo": "text-bar",
+      "description": "A chapter row with Thai and English names, the count, the percent, and an 8px capsule. The maximum uses posted blue.",
+      "html": "<ol class=\"ds-bars\"><li><div class=\"ds-bar-top\"><div class=\"ds-bar-name\"><span class=\"ds-th\">ต่อมไร้ท่อและเมแทบอลิซึม</span><span class=\"ds-en\" lang=\"en\">IV · Endocrine &amp; metabolic</span></div><div class=\"ds-bar-val\">14 รหัส<small>33.3%</small> <small class=\"ds-peak\">สูงสุด</small></div></div><div class=\"ds-track\"><div class=\"ds-fill ds-fill-max\" style=\"width:100%\"></div></div></li><li><div class=\"ds-bar-top\"><div class=\"ds-bar-name\"><span class=\"ds-th\">ไหลเวียนโลหิต</span><span class=\"ds-en\" lang=\"en\">IX · Circulatory</span></div><div class=\"ds-bar-val\">10 รหัส<small>23.8%</small></div></div><div class=\"ds-track\"><div class=\"ds-fill\" style=\"width:71%\"></div></div></li></ol>",
+      "css": ".ds-bars {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  font-family: \"Sarabun\", \"Noto Sans Thai\", Tahoma, sans-serif;\n  color: var(--ink, #142433);\n}\n.ds-bars li { padding: 11px 0; border-top: 1px solid var(--line, #d5e0e8); }\n.ds-bar-top { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }\n.ds-bar-name .ds-th { display: block; font-weight: 700; line-height: 1.55; }\n.ds-bar-name .ds-en { display: block; color: var(--muted, #3c5160); font-size: 0.92rem; line-height: 1.5; }\n.ds-bar-val {\n  flex: none;\n  text-align: right;\n  font-weight: 700;\n  font-variant-numeric: tabular-nums;\n  line-height: 1.45;\n}\n.ds-bar-val small { display: block; font-weight: 600; color: var(--muted, #3c5160); }\n.ds-peak {\n  display: inline-block;\n  margin-left: 6px;\n  font-size: 0.78rem;\n  font-weight: 700;\n  color: var(--blue, #0e4f78);\n  letter-spacing: 0;\n}\n.ds-track {\n  margin-top: 6px;\n  height: 8px;\n  background: var(--track, #e3eef4);\n  border-radius: 99px;\n  overflow: hidden;\n}\n.ds-fill { height: 100%; background: var(--bar, #1a6ea3); border-radius: 99px; }\n.ds-fill-max { background: var(--blue, #0e4f78); }"
+    },
+    {
+      "name": "Procedure table",
+      "kind": "custom",
+      "refersTo": "procedure-table",
+      "description": "Aggregate ICD-9-CM rows. Codes stay in Sarabun; counts are right-aligned and tabular.",
+      "html": "<table class=\"ds-procs\"><caption>หัตถการ ICD-9-CM</caption><thead><tr><th>ลำดับ</th><th>รหัส</th><th>ชื่อหัตถการ</th><th class=\"ds-num\">จำนวน</th></tr></thead><tbody><tr><td>1</td><td><code>57.94</code></td><td lang=\"en\">Insert indwelling cath</td><td class=\"ds-num\">×2 <span class=\"ds-proc-peak\">สูงสุด</span></td></tr></tbody></table>",
+      "css": ".ds-procs {\n  width: 100%;\n  border-collapse: collapse;\n  font-family: \"Sarabun\", \"Noto Sans Thai\", Tahoma, sans-serif;\n  color: var(--ink, #142433);\n}\n.ds-procs caption {\n  text-align: left;\n  font-weight: 700;\n  margin: 0 0 8px;\n  caption-side: top;\n}\n.ds-procs th, .ds-procs td {\n  text-align: left;\n  padding: 10px 12px 10px 0;\n  border-top: 1px solid var(--line, #d5e0e8);\n  vertical-align: baseline;\n  line-height: 1.55;\n  overflow-wrap: anywhere;\n}\n.ds-procs th { font-size: 0.92rem; color: var(--muted, #3c5160); font-weight: 600; }\n.ds-procs .ds-num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }\n.ds-procs code {\n  font-family: \"Sarabun\", \"Noto Sans Thai\", Tahoma, sans-serif;\n  font-weight: 700;\n  font-variant-numeric: tabular-nums;\n}\n.ds-proc-peak {\n  display: inline-block;\n  margin-left: 6px;\n  font-size: 0.78rem;\n  font-weight: 700;\n  color: var(--blue, #0e4f78);\n}"
+    },
+    {
+      "name": "Section jump",
+      "kind": "nav",
+      "refersTo": "section-jump",
+      "description": "In-page link, posted blue, at least 44px tall. Hover thickens the underline.",
+      "html": "<nav class=\"ds-jumps\" aria-label=\"ส่วนในหน้านี้\"><a href=\"#adjrw\">AdjRW ก่อนและหลัง</a></nav>",
+      "css": ".ds-jumps a {\n  display: inline-flex;\n  align-items: center;\n  min-height: 44px;\n  font-family: \"Sarabun\", \"Noto Sans Thai\", Tahoma, sans-serif;\n  color: var(--blue, #0e4f78);\n  font-weight: 700;\n  text-decoration: underline;\n  text-underline-offset: 4px;\n  text-decoration-thickness: 1px;\n}\n.ds-jumps a:hover { text-decoration-thickness: 2px; }\n.ds-jumps a:focus-visible { outline: 3px solid var(--focus, #0b5cad); outline-offset: 3px; }"
+    },
+    {
+      "name": "Disclosure",
+      "kind": "custom",
+      "refersTo": "disclosure",
+      "description": "The extra-code disclosure. The summary is posted blue and at least 44px tall.",
+      "html": "<details class=\"ds-more\"><summary>รหัสย่อยและ MDC ที่อยู่ในไฟล์เดียวกัน</summary></details>",
+      "css": ".ds-more {\n  margin-top: 12px;\n  border-top: 1px solid var(--line, #d5e0e8);\n  padding-top: 8px;\n  font-family: \"Sarabun\", \"Noto Sans Thai\", Tahoma, sans-serif;\n}\n.ds-more summary {\n  cursor: pointer;\n  font-weight: 700;\n  min-height: 44px;\n  display: flex;\n  align-items: center;\n  color: var(--blue, #0e4f78);\n}\n.ds-more summary:hover { text-decoration: underline; text-underline-offset: 3px; }\n.ds-more summary:focus-visible { outline: 3px solid var(--focus, #0b5cad); outline-offset: 3px; }"
+    },
+    {
+      "name": "Load error",
+      "kind": "custom",
+      "refersTo": "error-status",
+      "description": "The failed fetch. Load-error ink on the error wash, with the retry in the sentence.",
+      "html": "<p class=\"ds-error\" role=\"alert\">โหลดข้อมูลไม่สำเร็จ ลองเปิดหน้านี้ใหม่อีกครั้ง</p>",
+      "css": ".ds-error {\n  margin: 0;\n  font-family: \"Sarabun\", \"Noto Sans Thai\", Tahoma, sans-serif;\n  color: #7f1d1d;\n  background: #fdecec;\n  padding: 12px 14px;\n  border-radius: 2px;\n  line-height: 1.7;\n}"
+    },
+    {
+      "name": "Source step",
+      "kind": "custom",
+      "refersTo": "source-step",
+      "description": "One step in the recorded procedure. The number is posted blue because the sequence is the trail.",
+      "html": "<ol class=\"ds-steps\"><li><div><b lang=\"en\">De-ID</b><span>ปิดข้อมูลระบุตัวตน</span></div></li></ol>",
+      "css": ".ds-steps {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  counter-reset: ds-step;\n  font-family: \"Sarabun\", \"Noto Sans Thai\", Tahoma, sans-serif;\n  color: var(--ink, #142433);\n}\n.ds-steps li {\n  display: grid;\n  grid-template-columns: 2.2rem 1fr;\n  gap: 10px;\n  padding: 10px 0;\n  border-top: 1px solid var(--line, #d5e0e8);\n  line-height: 1.6;\n}\n.ds-steps li::before {\n  counter-increment: ds-step;\n  content: counter(ds-step);\n  font-weight: 700;\n  font-variant-numeric: tabular-nums;\n  color: var(--blue, #0e4f78);\n}\n.ds-steps b { font-weight: 700; }\n.ds-steps span { display: block; color: var(--muted, #3c5160); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Posted Screening Sheet",
+    "overview": "The chart audit is a notice posted on cool fluorescent paper. The first line is a sentence a manager can read aloud. Under it, the counts that still need a person sit in a box, larger than every other figure. The sheet then gives the numeric ledger, the code distributions, and the procedure table. It refuses an equal-card dashboard.\n\nThis system is the audit sheet in `chart_audit.html` only. Other pages in the repository are not this world. The page is drawn inside the shared hospital shell, and that shell keeps its own header and sidebar. The sheet does not retokenize that chrome. On the sheet itself, one Thai text face carries the tone marks, posted blue is the result, and amber is spent only when a person still has to act.\n\nThe material is flat paper. Separation is a hairline, a 1px box, an amber wash, or the single rule under the spoken sentence. The only motion is that rule drawing once from the left.",
+    "keyCharacteristics": [
+      "Cool paper as the page field, with a transparent report so the sheet is not a card",
+      "One spoken sentence, with a 3px rule under it",
+      "Follow-up counts in a 1px box, larger than the ledger",
+      "Amber only when a count needs a person",
+      "A numeric ledger, text bars, and a procedure table in the same ink",
+      "Sarabun, with Noto Sans Thai behind it, and reading text at line-height 1.65–1.7"
+    ],
+    "rules": [
+      {
+        "name": "The Amber-Is-Work Rule",
+        "body": "Amber ink on the amber wash is only for a follow-up count that needs a person. A positive AdjRW delta stays ledger ink. The sheet has no green result.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Blues Rule",
+        "body": "Posted blue is the result. Rule blue is the spoken underline and the ordinary bar. Peak bars step back to posted blue. Neither blue replaces the shared hospital header, and the header color is not a token of this sheet.",
+        "section": "colors"
+      },
+      {
+        "name": "The Reading Line Rule",
+        "body": "Prose that a person reads across is line-height 1.65 to 1.7: the spoken sentence at 1.65, and hints, notes, and body at 1.7. The phone size of the spoken sentence is 1.6. Counts and ledger figures tighten to 1.05–1.35 and use tabular numerals.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Face Rule",
+        "body": "Procedure codes, step numbers, and the boxed counts use Sarabun with Noto Sans Thai behind it. Do not swap in a monospace face to make a code look technical.",
+        "section": "typography"
+      },
+      {
+        "name": "The First Viewport Rule",
+        "body": "The first screen is the sheet name, the spoken sentence, and the boxed follow-up counts, then the ledger. Chapter bars and the procedure table stay below that. Do not pull the distributions up beside the sentence.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat Sheet Rule",
+        "body": "Surfaces sit on cool paper. Do not put the report in a card, and do not add a shadow to a count, a bar, or a table.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Square Sheet Rule",
+        "body": "Counts, tables, and rows stay square. The distribution track is the only pill. Do not round the count into a badge.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Boxed Count Rule",
+        "body": "A follow-up count is a 1px box in the display size, larger than the ledger. Alert boxes use follow-up amber on the amber wash. Every other box uses posted blue on the paper.",
+        "section": "components"
+      },
+      {
+        "name": "The Spoken Rule",
+        "body": "One 3px rule in rule blue sits under the spoken sentence and is only as wide as that sentence. It draws once from the left, and reduced motion leaves it in place.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do paint the page with cool paper and keep the report transparent, so the sheet is the page.",
+      "Do box follow-up counts with a 1px border and keep them larger than the ledger figures.",
+      "Do put one 3px rule-blue line under the spoken sentence, the width of that sentence.",
+      "Do render distributions as text rows (Thai name, English chapter, count, percent) with an 8px capsule track, and mark a maximum in posted blue with the word สูงสุด.",
+      "Do keep procedure codes in Sarabun, right-align counts, and set figures in tabular numerals.",
+      "Do keep reading line-height at 1.65–1.7, and use a 3px focus-blue ring.",
+      "Do leave the shared hospital header and sidebar on the shell. This page may keep the legibility overrides it already ships there (a taller header title, no uppercase tracking on sidebar groups, and the shared focus ring)."
+    ],
+    "donts": [
+      "Don't color a positive delta green, and don't spend amber on anything except a count that needs a person.",
+      "Don't put the audit in a sheet card, a side stripe, or a shadow.",
+      "Don't add a kicker or an eyebrow above the sheet name, and don't use emoji as icons.",
+      "Don't set procedure codes in a monospace face.",
+      "Don't recolor the shared hospital header with posted blue, or import the header color onto the sheet.",
+      "Don't add a per-chart or patient table. The procedure table is the aggregate ICD-9-CM list."
+    ]
+  }
+}
