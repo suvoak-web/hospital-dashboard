@@ -48,9 +48,10 @@ window.dash=(function(){
 <style>
 #dash-root{--dash-gutter:clamp(14px,3.5vw,40px)}
 .pt{--pt-ink:var(--color-fg);--pt-mute:var(--color-fg-muted);--pt-panel:var(--color-panel);--pt-bg:var(--color-bg);--pt-line:color-mix(in srgb,var(--color-fg) 11%,transparent);
---pt-jade:#3E8A78;--pt-sky:#6E9CC2;--pt-lilac:#9C8CC4;--pt-sand:#C9A35E;--pt-mint:#7FBFAE;--pt-rose:#C98B9E;
---pt-ok:#3E8A78;--pt-bad:#C4675A;--pt-warn:#B88A2E;
---pt-soft:color-mix(in srgb,var(--pt-jade) 7%,var(--pt-panel));--pt-muted-bar:color-mix(in srgb,var(--color-fg) 16%,var(--pt-panel));--pt-grid:color-mix(in srgb,var(--color-fg) 8%,transparent);
+--pt-jade:#2C4BA8;--pt-sky:#3B7DD8;--pt-lilac:#7B5AC4;--pt-sand:#D4A017;--pt-mint:#16857F;--pt-rose:#C0436E;
+--stk-uc:#D4A017;--stk-ip:#C0436E;--stk-pp:#2E8B57;--stk-ontop:#7B5AC4;--stk-other:#3B7DD8;--stk-er:#E0701F;--stk-spec:#16857F;--stk-cap:#7A8699;
+--pt-ok:#237A4B;--pt-bad:#B3261E;--pt-warn:#9A6A00;
+--pt-soft:color-mix(in srgb,var(--pt-jade) 5%,var(--pt-panel));--pt-muted-bar:color-mix(in srgb,var(--color-fg) 16%,var(--pt-panel));--pt-grid:color-mix(in srgb,var(--color-fg) 8%,transparent);
 --pt-sans:"Sarabun",var(--font-anthropic-sans),Tahoma,sans-serif;--pt-serif:var(--pt-sans);
 font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:auto;line-height:1.65;font-size:16px}
 .pt *{box-sizing:border-box}
@@ -121,7 +122,7 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
 .pt .fail{display:flex;align-items:center;justify-content:center;gap:8px;min-height:inherit;color:var(--pt-mute);font-size:13px}
 .pt .fail::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--pt-bad)}
 .pt .heat td.n{position:relative}
-.pt .heat td.hv{background:color-mix(in srgb,var(--pt-jade) calc(var(--h,0)*60%),var(--pt-panel))}
+.pt .heat td.hv{background:color-mix(in srgb,var(--rowc,var(--pt-jade)) calc(var(--h,0)*45%),var(--pt-panel))}
 .pt .heat td.hv.hi{color:#fff;font-weight:600}
 .pt .callout{font-size:13px;color:var(--pt-warn);background:color-mix(in srgb,var(--pt-warn) 9%,var(--pt-panel));border-radius:10px;padding:8px 12px;margin:0 0 16px}
 .pt #tb-tsub td:first-child,.pt #tb-tsub th:first-child{position:sticky;left:0;background:var(--pt-panel);z-index:2}
@@ -135,13 +136,13 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
 .pt .ctl .tg input{accent-color:var(--pt-jade);width:16px;height:16px;min-width:0;padding:0;margin:0}
 .pt .cnt{color:var(--pt-mute)}
 .pt #tb-svc tbody tr,.pt #tb-gap tbody tr{cursor:pointer}
-.pt #tb-svc tr.sel td:first-child{font-weight:600;box-shadow:inset 3px 0 0 var(--pt-jade)}
+.pt #tb-svc tr.sel td:first-child{font-weight:600}
 .pt #tb-gap tr.sel td{background:color-mix(in srgb,var(--pt-jade) 10%,var(--pt-panel))}
 .pt #tb-parts td:first-child,.pt #tb-parts th:first-child{position:sticky;left:0;background:var(--pt-panel);z-index:2;white-space:normal;min-width:11rem}
 .pt #tb-parts td.n,.pt #tb-parts th.n{white-space:nowrap}
 .pt #tb-parts td.z,.pt #tb-svc td.z{color:color-mix(in srgb,var(--pt-mute) 55%,transparent)}
 .pt #tb-svc td.grp{color:var(--pt-mute);font-size:13px}
-.pt td.flag::after{content:"▲";color:var(--pt-warn);font-size:10px;margin-left:3px;vertical-align:1px}
+.pt td.flag::after,.pt .flagmark{content:"";display:inline-block;width:8px;height:7px;background:var(--pt-warn);clip-path:polygon(50% 0,100% 100%,0 100%);margin-left:4px;vertical-align:1px}
 .pt td.absent::after{content:"ยังไม่มี";color:var(--pt-bad)}
 .pt td.hold::after{content:"รอตรวจสอบ";color:var(--pt-mute);font-size:12px}
 .pt .pills{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
@@ -151,12 +152,61 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
 [data-dash-source-state=empty]{color:transparent}
 [data-dash-source-state=refreshing]{opacity:.55;transition:opacity .3s}
 @media (prefers-reduced-motion:no-preference){.pt section:not([hidden]){animation:ptIn .35s ease-out}@keyframes ptIn{from{opacity:0}to{opacity:1}}}
+/* ---- record-sheet layer ---- */
+.pt{font-size:15px;line-height:1.6;max-width:1240px}
+.pt ::selection{background:color-mix(in srgb,var(--pt-jade) 22%,transparent)}
+.pt input,.pt select{caret-color:var(--pt-jade)}
+.pt .hd{padding:6px 0 0}
+.pt h1{font-size:1.75rem;font-weight:700;line-height:1.3;margin:0}
+.pt h1::after{content:none}
+.pt .sub{font-size:.875rem;margin:4px 0 0}
+.pt .stk{display:inline-block;width:.6em;height:.95em;border-radius:2px;background:var(--c,var(--stk-cap));margin-right:.5em;vertical-align:-.12em;flex:none}
+.pt .stk-key{list-style:none;display:flex;flex-wrap:wrap;gap:4px 16px;margin:14px 0 0;padding:0;font-size:.8125rem;color:var(--pt-mute)}
+.pt .stk-key li{display:inline-flex;align-items:center;white-space:nowrap}
+.pt .take{font-size:1.0625rem;line-height:1.75;max-width:70ch;margin:18px 0 22px;padding:0;border:0;color:var(--pt-ink)}
+.pt nav{gap:2px;padding:0;background:none;border:0;border-bottom:1px solid var(--pt-line);border-radius:0;margin-bottom:22px}
+.pt nav button{font-size:.9375rem;font-weight:500;background:none;border:1px solid transparent;border-bottom:0;border-radius:6px 6px 0 0;padding:9px 16px 10px;color:var(--pt-mute);margin-bottom:-1px;transition:color .15s,background .15s}
+.pt nav button:hover{color:var(--pt-ink);background:var(--pt-soft);border-color:transparent}
+.pt nav button[aria-selected=true]{background:var(--pt-panel);border-color:var(--pt-line);color:var(--pt-ink);font-weight:600;box-shadow:inset 0 3px 0 var(--pt-jade)}
+.pt .band{background:var(--pt-panel);border:1px solid var(--pt-line);border-radius:8px;padding:0;margin-bottom:18px}
+.pt .fig{padding:14px 20px}
+@media (max-width:640px){.pt .band{grid-template-columns:1fr 1fr}.pt .fig{padding:12px 14px;border-top:1px solid var(--pt-line)}.pt .fig:nth-child(-n+2){border-top:0}.pt .fig:nth-child(even){border-left:1px solid var(--pt-line)}.pt .fig .big{font-size:1.375rem}.pt h1{font-size:1.5rem}}
+.pt .fig .lab{font-size:.8125rem;display:flex;align-items:center}
+.pt .fig .big{font-size:1.75rem;font-weight:600;margin:6px 0 2px}
+.pt .fig .d{font-size:.8125rem}
+.pt .grid{gap:16px;margin-bottom:16px}
+.pt .panel{border-radius:8px;padding:18px 20px;margin-bottom:16px}
+.pt .panel h3{font-size:1.0625rem;font-weight:600}
+.pt .panel .note{font-size:.8125rem;margin:2px 0 14px;line-height:1.55}
+.pt th{font-size:.8125rem;font-weight:600;color:var(--pt-mute);border-bottom:1px solid color-mix(in srgb,var(--pt-ink) 30%,transparent)}
+.pt td{padding:7px 10px}
+.pt table{font-size:.875rem}
+.pt .tbl{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--pt-ink) 25%,transparent) transparent}
+.pt .tbl::-webkit-scrollbar{height:8px;width:8px}.pt .tbl::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--pt-ink) 22%,transparent);border-radius:8px}
+.pt .legend i{width:.6em;height:.95em;border-radius:2px;vertical-align:-.12em}
+.pt .pills button{border-radius:6px}
+.pt .pills button[aria-pressed=true]{background:var(--pt-ink);border-color:var(--pt-ink);color:var(--pt-panel)}
+.pt .seg{border-radius:7px}.pt .seg button{border-radius:5px}
+.pt .callout{border-radius:6px;color:color-mix(in srgb,var(--pt-warn) 85%,var(--pt-ink))}
+.pt tr.self td,.pt #tb-gap tr.sel td,.pt #tb-sub tr.sel td{background:color-mix(in srgb,var(--pt-jade) 9%,var(--pt-panel))}
+.pt #tb-svc tr.sel td:first-child{box-shadow:none;background:color-mix(in srgb,var(--rowc,var(--pt-jade)) 12%,var(--pt-panel))}
+.pt #tb-svc td:first-child,.pt #tb-sub td:nth-child(1),.pt #tb-tsub td:first-child{white-space:nowrap}
+.pt #tb-svc td.svcn{white-space:normal}
+.pt .heat td.hv.hi{color:var(--pt-ink);font-weight:600}
+.pt .acts li::before{font-size:1.125rem;color:var(--pt-jade)}
+@media (prefers-reduced-motion:no-preference){.pt section:not([hidden]){animation:ptIn .2s ease-out}}
+.pt .callout{background:none;border:0;border-top:1px solid var(--pt-line);border-radius:0;padding:10px 0 0;color:var(--pt-mute);font-size:.8125rem;max-width:75ch}
+.pt nav button{background:color-mix(in srgb,var(--pt-ink) 4%,var(--pt-panel));border:1px solid var(--pt-line);border-bottom:0;border-radius:7px 7px 0 0}
+.pt nav button:hover{background:var(--pt-panel);border-color:var(--pt-line)}
+.pt nav{gap:4px}
+
+
 </style>
 <div class="pt">
 <header class="hd">
-<p class="org">ข้อมูลจากระบบ NHSO-MIS for Hospital · รหัสหน่วยบริการ 22456 · จังหวัดนครราชสีมา</p>
 <h1>รพ.พระทองคำ เฉลิมพระเกียรติ 80 พรรษา</h1>
-<p class="sub">รายได้จากระบบหลักประกันสุขภาพ ปีงบประมาณ 2560–2569</p>
+<p class="sub">รายได้จากระบบหลักประกันสุขภาพ ปีงบประมาณ 2560–2569 · NHSO-MIS for Hospital · รหัสหน่วยบริการ 22456 · นครราชสีมา</p>
+<ul class="stk-key" aria-label="สีประจำกองทุน"><li><i class="stk" style="--c:var(--stk-uc)"></i>ผู้ป่วยนอก/เหมาจ่าย</li><li><i class="stk" style="--c:var(--stk-ip)"></i>ผู้ป่วยใน</li><li><i class="stk" style="--c:var(--stk-pp)"></i>สร้างเสริมสุขภาพ (PP)</li><li><i class="stk" style="--c:var(--stk-ontop)"></i>On Top/แผนไทย</li><li><i class="stk" style="--c:var(--stk-er)"></i>ฉุกเฉิน/ส่งต่อ</li><li><i class="stk" style="--c:var(--stk-spec)"></i>บริการเฉพาะ/CR</li><li><i class="stk" style="--c:var(--stk-other)"></i>สิทธิอื่น</li><li><i class="stk" style="--c:var(--stk-cap)"></i>งบลงทุน/อื่น ๆ</li></ul>
 </header>
 <p class="take" id="takeaway" data-source="rev_calc claims_calc opps">กำลังโหลดข้อมูล…</p>
 
@@ -173,9 +223,9 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
 <section id="overview">
 <div class="band">
  <div class="fig"><div class="lab">รายรับ UC จาก สปสช. ปีงบ 2569</div><div class="big" id="t-uc" data-source="revenue" data-field="total_m" data-where="fy=2569">—</div><div class="d" id="t-uc-d" data-source="rev_calc" data-field="uc_change_pct" data-row="0">—</div></div>
- <div class="fig"><div class="lab">กองทุนผู้ป่วยนอก (เหมาจ่าย)</div><div class="big" id="t-op" data-source="revenue" data-field="op_m" data-where="fy=2569">—</div><div class="d" id="t-op-d" data-source="rev_calc" data-field="op_change_m" data-row="0">—</div></div>
- <div class="fig"><div class="lab">กองทุนผู้ป่วยใน</div><div class="big" id="t-ip" data-source="revenue" data-field="ip_m" data-where="fy=2569">—</div><div class="d" id="t-ip-d" data-source="rev_calc" data-field="ip_change_m" data-row="0">—</div></div>
- <div class="fig"><div class="lab">สร้างเสริมสุขภาพฯ (PP)</div><div class="big" id="t-pp" data-source="revenue" data-field="pp_m" data-where="fy=2569">—</div><div class="d">ล้านบาท ปีงบ 2569</div></div>
+ <div class="fig"><div class="lab"><i class="stk" style="--c:var(--stk-uc)"></i>กองทุนผู้ป่วยนอก (เหมาจ่าย)</div><div class="big" id="t-op" data-source="revenue" data-field="op_m" data-where="fy=2569">—</div><div class="d" id="t-op-d" data-source="rev_calc" data-field="op_change_m" data-row="0">—</div></div>
+ <div class="fig"><div class="lab"><i class="stk" style="--c:var(--stk-ip)"></i>กองทุนผู้ป่วยใน</div><div class="big" id="t-ip" data-source="revenue" data-field="ip_m" data-where="fy=2569">—</div><div class="d" id="t-ip-d" data-source="rev_calc" data-field="ip_change_m" data-row="0">—</div></div>
+ <div class="fig"><div class="lab"><i class="stk" style="--c:var(--stk-pp)"></i>สร้างเสริมสุขภาพฯ (PP)</div><div class="big" id="t-pp" data-source="revenue" data-field="pp_m" data-where="fy=2569">—</div><div class="d">ล้านบาท ปีงบ 2569</div></div>
 </div>
 <div class="grid">
  <div class="panel" id="c-rev"><h3>รายรับ UC จาก สปสช. รายปี</h3><p class="note">ล้านบาท ตามปีงบที่โอน (รายงาน ID 1825) ช่วงปี 2562–2565 อยู่ราว 60–63 ล้านบาท</p><div class="chart" id="ch-rev" data-source="revenue"></div></div>
@@ -208,7 +258,7 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
  <div class="fig"><div class="lab">เรียกเก็บ สปสช. ปีงบ 2569</div><div class="big" id="t-cl" data-source="claims_calc" data-field="nhso_claimed" data-row="0">—</div><div class="d">บาท ตาม Statement</div></div>
  <div class="fig"><div class="lab">ได้รับจริงตาม STM</div><div class="big" id="t-pd" data-source="claims_calc" data-field="nhso_paid" data-row="0">—</div><div class="d">บาท</div></div>
  <div class="fig"><div class="lab">ส่วนต่างที่ยังไม่ได้รับ</div><div class="big bad" id="t-gap" data-source="claims_calc" data-field="nhso_gap" data-row="0">—</div><div class="d">บาท</div></div>
- <div class="fig"><div class="lab">สิทธิอื่นที่ต้องตามจากต้นสังกัด</div><div class="big warn" id="t-oth" data-source="claims_calc" data-field="other_claimed" data-row="0">—</div><div class="d">ข้าราชการ อปท. กทม. รถไฟ</div></div>
+ <div class="fig"><div class="lab"><i class="stk" style="--c:var(--stk-other)"></i>สิทธิอื่นที่ต้องตามจากต้นสังกัด</div><div class="big warn" id="t-oth" data-source="claims_calc" data-field="other_claimed" data-row="0">—</div><div class="d">ข้าราชการ อปท. กทม. รถไฟ</div></div>
 </div>
 <div class="panel" id="c-stm"><h3>Statement UC ปีงบ 2569 เรียกเก็บเทียบได้รับ</h3><p class="note">บาท (ID 1824) เรียงตามส่วนต่าง รายการสิทธิอื่นไม่ได้จ่ายผ่าน สปสช. จึงแสดงยอดได้รับเป็นศูนย์ ต้องกระทบยอดกับกรมบัญชีกลางและ อปท.</p>
 <div class="tbl"><table id="tb-stm" data-source="stm" data-row-key="key"><thead><tr><th data-field="key">กองทุน/สิทธิย่อย</th><th data-field="description">รายการ</th><th data-field="payer">ผู้จ่าย</th><th class="n" data-field="visits">ครั้ง</th><th class="n" data-field="claimed">เรียกเก็บ</th><th class="n" data-field="paid_stm">ได้รับ</th><th class="n" data-field="gap">ส่วนต่าง</th></tr></thead><tbody></tbody></table></div></div>
@@ -226,7 +276,7 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
  <div class="fig"><div class="lab">ถ้าทำได้เท่าค่ากลาง รพ.ในจังหวัด</div><div class="big ok" id="t-svc-gap" data-source="svc_kpi" data-field="gap_total_mb" data-row="0">—</div><div class="d">ล้านบาทต่อปีที่เพิ่มได้ ดูแท็บ “เทียบ รพ.ในจังหวัด”</div></div>
 </div>
 <p class="callout" id="svc-fy69-note">* ปีงบ 2569 ยังไม่ใช่ยอดปิดปี ดึงจาก MIS เมื่อ 22 ต.ค. 2569 นับตามเดือนที่ส่งข้อมูล รายงานส่วนใหญ่มีถึงเดือนที่ส่ง ก.ย. 2569 แต่บริการปลายปีที่ส่งเบิกหลัง 30 ก.ย. 2569 MIS จะนับเป็นปีงบ 2570 · ผู้ป่วยในตามเดือนที่จำหน่ายมีถึง มิ.ย. 2569 · บางรายงานสิ้นสุดก่อน ก.ย. (ฝากครรภ์ ก.ค., ทันตกรรม/อัลตราซาวด์หญิงตั้งครรภ์ ส.ค., FIT ม.ค., Homeward ก.พ.) · ข้อมูลเดือนท้ายและการปรับยอดปลายปีอาจยังเพิ่มได้ ควรดึงใหม่ราว ธ.ค. 2569–ม.ค. 2570</p>
-<div class="panel" id="c-svc"><h3>ยอดชดเชยแต่ละบริการ ปีงบ 2560–2569</h3><p class="note">พันบาท รวมจากรายงานรายเดือนใน MIS (เช่น ID 1107 อวัยวะเทียม, 1625 OPAE, 1102 Palliative, 882 ฝากครรภ์, 1529 กรมบัญชีกลาง) ปีล่าสุดอยู่ซ้ายสุด สีเข้มคือปีที่ได้มากที่สุดของบริการนั้น ▲ คือปีที่ยอดสูงกว่าระดับปกติของบริการนั้นมาก (เช่น ปีที่มีนโยบายกระตุ้น) นับรวมตามจริง ยกเว้น Walk-in ปีงบ 2567 ที่พักไว้รอตรวจกับ Statement คลิกแถวเพื่อดูกราฟ</p>
+<div class="panel" id="c-svc"><h3>ยอดชดเชยแต่ละบริการ ปีงบ 2560–2569</h3><p class="note">พันบาท รวมจากรายงานรายเดือนใน MIS (เช่น ID 1107 อวัยวะเทียม, 1625 OPAE, 1102 Palliative, 882 ฝากครรภ์, 1529 กรมบัญชีกลาง) ปีล่าสุดอยู่ซ้ายสุด สีเข้มคือปีที่ได้มากที่สุดของบริการนั้น <i class="flagmark" aria-hidden="true"></i> คือปีที่ยอดสูงกว่าระดับปกติของบริการนั้นมาก (เช่น ปีที่มีนโยบายกระตุ้น) นับรวมตามจริง ยกเว้น Walk-in ปีงบ 2567 ที่พักไว้รอตรวจกับ Statement คลิกแถวเพื่อดูกราฟ</p>
 <div class="ctl" id="svc-ctl"><span class="seg" role="group" aria-label="ช่วงปี"><button id="yr5" aria-pressed="true">5 ปีล่าสุด</button><button id="yr10" aria-pressed="false">10 ปี</button></span><label class="tg"><input type="checkbox" id="svc-hide0" checked> ซ่อนบริการที่ไม่มียอดปี 2569</label><span id="svc-count" class="cnt"></span></div>
 <div class="pills" id="svc-grp" role="group" aria-label="หมวด"></div>
 <div class="tbl wide"><table class="heat" id="tb-svc" data-source="svc_grid" data-row-key="service"><thead><tr id="svc-head"></tr></thead><tbody></tbody></table></div></div>
@@ -262,13 +312,13 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
 
 <section id="peer" hidden>
 <div class="grid">
- <div class="panel" id="c-pcmi"><h3>CMI ผู้ป่วยใน ปีงบ 2569</h3><p class="note">เทียบ รพ.ขนาดใกล้เคียง (ผู้ป่วยใน 600–3,000 รายต่อปี) แถบสีเขียวคือ รพ.พระทองคำฯ เส้นประคือค่ามัธยฐานของกลุ่ม</p><div class="chart" id="ch-pcmi" data-source="peers peer_calc"></div></div>
+ <div class="panel" id="c-pcmi"><h3>CMI ผู้ป่วยใน ปีงบ 2569</h3><p class="note">เทียบ รพ.ขนาดใกล้เคียง (ผู้ป่วยใน 600–3,000 รายต่อปี) แถบสีน้ำเงินเข้มคือ รพ.พระทองคำฯ เส้นประคือค่ามัธยฐานของกลุ่ม</p><div class="chart" id="ch-pcmi" data-source="peers peer_calc"></div></div>
  <div class="panel" id="c-popae"><h3>OPAE บาทต่อครั้ง ปีงบ 2569</h3><p class="note">กลุ่ม รพ.ขนาดใกล้เคียงเดียวกัน (ID 1535)</p><div class="chart" id="ch-popae" data-source="peers peer_calc"></div></div>
 </div>
 <div class="panel" id="c-er"><h3>ER คุณภาพ: รพ.ในจังหวัดที่ได้รับเงิน ปีงบ 2569</h3><p class="note">บาท (ID 1763) รพ.พระทองคำฯ ไม่อยู่ในรายชื่อทั้งปี 2568 และ 2569 ส่วนใหญ่จ่าย 150 บาทต่อครั้ง</p><div class="chart" id="ch-er" data-source="er"></div></div>
 <div class="panel" id="c-gap"><h3>ช่องว่างรายบริการ เทียบค่ากลางของโรงพยาบาลในจังหวัด</h3><p class="note">ปีล่าสุดที่ MIS มีข้อมูลของแต่ละบริการ นับทุกโรงพยาบาลในจังหวัด (ไม่รวม รพ.สต.) ส่วนต่าง = ค่ากลาง − ยอดของเรา คลิกแถวเพื่อดูอันดับ</p>
 <div class="tbl"><table id="tb-gap" data-source="svc_gap" data-row-key="service"><thead><tr><th data-field="service">บริการ</th><th class="n" data-field="fy">ปีงบ</th><th class="n" data-field="rank">อันดับเรา</th><th class="n" data-field="hospitals">จาก (รพ.)</th><th class="n" data-field="me">ยอดของเรา (บาท)</th><th class="n" data-field="median">ค่ากลาง (บาท)</th><th class="n" data-field="gap">ส่วนต่าง (บาท)</th><th data-field="top">สูงสุดในจังหวัด</th></tr></thead><tbody></tbody></table></div></div>
-<div class="panel" id="c-rank"><h3 id="rank-title">อันดับในจังหวัด</h3><p class="note">แถบสีเขียวคือ รพ.พระทองคำฯ เส้นประคือค่ากลาง</p><div class="pills" id="rank-pills" role="group" aria-label="เลือกบริการ"></div><div class="chart" id="ch-rank" data-source="svc_peers svc_gap"></div></div>
+<div class="panel" id="c-rank"><h3 id="rank-title">อันดับในจังหวัด</h3><p class="note">แถบสีน้ำเงินเข้มคือ รพ.พระทองคำฯ เส้นประคือค่ากลาง</p><div class="pills" id="rank-pills" role="group" aria-label="เลือกบริการ"></div><div class="chart" id="ch-rank" data-source="svc_peers svc_gap"></div></div>
 <div class="panel" id="c-ptab"><h3>ตารางเทียบ รพ.รัฐในจังหวัด ปีงบ 2569</h3><p class="note">คลิกหัวคอลัมน์เพื่อเรียงลำดับ (ID 2087, 946, 1535, 2084)</p>
 <div class="tbl"><table id="tb-peer" data-source="peers" data-row-key="hospital"><thead><tr><th data-field="hospital">โรงพยาบาล</th><th class="n" data-field="ip_visits">IP ราย</th><th class="n" data-field="ip_adjrw">AdjRW</th><th class="n" data-field="cmi">CMI</th><th class="n" data-field="eclaim_pct">E-claim ผ่าน %</th><th class="n" data-field="opae_visits">OPAE ครั้ง</th><th class="n" data-field="opae_amount">OPAE บาท</th><th class="n" data-field="walkin_visits">Walk-in ครั้ง</th><th class="n" data-field="walkin_amount">Walk-in บาท</th></tr></thead><tbody></tbody></table></div></div>
 </section>
@@ -291,6 +341,18 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
 <div class="tip" id="tip"></div>
 </div>
 
+<script>
+window.PT_STK=function(name){const s=String(name||'');
+ if(/ผู้ป่วยใน|\bIP\b/.test(s))return 'var(--stk-ip)';
+ if(/สิทธิอื่น|อปท|ข้าราชการ|กรมบัญชีกลาง|ท้องถิ่น|ประกันสังคม/.test(s))return 'var(--stk-other)';
+ if(/สร้างเสริม|PP|แม่และเด็ก|คัดกรอง|ทันตกรรม/.test(s))return 'var(--stk-pp)';
+ if(/แผนไทย|สมุนไพร|On Top|30 บาท|Walk|Telemed/i.test(s))return 'var(--stk-ontop)';
+ if(/ฉุกเฉิน|ส่งต่อ|อุบัติ/.test(s))return 'var(--stk-er)';
+ if(/บริการเฉพาะ|Central|อุปกรณ์|ผ่าตัด|ดูแลต่อเนื่อง|ยาเฉพาะ|NCD|ฟื้นฟู|เอดส์|พึ่งพิง/.test(s))return 'var(--stk-spec)';
+ if(/ผู้ป่วยนอก|เหมาจ่าย|ปฐมภูมิ/.test(s))return 'var(--stk-uc)';
+ return 'var(--stk-cap)';};
+window.PT_TAG=function(td,c){if(!td||td.querySelector(':scope > i.stk'))return;const i=document.createElement('i');i.className='stk';i.style.setProperty('--c',c);td.prepend(i);td.parentElement.style.setProperty('--rowc',c);};
+</script>
 <script>
 dash.calc('rev_calc',{inputs:['revenue'],title:'การเปลี่ยนแปลงรายรับ',description:'รายรับ 2569 เทียบ 2568 และกองทุนย่อยเทียบปี 2563',
 fn:(revenue)=>{const g=y=>revenue.find(r=>Number(r.fy)===y)||{};const a=g(2569),b=g(2568),c=g(2563);
@@ -344,7 +406,7 @@ function bars(el,rows,xk,yk,opt={}){el.replaceChildren();const W=el.clientWidth;
  const x=d3.scaleBand(rows.map(r=>r[xk]),[m.l,W-m.r]).padding(.32);const y=d3.scaleLinear([0,d3.max(rows,r=>opt.stack?r[yk]+r[opt.stack]:r[yk])*1.1],[H-m.b,m.t]).nice();
  grid(svg,y,m.l,W-m.r);
  svg.append('g').attr('transform',`translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(0).tickPadding(8).tickFormat(opt.yf||d3.format('~s'))).call(axis).call(g=>g.select('.domain').remove());
- const xt=opt.xTicks?rows.map(r=>r[xk]).filter((d,i)=>i%opt.xTicks===0):null;
+ const xt=opt.xTicks?rows.map(r=>r[xk]).filter((d,i)=>i%opt.xTicks===0):(W<480&&rows.length>6?rows.map(r=>r[xk]).filter((d,i)=>(rows.length-1-i)%2===0):null);
  svg.append('g').attr('transform',`translate(0,${H-m.b})`).call(d3.axisBottom(x).tickValues(xt).tickSize(0).tickPadding(10)).call(axis).call(g=>g.select('.domain').remove());
  const bw=Math.min(30,x.bandwidth()),off=(x.bandwidth()-bw)/2;
  svg.append('g').selectAll('rect').data(rows).join('rect').attr('x',r=>x(r[xk])+off).attr('width',bw).attr('y',r=>y(r[yk])).attr('height',r=>y(0)-y(r[yk])).attr('rx',Math.min(6,bw/2)).style('fill',r=>opt.color?opt.color(r):'var(--pt-jade)');
@@ -361,7 +423,7 @@ function lines(el,rows,xk,series,opt={}){el.replaceChildren();const W=el.clientW
  const y=d3.scaleLinear([opt.y0??Math.min(0,d3.min(vals)),d3.max(vals)*1.05],[H-m.b,m.t]).nice();
  grid(svg,y,m.l,W-m.r);
  svg.append('g').attr('transform',`translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(0).tickPadding(8).tickFormat(opt.yf||d3.format('~s'))).call(axis).call(g=>g.select('.domain').remove());
- const xt=opt.xTicks?xs.filter((d,i)=>i%opt.xTicks===0):null;
+ const xt=opt.xTicks?xs.filter((d,i)=>i%opt.xTicks===0):(W<480&&xs.length>6?xs.filter((d,i)=>(xs.length-1-i)%2===0):null);
  svg.append('g').attr('transform',`translate(0,${H-m.b})`).call(d3.axisBottom(x).tickValues(xt).tickSize(0).tickPadding(10)).call(axis).call(g=>g.select('.domain').remove());
  const rule=svg.append('line').attr('y1',m.t).attr('y2',H-m.b).style('stroke','var(--pt-line)').style('opacity',0);
  series.forEach((s,i)=>{const pts=rows.filter(r=>r[s.k]!=null&&!isNaN(r[s.k]));const c=s.c||PAL[i%PAL.length];
@@ -389,7 +451,7 @@ function sortable(sel){const t=$(sel);t.querySelectorAll('th').forEach(th=>th.ad
  [...tb.rows].sort((a,b)=>{const x=a.cells[i].textContent,y=b.cells[i].textContent;const nx=num(x),ny=num(y);const c=nx!=null&&ny!=null?nx-ny:x.localeCompare(y,'th');return asc?c:-c}).forEach(r=>tb.appendChild(r))}))}
 ['#tb-peer','#tb-stm','#tb-err','#tb-fee','#tb-opp'].forEach(sortable);
 function setTxt(id,txt,cls){const e=$(id);e.textContent=txt;if(cls){e.classList.remove('ok','bad','warn');e.classList.add(cls)}}
-function legend(id,ser){const lg=$(id);lg.replaceChildren();ser.forEach((s,i)=>{const sp=document.createElement('span');const ic=document.createElement('i');ic.style.background=PAL[i%PAL.length];sp.append(ic,s.n);lg.appendChild(sp)});}
+function legend(id,ser){const lg=$(id);lg.replaceChildren();ser.forEach((s,i)=>{const sp=document.createElement('span');const ic=document.createElement('i');ic.style.background=s.c||PAL[i%PAL.length];sp.append(ic,s.n);lg.appendChild(sp)});}
 
 function draw(){
  const R=dash.data('revenue'),I=dash.data('ip_year'),S=dash.data('ip_send'),F=dash.data('fee'),ST=dash.data('stm'),A=dash.data('acc'),E=dash.data('errors'),P=dash.data('peers');
@@ -401,7 +463,7 @@ function draw(){
  if(rc.status==='ok'){const a=rc.data[0];setTxt('#t-uc-d',pf(a.uc_change_pct)+' จากปี 2568',a.uc_change_pct>=0?'ok':'bad');setTxt('#t-op-d',d3.format('+,.1f')(a.op_change_m)+' ล้าน จากปี 2563',a.op_change_m>=0?'ok':'bad');setTxt('#t-ip-d',d3.format('+,.1f')(a.ip_change_m)+' ล้าน จากปี 2563',a.ip_change_m>=0?'ok':'bad');}
  if(tab==='overview'){
   if(rev.length)bars($('#ch-rev'),rev,'fy','total_m',{yf:d3.format(',.0f'),color:r=>r.fy===2569?'var(--pt-jade)':'color-mix(in srgb,var(--pt-jade) 45%,var(--pt-panel))',tip:r=>['ปีงบ '+r.fy,'รายรับ UC: '+mM(r.total_m)+'บาท']});else if(R.status==='error')fail($('#ch-rev'));
-  const ser=[{k:'op_m',n:'ผู้ป่วยนอก'},{k:'ip_m',n:'ผู้ป่วยใน'},{k:'pp_m',n:'สร้างเสริมสุขภาพ'},{k:'capex_m',n:'งบลงทุน'},{k:'cr_m',n:'Central reimburse'},{k:'thai_m',n:'แผนไทย'}];
+  const ser=[{k:'op_m',n:'ผู้ป่วยนอก',c:'var(--stk-uc)'},{k:'ip_m',n:'ผู้ป่วยใน',c:'var(--stk-ip)'},{k:'pp_m',n:'สร้างเสริมสุขภาพ',c:'var(--stk-pp)'},{k:'capex_m',n:'งบลงทุน',c:'var(--stk-cap)'},{k:'cr_m',n:'Central reimburse',c:'var(--stk-spec)'},{k:'thai_m',n:'แผนไทย',c:'var(--stk-ontop)'}];
   legend('#lg-cat',ser);
   if(rev.length)lines($('#ch-cat'),rev.filter(r=>r.op_m!=null),'fy',ser,{yf:d3.format(',.0f'),vf:v=>mM(v)});
   if(ok('fee'))table('#tb-fee',F.data,[['fy'],['opae',nf,'n'],['car_refer',nf,'n'],['instrument',nf,'n'],['thai_herb_fs',nf,'n']]);
@@ -410,7 +472,7 @@ function draw(){
     ms.forEach(k=>{const td=document.createElement('td');const v=r[k];td.className='n'+(v==null?' na':' hv'+(v/mx>.45?' hi':''));if(v!=null)td.style.setProperty('--h',Math.min(1,v/mx));td.textContent=v==null?'—':d3.format(',.2f')(v);tr.appendChild(td)});
     const t=document.createElement('td');t.className='n';t.style.fontWeight='600';t.textContent=d3.format(',.2f')(r.total);tr.appendChild(t);tb.appendChild(tr)});}
   if(ok('transfer_sub')){const S=dash.data('transfer_sub').data;const ys=['y2569','y2568','y2567','y2566','y2565','y2564','y2563','y2562','y2561','y2560'];
-   const tb=$('#tb-tsub tbody');tb.replaceChildren();S.forEach(r=>{const tr=document.createElement('tr');tr.dataset.key=r.key;if(r.key==='total')tr.className='tot';const c0=document.createElement('td');c0.textContent=r.name;tr.appendChild(c0);
+   const tb=$('#tb-tsub tbody');tb.replaceChildren();S.forEach(r=>{const tr=document.createElement('tr');tr.dataset.key=r.key;if(r.key==='total')tr.className='tot';const c0=document.createElement('td');c0.textContent=r.name;tr.appendChild(c0);if(r.key!=='total')PT_TAG(c0,PT_STK(r.name));
     ys.forEach(k=>{const td=document.createElement('td');const v=r[k];td.className='n'+(Math.abs(v)<0.0005?' na':'');td.textContent=Math.abs(v)<0.0005?'—':d3.format(',.2f')(v);tr.appendChild(td)});tb.appendChild(tr)});}
  }
  if(ok('ip_year')){const r=I.data.find(x=>Number(x.fy)===2569);setTxt('#t-cmi',d3.format('.3f')(r.cmi));}
@@ -424,8 +486,8 @@ function draw(){
  }
  if(cc.status==='ok'){const c=cc.data[0];setTxt('#t-cl',nf(c.nhso_claimed));setTxt('#t-pd',nf(c.nhso_paid));setTxt('#t-gap',nf(c.nhso_gap));setTxt('#t-oth',nf(c.other_claimed));}
  if(tab==='claim'){
-  if(ok('stm'))table('#tb-stm',ST.data.slice().sort((a,b)=>b.gap-a.gap),[['key'],['description'],['payer'],['visits',nf,'n'],['claimed',nf,'n'],['paid_stm',nf,'n'],['gap',nf,'n']],{cls:(k,v,td)=>{if(k==='gap'&&v>0)td.classList.add('bad')}});
-  const ser=[{k:'uc_op_pct',n:'UC ผู้ป่วยนอก'},{k:'uc_ip_pct',n:'UC ผู้ป่วยใน'},{k:'other_op_pct',n:'สิทธิอื่น ผู้ป่วยนอก'},{k:'other_ip_pct',n:'สิทธิอื่น ผู้ป่วยใน'}];
+  if(ok('stm')){const stR=ST.data.slice().sort((a,b)=>b.gap-a.gap);table('#tb-stm',stR,[['key'],['description'],['payer'],['visits',nf,'n'],['claimed',nf,'n'],['paid_stm',nf,'n'],['gap',nf,'n']],{cls:(k,v,td)=>{if(k==='gap'&&v>0)td.classList.add('bad')}});[...$('#tb-stm tbody').children].forEach((tr,n)=>{const r=stR[n];PT_TAG(tr.children[0],PT_STK(/สิทธิอื่น/.test(r.payer||'')?r.payer:(r.description||'')+' '+(r.key||'')))});}
+  const ser=[{k:'uc_op_pct',n:'UC ผู้ป่วยนอก',c:'var(--stk-uc)'},{k:'uc_ip_pct',n:'UC ผู้ป่วยใน',c:'var(--stk-ip)'},{k:'other_op_pct',n:'สิทธิอื่น ผู้ป่วยนอก',c:'var(--stk-other)'},{k:'other_ip_pct',n:'สิทธิอื่น ผู้ป่วยใน',c:'color-mix(in srgb,var(--stk-other) 55%,var(--pt-ink))'}];
   legend('#lg-acc',ser);
   if(ok('acc'))lines($('#ch-acc'),A.data.map(r=>({...r,fy:Number(r.fy)})),'fy',ser,{y0:70,yf:d=>d+'%',vf:d=>d3.format('.1f')(d)+'%'});
   if(ok('errors'))table('#tb-err',E.data,[['key'],['detail'],['cases',nf,'n'],['not_fixed',nf,'n']],{cls:(k,v,td)=>{if(k==='not_fixed'&&v>0)td.classList.add('bad')}});
@@ -465,7 +527,7 @@ function render(){const all=rows();if(!all.length)return;
  r.forEach(x=>{const tr=document.createElement('tr');tr.dataset.key=x.sub_fund;if(x.sub_fund===sel)tr.className='sel';
   const add=(t,cls)=>{const td=document.createElement('td');if(cls)td.className=cls;td.textContent=t;tr.appendChild(td);return td};
   const ys=SY();const yv=y=>{const v=x[unit+'_'+y];add(v==null?'—':nf(v),v==null?'n na':'n')};
-  add(x.sub_fund);const nm=add(x.name,'subn');nm.dataset.g=x.category;yv(ys[0]);
+  const c0=add(x.sub_fund);const nm=add(x.name,'subn');nm.dataset.g=x.category;PT_TAG(c0,PT_STK(x.category));yv(ys[0]);
   add(x.chg_2569_pct==null?'—':d3.format('+.0%')(x.chg_2569_pct),'n '+(x.chg_2569_pct==null?'na':x.chg_2569_pct>=0?'ok':'bad'));
   const td=add('');const ch=document.createElement('span');ch.className='chip '+(stCls[x.status]||'');ch.textContent=x.status;td.appendChild(ch);
   ys.slice(1).forEach(yv);
@@ -482,7 +544,7 @@ function trend(){const el=$('#ch-subtrend');const all=rows();if(!all.length)retu
  [ga,gb].forEach(g=>{g.attr('font-size',null).attr('font-family',null);g.selectAll('text').style('fill','var(--pt-mute)').style('font-size','13px');g.select('.domain').remove()});
  const bw=Math.min(30,xs.bandwidth()),off=(xs.bandwidth()-bw)/2;
  svg.append('g').selectAll('rect').data(data.filter(d=>!d.have)).join('rect').attr('x',d=>xs(d.y)+off).attr('width',bw).attr('y',m.t).attr('height',H-m.t-m.b).attr('rx',6).style('fill','none').style('stroke','var(--pt-line)').attr('stroke-dasharray','3 4');
- svg.append('g').selectAll('rect').data(data.filter(d=>d.v!=null)).join('rect').attr('x',d=>xs(d.y)+off).attr('width',bw).attr('y',d=>ys(d.v)).attr('height',d=>ys(0)-ys(d.v)).attr('rx',Math.min(6,bw/2)).style('fill',d=>d.y===2569?'var(--pt-jade)':'color-mix(in srgb,var(--pt-jade) 40%,var(--pt-panel))');
+ svg.append('g').selectAll('rect').data(data.filter(d=>d.v!=null)).join('rect').attr('x',d=>xs(d.y)+off).attr('width',bw).attr('y',d=>ys(d.v)).attr('height',d=>ys(0)-ys(d.v)).attr('rx',Math.min(6,bw/2)).style('fill',d=>d.y===2569?PT_STK(x.category):'color-mix(in srgb,'+PT_STK(x.category)+' 42%,var(--pt-panel))');
  svg.append('g').selectAll('text').data(data.filter(d=>d.v!=null)).join('text').attr('x',d=>xs(d.y)+xs.bandwidth()/2).attr('y',d=>ys(d.v)-6).attr('text-anchor','middle').style('font-size','11.5px').style('fill','var(--pt-mute)').text(d=>d3.format('.3~s')(d.v));
  svg.append('g').selectAll('rect').data(data).join('rect').attr('x',d=>xs(d.y)).attr('width',xs.step()).attr('y',m.t).attr('height',H-m.t-m.b).style('fill','transparent')
  .on('mousemove',(ev,d)=>{tip.replaceChildren();const a=document.createElement('div');a.className='t';a.textContent='ปีงบ '+d.y;const b=document.createElement('div');b.textContent=!d.have?'ไม่มีข้อมูลใน MIS':(d.v==null?'ไม่ได้เบิก':nf(d.v)+(unit==='amt'?' บาท':' ครั้ง'));tip.append(a,b);tip.style.display='block';const pr=document.querySelector('.pt').getBoundingClientRect();let px=ev.clientX-pr.left+14;if(px+tip.offsetWidth>pr.width)px-=tip.offsetWidth+28;tip.style.left=px+'px';tip.style.top=(ev.clientY-pr.top+14)+'px'}).on('mouseleave',()=>tip.style.display='none');}
@@ -550,7 +612,7 @@ function drawSvc(){
   const cell=y=>['y'+y,r=>'n'+(r['h'+y]?' hold':r['f'+y]?' flag':'')+(r['y'+y]===0?' z':''),nf];
   const tb=rowsTable('tb-svc',rows,[['service','svcn'],cell(2569),['chg',r=>'n '+(r.chg==null?'':r.chg>=0?'ok':'bad'),v=>pf(v).replace('%','')],...YS.slice(1).map(cell)],r=>{S.svc=r.service;drawSvc()},r=>r.service===S.svc);
   const pos=[[2569,1],...YS.slice(1).map((y,j)=>[y,3+j])];
-  [...tb.children].forEach((tr,i)=>{const r=rows[i];tr.children[0].dataset.g=r.group;const mx=Math.max(1,...YS.map(y=>r['y'+y]||0));pos.forEach(([y,ci])=>{const v=r['y'+y];const c=tr.children[ci];if(v){c.classList.add('hv');c.style.setProperty('--h',(v/mx).toFixed(2));if(v/mx>0.75)c.classList.add('hi')}})})}
+  [...tb.children].forEach((tr,i)=>{const r=rows[i];tr.children[0].dataset.g=r.group;PT_TAG(tr.children[0],PT_STK(r.group));const mx=Math.max(1,...YS.map(y=>r['y'+y]||0));pos.forEach(([y,ci])=>{const v=r['y'+y];const c=tr.children[ci];if(v){c.classList.add('hv');c.style.setProperty('--h',(v/mx).toFixed(2));if(v/mx>0.75)c.classList.add('hi')}})})}
  else {document.querySelector('#tb-svc tbody').replaceChildren();grp.replaceChildren()}
  if(fl.status==='ok')rowsTable('tb-svcf',fl.data,[['service',''],['fy','n'],['amount_k','n',nf],['typical_k','n',nf],['times','n',v=>v+'×']]);
 
@@ -623,6 +685,7 @@ function drawParts(){
  const ys=[...FYS].reverse().slice(0,S.yrs||5).filter(y=>rows.some(r=>r['a'+y]!=null||r['q'+y]!=null));
  head.replaceChildren();const th=(t,f,c)=>{const e=document.createElement('th');e.textContent=t;e.dataset.field=f;if(c)e.className=c;head.appendChild(e)};
  th(S.kind==='month'?'เดือน':S.kind==='unit'?'หน่วยบริการ':'รายการ','part');ys.forEach((y,i)=>th(String(y)+(y===2569?'*':''),u+y,'n'+(i===0?' latest':'')));th('รวมทุกปี',u+'_total','n');
+ const gsel=(dash.data('svc_grid').data||[]).find(r=>r.service===S.svc);document.getElementById('tb-parts').style.setProperty('--rowc',PT_STK(gsel&&gsel.group));
  const t=rowsTable('tb-parts',rows,[['part',''],...ys.map(y=>[u+y,r=>'n'+(r[u+y]===0?' z':''),nf]),[u+'_total','n',nf]]);
  [...t.children].forEach((tr,i)=>{tr.dataset.key=rows[i].key;const r=rows[i];const mx=Math.max(1,...ys.map(y=>r[u+y]||0));ys.forEach((y,j)=>{const v=r[u+y];const c=tr.children[1+j];if(v){c.classList.add('hv');c.style.setProperty('--h',(v/mx).toFixed(2));if(v/mx>0.75)c.classList.add('hi')}})});
 }
