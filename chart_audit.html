@@ -3,231 +3,595 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>สรุปผล Audit ชาร์ต</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<meta name="color-scheme" content="light">
+<title>สรุปผลตรวจรหัสชาร์ต</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --navy:#1f3864; --navy-2:#2f4f86; --navy-soft:#e8edf6;
-  --bar:#4a6aa5; --bar-2:#8fa6cf;
-  --good:#15803d; --good-soft:#e7f6ec;
-  --warn:#b45309; --warn-soft:#fdf3e3;
-  --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb;
-  --bg:#f4f6fa; --card:#ffffff;
-  --r:14px;
+  --ink:#142433;
+  --muted:#3c5160;
+  --line:#d5e0e8;
+  --paper:#e7eef3;
+  --sheet:#fbfcfd;
+  --blue:#0e4f78;
+  --bar:#1a6ea3;
+  --bar-max:#0e4f78;
+  --track:#e3eef4;
+  --warn:#6e3d0c;
+  --warn-bg:#fff5e8;
+  --focus:#0b5cad;
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:'IBM Plex Sans Thai','Sarabun',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
-.wrap{max-width:1360px;margin:0 auto;padding:28px 24px 36px}
-
-/* ---------- Header ---------- */
-.head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
-.eyebrow{font-size:13px;font-weight:600;letter-spacing:.06em;color:var(--navy-2);text-transform:uppercase;margin:0 0 4px}
-h1{font-size:28px;line-height:1.25;margin:0;color:var(--navy)}
-.scope{color:var(--muted);margin:6px 0 0;font-size:15px}
-.badge{display:inline-flex;align-items:center;gap:6px;background:var(--navy-soft);color:var(--navy);font-size:13px;font-weight:500;padding:6px 12px;border-radius:999px;white-space:nowrap}
-
-/* ---------- Stepper ---------- */
-.flow{display:flex;gap:0;background:var(--card);border-radius:var(--r);padding:14px 18px;margin-bottom:20px;box-shadow:0 1px 2px rgba(16,24,40,.05)}
-.st{flex:1;display:flex;align-items:center;gap:10px;position:relative;min-width:0}
-.st:not(:last-child)::after{content:"";flex:1;height:2px;background:var(--line);margin:0 12px;min-width:12px}
-.dot{width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;font-weight:600;display:grid;place-items:center;flex:none}
-.st b{display:block;font-size:14px;font-weight:600;white-space:nowrap}
-.st small{display:block;font-size:12px;color:var(--muted);white-space:nowrap}
-
-/* ---------- KPI ---------- */
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
-.kpi{background:var(--card);border-radius:var(--r);padding:18px 20px;border-top:4px solid var(--navy);box-shadow:0 1px 2px rgba(16,24,40,.05)}
-.kpi .l{font-size:14px;color:var(--muted);font-weight:500}
-.kpi .v{font-size:34px;font-weight:700;color:var(--navy);margin:4px 0 2px;font-variant-numeric:tabular-nums;line-height:1.2}
-.kpi .n{font-size:13px;color:var(--muted)}
-.kpi.good{border-top-color:var(--good);background:linear-gradient(180deg,var(--good-soft),#fff 70%)}
-.kpi.good .v{color:var(--good)}
-
-/* ---------- Cards ---------- */
-.card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:0 1px 2px rgba(16,24,40,.05);min-width:0}
-.card h3{margin:0;font-size:17px;font-weight:700;color:var(--navy)}
-.card .hint{margin:2px 0 14px;font-size:13px;color:var(--muted)}
-.sec{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:700;color:var(--navy);margin:32px 0 14px;padding:10px 16px;
-  background:linear-gradient(90deg,#dfe6f3 0%,rgba(223,230,243,0) 85%);border-left:5px solid var(--navy);border-radius:8px}
-.sec .ic{font-size:18px}
-
-/* ---------- Impact ---------- */
-.impact{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
-.ba{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:6px 0 16px}
-.ba .num{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
-.ba .cap{font-size:13px;color:var(--muted)}
-.ba .to{font-size:22px;color:var(--muted)}
-.chip{display:inline-block;padding:6px 12px;border-radius:999px;font-weight:600;font-size:15px;font-variant-numeric:tabular-nums}
-.chip.up{background:var(--good-soft);color:var(--good)}
-.chip.down{background:#fdecec;color:#b91c1c}
-.cmp{display:grid;grid-template-columns:56px 1fr 72px;align-items:center;gap:10px;font-size:13px;margin:8px 0}
-.track{height:12px;background:#f1f3f7;border-radius:6px;overflow:hidden}
-.fill{height:100%;border-radius:6px}
-.cmp .val{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
-.foot-note{font-size:12.5px;color:var(--muted);margin-top:12px}
-.tags{display:grid;gap:12px}
-.tag{display:flex;gap:14px;align-items:center;padding:14px 16px;border-radius:12px}
-.tag .big{font-size:28px;font-weight:700;min-width:44px;text-align:center}
-.tag b{display:block;font-size:14px}
-.tag small{font-size:12.5px;opacity:.85}
-.tag.warn{background:var(--warn-soft);color:var(--warn)}
-.tag.info{background:var(--navy-soft);color:var(--navy)}
-
-/* ---------- Charts ---------- */
-.charts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.cv{position:relative}
-.plist{list-style:none;margin:0;padding:0}
-.plist li{display:grid;grid-template-columns:22px 58px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
-.plist li:last-child{border-bottom:0}
-.plist .rk{color:var(--muted);font-size:12px;text-align:right}
-.plist code{font-family:'IBM Plex Mono',monospace;font-size:12.5px;background:var(--navy-soft);color:var(--navy);padding:3px 6px;border-radius:6px;text-align:center}
-.plist .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.plist .ct{font-weight:600;font-variant-numeric:tabular-nums;color:var(--navy);background:#f1f3f7;border-radius:999px;padding:2px 10px;font-size:13px}
-.plist li.top .ct{background:var(--navy);color:#fff}
-
-.foot{text-align:right;color:#9ca3af;font-size:12px;margin-top:20px}
-.err{color:#b91c1c;background:#fdecec;padding:12px 16px;border-radius:10px;grid-column:1/-1}
-
-@media(max-width:1000px){
-  .charts{grid-template-columns:1fr 1fr}
-  .impact{grid-template-columns:1fr}
+html{font-size:16px}
+@media(min-width:1100px){html{font-size:17.5px}}
+body{
+  margin:0;
+  font-family:"Sarabun","Noto Sans Thai",Tahoma,sans-serif;
+  background:#f4f7f9;
+  color:var(--ink);
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
 }
-@media(max-width:760px){
-  .sec{font-size:18px}
-  .wrap{padding:16px}
-  h1{font-size:22px}
-  .kpis{grid-template-columns:1fr 1fr;gap:12px}
-  .kpi .v{font-size:26px}
-  .charts{grid-template-columns:1fr}
-  .flow{flex-direction:column;gap:12px}
-  .st:not(:last-child)::after{display:none}
+::selection{background:#c5dff0;color:var(--ink)}
+:focus{outline:none}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.skip{
+  position:absolute;left:12px;top:0;
+  transform:translateY(-140%);
+  background:#fff;color:var(--ink);
+  padding:10px 14px;z-index:10080;
+  font-weight:700;text-decoration:none;
+  border-radius:6px;
+}
+.skip:focus{transform:none;top:72px}
+.report{
+  max-width:1080px;
+  margin:8px auto 40px;
+  background:transparent;
+  padding:8px 28px 36px;
+}
+.mast h1{
+  margin:0;
+  font-size:1.7rem;
+  line-height:1.45;
+  font-weight:700;
+  letter-spacing:0;
+  text-wrap:balance;
+}
+.scope{margin:6px 0 0;font-size:1.05rem;color:var(--muted);line-height:1.65}
+.pdpa{margin:14px 0 0;max-width:62ch;line-height:1.7}
+.jumps{display:flex;flex-wrap:wrap;gap:4px 18px;margin:8px 0 0;padding:0}
+.jumps a{
+  display:inline-flex;align-items:center;min-height:44px;
+  color:var(--blue);font-weight:700;text-decoration:underline;
+  text-underline-offset:4px;text-decoration-thickness:1px;
+}
+.jumps a:hover{text-decoration-thickness:2px}
+.status{margin:18px 0 0;color:var(--muted)}
+.status.is-err{
+  color:#7f1d1d;background:#fdecec;
+  padding:12px 14px;border-radius:2px;
+}
+.lead{
+  width:fit-content;
+  max-width:min(40em,100%);
+  margin:12px 0 0;
+  font-size:1.4rem;
+  font-weight:600;
+  line-height:1.65;
+  text-wrap:pretty;
+}
+.lead::after{
+  content:"";
+  display:block;
+  height:3px;
+  width:100%;
+  margin-top:12px;
+  background:var(--bar);
+  transform-origin:left center;
+}
+@media(min-width:1100px){.lead{font-size:1.65rem}}
+@media(prefers-reduced-motion:no-preference){
+  .lead::after{animation:rule .55s cubic-bezier(.16,1,.3,1) both}
+}
+@keyframes rule{from{transform:scaleX(0)}}
+.report section{margin-top:2rem}
+#work{margin-top:1.15rem}
+.report h2{
+  margin:0 0 .55rem;
+  font-size:1.35rem;
+  line-height:1.45;
+  font-weight:700;
+  letter-spacing:0;
+  text-wrap:balance;
+}
+.hint{margin:0 0 12px;max-width:68ch;color:var(--muted);line-height:1.7}
+.work{list-style:none;margin:0;padding:0}
+.work li{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:12px 18px;
+  align-items:center;
+  padding:8px 0;
+  border-top:1px solid var(--line);
+}
+.work li:last-child{border-bottom:1px solid var(--line)}
+.work .n{
+  font-size:4.25rem;font-weight:700;line-height:1.05;
+  font-variant-numeric:tabular-nums;
+  min-width:1.6ch;text-align:center;
+  border:1px solid var(--blue);
+  padding:0 10px;
+  color:var(--blue);
+}
+.work-notes{margin:10px 0 0;max-width:68ch;line-height:1.7}
+.work strong{display:block;font-size:1.05rem;line-height:1.55}
+.work .body{display:block;color:var(--muted);line-height:1.7}
+.work li.is-alert{background:var(--warn-bg)}
+.work li.is-alert .n{
+  color:var(--warn);
+  border-color:var(--warn);
+}
+.work li.is-alert strong{color:var(--warn)}
+.work li.is-alert .body{color:#5c4018}
+.ledger{width:100%;border-collapse:collapse;margin-top:4px}
+.ledger caption{
+  text-align:left;caption-side:top;
+  font-weight:700;font-size:1.05rem;
+  margin:0 0 8px;line-height:1.55;
+}
+.ledger th{
+  text-align:left;font-weight:600;font-size:.95rem;
+  color:var(--muted);padding:0 12px 8px 0;line-height:1.5;
+}
+.ledger td{
+  font-size:1.7rem;font-weight:700;line-height:1.25;
+  font-variant-numeric:tabular-nums;
+  padding:12px 12px 4px 0;
+  border-top:1px solid var(--line);
+  vertical-align:bottom;
+}
+.ledger td span{display:block;margin-top:4px;font-size:.9rem;font-weight:600;color:var(--muted);line-height:1.5}
+.note{margin:12px 0 0;max-width:68ch;line-height:1.7}
+.facts{display:grid;grid-template-columns:1fr;margin:8px 0 0}
+.facts div{padding:12px 8px 12px 0;border-top:1px solid var(--line)}
+.facts dt{font-weight:600;color:var(--muted);line-height:1.55}
+.facts dd{
+  margin:2px 0 0;
+  font-size:1.45rem;font-weight:700;line-height:1.35;
+  font-variant-numeric:tabular-nums;
+}
+.facts dd span{display:block;margin-top:2px;font-size:.92rem;font-weight:500;color:var(--muted);line-height:1.6}
+.split{display:grid;gap:28px}
+.unit{margin:0 0 4px;font-weight:700}
+.bars{list-style:none;margin:0;padding:0}
+.bars li{padding:11px 0;border-top:1px solid var(--line)}
+.bar-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.bar-name{min-width:0}
+.bar-name .th{display:block;font-weight:700;line-height:1.55}
+.bar-name .en{display:block;color:var(--muted);font-size:.92rem;line-height:1.5}
+.bar-val{
+  flex:none;text-align:right;font-weight:700;
+  font-variant-numeric:tabular-nums;line-height:1.45;
+}
+.bar-val small{display:block;font-weight:600;color:var(--muted)}
+.track{margin-top:6px;height:8px;background:var(--track);border-radius:99px;overflow:hidden}
+.fill{height:100%;background:var(--bar);border-radius:99px;width:0}
+.fill.is-max{background:var(--bar-max)}
+.peak{
+  display:inline-block;margin-left:6px;
+  font-size:.78rem;font-weight:700;color:var(--blue);
+  letter-spacing:0;
+}
+.table-wrap{overflow-x:auto}
+table.procs{width:100%;border-collapse:collapse}
+table.procs caption{text-align:left;font-weight:700;margin:0 0 8px;caption-side:top}
+table.procs th,table.procs td{
+  text-align:left;padding:10px 12px 10px 0;
+  border-top:1px solid var(--line);vertical-align:baseline;line-height:1.55;
+  overflow-wrap:anywhere;
+}
+table.procs th{font-size:.92rem;color:var(--muted);font-weight:600}
+table.procs td.num,table.procs th.num{text-align:right;font-variant-numeric:tabular-nums;padding-right:0}
+table.procs code{
+  font-family:"Sarabun","Noto Sans Thai",Tahoma,sans-serif;
+  font-weight:700;font-variant-numeric:tabular-nums;
+}
+.steps{list-style:none;margin:0;padding:0;counter-reset:step}
+.steps li{
+  display:grid;grid-template-columns:2.2rem 1fr;gap:10px;
+  padding:10px 0;border-top:1px solid var(--line);line-height:1.6;
+}
+.steps li::before{
+  counter-increment:step;content:counter(step);
+  font-weight:700;font-variant-numeric:tabular-nums;color:var(--blue);
+}
+.steps b{font-weight:700}
+.steps span{display:block;color:var(--muted)}
+.more{margin-top:12px;border-top:1px solid var(--line);padding-top:8px}
+.more summary{
+  cursor:pointer;font-weight:700;min-height:44px;
+  display:flex;align-items:center;color:var(--blue);
+}
+.more summary:hover{text-decoration:underline;text-underline-offset:3px}
+.mini{width:100%;border-collapse:collapse;margin:8px 0 16px}
+.mini th,.mini td{text-align:left;padding:8px 12px 8px 0;border-top:1px solid var(--line);line-height:1.5}
+.mini th{color:var(--muted);font-weight:600;font-size:.92rem}
+.mini td.num,.mini th.num{text-align:right;font-variant-numeric:tabular-nums}
+.foot{margin:28px 0 0;color:var(--muted);font-size:.95rem;line-height:1.65}
+.empty{color:var(--muted);margin:8px 0}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+@media(min-width:720px){
+  .ledger td{font-size:2.15rem}
+  .facts{grid-template-columns:1fr 1fr}
+  .facts div:nth-child(odd){padding-right:22px}
+  .split{grid-template-columns:1fr 1fr;align-items:start}
+}
+@media(max-width:720px){
+  .report{margin:0 0 24px;padding:12px 16px 28px}
+  .mast h1{font-size:1.55rem}
+  .lead{font-size:1.12rem;line-height:1.6}
+  .work .n{font-size:2.65rem}
+  .work li{padding:4px 0}
+  .work li.is-alert{background:var(--warn-bg)}
+}
+@media(prefers-reduced-motion:reduce){
+  .lead::after{animation:none}
 }
 </style>
 </head>
 <body>
-<div class="wrap">
-
-  <header class="head">
-    <div>
-      <p class="eyebrow">Chart Audit Report</p>
-      <h1 id="title">สรุปผล Audit ชาร์ต (OAiK_chart)</h1>
-      <p class="scope" id="scope">ข้อมูลรวม ไม่มีข้อมูลระบุตัวตน</p>
-    </div>
-    <span class="badge">🔒 ข้อมูลรวม · ไม่มี AN/HN/ชื่อ/วันเกิด (PDPA)</span>
+<a class="skip" href="#lead">ข้ามไปยังผล audit</a>
+<main class="report" id="report" aria-busy="true">
+  <header class="mast">
+    <h1>สรุปผลตรวจรหัสชาร์ต</h1>
+    <p class="scope" id="scope">ข้อมูลรวม ไม่มีข้อมูลระบุตัวตน</p>
   </header>
+  <p id="status" class="status" role="status">กำลังโหลดข้อมูล audit</p>
+  <p id="lead" class="lead" hidden></p>
 
-  <nav class="flow" id="flow" aria-label="ขั้นตอนการทำงาน"></nav>
-
-  <div class="sec" style="margin-top:4px"><span class="ic">📊</span>ภาพรวม</div>
-  <section class="kpis" id="kpis"></section>
-
-  <div class="sec"><span class="ic">📈</span>ผลกระทบจากการ audit</div>
-  <section class="impact">
-    <div class="card" id="impactCard">
-      <h3>AdjRW ก่อน → หลัง audit</h3>
-      <p class="hint" id="impactHint"></p>
-      <div id="impactBody"></div>
-    </div>
-    <div class="card">
-      <h3>ชาร์ตที่ต้องดำเนินการเพิ่ม</h3>
-      <p class="hint" id="tagsHint"></p>
-      <div class="tags" id="tags"></div>
-    </div>
+  <section id="work" hidden aria-labelledby="work-h">
+    <h2 id="work-h">รายการที่ต้องตรวจ</h2>
+    <ol id="workList" class="work"></ol>
+    <div id="workNotes" class="work-notes"></div>
+    <p class="pdpa">ชุดนี้เป็นข้อมูลรวมเท่านั้น ไม่มี AN, HN, ชื่อ หรือวันเกิด ตาม พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล (PDPA) ตัวเลขด้านบนคือนับชาร์ตในไฟล์สรุป ไม่ใช่รายชื่อผู้ป่วย</p>
+    <nav class="jumps" aria-label="ส่วนในหน้านี้">
+      <a href="#adjrw">AdjRW ก่อนและหลัง</a>
+      <a href="#codes">การกระจายรหัส</a>
+      <a href="#trail">ที่มาของรายงาน</a>
+    </nav>
   </section>
 
-  <div class="sec"><span class="ic">🩺</span>การกระจายรหัส</div>
-  <section class="charts">
-    <div class="card"><h3>PDx ตามหมวด ICD-10</h3><p class="hint" id="pdxH">หลัง audit</p><div class="cv" id="pdxBox"><canvas id="pdx"></canvas></div></div>
-    <div class="card"><h3>SDx ตามหมวด ICD-10</h3><p class="hint" id="sdxH"></p><div class="cv" id="sdxBox"><canvas id="sdx"></canvas></div></div>
-    <div class="card"><h3>หัตถการ ICD-9-CM</h3><p class="hint" id="procH"></p><ul class="plist" id="proc"></ul></div>
+  <section id="adjrw" hidden aria-labelledby="adjrw-h">
+    <h2 id="adjrw-h">AdjRW ก่อนและหลัง</h2>
+    <p class="hint" id="adjrwHint"></p>
+    <table class="ledger">
+      <caption id="ledgerCap">ผลรวม AdjRW ของชาร์ตที่เทียบได้</caption>
+      <thead>
+        <tr>
+          <th scope="col">ก่อน audit</th>
+          <th scope="col">หลัง audit</th>
+          <th scope="col">ส่วนต่าง</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="cellBefore">—</td>
+          <td id="cellAfter">—</td>
+          <td id="cellDiff">—</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="note" id="adjrwNote"></p>
+    <h3 class="unit" style="margin-top:1.6rem;font-size:1.15rem">ตัวเลขรวมของชุดนี้</h3>
+    <dl class="facts" id="facts"></dl>
   </section>
 
-  <div class="foot">ข้อมูลรวมเท่านั้น ตาม พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล (PDPA)</div>
-</div>
+  <section id="codes" hidden aria-labelledby="codes-h">
+    <h2 id="codes-h">การกระจายรหัส</h2>
+    <p class="hint">ชื่อไทยเป็นคำเรียกสั้นของหมวด ICD-10 เพื่ออ่านบนจอ ชื่ออังกฤษคือข้อความในไฟล์ข้อมูล ความยาวแท่งเทียบภายในหมวดเดียวกัน แท่งเข้มคือค่าสูงสุด และถ้าเสมอกันจะเข้มทุกแท่งที่เท่ากัน</p>
+    <div class="split">
+      <div>
+        <h3 class="unit" id="pdxTitle">PDx ตามหมวด ICD-10</h3>
+        <p class="hint" id="pdxH"></p>
+        <div id="pdx"></div>
+      </div>
+      <div>
+        <h3 class="unit" id="sdxTitle">SDx ตามหมวด ICD-10</h3>
+        <p class="hint" id="sdxH"></p>
+        <div id="sdx"></div>
+      </div>
+    </div>
+    <div class="table-wrap" style="margin-top:1.6rem">
+      <table class="procs" id="procTable">
+        <caption id="procCap">หัตถการ ICD-9-CM</caption>
+        <thead>
+          <tr>
+            <th scope="col">ลำดับ</th>
+            <th scope="col">รหัส</th>
+            <th scope="col">ชื่อหัตถการ</th>
+            <th class="num" scope="col">จำนวน</th>
+          </tr>
+        </thead>
+        <tbody id="proc"></tbody>
+      </table>
+    </div>
+    <details class="more">
+      <summary>รหัสย่อยและ MDC ที่อยู่ในไฟล์เดียวกัน</summary>
+      <div id="extraCodes"></div>
+    </details>
+  </section>
 
+  <section id="trail" hidden aria-labelledby="trail-h">
+    <h2 id="trail-h">ที่มาของรายงาน</h2>
+    <p class="hint">ลำดับขั้นที่บันทึกไว้ในไฟล์ข้อมูล ชื่อขั้นเป็นภาษาอังกฤษตามต้นทาง คำอธิบายใต้ชื่อเป็นภาษาไทยตามไฟล์</p>
+    <ol class="steps" id="flow"></ol>
+    <dl class="facts" id="fileFacts"></dl>
+  </section>
+
+  <p class="foot">ข้อมูลรวมเท่านั้น ไม่มีตัวระบุผู้ป่วย</p>
+</main>
+<noscript><p class="status is-err" style="max-width:40rem;margin:16px">หน้านี้ต้องใช้จาวาสคริปต์เพื่ออ่านไฟล์ข้อมูลรวม</p></noscript>
 <script>
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
 function f4(x){return Number(x||0).toFixed(4)}
 function $(id){return document.getElementById(id)}
 
-/* ชื่อหมวด ICD-10 ภาษาอังกฤษ: "X Respiratory" -> "X · Respiratory" */
-function chap(s){var m=String(s||'').match(/^([IVXL]+)\s+(.*)$/);return m?m[1]+' · '+m[2]:String(s)}
+var CHAPTER_TH={
+  I:"ติดเชื้อและปรสิต",
+  III:"เลือดและภูมิคุ้มกัน",
+  IV:"ต่อมไร้ท่อและเมแทบอลิซึม",
+  V:"จิตและพฤติกรรม",
+  VIII:"หูและปุ่มกกหู",
+  IX:"ไหลเวียนโลหิต",
+  X:"หายใจ",
+  XI:"ย่อยอาหาร",
+  XIII:"กล้ามเนื้อและกระดูก",
+  XIV:"ทางเดินปัสสาวะและระบบสืบพันธุ์",
+  XVII:"พิการแต่กำเนิด",
+  XVIII:"อาการและอาการแสดง",
+  XIX:"บาดเจ็บและพิษ",
+  XX:"สาเหตุภายนอก",
+  XXI:"ปัจจัยต่อสุขภาพ",
+  XXII:"รหัสพิเศษ"
+};
 
-/* plugin วาดตัวเลขที่ปลายแท่ง */
-var valueLabels={id:'valueLabels',afterDatasetsDraw:function(ch){
-  var ctx=ch.ctx;ctx.save();ctx.font="600 12px 'IBM Plex Sans Thai',sans-serif";ctx.fillStyle='#374151';ctx.textBaseline='middle';
-  ch.getDatasetMeta(0).data.forEach(function(b,i){ctx.fillText(ch.data.datasets[0].data[i],b.x+6,b.y)});ctx.restore()}};
-
-function hbar(id,boxId,labels,vals,tips){
-  $(boxId).style.height=Math.max(160,labels.length*30+20)+'px';
-  var max=Math.max.apply(null,vals.concat([1]));
-  var colors=vals.map(function(v){return v===max?'#1f3864':'#8fa6cf'});
-  new Chart($(id),{type:'bar',plugins:[valueLabels],
-    data:{labels:labels,datasets:[{data:vals,backgroundColor:colors,borderRadius:5,barThickness:16}]},
-    options:{indexAxis:'y',maintainAspectRatio:false,layout:{padding:{right:28}},
-      plugins:{legend:{display:false},tooltip:{callbacks:{title:function(c){return tips[c[0].dataIndex].t},label:function(c){return tips[c.dataIndex].l}}}},
-      scales:{x:{display:false,beginAtZero:true,suggestedMax:max*1.1},
-              y:{grid:{display:false},border:{display:false},ticks:{font:{size:12},color:'#374151'}}}}});
+function chapParts(s){
+  var m=String(s||"").match(/^([IVXL]+)\s+(.*)$/);
+  if(!m) return {num:"", en:String(s||""), th:""};
+  return {num:m[1], en:m[1]+" · "+m[2], th:CHAPTER_TH[m[1]]||""};
 }
 
-fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()}).then(function(d){
-  Chart.defaults.font.family="'IBM Plex Sans Thai','Sarabun',sans-serif";
+function bars(host, rows, unit){
+  host.replaceChildren();
+  if(!rows.length){host.appendChild(el("p","empty","ไม่มีรายการในชุดนี้"));return}
+  var max=Math.max.apply(null, rows.map(function(r){return Number(r.count)||0}).concat([1]));
+  var ol=el("ol","bars");
+  rows.forEach(function(r){
+    var parts=chapParts(r.chapter);
+    var li=el("li");
+    var top=el("div","bar-top");
+    var name=el("div","bar-name");
+    if(parts.th) name.appendChild(el("span","th", parts.th));
+    var en=el("span","en", parts.en||String(r.chapter||""));
+    en.lang="en";
+    name.appendChild(en);
+    var val=el("div","bar-val");
+    val.appendChild(document.createTextNode(String(r.count)+" "+unit));
+    var pct=el("small", null, String(r.pct)+"%");
+    val.appendChild(pct);
+    if(Number(r.count)===max){
+      var peak=el("small","peak","สูงสุด");
+      val.appendChild(document.createTextNode(" "));
+      val.appendChild(peak);
+    }
+    top.appendChild(name); top.appendChild(val);
+    var track=el("div","track");
+    track.setAttribute("aria-hidden","true");
+    var fill=el("div","fill"+(Number(r.count)===max?" is-max":""));
+    fill.style.width=(Number(r.count)/max*100)+"%";
+    track.appendChild(fill);
+    li.appendChild(top); li.appendChild(track);
+    ol.appendChild(li);
+  });
+  host.appendChild(ol);
+}
+
+function fact(dl, term, value, note){
+  var w=el("div");
+  w.appendChild(el("dt","",term));
+  var dd=el("dd","",value);
+  if(note) dd.appendChild(el("span","",note));
+  w.appendChild(dd);
+  dl.appendChild(w);
+}
+
+function workItem(n, title, alert){
+  var li=el("li", alert?"is-alert":"");
+  var t=el("div");
+  t.appendChild(el("strong","", title));
+  li.appendChild(t);
+  li.appendChild(el("span","n", String(n)));
+  return li;
+}
+
+fetch("data/audit_stats.json?v="+Date.now()).then(function(r){
+  if(!r.ok) throw new Error(String(r.status));
+  return r.json();
+}).then(function(d){
   var total=Number(d.total_charts||0);
-  if(d.scope_label)$('scope').textContent=d.scope_label+(d.updated?' · อัปเดต '+d.updated:'');
-
-  /* ---- Stepper ---- */
-  var F=$('flow');
-  (d.flow||[]).forEach(function(s,i){var w=el('div','st');w.appendChild(el('span','dot',String(i+1)));
-    var t=el('div');t.appendChild(el('b','',s.title));t.appendChild(el('small','',s.sub));w.appendChild(t);F.appendChild(w)});
-
-  /* ---- KPI ---- */
-  var ba=d.before_after||{};var diff=Number(ba.diff||0);var before=Number(ba.sum_before||0),after=Number(ba.sum_after||0);
+  var ba=d.before_after||{};
+  var diff=Number(ba.diff||0);
+  var before=Number(ba.sum_before||0);
+  var after=Number(ba.sum_after||0);
+  var paired=Number(ba.charts||0);
   var pct=before?diff/before*100:0;
-  var k=[['ชาร์ตที่ audit ครบ',String(total),'ชาร์ต',''],
-    ['Sum AdjRW หลัง audit',f4(d.adjrw_after_sum),'รวมทุกชาร์ต',''],
-    ['AdjRW เฉลี่ย',f4(d.adjrw_after_mean),'ต่อชาร์ต',''],
-    ['AdjRW เปลี่ยนแปลง',(diff>=0?'▲ +':'▼ ')+f4(diff),(ba.charts||0)+' ชาร์ตที่มีข้อมูลก่อน–หลัง',diff>=0?'good':'']];
-  k.forEach(function(a){var c=el('div','kpi '+a[3]);c.appendChild(el('div','l',a[0]));c.appendChild(el('div','v',a[1]));c.appendChild(el('div','n',a[2]));$('kpis').appendChild(c)});
+  var share=total?(paired/total*100):0;
+  var drgChanged=Number(ba.drg_changed||0);
+  var afterOnly=Number(d.after_only_charts||0);
+  var notes=Number(d.audit_note_charts||0);
+  var adjusted=Number(d.charts_with_code_adjustment||0);
+  var missing=Number(d.missing_json||0);
+  var warnErr=d.final_warn_err||{};
+  var sign=diff>=0?"+":"";
 
-  /* ---- Impact ---- */
-  $('impactHint').textContent='เทียบเฉพาะ '+(ba.charts||0)+' ชาร์ตที่มีทั้งค่าก่อนและหลัง audit';
-  var B=$('impactBody');var row=el('div','ba');
-  function blk(cap,v,col){var w=el('div');w.appendChild(el('div','cap',cap));var n=el('div','num',f4(v));if(col)n.style.color=col;w.appendChild(n);return w}
-  row.appendChild(blk('ก่อน audit',before,'#6b7280'));row.appendChild(el('div','to','→'));row.appendChild(blk('หลัง audit',after,'#1f3864'));
-  row.appendChild(el('span','chip '+(diff>=0?'up':'down'),(diff>=0?'+':'')+f4(diff)+'  ('+(diff>=0?'+':'')+pct.toFixed(2)+'%)'));
-  B.appendChild(row);
-  var mx=Math.max(before,after)||1;
-  [['ก่อน',before,'#c3cee3'],['หลัง',after,'#1f3864']].forEach(function(a){var r=el('div','cmp');r.appendChild(el('span','',a[0]));
-    var tr=el('div','track');var f=el('div','fill');f.style.width=(a[1]/mx*100)+'%';f.style.background=a[2];tr.appendChild(f);r.appendChild(tr);
-    r.appendChild(el('span','val',f4(a[1])));B.appendChild(r)});
-  B.appendChild(el('div','foot-note','คิดเป็น '+(ba.charts||0)+' จาก '+total+' ชาร์ต ('+(total?((ba.charts||0)/total*100).toFixed(0):0)+'%) ที่ AdjRW เปลี่ยนหลัง audit'));
+  if(d.scope_label){
+    $("scope").textContent=d.scope_label+(d.updated?" · อัปเดต "+d.updated:"")+" · ชุด OAiK_chart";
+  }
 
-  /* ---- Tags ---- */
-  $('tagsHint').textContent='จากทั้งหมด '+total+' ชาร์ต';
-  function tag(cls,n,t,s){var w=el('div','tag '+cls);w.appendChild(el('div','big',String(n||0)));var x=el('div');x.appendChild(el('b','',t));x.appendChild(el('small','',s));w.appendChild(x);$('tags').appendChild(w)}
-  tag('warn',d.audit_note_charts,'Audit note','DISCHT conflict — ต้องตรวจสอบสถานะจำหน่าย');
-  tag('info',d.charts_with_code_adjustment,'ปรับรหัส','Code adjust เพื่อให้ TGrp ผ่าน');
+  var lead="ชุด audit นี้มี "+total+" ชาร์ต ส่วนต่าง AdjRW "+sign+f4(diff)+" ("+sign+pct.toFixed(2)+"%) คิดจาก "+paired+" ชาร์ตที่มีทั้งค่าก่อนและหลัง ไม่ใช่จากทั้ง "+total+" ชาร์ต ในกลุ่มที่เทียบได้ DRG เปลี่ยน "+drgChanged+" ชาร์ต และมี "+notes+" ชาร์ตที่สถานะจำหน่ายขัดแย้งกัน";
+  var leadEl=$("lead");
+  leadEl.textContent=lead;
+  leadEl.hidden=false;
 
-  /* ---- PDx / SDx ---- */
+  var work=$("workList");
+  var discht=d.discht_dist||{};
+  var dischtKeys=Object.keys(discht);
+  var dist=dischtKeys.length
+    ? "การกระจายรหัส DISCHT ในไฟล์: "+dischtKeys.slice().sort(function(a,b){return Number(a)-Number(b)}).map(function(k){
+        return "รหัส "+k+" จำนวน "+discht[k]+" ชาร์ต";
+      }).join(" · ")+". หน้านี้ไม่แปลความหมายของรหัสสถานะ "
+    : "";
+  work.appendChild(workItem(notes,"สถานะจำหน่ายขัดแย้ง (Audit note)", notes>0));
+  work.appendChild(workItem(missing,"ไฟล์สรุปที่หาไม่พบ", missing>0));
+  work.appendChild(workItem(adjusted,"ชาร์ตที่มีการปรับรหัส", false));
+  $("workNotes").textContent="DISCHT conflict — ต้องตรวจสอบสถานะจำหน่าย "+dist
+    +"ไฟล์สรุปที่หาไม่พบ (missing JSON): "+(missing? missing+" ไฟล์":"ไม่มี")+". "
+    +"Code adjust เพื่อให้ TGrp ผ่าน จำนวนรายการปรับรหัสที่บันทึกไว้ (tgrp_code_adjustments) คือ "+Number(d.tgrp_code_adjustments||0)+".";
+  $("work").hidden=false;
+
+  $("adjrwHint").textContent="เทียบเฉพาะ "+paired+" ชาร์ตที่มีทั้งค่าก่อนและหลัง audit อีก "+afterOnly+" ชาร์ตมีเฉพาะค่าหลัง จึงไม่เข้าผลรวมนี้";
+  $("ledgerCap").textContent="ผลรวม AdjRW ของ "+paired+" ชาร์ตที่เทียบได้";
+  $("cellBefore").textContent=f4(before);
+  $("cellAfter").textContent=f4(after);
+  var diffCell=$("cellDiff");
+  diffCell.textContent=sign+f4(diff);
+  diffCell.appendChild(el("span","", sign+pct.toFixed(2)+"% ของผลรวมก่อน audit"));
+  $("adjrwNote").textContent="มีทั้งค่าก่อนและหลัง "+paired+" จาก "+total+" ชาร์ต ("+share.toFixed(0)+"%) ในกลุ่มนี้ DRG เปลี่ยน "+drgChanged+" ชาร์ต ส่วนต่างของผลรวมไม่ได้แปลว่าทุกชาร์ตในกลุ่มเปลี่ยนเท่ากัน และไม่ได้แปลว่า AdjRW ของทั้ง "+total+" ชาร์ตเปลี่ยน";
+
+  var facts=$("facts");
+  fact(facts,"ชาร์ตที่ audit ครบ", String(total), "ชาร์ตในชุดนี้");
+  fact(facts,"Sum AdjRW หลัง audit", f4(d.adjrw_after_sum), "รวมทุกชาร์ต");
+  fact(facts,"AdjRW เฉลี่ย", f4(d.adjrw_after_mean), "ต่อชาร์ต เป็นค่าเฉลี่ยของชุด audit นี้ในลักษณะเดียวกับ CMI ไม่ใช่ CMI ของทั้งโรงพยาบาล");
+  fact(facts,"Sum RW หลัง audit", f4(d.rw_after_sum), "น้ำหนักสัมพัทธ์ก่อนปรับ เป็นคนละค่ากับ AdjRW");
+  fact(facts,"AdjRW เปลี่ยนแปลง", sign+f4(diff), paired+" ชาร์ตที่มีข้อมูลก่อน–หลัง · "+sign+pct.toFixed(2)+"%");
+  fact(facts,"DRG ที่เปลี่ยน", String(drgChanged), "ในกลุ่ม "+paired+" ชาร์ตที่เทียบก่อน–หลังได้");
+  fact(facts,"คำเตือนและข้อผิดพลาดขั้นสุดท้าย", Number(warnErr.warn||0)+" / "+Number(warnErr.err||0), "warn / err ใน final_warn_err");
+  fact(facts,"สรุปที่ข้าม", String(Number(d.skipped_summaries||0)), "skipped_summaries");
+  $("adjrw").hidden=false;
+
   var p=(d.pdx_by_chapter||[]).slice().sort(function(a,b){return b.count-a.count});
-  $('pdxH').textContent='หลัง audit · '+total+' ชาร์ต';
-  hbar('pdx','pdxBox',p.map(function(x){return chap(x.chapter)}),p.map(function(x){return x.count}),
-    p.map(function(x){return {t:chap(x.chapter),l:x.count+' ชาร์ต ('+x.pct+'%)'}}));
+  $("pdxH").textContent="หลัง audit · "+total+" ชาร์ต · หน่วยของแท่งคือจำนวนชาร์ต";
+  bars($("pdx"), p, "ชาร์ต");
   var s=(d.sdx_by_chapter||[]).slice().sort(function(a,b){return b.count-a.count});
-  $('sdxH').textContent='รวม '+(d.sdx_total||0)+' รหัส';
-  hbar('sdx','sdxBox',s.map(function(x){return chap(x.chapter)}),s.map(function(x){return x.count}),
-    s.map(function(x){return {t:chap(x.chapter),l:x.count+' รหัส ('+x.pct+'%)'}}));
+  $("sdxH").textContent="รวม "+(d.sdx_total||0)+" รหัส · หน่วยของแท่งคือจำนวนรหัส ไม่ใช่จำนวนชาร์ต";
+  bars($("sdx"), s, "รหัส");
 
-  /* ---- Procedures list ---- */
-  var t=(d.top_icd9||[]).slice().sort(function(a,b){return b.count-a.count});
-  $('procH').textContent='รวม '+(d.proc_total||0)+' หัตถการ';
-  var mxp=t.length?t[0].count:0;
-  t.forEach(function(x,i){var li=el('li',x.count===mxp?'top':'');li.appendChild(el('span','rk',String(i+1)));li.appendChild(el('code','',x.code));
-    var nm=el('span','nm',x.name);nm.title=x.name;li.appendChild(nm);li.appendChild(el('span','ct','×'+x.count));$('proc').appendChild(li)});
-}).catch(function(e){$('kpis').appendChild(el('p','err','โหลดข้อมูลไม่สำเร็จ: '+e.message))});
+  var procs=(d.top_icd9||[]).slice().sort(function(a,b){return b.count-a.count});
+  $("procCap").textContent="หัตถการ ICD-9-CM · รวม "+(d.proc_total||0)+" หัตถการ";
+  var mxp=procs.length?Number(procs[0].count):0;
+  var tbody=$("proc");
+  procs.forEach(function(x,i){
+    var tr=el("tr");
+    tr.appendChild(el("td","", String(i+1)));
+    var code=el("td"); code.appendChild(el("code","", x.code)); tr.appendChild(code);
+    var name=el("td");
+    var nm=el("span","", x.name); nm.lang="en"; name.appendChild(nm);
+    tr.appendChild(name);
+    var ct=el("td","num", "×"+x.count);
+    if(Number(x.count)===mxp && mxp>0) ct.appendChild(el("span","peak","สูงสุด"));
+    tr.appendChild(ct);
+    tbody.appendChild(tr);
+  });
+  if(!procs.length){
+    var empty=el("tr"); var td=el("td","", "ไม่มีหัตถการในชุดนี้"); td.colSpan=4; empty.appendChild(td); tbody.appendChild(empty);
+  }
+
+  var extra=$("extraCodes");
+  var blocks=d.pdx_by_block3||[];
+  extra.appendChild(el("h3","unit","PDx ตามกลุ่มรหัส 3 ตัว"));
+  extra.appendChild(el("p","hint","แต่ละแถวคือค่าในไฟล์ pdx_by_block3 เรียงตามลำดับในไฟล์"));
+  if(!blocks.length) extra.appendChild(el("p","empty","ไม่มีกลุ่มรหัสในไฟล์"));
+  else {
+    var bt=el("table","mini");
+    var bh=el("thead"); var br=el("tr");
+    ["กลุ่มรหัส","จำนวน","สัดส่วน %"].forEach(function(h,idx){
+      var th=el("th", idx?"num":"", h); if(idx) th.scope="col"; br.appendChild(th);
+    });
+    bh.appendChild(br); bt.appendChild(bh);
+    var bb=el("tbody");
+    blocks.forEach(function(b){
+      var tr=el("tr");
+      tr.appendChild(el("td","", b.block));
+      tr.appendChild(el("td","num", String(b.count)));
+      tr.appendChild(el("td","num", String(b.pct)));
+      bb.appendChild(tr);
+    });
+    bt.appendChild(bb); extra.appendChild(bt);
+  }
+
+  extra.appendChild(el("h3","unit","MDC"));
+  extra.appendChild(el("p","hint","รหัส MDC ตามไฟล์ mdc_dist หน้านี้ไม่แปลงเป็นชื่อโรค"));
+  var mdc=d.mdc_dist||{};
+  var mdcRows=Object.keys(mdc).map(function(k){return {code:k, count:mdc[k]}}).sort(function(a,b){return b.count-a.count});
+  if(!mdcRows.length) extra.appendChild(el("p","empty","ไม่มี MDC ในไฟล์"));
+  else {
+    var mt=el("table","mini");
+    var mhr=el("tr"); mhr.appendChild(el("th","","รหัส MDC")); var mth=el("th","num","จำนวนชาร์ต"); mhr.appendChild(mth);
+    var mh=el("thead"); mh.appendChild(mhr); mt.appendChild(mh);
+    var mb=el("tbody");
+    mdcRows.forEach(function(row){
+      var tr=el("tr");
+      tr.appendChild(el("td","", row.code));
+      tr.appendChild(el("td","num", String(row.count)));
+      mb.appendChild(tr);
+    });
+    mt.appendChild(mb); extra.appendChild(mt);
+  }
+  $("codes").hidden=false;
+
+  var flow=$("flow");
+  (d.flow||[]).forEach(function(s){
+    var li=el("li");
+    var box=el("div");
+    var title=el("b","", s.title||"");
+    title.lang="en";
+    box.appendChild(title);
+    box.appendChild(el("span","", s.sub||""));
+    li.appendChild(box);
+    flow.appendChild(li);
+  });
+  var ff=$("fileFacts");
+  fact(ff,"บันทึก audit ที่ยังไม่ทราบสาเหตุ", String(Number(d.audit_note_unknown||0)), "audit_note_unknown");
+  fact(ff,"ชาร์ตที่มีเฉพาะค่าหลัง", String(afterOnly), "after_only_charts");
+  $("trail").hidden=false;
+
+  $("status").textContent="";
+  $("status").classList.add("sr");
+  $("report").setAttribute("aria-busy","false");
+}).catch(function(e){
+  var st=$("status");
+  st.className="status is-err";
+  st.setAttribute("role","alert");
+  st.textContent="โหลดข้อมูลไม่สำเร็จ: "+e.message+" ลองเปิดหน้านี้ใหม่อีกครั้ง";
+  $("report").setAttribute("aria-busy","false");
+});
 </script>
 <script src="credit.js"></script>
+<style id="audit-shell-fix">
+#ptk-header .ptk-title{line-height:1.55}
+#ptk-header .ptk-sub{line-height:1.55}
+#ptk-sidebar .ptk-group{letter-spacing:0;line-height:1.6;text-transform:none}
+#ptk-sidebar a:focus-visible,#ptk-quick a:focus-visible,#ptk-burger:focus-visible{
+  outline:3px solid #0b5cad;outline-offset:2px
+}
+@media(max-width:900px){
+  #ptk-header .ptk-title{line-height:1.6 !important;-webkit-line-clamp:3}
+  #ptk-quick a{min-height:44px;padding:10px 14px}
+}
+</style>
 </body>
 </html>
