@@ -68,7 +68,7 @@ tr.fund-row.on td{background:#dbeafe}
         <input id="y70File" type="file" accept=".xlsx,.xls" class="hidden">
       </label>
       <button class="tab" type="button" onclick="clearY70Upload()">ใช้ตัวเลขเผยแพร่</button>
-      <span class="text-xs text-slate-500">อัปจากหน้านี้เห็นทันทีบนเบราว์เซอร์นี้ แต่ Grok ยังอ่านไฟล์ไม่ได้ จนกว่าจะส่งในแชทหรือวางใน Drive</span>
+      <span class="text-xs text-slate-500">อัปจากหน้านี้เห็นทันทีบนเบราว์เซอร์นี้</span>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
       <div class="card p-3"><div class="text-xs text-slate-500">จัดสรร</div><div class="text-xl font-bold" id="y70Claim">7.73</div></div>
@@ -188,7 +188,7 @@ function renderY70(pack){
   document.getElementById('y70Cash').textContent=cash.toFixed(2);
   document.getElementById('y70Pace').textContent=Math.round(cash/21.21*100)+'%';
   document.getElementById('y70Source').textContent=pack.source==='browser'
-    ? 'ข้อมูลจากไฟล์ที่อัปในเบราว์เซอร์นี้ — Grok ยังไม่เห็นไฟล์นี้'
+    ? 'ข้อมูลจากไฟล์ที่อัปในเบราว์เซอร์นี้'
     : 'ตัวเลขเผยแพร่จาก statement ถึง '+(pack.asof||'')+' · อัปไฟล์ด้านบนจะอัปเฉพาะเครื่องนี้';
   document.getElementById('y70Body').innerHTML=funds.map(function(r){
     return '<tr class="border-t"><td class="p-2 font-semibold">'+r.name+'</td><td class="text-right p-2">'+(r.claim?r.claim.toFixed(3):'—')+'</td><td class="text-right p-2">'+(r.deduct?r.deduct.toFixed(3):'—')+'</td><td class="text-right p-2 font-semibold">'+(r.cash?r.cash.toFixed(3):'—')+'</td><td class="p-2 text-slate-500">'+r.note+'</td></tr>';
