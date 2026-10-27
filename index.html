@@ -19,12 +19,56 @@ body { background: var(--bg); color: var(--text); font-family: 'Sarabun', sans-s
 .nav-item.active, .nav-item:hover { background: var(--accent-dim); color: var(--accent); }
 .nav-sub { font-size: 13.5px; font-weight: 500; padding: 9px 24px 9px 44px; margin: 2px 12px; }
 .main-content { margin-left: 260px; padding: 24px 28px 16px; }
-.dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-.dash-card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); text-decoration: none; color: var(--text); display: block; }
-.dash-card:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
-.card-link { display: block; text-decoration: none; color: inherit; }
-.card-extra { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--border); text-decoration: none; color: var(--amber); font-size: 14px; font-weight: 600; }
-.section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+.section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+/* ---- Home: slim bar cards grouped like the sidebar ---- */
+.hc-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 0 18px; align-items: start; }
+.hc-col { min-width: 0; }
+.hc-group { break-inside: avoid; margin: 0 0 14px; --c: #8E3BA8; --ct: #F4E8F8; }
+.g-fin { --c: #0F766E; --ct: #E3F3F0; }
+.g-kpi { --c: #3B5BA9; --ct: #E8EDF8; }
+.g-svc { --c: #B45309; --ct: #FBEEDC; }
+.g-mr  { --c: #8E3BA8; --ct: #F4E8F8; }
+.g-pcu { --c: #BE185D; --ct: #FBE7F0; }
+.g-nrg { --c: #A16207; --ct: #FBF1D6; }
+.hc-h { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; font-size: 13px; font-weight: 700; color: var(--c); }
+.hc-h::before { content: ""; width: 8px; height: 8px; border-radius: 3px; background: var(--c); }
+.hc-item { position: relative; margin-bottom: 7px; }
+.hc-sub { margin-left: 16px; }
+.hc-bar { display: flex; align-items: center; gap: 11px; min-height: 54px; padding: 7px 12px 7px 10px; background: #fff; border: 1px solid var(--border); border-left: 3px solid var(--c); border-radius: 10px; color: var(--text); text-decoration: none; transition: box-shadow .15s ease, border-color .15s ease; }
+.hc-ico { flex: none; width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; background: var(--ct); color: var(--c); }
+.hc-ico svg { width: 19px; height: 19px; display: block; }
+.hc-title { flex: 1; min-width: 0; font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hc-num { flex: none; text-align: right; line-height: 1.15; max-width: 55%; }
+.hc-num b, .hc-stats b { display: block; font-size: 19px; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.hc-num small, .hc-stats small { display: block; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hc-num i { font-style: normal; color: var(--muted); font-weight: 400; margin: 0 3px; }
+.hc-more { background: #fff; border: 1px solid var(--border); border-left: 3px solid var(--c); border-top: 1px dashed var(--border); border-radius: 0 0 10px 10px; padding: 9px 12px 11px 14px; font-size: 13px; color: var(--muted); }
+.hc-full { margin: 0 0 3px; font-weight: 700; color: var(--text); }
+.hc-desc { margin: 0 0 8px; line-height: 1.45; }
+.hc-stats { display: flex; flex-wrap: wrap; gap: 6px 20px; }
+.hc-open { display: none; margin-top: 10px; padding: 9px 14px; border-radius: 8px; background: #8E3BA8; color: #fff; font-weight: 700; font-size: 14px; text-decoration: none; text-align: center; }
+.hc-bar:focus-visible, .hc-open:focus-visible { outline: 2px solid #8E3BA8; outline-offset: 2px; }
+/* Desktop / fine pointer: overlay expansion — never pushes neighbours */
+@media (hover: hover) and (pointer: fine) {
+  .hc-more { position: absolute; left: 0; right: 0; top: calc(100% - 6px); z-index: 30; box-shadow: 0 12px 24px rgba(26,35,50,.14); cursor: pointer; display: none; opacity: 0; transform: translateY(-4px); transition: opacity .15s ease, transform .15s ease, display .15s allow-discrete; }
+  .hc-item:hover, .hc-item:focus-within { z-index: 31; }
+  .hc-item:hover .hc-bar, .hc-item:focus-within .hc-bar { border-color: var(--c); border-bottom-left-radius: 0; border-bottom-right-radius: 0; box-shadow: 0 12px 24px rgba(26,35,50,.14); }
+  .hc-item:hover .hc-more, .hc-item:focus-within .hc-more { display: block; opacity: 1; transform: none; }
+  @starting-style { .hc-item:hover .hc-more, .hc-item:focus-within .hc-more { opacity: 0; transform: translateY(-4px); } }
+}
+/* Touch: first tap expands in place (inline), button navigates */
+@media (hover: none), (pointer: coarse) {
+  .hc-more { display: none; margin-top: -4px; }
+  .hc-item.open .hc-bar { border-color: var(--c); border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+  .hc-item.open .hc-more { display: block; animation: hcIn .16s ease; }
+  .hc-open { display: block; }
+}
+@keyframes hcIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+@media (max-width: 900px) { .hc-groups { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) {
+  .hc-bar, .hc-more, .hc-item .hc-more { transition: none !important; animation: none !important; transform: none !important; }
+}
+
 .quick { display:flex; flex-wrap:wrap; gap:8px; margin: 0 0 22px; }
 .quick a { display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:999px; border:1px solid var(--border); background:#fff; color:var(--text); text-decoration:none; font-weight:700; font-size:13.5px; }
 .quick a:hover { background: var(--accent); color:#fff; border-color: var(--accent); }
@@ -71,127 +115,87 @@ body { background: var(--bg); color: var(--text); font-family: 'Sarabun', sans-s
   </div>
 
   <div class="section-label">DASHBOARD ที่พร้อมใช้งาน</div>
-  <div class="dash-grid">
-    <a class="dash-card" href="planfin_dashboard.html" style="border-top: 5px solid #0F6E56;">
-      <div style="display:flex; gap:16px;"><div style="font-size:42px;">📈</div>
-      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">Planfin / แผนเงินบำรุง 2570</div>
-      <div style="margin:8px 0; font-size:14px; color:var(--muted);">แผนรับ–จ่าย–ผูกพันเงินบำรุง · เกณฑ์คงค้างทั้งบัญชี 69/70 (แท็บที่สอง)</div>
-      <div style="display:flex; gap:20px; font-size:15px;">
-        <div><span style="color:#16A34A; font-weight:700;">74.95M</span><br><small>รายรับแผน</small></div>
-        <div><span style="color:#DC2626; font-weight:700;">97.84M</span><br><small>รายจ่ายแผน</small></div>
-        <div><span style="color:#DC2626; font-weight:700;">−22.89M</span><br><small>ขาดดุลเงินสด</small></div>
-      </div></div></div>
-    </a>
-    <a class="dash-card" href="uc_transfer_dashboard.html" style="border-top: 5px solid #0F6E56;">
-      <div style="display:flex; gap:16px;"><div style="font-size:42px;">🏦</div>
-      <div style="flex:1;">
-        <div style="font-size:17px; font-weight:700;">เงินโอน สปสช. (UC)</div>
-        <div style="margin:8px 0; font-size:14px; color:var(--muted);">ปี 69 ปิดแล้ว • ปี 70 ถึง 26 ต.ค. เข้า 7.69 ลบ.</div>
-        <div style="display:flex; gap:20px; font-size:15px;">
-          <div><span style="color:#16A34A; font-weight:700;">49.45M</span><br><small>UC ดำเนินงาน ปี 69</small></div>
-          <div><span style="color:#0F6E56; font-weight:700;">52.13M</span><br><small>เงินเข้าทั้งก้อน</small></div>
-          <div><span style="color:#B45309; font-weight:700;">100.5%</span><br><small>เทียบแผนทั้งปี</small></div>
-        </div>
-      </div></div>
-    </a>
-    <a class="dash-card" href="sso_dashboard.html" style="border-top: 5px solid #0F6E56;">
-      <div style="display:flex; gap:16px;"><div style="font-size:42px;">🛡️</div>
-      <div style="flex:1;">
-        <div style="font-size:17px; font-weight:700;">ประกันสังคมจากแม่ข่าย</div>
-        <div style="margin:8px 0; font-size:14px; color:var(--muted);">เม.ย. 2569 · มหาราช + เทพรัตน์ · ปากช่องนานารอไฟล์</div>
-        <div style="display:flex; gap:20px; font-size:15px;">
-          <div><span style="color:#1D6FA4; font-weight:700;">372.5K</span><br><small>มหาราช</small></div>
-          <div><span style="color:#0F6E56; font-weight:700;">88.9K</span><br><small>เทพรัตน์</small></div>
-          <div><span style="color:#64748B; font-weight:700;">461.3K</span><br><small>รวมที่รู้แล้ว</small></div>
-        </div>
-      </div></div>
-    </a>
-    <a class="dash-card" href="nhso_rates_2570.html" style="border-top: 5px solid #0f766e;">
-      <div style="display:flex; gap:16px;"><div style="font-size:42px;">📑</div>
-      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">ประกาศ NHSO 2570</div>
-      <div style="margin:8px 0; font-size:14px; color:var(--muted);">รวมตารางอัตราจ่าย สปสช. ปีงบประมาณ 2570</div>
-      <div style="display:flex; gap:20px; font-size:15px;">
-        <div><span style="color:#0f766e; font-weight:700;">4</span><br><small>กลุ่ม</small></div>
-        <div><span style="color:#1D6FA4; font-weight:700;">2570</span><br><small>ปีงบประมาณ</small></div>
-      </div></div></div>
-    </a>
-    <a class="dash-card" href="nhso_mis.html" style="border-top: 5px solid #0F6E56;">
-      <div style="display:flex; gap:16px;"><div style="font-size:42px;">🏥</div>
-      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">NHSO-MIS for Hospital</div>
-      <div style="margin:8px 0; font-size:14px; color:var(--muted);">รายได้ UC จาก สปสช. · รพ.พระทองคำ · ปีงบ 2560–2569</div>
-      <div style="display:flex; gap:20px; font-size:15px;">
-        <div><span style="color:#0F6E56; font-weight:700;">52.13M</span><br><small>รายรับ UC</small></div>
-        <div><span style="color:#1D6FA4; font-weight:700;">23.04M</span><br><small>OP</small></div>
-        <div><span style="color:#0F6E56; font-weight:700;">14.33M</span><br><small>IP</small></div>
-      </div></div></div>
-    </a>
-    <a class="dash-card" href="opwalkin.html" style="border-top: 5px solid #16A34A;">
-      <div style="display:flex; gap:16px;"><div style="font-size:42px;">💰</div>
-      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">OP-Walkin</div>
-      <div style="margin:8px 0; font-size:14px; color:var(--muted);">รพ.พระทองคำ · ต.ค. 68 – ส.ค. 69</div>
-      <div style="margin-top:12px; display:flex; gap:24px;"><div><div style="color:#166534; font-size:13px;">พึงรับรวม</div><div style="font-size:28px; font-weight:700; color:#16A34A;">611K</div></div><div><div style="color:#991B1B; font-size:13px;">พึงจ่ายรวม</div><div style="font-size:28px; font-weight:700; color:#DC2626;">4.18M</div></div></div></div></div>
-    </a>
-    <a class="dash-card" href="ar_aging.html" style="border-top: 5px solid #0b7a75;">
-      <div style="display:flex; gap:16px;"><div style="font-size:42px;">🧾</div>
-      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">อายุลูกหนี้ค่ารักษาพยาบาล</div>
-      <div style="margin:8px 0; font-size:14px; color:var(--muted);">ลูกหนี้คงเหลือแยกอายุ/สิทธิ · เทียบ รพ.ในจังหวัด · อัปโหลดไฟล์ Excel ใหม่ได้</div>
-      <div style="display:flex; gap:20px; font-size:15px;">
-        <div><span style="color:#0b7a75; font-weight:700;">8.33M</span><br><small>คงเหลือ</small></div>
-        <div><span style="color:#DC2626; font-weight:700;">1.60M</span><br><small>เกิน 90 วัน</small></div>
-        <div><span style="color:#16A34A; font-weight:700;">45.2%</span><br><small>อัตราตัดหนี้</small></div>
-      </div></div></div>
-    </a>
-    <a class="dash-card" href="kpi_dashboard.html" style="border-top: 5px solid #1D6FA4;">
-      <div style="display:flex; gap:16px;"><div style="font-size:42px;">📊</div>
-      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">ตัวชี้วัดและเข็มมุ่ง</div>
-      <div style="margin:8px 0; font-size:14px; color:var(--muted);">สลับปีชัดเจน · 2570 กรอบเป้าหมาย · 2569 ผลงานที่ไม่ผ่าน</div>
-      <div style="display:flex; gap:20px; font-size:15px;">
-        <div><span style="color:#0F6E56; font-weight:700;">2570</span><br><small>64 ตชว. + 20 เข็มมุ่ง</small></div>
-        <div><span style="color:#B45309; font-weight:700;">2569</span><br><small>64 ตัวไม่ผ่าน</small></div>
-      </div></div></div>
-    </a>
-    <a class="dash-card" href="plan2570.html" style="border-top: 5px solid #A67C32;">
-      <div style="display:flex; gap:16px;"><div style="font-size:42px;">📋</div>
-      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">แผนงานโครงการ CUP ปี 2570</div>
-      <div style="margin:8px 0; font-size:14px; color:var(--muted);">59 โครงการจากส่วนที่ 10 · ติ๊กขั้นตอนได้ · ผูก Google Sheet ได้</div>
-      <div style="display:flex; gap:20px; font-size:15px;">
-        <div><span style="color:#A67C32; font-weight:700;">59</span><br><small>โครงการ</small></div>
-        <div><span style="color:#1D6FA4; font-weight:700;">3.44M</span><br><small>งบที่ระบุ</small></div>
-        <div><span style="color:#64748B; font-weight:700;">9</span><br><small>ไม่ใช้งบ</small></div>
-      </div></div></div>
-    </a>
-    <div class="dash-card" style="border-top: 5px solid #D97706;">
-      <a class="card-link" href="compare.html"><div style="display:flex; gap:16px;"><div style="font-size:42px;">⏱</div>
-      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">เปรียบเทียบระยะเวลารอคอย</div>
-      <div style="margin-top:8px; font-size:14px; color:var(--muted);">อันดับที่ 4 จาก 33 รพ.ชุมชน</div>
-      <div style="margin-top:12px; font-size:15px;">เวลารวม <span style="font-weight:700; color:#1D6FA4;">182 นาที</span></div></div></div></a>
-      <a class="card-extra" href="bottleneck_dashboard.html"><span>🔎 วิเคราะห์คอขวด — คลินิก NCD 51.8%</span><span class="arrow">→</span></a>
-    </div>
-    <a class="dash-card" href="chart_audit.html" style="border-top: 5px solid #1f3864;">
-      <div style="display:flex; gap:16px;"><div style="font-size:42px;">🩺</div>
-      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">สรุปผล Audit ชาร์ต</div>
-      <div style="margin:8px 0; font-size:14px; color:var(--muted);">ผล audit ชาร์ตผู้ป่วยใน · PDx/SDx/หัตถการ · AdjRW ก่อน-หลัง (ข้อมูลรวม)</div>
-      <div style="display:flex; gap:20px; font-size:15px;">
-        <div><span id="aud-charts" style="color:#1f3864; font-weight:700;">–</span><br><small>ชาร์ตที่ audit</small></div>
-        <div><span id="aud-adjrw" style="color:#16A34A; font-weight:700;">–</span><br><small>Sum AdjRW</small></div>
-        <div><span id="aud-diff" style="color:#C55A11; font-weight:700;">–</span><br><small>ก่อน-หลัง</small></div>
-      </div></div></div>
-    </a>
-    <a class="dash-card" href="solar_dashboard.html" style="border-top: 5px solid #D97706;">
-      <div style="display:flex; gap:16px;"><div style="font-size:42px;">☀️</div>
-      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">Solar PV อาคารอุบัติเหตุและฉุกเฉิน</div>
-      <div style="margin:8px 0; font-size:14px; color:var(--muted);">ข้อมูลจาก FusionSolar · <span id="sol-upd">–</span></div>
-      <div style="display:flex; gap:20px; font-size:15px;">
-        <div><span id="sol-power" style="color:#B45309; font-weight:700;">–</span><br><small>MWh ผลิตสะสม</small></div>
-        <div><span id="sol-day" style="color:#1D6FA4; font-weight:700;">–</span><br><small id="sol-day-lbl">ไฟที่ใช้จากโซลาร์</small></div>
-        <div><span id="sol-save" style="color:#16A34A; font-weight:700;">–</span><br><small>ประหยัดค่าไฟสะสม</small></div>
-      </div></div></div>
-    </a>
-    <a class="dash-card" href="pcupayment.html" style="border-top: 5px solid #7C3AED;">
-      <div style="display:flex; gap:16px;"><div style="font-size:42px;">💊</div>
-      <div style="flex:1;"><div style="font-size:17px; font-weight:700;">ยาและเวชภัณฑ์ รพ.สต.</div>
-      <div style="margin-top:12px;"><div style="font-size:28px; font-weight:700; color:#7C3AED;">1.86M</div><div style="font-size:14px; color:#166534;">ฐานประมาณการ (บาท/ปี)</div></div></div></div>
-    </a>
+  <div class="hc-groups">
+   <div class="hc-col">
+    <section class="hc-group g-fin" aria-label="การเงิน">
+      <h2 class="hc-h">การเงิน</h2>
+      <div class="hc-item">
+        <a class="hc-bar" href="planfin_dashboard.html" aria-describedby="hc-p1"><span class="hc-ico" data-ptk-icon="trend" aria-hidden="true"></span><span class="hc-title" title="Planfin / แผนเงินบำรุง 2570">Planfin / แผนเงินบำรุง 2570</span><span class="hc-num"><div><b>−22.89M</b><small>ขาดดุลเงินสด</small></div></span></a>
+        <div class="hc-more" id="hc-p1" data-href="planfin_dashboard.html"><p class="hc-full">Planfin / แผนเงินบำรุง 2570</p><p class="hc-desc">แผนรับ–จ่าย–ผูกพันเงินบำรุง · เกณฑ์คงค้างทั้งบัญชี 69/70 (แท็บที่สอง)</p><div class="hc-stats"><div><b>74.95M</b><small>รายรับแผน</small></div><div><b>97.84M</b><small>รายจ่ายแผน</small></div></div><a class="hc-open" href="planfin_dashboard.html">เปิด dashboard</a></div>
+      </div>
+      <div class="hc-item">
+        <a class="hc-bar" href="uc_transfer_dashboard.html" aria-describedby="hc-p2"><span class="hc-ico" data-ptk-icon="bank" aria-hidden="true"></span><span class="hc-title" title="เงินโอน สปสช. (UC)">เงินโอน สปสช. (UC)</span><span class="hc-num"><div><b>49.45M</b><small>UC ดำเนินงาน ปี 69</small></div></span></a>
+        <div class="hc-more" id="hc-p2" data-href="uc_transfer_dashboard.html"><p class="hc-full">เงินโอน สปสช. (UC)</p><p class="hc-desc">ปี 69 ปิดแล้ว • ปี 70 ถึง 26 ต.ค. เข้า 7.69 ลบ.</p><div class="hc-stats"><div><b>52.13M</b><small>เงินเข้าทั้งก้อน</small></div><div><b>100.5%</b><small>เทียบแผนทั้งปี</small></div></div><a class="hc-open" href="uc_transfer_dashboard.html">เปิด dashboard</a></div>
+      </div>
+      <div class="hc-item">
+        <a class="hc-bar" href="sso_dashboard.html" aria-describedby="hc-p3"><span class="hc-ico" data-ptk-icon="shield" aria-hidden="true"></span><span class="hc-title" title="ประกันสังคมจากแม่ข่าย">ประกันสังคมจากแม่ข่าย</span><span class="hc-num"><div><b>461.3K</b><small>รวมที่รู้แล้ว</small></div></span></a>
+        <div class="hc-more" id="hc-p3" data-href="sso_dashboard.html"><p class="hc-full">ประกันสังคมจากแม่ข่าย</p><p class="hc-desc">เม.ย. 2569 · มหาราช + เทพรัตน์ · ปากช่องนานารอไฟล์</p><div class="hc-stats"><div><b>372.5K</b><small>มหาราช</small></div><div><b>88.9K</b><small>เทพรัตน์</small></div></div><a class="hc-open" href="sso_dashboard.html">เปิด dashboard</a></div>
+      </div>
+      <div class="hc-item">
+        <a class="hc-bar" href="nhso_rates_2570.html" aria-describedby="hc-p4"><span class="hc-ico" data-ptk-icon="filetext" aria-hidden="true"></span><span class="hc-title" title="ประกาศ NHSO 2570">ประกาศ NHSO 2570</span><span class="hc-num"><div class="hc-multi"><b>55<i>·</i>21<i>·</i>13<i>·</i>11</b><small>PPFS · IP · ฟื้นฟู · แผนไทย</small></div></span></a>
+        <div class="hc-more" id="hc-p4" data-href="nhso_rates_2570.html"><p class="hc-full">ประกาศ NHSO 2570</p><p class="hc-desc">รวมตารางอัตราจ่าย สปสช. ปีงบประมาณ 2570 · จำนวนรายการต่อกลุ่ม</p><div class="hc-stats"><div><b>55</b><small>PPFS (สร้างเสริมสุขภาพฯ)</small></div><div><b>21</b><small>ผู้ป่วยใน (IP)</small></div><div><b>13</b><small>ฟื้นฟูสมรรถภาพ</small></div><div><b>11</b><small>แพทย์แผนไทย</small></div></div><a class="hc-open" href="nhso_rates_2570.html">เปิด dashboard</a></div>
+      </div>
+      <div class="hc-item">
+        <a class="hc-bar" href="nhso_mis.html" aria-describedby="hc-p5"><span class="hc-ico" data-ptk-icon="building" aria-hidden="true"></span><span class="hc-title" title="NHSO-MIS for Hospital">NHSO-MIS for Hospital</span><span class="hc-num"><div><b>52.13M</b><small>รายรับ UC</small></div></span></a>
+        <div class="hc-more" id="hc-p5" data-href="nhso_mis.html"><p class="hc-full">NHSO-MIS for Hospital</p><p class="hc-desc">รายได้ UC จาก สปสช. · รพ.พระทองคำ · ปีงบ 2560–2569</p><div class="hc-stats"><div><b>23.04M</b><small>OP</small></div><div><b>14.33M</b><small>IP</small></div></div><a class="hc-open" href="nhso_mis.html">เปิด dashboard</a></div>
+      </div>
+      <div class="hc-item">
+        <a class="hc-bar" href="opwalkin.html" aria-describedby="hc-p6"><span class="hc-ico" data-ptk-icon="wallet" aria-hidden="true"></span><span class="hc-title" title="OP-Walkin">OP-Walkin</span><span class="hc-num"><div><b>611K</b><small>พึงรับรวม</small></div></span></a>
+        <div class="hc-more" id="hc-p6" data-href="opwalkin.html"><p class="hc-full">OP-Walkin</p><p class="hc-desc">รพ.พระทองคำ · ต.ค. 68 – ส.ค. 69</p><div class="hc-stats"><div><b>4.18M</b><small>พึงจ่ายรวม</small></div></div><a class="hc-open" href="opwalkin.html">เปิด dashboard</a></div>
+      </div>
+      <div class="hc-item">
+        <a class="hc-bar" href="ar_aging.html" aria-describedby="hc-p7"><span class="hc-ico" data-ptk-icon="receipt" aria-hidden="true"></span><span class="hc-title" title="อายุลูกหนี้ค่ารักษาพยาบาล">อายุลูกหนี้ค่ารักษาพยาบาล</span><span class="hc-num"><div><b>8.33M</b><small>คงเหลือ</small></div></span></a>
+        <div class="hc-more" id="hc-p7" data-href="ar_aging.html"><p class="hc-full">อายุลูกหนี้ค่ารักษาพยาบาล</p><p class="hc-desc">ลูกหนี้คงเหลือแยกอายุ/สิทธิ · เทียบ รพ.ในจังหวัด · อัปโหลดไฟล์ Excel ใหม่ได้</p><div class="hc-stats"><div><b>1.60M</b><small>เกิน 90 วัน</small></div><div><b>45.2%</b><small>อัตราตัดหนี้</small></div></div><a class="hc-open" href="ar_aging.html">เปิด dashboard</a></div>
+      </div>
+    </section>
+   </div>
+   <div class="hc-col">
+    <section class="hc-group g-kpi" aria-label="KPI และแผนงาน">
+      <h2 class="hc-h">KPI และแผนงาน</h2>
+      <div class="hc-item">
+        <a class="hc-bar" href="kpi_dashboard.html" aria-describedby="hc-p8"><span class="hc-ico" data-ptk-icon="barchart" aria-hidden="true"></span><span class="hc-title" title="ตัวชี้วัดและเข็มมุ่ง">ตัวชี้วัดและเข็มมุ่ง</span><span class="hc-num"><div><b>64</b><small>ตชว. ปี 2570</small></div></span></a>
+        <div class="hc-more" id="hc-p8" data-href="kpi_dashboard.html"><p class="hc-full">ตัวชี้วัดและเข็มมุ่ง</p><p class="hc-desc">สลับปีชัดเจน · 2570 กรอบเป้าหมาย · 2569 ผลงานที่ไม่ผ่าน</p><div class="hc-stats"><div><b>64 ตชว. + 20 เข็มมุ่ง</b><small>2570</small></div><div><b>64 ตัวไม่ผ่าน</b><small>2569</small></div></div><a class="hc-open" href="kpi_dashboard.html">เปิด dashboard</a></div>
+      </div>
+      <div class="hc-item">
+        <a class="hc-bar" href="plan2570.html" aria-describedby="hc-p9"><span class="hc-ico" data-ptk-icon="clipboard" aria-hidden="true"></span><span class="hc-title" title="แผนงานโครงการ CUP ปี 2570">แผนงานโครงการ CUP ปี 2570</span><span class="hc-num"><div><b>59</b><small>โครงการ</small></div></span></a>
+        <div class="hc-more" id="hc-p9" data-href="plan2570.html"><p class="hc-full">แผนงานโครงการ CUP ปี 2570</p><p class="hc-desc">59 โครงการจากส่วนที่ 10 · ติ๊กขั้นตอนได้ · ผูก Google Sheet ได้</p><div class="hc-stats"><div><b>3.44M</b><small>งบที่ระบุ</small></div><div><b>9</b><small>ไม่ใช้งบ</small></div></div><a class="hc-open" href="plan2570.html">เปิด dashboard</a></div>
+      </div>
+    </section>
+    <section class="hc-group g-svc" aria-label="บริการ">
+      <h2 class="hc-h">บริการ</h2>
+      <div class="hc-item">
+        <a class="hc-bar" href="compare.html" aria-describedby="hc-p10"><span class="hc-ico" data-ptk-icon="clock" aria-hidden="true"></span><span class="hc-title" title="เปรียบเทียบระยะเวลารอคอย">เปรียบเทียบระยะเวลารอคอย</span><span class="hc-num"><div><b>182</b><small>นาที · เวลารวม</small></div></span></a>
+        <div class="hc-more" id="hc-p10" data-href="compare.html"><p class="hc-full">เปรียบเทียบระยะเวลารอคอย</p><p class="hc-desc">อันดับที่ 4 จาก 33 รพ.ชุมชน</p><a class="hc-open" href="compare.html">เปิด dashboard</a></div>
+      </div>
+      <div class="hc-item hc-sub">
+        <a class="hc-bar" href="bottleneck_dashboard.html" aria-describedby="hc-p11"><span class="hc-ico" data-ptk-icon="search" aria-hidden="true"></span><span class="hc-title" title="วิเคราะห์คอขวด">วิเคราะห์คอขวด</span><span class="hc-num"><div><b>51.8%</b><small>คลินิก NCD</small></div></span></a>
+        <div class="hc-more" id="hc-p11" data-href="bottleneck_dashboard.html"><p class="hc-full">วิเคราะห์คอขวด</p><p class="hc-desc">วิเคราะห์คอขวด — คลินิก NCD 51.8%</p><a class="hc-open" href="bottleneck_dashboard.html">เปิด dashboard</a></div>
+      </div>
+    </section>
+   </div>
+   <div class="hc-col">
+    <section class="hc-group g-mr" aria-label="คุณภาพเวชระเบียน">
+      <h2 class="hc-h">คุณภาพเวชระเบียน</h2>
+      <div class="hc-item">
+        <a class="hc-bar" href="chart_audit.html" aria-describedby="hc-p12"><span class="hc-ico" data-ptk-icon="filecheck" aria-hidden="true"></span><span class="hc-title" title="สรุปผล Audit ชาร์ต">สรุปผล Audit ชาร์ต</span><span class="hc-num"><div><b id="aud-charts">–</b><small>ชาร์ตที่ audit</small></div></span></a>
+        <div class="hc-more" id="hc-p12" data-href="chart_audit.html"><p class="hc-full">สรุปผล Audit ชาร์ต</p><p class="hc-desc">ผล audit ชาร์ตผู้ป่วยใน · PDx/SDx/หัตถการ · AdjRW ก่อน-หลัง (ข้อมูลรวม)</p><div class="hc-stats"><div><b id="aud-adjrw">–</b><small>Sum AdjRW</small></div><div><b id="aud-diff">–</b><small>ก่อน-หลัง</small></div></div><a class="hc-open" href="chart_audit.html">เปิด dashboard</a></div>
+      </div>
+    </section>
+    <section class="hc-group g-pcu" aria-label="รพ.สต.">
+      <h2 class="hc-h">รพ.สต.</h2>
+      <div class="hc-item">
+        <a class="hc-bar" href="pcupayment.html" aria-describedby="hc-p13"><span class="hc-ico" data-ptk-icon="pill" aria-hidden="true"></span><span class="hc-title" title="ยาและเวชภัณฑ์ รพ.สต.">ยาและเวชภัณฑ์ รพ.สต.</span><span class="hc-num"><div><b>1.86M</b><small>ฐานประมาณการ (บาท/ปี)</small></div></span></a>
+        <div class="hc-more" id="hc-p13" data-href="pcupayment.html"><p class="hc-full">ยาและเวชภัณฑ์ รพ.สต.</p><a class="hc-open" href="pcupayment.html">เปิด dashboard</a></div>
+      </div>
+    </section>
+    <section class="hc-group g-nrg" aria-label="พลังงาน">
+      <h2 class="hc-h">พลังงาน</h2>
+      <div class="hc-item">
+        <a class="hc-bar" href="solar_dashboard.html" aria-describedby="hc-p14"><span class="hc-ico" data-ptk-icon="sun" aria-hidden="true"></span><span class="hc-title" title="Solar PV อาคารอุบัติเหตุและฉุกเฉิน">Solar PV อาคารอุบัติเหตุและฉุกเฉิน</span><span class="hc-num"><div><b id="sol-power">–</b><small>MWh ผลิตสะสม</small></div></span></a>
+        <div class="hc-more" id="hc-p14" data-href="solar_dashboard.html"><p class="hc-full">Solar PV อาคารอุบัติเหตุและฉุกเฉิน</p><p class="hc-desc">ข้อมูลจาก FusionSolar · <span id="sol-upd">–</span></p><div class="hc-stats"><div><b id="sol-day">–</b><small id="sol-day-lbl">ไฟที่ใช้จากโซลาร์</small></div><div><b id="sol-save">–</b><small>ประหยัดค่าไฟสะสม</small></div></div><a class="hc-open" href="solar_dashboard.html">เปิด dashboard</a></div>
+      </div>
+    </section>
+   </div>
   </div>
   <div class="page-byline">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา<br>by <b>Suweerasak Riwlord, M.D.</b></div>
 </div>
@@ -216,6 +220,32 @@ fetch('data/solar.json?v=' + Date.now()).then(function (r) { if (!r.ok) throw 0;
   document.getElementById('sol-save').textContent = '฿' + f((total - outK) * TARIFF / 1000, 0) + 'K';
   document.getElementById('sol-upd').textContent = d.sample ? 'ข้อมูลตัวอย่าง' : (d.report_date ? 'รายงานล่าสุด ' + new Date(d.report_date).toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: '2-digit' }) : '');
 }).catch(function () {});
+</script>
+<script>
+(function () {
+  var touch = function () { return window.matchMedia('(hover: none), (pointer: coarse)').matches; };
+  var items = document.querySelectorAll('.hc-item');
+  function collapse(except) {
+    for (var i = 0; i < items.length; i++) if (items[i] !== except && items[i].classList.contains('open')) {
+      items[i].classList.remove('open'); items[i].querySelector('.hc-bar').setAttribute('aria-expanded', 'false');
+    }
+  }
+  for (var i = 0; i < items.length; i++) (function (it) {
+    var bar = it.querySelector('.hc-bar'), more = it.querySelector('.hc-more');
+    bar.addEventListener('click', function (e) {
+      if (!touch()) return;                 // desktop: normal link
+      e.preventDefault();                   // touch: first tap expands, never navigates
+      var open = !it.classList.contains('open');
+      collapse(it);
+      it.classList.toggle('open', open);
+      bar.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    more.addEventListener('click', function (e) {
+      if (touch() || e.target.closest('a')) return;
+      location.href = more.getAttribute('data-href'); // desktop: clicking the expanded panel opens the page too
+    });
+  })(items[i]);
+})();
 </script>
 <script src="credit.js"></script>
 </body>
