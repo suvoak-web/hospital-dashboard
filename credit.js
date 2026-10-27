@@ -5,28 +5,52 @@
   window.__ptkShell = true;
 
   var PAGES = [
-    { href: 'index.html', icon: '🏠', label: 'หน้าหลัก' },
-    { group: '💰 การเงิน' },
-    { href: 'planfin_dashboard.html', icon: '📈', label: 'Planfin / การเงิน' },
-    { href: 'uc_transfer_dashboard.html', icon: '🏦', label: 'เงินโอน UC / สปสช.' },
-    { href: 'sso_dashboard.html', icon: '🛡️', label: 'ประกันสังคมจากแม่ข่าย' },
-    { href: 'nhso_rates_2570.html', icon: '📑', label: 'ประกาศ NHSO 2570' },
-    { href: 'nhso_mis.html', icon: '🏥', label: 'NHSO-MIS' },
-    { href: 'opwalkin.html', icon: '💰', label: 'OP-Walkin' },
-    { href: 'ar_aging.html', icon: '🧾', label: 'อายุลูกหนี้' },
-    { group: '📊 KPI และแผนงาน' },
-    { href: 'kpi_dashboard.html', icon: '📊', label: 'KPI Dashboard' },
-    { href: 'plan2570.html', icon: '📋', label: 'แผนงานโครงการ 2570' },
-    { group: '⏱ บริการ' },
-    { href: 'compare.html', icon: '⏱', label: 'ระยะเวลารอคอย' },
-    { href: 'bottleneck_dashboard.html', icon: '🔎', label: 'วิเคราะห์คอขวด', sub: true },
-    { group: '🩺 คุณภาพเวชระเบียน' },
-    { href: 'chart_audit.html', icon: '🩺', label: 'Audit ชาร์ต' },
-    { group: '💊 รพ.สต.' },
-    { href: 'pcupayment.html', icon: '💊', label: 'ยาและเวชภัณฑ์ รพ.สต.' },
-    { group: '⚡ พลังงาน' },
-    { href: 'solar_dashboard.html', icon: '☀️', label: 'Solar PV อาคาร ER' }
+    { href: 'index.html', icon: 'home', label: 'หน้าหลัก' },
+    { group: 'การเงิน' },
+    { href: 'planfin_dashboard.html', icon: 'trend', label: 'Planfin / การเงิน' },
+    { href: 'uc_transfer_dashboard.html', icon: 'bank', label: 'เงินโอน UC / สปสช.' },
+    { href: 'sso_dashboard.html', icon: 'shield', label: 'ประกันสังคมจากแม่ข่าย' },
+    { href: 'nhso_rates_2570.html', icon: 'filetext', label: 'ประกาศ NHSO 2570' },
+    { href: 'nhso_mis.html', icon: 'building', label: 'NHSO-MIS' },
+    { href: 'opwalkin.html', icon: 'wallet', label: 'OP-Walkin' },
+    { href: 'ar_aging.html', icon: 'receipt', label: 'อายุลูกหนี้' },
+    { group: 'KPI และแผนงาน' },
+    { href: 'kpi_dashboard.html', icon: 'barchart', label: 'KPI Dashboard' },
+    { href: 'plan2570.html', icon: 'clipboard', label: 'แผนงานโครงการ 2570' },
+    { group: 'บริการ' },
+    { href: 'compare.html', icon: 'clock', label: 'ระยะเวลารอคอย' },
+    { href: 'bottleneck_dashboard.html', icon: 'search', label: 'วิเคราะห์คอขวด', sub: true },
+    { group: 'คุณภาพเวชระเบียน' },
+    { href: 'chart_audit.html', icon: 'filecheck', label: 'Audit ชาร์ต' },
+    { group: 'รพ.สต.' },
+    { href: 'pcupayment.html', icon: 'pill', label: 'ยาและเวชภัณฑ์ รพ.สต.' },
+    { group: 'พลังงาน' },
+    { href: 'solar_dashboard.html', icon: 'sun', label: 'Solar PV อาคาร ER' }
   ];
+
+  /* Monochrome line icons (Lucide-style paths, 24x24, stroke=currentColor) */
+  var ICONS = {
+    home: '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+    trend: '<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>',
+    bank: '<line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/>',
+    shield: '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+    filetext: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
+    building: '<path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/>',
+    wallet: '<path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>',
+    receipt: '<path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/>',
+    barchart: '<path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>',
+    clipboard: '<rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>',
+    clock: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+    search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+    filecheck: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/>',
+    pill: '<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
+    hospital: '<path d="M12 6v4"/><path d="M14 14h-4"/><path d="M14 18h-4"/><path d="M14 8h-4"/><path d="M18 12h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2"/><path d="M18 22V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v18"/>',
+    menu: '<line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>'
+  };
+  function svg(name, size) {
+    return '<svg class="ptk-ico" width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + (ICONS[name] || '') + '</svg>';
+  }
 
   var file = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
   if (!file || file.indexOf('.') === -1) file = 'index.html';
@@ -40,29 +64,43 @@
     var s = document.createElement('style');
     s.id = 'ptk-shell-css';
     s.textContent = [
-      '#ptk-header{position:fixed;top:0;left:0;right:0;z-index:10050;height:64px;background:#1D6FA4;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 10px;box-shadow:0 2px 10px rgba(0,0,0,.12);font-family:Sarabun,"IBM Plex Sans Thai",Tahoma,sans-serif}',
+      '#ptk-header{position:fixed;top:0;left:0;right:0;z-index:10050;height:64px;background:#BA55D3;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 10px;box-shadow:0 2px 10px rgba(0,0,0,.12);font-family:Sarabun,"IBM Plex Sans Thai",Tahoma,sans-serif}',
       '#ptk-header .ptk-left{display:flex;align-items:center;gap:10px;min-width:0}',
-      '#ptk-burger{background:none;border:none;color:#fff;font-size:26px;cursor:pointer;padding:6px 10px;line-height:1}',
-      '#ptk-header .ptk-mark{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}',
-      '#ptk-header .ptk-title{font-weight:700;font-size:15.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
-      '#ptk-header .ptk-sub{font-size:12px;opacity:.88}',
+      '#ptk-burger{background:none;border:none;color:#fff;cursor:pointer;padding:8px;line-height:0;border-radius:8px;display:inline-flex}',
+      '#ptk-burger:hover{background:rgba(255,255,255,.16)}',
+      '#ptk-burger:focus-visible,#ptk-header a:focus-visible{outline:2px solid #fff;outline-offset:2px}',
+      '#ptk-header .ptk-mark{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}',
+      '#ptk-header .ptk-left,#ptk-header .ptk-clock{text-shadow:0 1px 2px rgba(74,20,92,.35)}',
+      '#ptk-header .ptk-title{font-weight:700;font-size:19px;letter-spacing:.1px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+      '#ptk-header .ptk-sub{font-size:12.5px;font-weight:500}',
       '#ptk-header .ptk-clock{text-align:right;font-family:"IBM Plex Mono",ui-monospace,monospace}',
       '#ptk-header .ptk-time{font-size:20px;font-weight:700}',
-      '#ptk-header .ptk-date{font-size:12px;opacity:.9}',
+      '#ptk-header .ptk-date{font-size:12.5px;font-weight:500}',
       '#ptk-sidebar{position:fixed;top:64px;left:0;bottom:0;width:260px;background:#fff;border-right:1px solid #E2E8F0;overflow-y:auto;padding:14px 0 24px;z-index:10040;transform:translateX(0);transition:transform .2s ease;font-family:Sarabun,"IBM Plex Sans Thai",Tahoma,sans-serif}',
-      '#ptk-sidebar a{display:flex;align-items:center;gap:10px;padding:10px 18px;margin:2px 10px;border-radius:8px;color:#334155;text-decoration:none;font-weight:600;font-size:14.5px}',
-      '#ptk-sidebar .ptk-group{margin:18px 20px 6px;padding-top:14px;border-top:1px solid #EEF2F6;font-size:11px;font-weight:700;letter-spacing:.6px;color:#6B8BA4;text-transform:uppercase;cursor:default;user-select:none}',
-      '#ptk-sidebar .ptk-group:first-of-type{border-top:0;padding-top:0;margin-top:12px}',
-      '#ptk-sidebar a.sub{position:relative;font-size:13px;font-weight:500;color:#94A3B8;padding:7px 14px 7px 18px;margin:0 10px 2px 38px;border-radius:0 8px 8px 0;border-left:2px solid #E2E8F0}',
-      '#ptk-sidebar a:hover,#ptk-sidebar a.active{background:rgba(29,111,164,.08);color:#1D6FA4}',
-      '#ptk-sidebar a.sub:hover,#ptk-sidebar a.sub.active{border-left-color:#1D6FA4}',
+      '#ptk-sidebar a{display:flex;align-items:center;gap:11px;padding:9px 14px;margin:1px 10px;border-radius:8px;color:#334155;text-decoration:none;font-weight:600;font-size:14.5px;line-height:1.35}',
+      '#ptk-sidebar a .ptk-ico{flex-shrink:0;color:#64748B}',
+      '#ptk-sidebar .ptk-group{margin:16px 18px 6px;padding-top:14px;border-top:1px solid #E5E7EB;font-size:12.5px;font-weight:700;letter-spacing:.5px;color:#475569;cursor:default;user-select:none}',
+      '#ptk-sidebar .ptk-group:first-of-type{margin-top:10px}',
+      '#ptk-sidebar a.sub{font-size:13.5px;font-weight:500;color:#64748B;padding:7px 12px;margin:0 10px 2px 34px;border-radius:0 8px 8px 0;border-left:2px solid #E2E8F0}',
+      '#ptk-sidebar a.sub .ptk-ico{color:#94A3B8}',
+      '#ptk-sidebar a:hover{background:#F8F1FB;color:#6E2C84}',
+      '#ptk-sidebar a:hover .ptk-ico{color:#8E3BA8}',
+      '#ptk-sidebar a.active{background:#F4E8F8;color:#7A2F92;font-weight:700;box-shadow:inset 3px 0 0 #8E3BA8}',
+      '#ptk-sidebar a.active .ptk-ico{color:#8E3BA8}',
+      '#ptk-sidebar a.sub:hover,#ptk-sidebar a.sub.active{border-left-color:#8E3BA8;box-shadow:none}',
+      '#ptk-sidebar a:focus-visible,#ptk-quick a:focus-visible{outline:2px solid #8E3BA8;outline-offset:2px}',
       '#ptk-dim{display:none;position:fixed;inset:0;top:64px;background:rgba(15,23,42,.35);z-index:10030}',
       /* quick pills: always a direct child of body right after the sidebar, so every page gets the same position */
       'body.ptk-has-shell > #ptk-quick{display:flex;flex-wrap:wrap;gap:8px;margin:0 !important;padding:16px 24px 12px !important;box-sizing:border-box;width:auto;max-width:none;position:static;float:none;font-family:Sarabun,"IBM Plex Sans Thai",Tahoma,sans-serif}',
       '#ptk-quick a{flex:0 0 auto;white-space:nowrap;line-height:1.35;box-sizing:border-box}',
       '@media(max-width:900px){body.ptk-has-shell > #ptk-quick{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding:10px 12px 8px !important;gap:6px}}',
       '#ptk-quick a{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:999px;border:1px solid #E2E8F0;background:#fff;color:#1A2332;text-decoration:none;font-weight:700;font-size:13px}',
-      '#ptk-quick a:hover,#ptk-quick a.active{background:#1D6FA4;color:#fff;border-color:#1D6FA4}',
+      '#ptk-quick a .ptk-ico{flex-shrink:0;color:#64748B}',
+      '#ptk-quick a:hover{background:#F8F1FB;color:#6E2C84;border-color:#E3C6EE}',
+      '#ptk-quick a.active{background:#8E3BA8;color:#fff;border-color:#8E3BA8}',
+      '#ptk-quick a.active .ptk-ico{color:#fff}',
+      /* wide screens: the sidebar already lists every page, so hide the duplicate pill row */
+      '@media(min-width:901px){body.ptk-has-shell > #ptk-quick{display:none !important}}',
       'body.ptk-has-shell{padding-top:64px !important}',
       'body.ptk-has-shell nav.top-nav,body.ptk-has-shell .top-nav,body.ptk-has-shell aside.sidebar:not(#ptk-sidebar),body.ptk-has-shell #sidebar:not(#ptk-sidebar){display:none !important}',
       'body.ptk-has-shell .quick:not(#ptk-quick){display:none !important}',
@@ -71,7 +109,7 @@
       '@media(min-width:901px){body.ptk-has-shell{margin-left:260px}#ptk-burger{visibility:hidden}}',
       /* full-width content: lift max-width caps on main page wrappers (desktop) */
       '@media(min-width:901px){body.ptk-has-shell > .wrap,body.ptk-has-shell > main,body.ptk-has-shell > .main,body.ptk-has-shell > .main-content,body.ptk-has-shell > .max-w-6xl,body.ptk-has-shell > .max-w-7xl{max-width:none !important;margin-left:0 !important;margin-right:0 !important;padding-left:24px !important;padding-right:24px !important;box-sizing:border-box}}',
-      '@media(max-width:900px){#ptk-sidebar{transform:translateX(-100%);box-shadow:8px 0 24px rgba(0,0,0,.12)}#ptk-sidebar.open{transform:translateX(0)}#ptk-dim.show{display:block}body.ptk-has-shell{margin-left:0 !important}#ptk-header .ptk-left{flex:1}#ptk-header .ptk-left>div:last-child{min-width:0}#ptk-header .ptk-title{font-size:12.5px;white-space:normal;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}#ptk-header .ptk-sub{font-size:11px}#ptk-header .ptk-clock{display:none}}',
+      '@media(max-width:900px){#ptk-sidebar{transform:translateX(-100%);box-shadow:8px 0 24px rgba(0,0,0,.12)}#ptk-sidebar.open{transform:translateX(0)}#ptk-dim.show{display:block}body.ptk-has-shell{margin-left:0 !important}#ptk-header .ptk-left{flex:1}#ptk-header .ptk-left>div:last-child{min-width:0}#ptk-header .ptk-title{font-size:13.5px;white-space:normal;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}#ptk-header .ptk-sub{font-size:11px}#ptk-header .ptk-clock{display:none}}',
       '.kpi-row{grid-template-columns:1.3fr 1.3fr .85fr !important;gap:14px !important}',
       '@media(max-width:900px){.kpi-row{grid-template-columns:1fr !important}}',
       '.kpi.kpi-prog,.kpi.net{border-radius:16px !important;border:1px solid transparent !important;border-left:5px solid !important;padding:15px 16px 13px !important;box-shadow:0 6px 18px rgba(15,23,42,.05) !important}',
@@ -111,8 +149,8 @@
     var h = document.createElement('header');
     h.id = 'ptk-header';
     h.innerHTML = '<div class="ptk-left">'
-      + '<button type="button" id="ptk-burger" aria-label="เมนู">☰</button>'
-      + '<div class="ptk-mark">🏥</div>'
+      + '<button type="button" id="ptk-burger" aria-label="เมนู">' + svg('menu', 24) + '</button>'
+      + '<div class="ptk-mark">' + svg('hospital', 22) + '</div>'
       + '<div><div class="ptk-title" title="โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา</div>'
       + '<div class="ptk-sub">ระบบติดตามข้อมูลโรงพยาบาล</div></div></div>'
       + '<div class="ptk-clock"><div class="ptk-time" id="ptk-clock">--:--</div>'
@@ -127,7 +165,7 @@
       if (p.group) return '<div class="ptk-group">' + p.group + '</div>';
       return '<a href="' + p.href + '" class="'
         + (isActive(p.href) ? 'active' : '')
-        + (p.sub ? ' sub' : '') + '">' + p.icon + ' ' + p.label + '</a>';
+        + (p.sub ? ' sub' : '') + '">' + svg(p.icon, p.sub ? 16 : 18) + '<span>' + p.label + '</span></a>';
     }).join('');
     document.body.insertBefore(a, document.body.firstChild.nextSibling);
     var dim = document.createElement('div');
@@ -140,7 +178,7 @@
     box.id = 'ptk-quick';
     box.innerHTML = PAGES.filter(function (p) { return !p.group; }).map(function (p) {
       return '<a href="' + p.href + '"' + (isActive(p.href) ? ' class="active"' : '') + '>'
-        + p.icon + ' ' + p.label.replace(' / การเงิน', '').replace(' / สปสช.', '') + '</a>';
+        + svg(p.icon, 15) + '<span>' + p.label.replace(' / การเงิน', '').replace(' / สปสช.', '') + '</span></a>';
     }).join('');
     document.body.insertBefore(box, document.getElementById('ptk-sidebar').nextSibling);
     var act = box.querySelector('a.active');
