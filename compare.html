@@ -27,7 +27,14 @@ body{background:var(--bg);color:var(--text);font-family:'Sarabun',sans-serif;fon
 .nav-date{font-size:11px;color:var(--muted)}
 
 .header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 24px;position:sticky;top:53px;z-index:200;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-body.ptk-has-shell .header{top:64px}
+.page-toolbar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:8px 14px;flex-wrap:wrap}
+.page-toolbar h1{font-size:15px;font-weight:700;color:var(--text);line-height:1.3}
+.page-toolbar .sub{font-size:11.5px;color:var(--muted);margin-top:1px}
+/* shell (64px) + sticky page toolbar (60px) = 124px; same app-style layout as the old header bar */
+body.ptk-has-shell .page-toolbar{position:sticky;top:64px;z-index:200}
+body.ptk-has-shell .layout{min-height:calc(100vh - 124px)}
+body.ptk-has-shell .sidebar{top:124px;height:calc(100vh - 124px)}
+body.ptk-has-shell .content{height:calc(100vh - 124px)}
 .header-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
 .header-icon{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,rgba(0,201,167,.25),rgba(88,166,255,.2));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .header-info{flex:1;min-width:0}
@@ -303,16 +310,15 @@ body.ptk-has-shell .header{top:64px}
 
 
 
-<!-- HOSPITAL HEADER BAR -->
-<div class="header">
-  <div class="header-icon">🏥</div>
-  <div class="header-info">
-    <h1 id="headerHospName">โรงพยาบาลพระทองคำ เฉลิมพระเกียรติ 80 พรรษา</h1>
-    <div class="sub">ระยะเวลารอคอยผู้ป่วยนอก · จ.นครราชสีมา · ปีงบประมาณ 2569</div>
+<!-- page toolbar (title + primary-hospital picker moved from the old hospital header bar; the purple shell header already shows the hospital name) -->
+<div class="page-toolbar">
+  <div class="page-toolbar-title">
+    <h1>ระยะเวลารอคอยผู้ป่วยนอก</h1>
+    <div class="sub">จ.นครราชสีมา · ปีงบประมาณ 2569</div>
   </div>
   <div class="header-hosp">
     <span class="hosp-star">⭐</span>
-    <select class="hosp-select" id="headerHospSelect" onchange="switchPrimaryFromHeader(this.value)">
+    <select class="hosp-select" id="headerHospSelect" aria-label="เลือกโรงพยาบาลหลัก" onchange="switchPrimaryFromHeader(this.value)">
     </select>
     <span class="myhosp-badge" id="myHospBadge">รพ.ของเรา</span>
   </div>
@@ -532,7 +538,9 @@ function handleClick(n){
   groupView=false;
   document.getElementById('grpBtn').classList.remove('active');
   document.getElementById('grpBtnTxt').textContent='📊 เปรียบเทียบตามกลุ่มประเภท';
-  // Populate header hospital dropdown
+  renderSidebar();renderMain();
+}
+// Populate header hospital dropdown
 function populateHeaderSelect(){
   const sel = document.getElementById('headerHospSelect');
   if(!sel) return;
@@ -553,7 +561,7 @@ function updateHeaderBar(){
   const hn = document.getElementById('headerHospName');
   if(hn) hn.textContent = primary.name;
   const sel = document.getElementById('headerHospSelect');
-  if(sel) sel.value = primary.name;
+  if(sel){ if(!sel.options.length) populateHeaderSelect(); sel.value = primary.name; }
 }
 // Set date in nav
 (function(){
@@ -565,8 +573,6 @@ function updateHeaderBar(){
 })();
 
 populateHeaderSelect();
-renderSidebar();renderMain();
-}
 function addToCompare(n){
   if(compareList.some(c=>c.name===n)){rmCmp(n);return;}
   if(compareList.length>=3) return;

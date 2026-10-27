@@ -46,6 +46,7 @@
     pill: '<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>',
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
     hospital: '<path d="M12 6v4"/><path d="M14 14h-4"/><path d="M14 18h-4"/><path d="M14 8h-4"/><path d="M18 12h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2"/><path d="M18 22V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v18"/>',
+    chevron: '<path d="m6 9 6 6 6-6"/>',
     menu: '<line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>'
   };
   function svg(name, size) {
@@ -76,12 +77,12 @@
       '#ptk-header .ptk-clock{text-align:right;font-family:"IBM Plex Mono",ui-monospace,monospace}',
       '#ptk-header .ptk-time{font-size:20px;font-weight:700}',
       '#ptk-header .ptk-date{font-size:12.5px;font-weight:500}',
-      '#ptk-sidebar{position:fixed;top:64px;left:0;bottom:0;width:260px;background:#fff;border-right:1px solid #E2E8F0;overflow-y:auto;padding:14px 0 24px;z-index:10040;transform:translateX(0);transition:transform .2s ease;font-family:Sarabun,"IBM Plex Sans Thai",Tahoma,sans-serif}',
-      '#ptk-sidebar a{display:flex;align-items:center;gap:11px;padding:9px 14px;margin:1px 10px;border-radius:8px;color:#334155;text-decoration:none;font-weight:600;font-size:14.5px;line-height:1.35}',
+      '#ptk-sidebar{position:fixed;top:64px;left:0;bottom:0;width:260px;background:#fff;border-right:1px solid #E2E8F0;overflow-y:auto;padding:8px 0 12px;z-index:10040;transform:translateX(0);transition:transform .2s ease;font-family:Sarabun,"IBM Plex Sans Thai",Tahoma,sans-serif}',
+      '#ptk-sidebar a{display:flex;align-items:center;gap:10px;padding:6px 14px;margin:1px 10px;border-radius:8px;color:#334155;text-decoration:none;font-weight:600;font-size:14.5px;line-height:1.35}',
       '#ptk-sidebar a .ptk-ico{flex-shrink:0;color:#64748B}',
-      '#ptk-sidebar .ptk-group{margin:16px 18px 6px;padding-top:14px;border-top:1px solid #E5E7EB;font-size:12.5px;font-weight:700;letter-spacing:.5px;color:#475569;cursor:default;user-select:none}',
-      '#ptk-sidebar .ptk-group:first-of-type{margin-top:10px}',
-      '#ptk-sidebar a.sub{font-size:13.5px;font-weight:500;color:#64748B;padding:7px 12px;margin:0 10px 2px 34px;border-radius:0 8px 8px 0;border-left:2px solid #E2E8F0}',
+      '#ptk-sidebar .ptk-group{margin:8px 18px 3px;padding-top:8px;border-top:1px solid #E5E7EB;font-size:13px;line-height:1.35;font-weight:700;letter-spacing:.5px;color:#475569;cursor:default;user-select:none}',
+      '#ptk-sidebar .ptk-group:first-of-type{margin-top:6px}',
+      '#ptk-sidebar a.sub{font-size:13.5px;font-weight:500;color:#64748B;padding:4px 12px;margin:0 10px 1px 34px;border-radius:0 8px 8px 0;border-left:2px solid #E2E8F0}',
       '#ptk-sidebar a.sub .ptk-ico{color:#94A3B8}',
       '#ptk-sidebar a:hover{background:#F8F1FB;color:#6E2C84}',
       '#ptk-sidebar a:hover .ptk-ico{color:#8E3BA8}',
@@ -89,6 +90,18 @@
       '#ptk-sidebar a.active .ptk-ico{color:#8E3BA8}',
       '#ptk-sidebar a.sub:hover,#ptk-sidebar a.sub.active{border-left-color:#8E3BA8;box-shadow:none}',
       '#ptk-sidebar a:focus-visible,#ptk-quick a:focus-visible{outline:2px solid #8E3BA8;outline-offset:2px}',
+      /* collapsible sub-menus: chevron is its own button, separate from the parent link */
+      '#ptk-sidebar .ptk-row{position:relative}',
+      '#ptk-sidebar .ptk-row > a{padding-right:44px}',
+      '#ptk-sidebar .ptk-chev{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:0;border-radius:6px;background:transparent;color:#64748B;cursor:pointer;padding:0}',
+      '#ptk-sidebar .ptk-chev:hover{background:#F4E8F8;color:#8E3BA8}',
+      '#ptk-sidebar .ptk-chev:focus-visible{outline:2px solid #8E3BA8;outline-offset:1px}',
+      '#ptk-sidebar .ptk-chev svg{transition:transform .15s ease}',
+      '#ptk-sidebar .ptk-chev[aria-expanded="true"] svg{transform:rotate(180deg)}',
+      '#ptk-sidebar .ptk-subs[hidden]{display:none}',
+      /* short desktop screens: tighter rows so the whole menu fits without scrolling */
+      '@media(min-width:901px) and (max-height:760px){#ptk-sidebar{padding:4px 0 6px}#ptk-sidebar a{padding:4px 14px;font-size:14px;line-height:1.3}#ptk-sidebar a.sub{padding:3px 12px;font-size:13px}#ptk-sidebar .ptk-group{margin:5px 18px 1px;padding-top:5px}#ptk-sidebar .ptk-group:first-of-type{margin-top:3px}}',
+      '@media(min-width:901px) and (max-height:620px){#ptk-sidebar a{padding:3px 14px;font-size:13.5px}#ptk-sidebar .ptk-group{margin:3px 18px 0;padding-top:3px}}',
       '#ptk-dim{display:none;position:fixed;inset:0;top:64px;background:rgba(15,23,42,.35);z-index:10030}',
       /* quick pills: always a direct child of body right after the sidebar, so every page gets the same position */
       'body.ptk-has-shell > #ptk-quick{display:flex;flex-wrap:wrap;gap:8px;margin:0 !important;padding:16px 24px 12px !important;box-sizing:border-box;width:auto;max-width:none;position:static;float:none;font-family:Sarabun,"IBM Plex Sans Thai",Tahoma,sans-serif}',
@@ -161,12 +174,36 @@
   function buildSidebar() {
     var a = document.createElement('aside');
     a.id = 'ptk-sidebar';
-    a.innerHTML = PAGES.map(function (p) {
-      if (p.group) return '<div class="ptk-group">' + p.group + '</div>';
+    /* group each parent with its sub-items; sub-items stay collapsed unless we are on the parent or one of its subs */
+    var html = '', i = 0, n = 0;
+    function link(p) {
       return '<a href="' + p.href + '" class="'
         + (isActive(p.href) ? 'active' : '')
         + (p.sub ? ' sub' : '') + '">' + svg(p.icon, p.sub ? 16 : 18) + '<span>' + p.label + '</span></a>';
-    }).join('');
+    }
+    while (i < PAGES.length) {
+      var p = PAGES[i];
+      if (p.group) { html += '<div class="ptk-group">' + p.group + '</div>'; i++; continue; }
+      var subs = [];
+      var j = i + 1;
+      while (j < PAGES.length && PAGES[j].sub) { subs.push(PAGES[j]); j++; }
+      if (!subs.length) { html += link(p); i++; continue; }
+      var open = isActive(p.href) || subs.some(function (q) { return isActive(q.href); });
+      var id = 'ptk-subs-' + (n++);
+      html += '<div class="ptk-row">' + link(p)
+        + '<button type="button" class="ptk-chev" aria-controls="' + id + '" aria-expanded="' + open + '" aria-label="เมนูย่อยของ ' + p.label + '">' + svg('chevron', 16) + '</button></div>'
+        + '<div class="ptk-subs" id="' + id + '"' + (open ? '' : ' hidden') + '>' + subs.map(link).join('') + '</div>';
+      i = j;
+    }
+    a.innerHTML = html;
+    a.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('.ptk-chev');
+      if (!b) return;
+      var box = document.getElementById(b.getAttribute('aria-controls'));
+      var on = b.getAttribute('aria-expanded') !== 'true';
+      b.setAttribute('aria-expanded', String(on));
+      if (box) box.hidden = !on;
+    });
     document.body.insertBefore(a, document.body.firstChild.nextSibling);
     var dim = document.createElement('div');
     dim.id = 'ptk-dim';
