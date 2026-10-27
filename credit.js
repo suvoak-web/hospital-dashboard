@@ -53,6 +53,13 @@
     return '<svg class="ptk-ico" width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + (ICONS[name] || '') + '</svg>';
   }
 
+  // Shared icon set: pages can use <span data-ptk-icon="name"></span> or window.ptkIcon(name, size)
+  window.ptkIcon = svg;
+  function fillIcons() {
+    var els = document.querySelectorAll('[data-ptk-icon]');
+    for (var i = 0; i < els.length; i++) if (!els[i].firstChild) els[i].innerHTML = svg(els[i].getAttribute('data-ptk-icon'), +els[i].getAttribute('data-size') || 20);
+  }
+
   var file = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
   if (!file || file.indexOf('.') === -1) file = 'index.html';
   if (file === 'fin_dashboard.html' || file === 'fin_projection.html') file = 'planfin_dashboard.html';
@@ -480,6 +487,7 @@
     tick();
     setInterval(tick, 10000);
     footer();
+    fillIcons();
     analytics();
     enhanceOpWalkinCharts();
     enhanceOpWalkinKpis();
