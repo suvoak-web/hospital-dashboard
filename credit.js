@@ -10,7 +10,7 @@
     { href: 'planfin_dashboard.html', icon: '📈', label: 'Planfin / การเงิน' },
     { href: 'uc_transfer_dashboard.html', icon: '🏦', label: 'เงินโอน UC / สปสช.' },
     { href: 'sso_dashboard.html', icon: '🛡️', label: 'ประกันสังคมจากแม่ข่าย' },
-    { href: 'ppfs_dashboard.html', icon: '📑', label: 'PPFS NHSO' },
+    { href: 'nhso_rates_2570.html', icon: '📑', label: 'ประกาศ NHSO 2570' },
     { href: 'nhso_mis.html', icon: '🏥', label: 'NHSO-MIS' },
     { href: 'opwalkin.html', icon: '💰', label: 'OP-Walkin' },
     { href: 'ar_aging.html', icon: '🧾', label: 'อายุลูกหนี้' },
