@@ -64,7 +64,7 @@
     var s = document.createElement('style');
     s.id = 'ptk-shell-css';
     s.textContent = [
-      '#ptk-header{position:fixed;top:0;left:0;right:0;z-index:10050;height:64px;background:#BA55D3;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 10px;box-shadow:0 2px 10px rgba(0,0,0,.12);font-family:Sarabun,"IBM Plex Sans Thai",Tahoma,sans-serif}',
+      '#ptk-header{position:fixed;top:0;left:0;right:0;z-index:10050;height:64px;background:#B344CF;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 10px;box-shadow:0 2px 10px rgba(0,0,0,.12);font-family:Sarabun,"IBM Plex Sans Thai",Tahoma,sans-serif}',
       '#ptk-header .ptk-left{display:flex;align-items:center;gap:10px;min-width:0}',
       '#ptk-burger{background:none;border:none;color:#fff;cursor:pointer;padding:8px;line-height:0;border-radius:8px;display:inline-flex}',
       '#ptk-burger:hover{background:rgba(255,255,255,.16)}',
