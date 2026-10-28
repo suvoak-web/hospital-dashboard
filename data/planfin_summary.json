@@ -1,0 +1,26 @@
+{
+ "_note": "Public summary only (aggregate, ล้านบาท)",
+ "updated": "25 ก.ย. 2569",
+ "cash": {
+  "plan_revenue_2570": 74.95,
+  "plan_expense_2570": 97.84,
+  "actual_revenue_2569": 61.25,
+  "actual_expense_2569": 70.94,
+  "cash_deficit": -22.89,
+  "balance_after_plan": -2.69
+ },
+ "accrual": {
+  "y2569": {
+   "revenue": 114.427,
+   "expense": 123.114,
+   "net": -8.687,
+   "ebitda": 0.156
+  },
+  "y2570": {
+   "revenue": 115.952,
+   "expense": 127.976,
+   "net": -12.024,
+   "ebitda": 0.133
+  }
+ }
+}
