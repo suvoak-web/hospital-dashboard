@@ -12,6 +12,7 @@
 
 .grid>*{min-width:0;}canvas{max-width:100%;}.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
 @media(max-width:640px){.g2,.g3,.risk-grid{grid-template-columns:1fr;}.g4{grid-template-columns:1fr 1fr;}.kpi .val{font-size:20px;overflow-wrap:anywhere;}.main{padding:16px 12px 40px;}header{padding:12px 14px;}}
+.lock-card{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px;}.lock-ic{width:42px;height:42px;border-radius:10px;background:#F4E8F8;color:#8E3BA8;display:flex;align-items:center;justify-content:center;flex:none;}.lock-t{font-weight:800;font-size:15.5px;}.lock-card>div:nth-child(2){flex:1;min-width:200px;}.lock-btn{background:#8E3BA8;color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:9px 16px;border-radius:999px;}.lock-btn:hover{background:#7A2F92;}[hidden]{display:none!important;}
 </style></head><body>
 <aside id="sidebar" class="sidebar">
 <a href="index.html" class="nav-item">🏠 หน้าหลัก</a>
@@ -42,22 +43,24 @@
 <button class="tab" onclick="showView('accrual',this)">เกณฑ์คงค้าง 69 / 70</button>
 </div>
 <div id="view-bamrung" class="view on">
-<div class="alert"><b>แผน 2570 รอบ 1:</b> รับ 74.95 · จ่าย 97.84 · ขาดดุลเงินสด 22.89 · คงเหลือ≈ −2.69 ลบ.</div>
+<div class="alert" id="s-alert">กำลังโหลด…</div>
 <div class="grid g4" style="margin-bottom:16px;">
-<div class="card kpi"><div class="lbl">รายรับแผน 2570</div><div class="val">74.95</div><div class="note">จริง 69 = 61.25</div></div>
-<div class="card kpi"><div class="lbl">รายจ่ายแผน 2570</div><div class="val">97.84</div><div class="note">จริง 69 = 70.94</div></div>
-<div class="card kpi"><div class="lbl">ขาดดุลเงินสด</div><div class="val" style="color:var(--red);">−22.89</div></div>
-<div class="card kpi"><div class="lbl">คงเหลือหลังแผน</div><div class="val" style="color:var(--red);">−2.69</div></div>
+<div class="card kpi"><div class="lbl">รายรับแผน 2570</div><div class="val" id="s-rev">-</div><div class="note" id="s-rev-n"></div></div>
+<div class="card kpi"><div class="lbl">รายจ่ายแผน 2570</div><div class="val" id="s-exp">-</div><div class="note" id="s-exp-n"></div></div>
+<div class="card kpi"><div class="lbl">ขาดดุลเงินสด</div><div class="val" id="s-def" style="color:var(--red);">-</div></div>
+<div class="card kpi"><div class="lbl">คงเหลือหลังแผน</div><div class="val" id="s-bal" style="color:var(--red);">-</div></div>
 </div>
+<div class="lock-slot"></div>
+<div class="detail" hidden>
 <div class="grid g2" style="margin-bottom:16px;">
 <div class="card"><div class="kicker">รับ–จ่าย</div><canvas id="chartCash" height="210"></canvas></div>
 <div class="card"><div class="kicker">โครงสร้างรายรับ</div><canvas id="chartRevPie" height="210"></canvas></div>
 </div>
 <div class="grid g3">
-<div class="card"><div class="kicker">ครุภัณฑ์ 2.93 ลบ.</div><div class="note">ค่าเสื่อม 1.18 · บริจาค 1.01 · บำรุง 0.74</div></div>
-<div class="card"><div class="kicker">สิ่งก่อสร้าง 1.55 ลบ.</div><div class="note">ER 0.30 · NCD/Lab 0.50 · หลังคาคลังยา 0.26 · ศูนย์เปล 0.49</div></div>
-<div class="card"><div class="kicker">CFO</div><div class="note"><span class="badge b-risk">ใช้สอย 16.76</span></div><div class="note"><span class="badge b-warn">ยา 13.86</span></div><div class="note"><span class="badge b-info">UC 75%</span></div></div>
-</div></div>
+<div class="card"><div class="kicker" id="d-eq-k"></div><div class="note" id="d-eq-n"></div></div>
+<div class="card"><div class="kicker" id="d-con-k"></div><div class="note" id="d-con-n"></div></div>
+<div class="card"><div class="kicker">CFO</div><div class="note"><span class="badge b-risk" id="d-cfo1"></span></div><div class="note"><span class="badge b-warn" id="d-cfo2"></span></div><div class="note"><span class="badge b-info" id="d-cfo3"></span></div></div>
+</div></div></div>
 <div id="view-accrual" class="view">
 <div class="grid g4" style="margin-bottom:16px;">
 <div class="card kpi"><div class="lbl">รายได้ P13S</div><div class="val" id="k-rev">-</div></div>
@@ -65,31 +68,66 @@
 <div class="card kpi"><div class="lbl">ขาดดุล</div><div class="val" id="k-net">-</div></div>
 <div class="card kpi"><div class="lbl">EBITDA</div><div class="val" id="k-ebitda">-</div></div>
 </div>
+<div class="lock-slot"></div>
+<div class="detail" hidden>
 <div class="grid g2"><div class="card"><canvas id="chartMain" height="210"></canvas></div><div class="card"><canvas id="chartRev" height="210"></canvas></div></div>
 <div class="card tbl-scroll" style="margin-top:14px;"><table id="cmpTable"></table></div>
-</div>
+</div></div>
 <div class="footer">F-PLB1 2570 + Planfin · 25 ก.ย. 2569</div>
 <div class="page-byline">โรงพยาบาลพระทองคำเฉลิมพระเกียรติ 80 พรรษา<br>by <b>Suweerasak Riwlord, M.D.</b></div>
 </div>
 <script>
-const A={revenue:114.427,expense:123.114,net:-8.687,ebitda:0.156,rev:[49.223,37.441,12.958,3.984,4.972,2.061],exp:[37.441,22.339,12.494,12.505,12.523,7.127]};
-const B={revenue:115.952,expense:127.976,net:-12.024,ebitda:0.133,rev:[50.883,39.677,13.905,1.172,4.772,1.821],exp:[39.677,22.809,11.857,13.330,12.910,8.725]};
+// Paths are relative to this page so they work at a domain root (Cloudflare Pages)
+// and under the GitHub Pages subpath /hospital-dashboard/.
+const SUMMARY_URL=new URL('data/planfin_summary.json',location.href).href;
+const DETAIL_URL=new URL('private/planfin_detail.json',location.href).href;
+const LOGIN_URL=new URL('private/',location.href).href;
 function mil(n){return (n<0?'\u2212':'')+Math.abs(n).toFixed(2);}
-function showView(id,btn){document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));document.getElementById('view-'+id).classList.add('on');btn.classList.add('on');}
-function renderBamrung(){
- new Chart(document.getElementById('chartCash'),{type:'bar',data:{labels:['รายรับ','รายจ่าย','ขาดดุล'],datasets:[{label:'จริง 69',data:[61.25,70.94,-9.68],backgroundColor:'#1D6FA4'},{label:'แผน 70',data:[74.95,97.84,-22.89],backgroundColor:'#0F6E56'}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
- new Chart(document.getElementById('chartRevPie'),{type:'doughnut',data:{labels:['UC','เบิกจ่ายตรง','SSO','ค่ารักษา','อปท.','อุดหนุน','อื่น'],datasets:[{data:[56.22,6.46,2.74,2.31,1.38,1.70,4.14],backgroundColor:['#1D6FA4','#0F6E56','#7C3AED','#B45309','#16A34A','#DC2626','#64748B']}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
+function $(id){return document.getElementById(id);}
+function showView(id,btn){document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));$('view-'+id).classList.add('on');btn.classList.add('on');}
+function renderSummary(S){
+ const c=S.cash,a=S.accrual.y2569,b=S.accrual.y2570;
+ $('s-alert').innerHTML='<b>แผน 2570 รอบ 1:</b> รับ '+c.plan_revenue_2570.toFixed(2)+' · จ่าย '+c.plan_expense_2570.toFixed(2)+' · ขาดดุลเงินสด '+Math.abs(c.cash_deficit).toFixed(2)+' · คงเหลือ≈ '+mil(c.balance_after_plan)+' ลบ.';
+ $('s-rev').textContent=c.plan_revenue_2570.toFixed(2);$('s-rev-n').textContent='จริง 69 = '+c.actual_revenue_2569.toFixed(2);
+ $('s-exp').textContent=c.plan_expense_2570.toFixed(2);$('s-exp-n').textContent='จริง 69 = '+c.actual_expense_2569.toFixed(2);
+ $('s-def').textContent=mil(c.cash_deficit);$('s-bal').textContent=mil(c.balance_after_plan);
+ $('k-rev').textContent=mil(a.revenue)+' \u2192 '+mil(b.revenue);
+ $('k-exp').textContent=mil(a.expense)+' \u2192 '+mil(b.expense);
+ $('k-net').textContent=mil(a.net)+' \u2192 '+mil(b.net);
+ $('k-ebitda').textContent=mil(a.ebitda)+' \u2192 '+mil(b.ebitda);
 }
-function render(){
- document.getElementById('k-rev').textContent=mil(A.revenue)+' \u2192 '+mil(B.revenue);
- document.getElementById('k-exp').textContent=mil(A.expense)+' \u2192 '+mil(B.expense);
- document.getElementById('k-net').textContent=mil(A.net)+' \u2192 '+mil(B.net);
- document.getElementById('k-ebitda').textContent=mil(A.ebitda)+' \u2192 '+mil(B.ebitda);
- new Chart(document.getElementById('chartMain'),{type:'bar',data:{labels:['รายได้','ค่าใช้จ่าย','ขาดดุล','EBITDA'],datasets:[{label:'2569',data:[A.revenue,A.expense,A.net,A.ebitda],backgroundColor:'#1D6FA4'},{label:'2570',data:[B.revenue,B.expense,B.net,B.ebitda],backgroundColor:'#0F6E56'}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
- new Chart(document.getElementById('chartRev'),{type:'bar',data:{labels:['UC','บุคลากร','อื่น','ลงทุน','เบิกจ่ายตรง','SSO'],datasets:[{label:'2569',data:A.rev,backgroundColor:'#1D6FA4'},{label:'2570',data:B.rev,backgroundColor:'#0F6E56'}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{position:'bottom'}}}});
- document.getElementById('cmpTable').innerHTML='<thead><tr><th>รายการ</th><th class="num">2569</th><th class="num">2570</th></tr></thead><tbody><tr><td>รายได้</td><td class="num">'+mil(A.revenue)+'</td><td class="num">'+mil(B.revenue)+'</td></tr><tr><td>ค่าใช้จ่าย</td><td class="num">'+mil(A.expense)+'</td><td class="num">'+mil(B.expense)+'</td></tr><tr><td>ขาดดุล</td><td class="num">'+mil(A.net)+'</td><td class="num">'+mil(B.net)+'</td></tr></tbody>';
+function renderDetail(S,D){
+ document.querySelectorAll('.detail').forEach(d=>d.hidden=false);
+ document.querySelectorAll('.lock-slot').forEach(d=>d.innerHTML='');
+ const cc=D.cash_chart,m=D.revenue_mix,r=D.accrual_breakdown,a=S.accrual.y2569,b=S.accrual.y2570;
+ new Chart($('chartCash'),{type:'bar',data:{labels:cc.labels,datasets:[{label:'จริง 69',data:cc.actual_2569,backgroundColor:'#1D6FA4'},{label:'แผน 70',data:cc.plan_2570,backgroundColor:'#0F6E56'}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
+ new Chart($('chartRevPie'),{type:'doughnut',data:{labels:m.labels,datasets:[{data:m.values,backgroundColor:['#1D6FA4','#0F6E56','#7C3AED','#B45309','#16A34A','#DC2626','#64748B']}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
+ $('d-eq-k').textContent='ครุภัณฑ์ '+D.equipment.total+' ลบ.';$('d-eq-n').textContent=D.equipment.note;
+ $('d-con-k').textContent='สิ่งก่อสร้าง '+D.construction.total+' ลบ.';$('d-con-n').textContent=D.construction.note;
+ $('d-cfo1').textContent='ใช้สอย '+D.cfo.supplies;$('d-cfo2').textContent='ยา '+D.cfo.drugs;$('d-cfo3').textContent='UC '+D.cfo.uc_share;
+ new Chart($('chartMain'),{type:'bar',data:{labels:['รายได้','ค่าใช้จ่าย','ขาดดุล','EBITDA'],datasets:[{label:'2569',data:[a.revenue,a.expense,a.net,a.ebitda],backgroundColor:'#1D6FA4'},{label:'2570',data:[b.revenue,b.expense,b.net,b.ebitda],backgroundColor:'#0F6E56'}]},options:{responsive:true,plugins:{legend:{position:'bottom'}}}});
+ new Chart($('chartRev'),{type:'bar',data:{labels:r.rev_labels,datasets:[{label:'2569',data:r.rev_2569,backgroundColor:'#1D6FA4'},{label:'2570',data:r.rev_2570,backgroundColor:'#0F6E56'}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{position:'bottom'}}}});
+ $('cmpTable').innerHTML='<thead><tr><th>รายการ</th><th class="num">2569</th><th class="num">2570</th></tr></thead><tbody><tr><td>รายได้</td><td class="num">'+mil(a.revenue)+'</td><td class="num">'+mil(b.revenue)+'</td></tr><tr><td>ค่าใช้จ่าย</td><td class="num">'+mil(a.expense)+'</td><td class="num">'+mil(b.expense)+'</td></tr><tr><td>ขาดดุล</td><td class="num">'+mil(a.net)+'</td><td class="num">'+mil(b.net)+'</td></tr></tbody>';
 }
-renderBamrung();render();
+function showLocked(){
+ document.querySelectorAll('.detail').forEach(d=>d.hidden=true);
+ document.querySelectorAll('.lock-slot').forEach(d=>{d.innerHTML='<div class="card lock-card"><div class="lock-ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div><div class="lock-t">ข้อมูลละเอียดสำหรับผู้ได้รับอนุญาต</div><div class="note">กราฟโครงสร้างรายรับ รายละเอียดครุภัณฑ์/สิ่งก่อสร้าง และตารางเปรียบเทียบ แสดงเฉพาะผู้ที่เข้าสู่ระบบ</div></div><a class="lock-btn" href="'+LOGIN_URL+'">เข้าสู่ระบบเพื่อดูรายละเอียด</a></div>';});
+}
+async function loadDetail(){
+ try{
+  const r=await fetch(DETAIL_URL,{credentials:'include',redirect:'manual',cache:'no-store'});
+  if(r.type==='opaqueredirect'||r.status!==200)return null;
+  if(!(r.headers.get('content-type')||'').includes('json'))return null;
+  return await r.json();
+ }catch(e){return null;}
+}
+(async function(){
+ let S;
+ try{S=await (await fetch(SUMMARY_URL,{cache:'no-store'})).json();renderSummary(S);}
+ catch(e){$('s-alert').textContent='โหลดข้อมูลสรุปไม่สำเร็จ';return;}
+ const D=await loadDetail();
+ if(D)renderDetail(S,D);else showLocked();
+})();
 </script>
 <script src="credit.js"></script>
 </body></html>
