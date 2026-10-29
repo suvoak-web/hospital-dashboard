@@ -31,6 +31,15 @@ tr.total td{background:#F8FAFC;font-weight:700}
     <div id="monthChips" class="flex gap-2 items-start flex-wrap"></div>
   </div>
 
+  <div class="card p-4 mb-4" id="trendCard">
+    <div class="flex flex-wrap justify-between gap-2 mb-1">
+      <div class="font-semibold">ยอดจัดสรรรายเดือน แยกตามแม่ข่าย</div>
+      <div id="trendLegend" class="flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-600"></div>
+    </div>
+    <p class="text-xs text-slate-500 mb-2">บาท · ตัวเลขบนแท่ง = รวมเฉพาะแม่ข่ายที่มีข้อมูลแล้ว · กรอบเส้นประ = ยังไม่มีข้อมูล (ไม่ได้นับเป็น 0) · มิ.ย. = ยอดปิดงวด</p>
+    <div class="h-64"><canvas id="cTrend"></canvas></div>
+  </div>
+
   <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
     <div class="card p-3 border-t-4" style="border-top-color:#8E3BA8">
       <div class="text-xs text-slate-500">จัดสรรรวมที่รู้แล้ว</div>
@@ -372,6 +381,74 @@ function render(){
   });
 }
 function setMonth(id){ active = id; render(); }
+function renderTrend(){
+  const hubIds = [];
+  MONTHS.forEach(m => m.hubs.forEach(h => { if (!hubIds.includes(h.id)) hubIds.push(h.id); }));
+  const hubMeta = id => { for (const m of MONTHS) { const h = m.hubs.find(x => x.id === id); if (h) return h; } };
+  const PAL = { mhr: '#8E3BA8', dprh: '#0F6E56', pck: '#1D6FA4' };
+  const extra = ['#B45309', '#7C3AED', '#64748B'];
+  const colorOf = (id, i) => PAL[id] || extra[i % extra.length];
+  const hubOf = (m, id) => m.hubs.find(h => h.id === id);
+  const totals = MONTHS.map(m => m.hubs.filter(h => h.status === 'ok').reduce((s,h) => s + totalOf(h), 0));
+  const pend = MONTHS.map(m => hubIds.filter(id => { const h = hubOf(m, id); return !h || h.status !== 'ok'; }).map(id => hubMeta(id).short));
+  const max = Math.max(...totals, 1);
+  document.getElementById('trendLegend').innerHTML = hubIds.map((id,i) => {
+    const any = MONTHS.some(m => { const h = hubOf(m, id); return h && h.status === 'ok'; });
+    const sw = any ? 'background:' + colorOf(id,i) : 'border:1.5px dashed #94A3B8';
+    return '<span class="inline-flex items-center gap-1"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;' + sw + '"></span>' + hubMeta(id).short + (any ? '' : ' (ยังไม่มีข้อมูล)') + '</span>';
+  }).join('') + '<span class="inline-flex items-center gap-1"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1.5px dashed #94A3B8"></span>ยังไม่มีข้อมูล</span>';
+  const small = window.innerWidth < 640;
+  const labels = {
+    id: 'trendLabels',
+    afterDatasetsDraw(c){
+      const ctx = c.ctx, xs = c.scales.x, ys = c.scales.y;
+      ctx.save();
+      MONTHS.forEach((m, i) => {
+        const x = xs.getPixelForValue(i), top = ys.getPixelForValue(totals[i]);
+        const w = Math.min(xs.width / MONTHS.length * 0.55, 90);
+        if (pend[i].length) {
+          ctx.setLineDash([4,3]); ctx.strokeStyle = '#94A3B8'; ctx.lineWidth = 1.2;
+          const ph = Math.max(18, (ys.bottom - ys.top) * 0.12);
+          ctx.strokeRect(x - w/2, top - ph - 22, w, ph);
+          ctx.setLineDash([]);
+          ctx.fillStyle = '#64748B'; ctx.font = (small ? '9px' : '11px') + ' Sarabun, sans-serif'; ctx.textAlign = 'center';
+          ctx.fillText(small ? 'รอ ' + pend[i].length + ' แห่ง' : 'ยังไม่มีข้อมูล: ' + pend[i].join(', '), x, top - ph - 26);
+        }
+        ctx.fillStyle = '#7A2F92'; ctx.font = 'bold ' + (small ? '10px' : '12px') + ' Sarabun, sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText(small ? (totals[i]/1000).toFixed(1) + 'k' : money(totals[i]), x, top - 6);
+      });
+      ctx.restore();
+    }
+  };
+  new Chart(document.getElementById('cTrend'), {
+    type: 'bar',
+    data: {
+      labels: MONTHS.map(m => m.label),
+      datasets: hubIds.map((id,i) => ({
+        label: hubMeta(id).short,
+        data: MONTHS.map(m => { const h = hubOf(m, id); return h && h.status === 'ok' ? totalOf(h) : null; }),
+        backgroundColor: colorOf(id,i), maxBarThickness: 90, categoryPercentage: 0.6, barPercentage: 0.95
+      }))
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      layout: { padding: { top: 8 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: {
+          label: t => t.dataset.label + ': ' + money(t.raw),
+          footer: items => { const i = items[0].dataIndex; return 'รวมที่มีข้อมูล: ' + money(totals[i]) + (pend[i].length ? '\nยังไม่มีข้อมูล: ' + pend[i].join(', ') : ''); }
+        } }
+      },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Sarabun', size: small ? 10 : 12 } } },
+        y: { stacked: true, suggestedMax: max * 1.45, ticks: { callback: v => (v/1000) + 'k' } }
+      }
+    },
+    plugins: [labels]
+  });
+}
+renderTrend();
 renderClose();
 render();
 </script>
