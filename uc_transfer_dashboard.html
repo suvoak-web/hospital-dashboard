@@ -54,12 +54,12 @@ tr.fund-row.on td{background:#dbeafe}
   <div id="y70Block" class="card p-4 mb-5 border-t-4 border-sky-700">
     <div class="flex flex-wrap justify-between gap-2 mb-3">
       <div>
-        <h3 class="font-semibold" id="y70Title">ปี 2570 แยกติดตาม — ถึง 26 ต.ค. 2569</h3>
+        <h3 class="font-semibold" id="y70Title">ปี 2570 แยกติดตาม — ถึง 29 ต.ค. 2569</h3>
         <p class="text-xs text-slate-500">ปีงบใหม่ 1 ต.ค. 69 – 30 ก.ย. 70 · ยังไม่ครบเดือน ห้ามเทียบกับทั้งปี 66–69</p>
-        <p class="text-xs text-slate-500 mt-1" id="y70Source">ตัวเลขเผยแพร่จาก statement ถึง 26 ต.ค. · อัปไฟล์ด้านขวาจะอัปเฉพาะเครื่องนี้</p>
+        <p class="text-xs text-slate-500 mt-1" id="y70Source">ตัวเลขเผยแพร่จาก statement ถึง 29 ต.ค. · อัปไฟล์ด้านขวาจะอัปเฉพาะเครื่องนี้</p>
       </div>
       <div class="text-right">
-        <div class="text-2xl font-bold text-sky-800" id="y70CashBig">7.69</div>
+        <div class="text-2xl font-bold text-sky-800" id="y70CashBig">7.81</div>
         <div class="text-xs text-slate-400">ล้านบาท เข้าบัญชี</div>
       </div>
     </div>
@@ -71,10 +71,10 @@ tr.fund-row.on td{background:#dbeafe}
       <span class="text-xs text-slate-500">อัปจากหน้านี้เห็นทันทีบนเบราว์เซอร์นี้</span>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-      <div class="card p-3"><div class="text-xs text-slate-500">จัดสรร</div><div class="text-xl font-bold" id="y70Claim">7.73</div></div>
+      <div class="card p-3"><div class="text-xs text-slate-500">จัดสรร</div><div class="text-xl font-bold" id="y70Claim">7.86</div></div>
       <div class="card p-3"><div class="text-xs text-slate-500">หัก / ชะลอ</div><div class="text-xl font-bold" id="y70Deduct">0.043</div></div>
-      <div class="card p-3"><div class="text-xs text-slate-500">เข้าบัญชี</div><div class="text-xl font-bold text-sky-800" id="y70Cash">7.69</div></div>
-      <div class="card p-3"><div class="text-xs text-slate-500">เทียบ Q1 ปี 69</div><div class="text-xl font-bold" id="y70Pace">36%</div><div class="text-xs text-slate-400">ของ Q1/69 ที่เข้า 21.21</div></div>
+      <div class="card p-3"><div class="text-xs text-slate-500">เข้าบัญชี</div><div class="text-xl font-bold text-sky-800" id="y70Cash">7.81</div></div>
+      <div class="card p-3"><div class="text-xs text-slate-500">เทียบ Q1 ปี 69</div><div class="text-xl font-bold" id="y70Pace">37%</div><div class="text-xs text-slate-400">ของ Q1/69 ที่เข้า 21.21</div></div>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div class="overflow-x-auto">
@@ -163,16 +163,18 @@ tr.fund-row.on td{background:#dbeafe}
 <script>
 
 const y70Published={
-  asof:'26 ต.ค. 2569', source:'published',
+  asof:'29 ต.ค. 2569', source:'published',
   funds:[
-    {name:'OP ไปพลางก่อน 25%', claim:5.931, deduct:0, cash:5.931, note:'8 ต.ค. ก้อนหลักปี 70'},
-    {name:'PP ไปพลางก่อน 25%', claim:1.245, deduct:0, cash:1.245, note:'8 ต.ค. คู่กับ OP'},
-    {name:'IP ปรับ DRGs 69', claim:0.289, deduct:0, cash:0.288, note:'เงินปีเก่า มาปิดต้นปี 70'},
-    {name:'สวัสดิการท้องถิ่น', claim:0.130, deduct:0, cash:0.130, note:'12 และ 14 ต.ค. จ่ายตรง'},
-    {name:'ปฐมภูมิ PCC ปี 69', claim:0.130, deduct:0.043, cash:0.087, note:'26 ต.ค. หักอุทธรณ์ในชุดเดียวกัน'},
-    {name:'ฟื้นฟู', claim:0.005, deduct:0, cash:0.005, note:'งวดปี 70'},
-    {name:'แพทย์แผนไทย', claim:0.003, deduct:0.001, cash:0, note:'ชะลอ 0.003 + หักอุทธรณ์'},
-    {name:'IP งวดใหม่', claim:0, deduct:0, cash:0, note:'ยังไม่เข้า'}
+    {name:'OP ไปพลางก่อน 25%', claim:5.9312, deduct:0.0, cash:5.9312, note:'8 ต.ค. ก้อนหลักปี 70'},
+    {name:'PP ไปพลางก่อน 25%', claim:1.2446, deduct:0.0, cash:1.2446, note:'8 ต.ค. คู่กับ OP'},
+    {name:'IP ปรับ DRGs 69', claim:0.28914052, deduct:0.0, cash:0.28914052, note:'5 ต.ค. เงินปีเก่า มาปิดต้นปี 70'},
+    {name:'สวัสดิการท้องถิ่น', claim:0.13046453, deduct:0.0, cash:0.13046453, note:'12 และ 14 ต.ค. จ่ายตรง'},
+    {name:'PP พื้นฐาน / PPA NCD 69', claim:0.11957608, deduct:0.0, cash:0.11957608, note:'28 ต.ค. P&P basic + PPA NCD'},
+    {name:'ปฐมภูมิ PCC ปี 69', claim:0.12957534, deduct:0.0425, cash:0.08707534, note:'26 ต.ค. หักอุทธรณ์ 6908_OP_11 ในชุดเดียวกัน'},
+    {name:'ฟื้นฟู', claim:0.0050925, deduct:0.0, cash:0.0050925, note:'5 ต.ค. งวดปี 70'},
+    {name:'แพทย์แผนไทย', claim:0.005275, deduct:0.0033955, cash:0.0018795, note:'6909_OP_01 ชะลอ 21 ต.ค. แล้วจ่าย 28 ต.ค. (นับเข้าบัญชีครั้งเดียว) + หักอุทธรณ์ 758'},
+    {name:'Central กรณีเฉพาะ', claim:0.00012, deduct:0.0, cash:0.00012, note:'28 ต.ค. ชุด Y017'},
+    {name:'IP งวดใหม่', claim:0.0, deduct:0.0, cash:0.0, note:'ยังไม่เข้า'}
   ]
 };
 let c70chart;
