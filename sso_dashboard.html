@@ -12,7 +12,7 @@ body{font-family:'Sarabun',system-ui,sans-serif;background:#F4F6F9;color:#1A2332
 .card{background:#fff;border:1px solid #E2E8F0;border-radius:14px}
 .mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
 .chip{padding:7px 14px;border-radius:999px;font-size:.85rem;font-weight:700;border:1px solid #E2E8F0;background:#fff;cursor:pointer}
-.chip.on{background:#1D6FA4;color:#fff;border-color:#1D6FA4}
+.chip.on{background:#8E3BA8;color:#fff;border-color:#8E3BA8}
 table{width:100%;border-collapse:collapse}
 th{font-size:.75rem;letter-spacing:.02em;color:#64748B;font-weight:700;text-align:right;padding:8px 10px;background:#F8FAFC}
 th:first-child,td:first-child{text-align:left}
@@ -25,22 +25,22 @@ tr.total td{background:#F8FAFC;font-weight:700}
 <div class="max-w-6xl mx-auto p-4 md:p-6">
   <div class="flex flex-wrap justify-between gap-3 mb-4">
     <div>
-      <h1 class="text-xl md:text-2xl font-bold">ยอดจัดสรรประกันสังคม เดือนเมษายน 2569</h1>
+      <h1 class="text-xl md:text-2xl font-bold">ยอดจัดสรรประกันสังคม งวด 3/2569 (เม.ย.–มิ.ย. 2569)</h1>
       <p class="text-slate-500 text-sm">รพ.พระทองคำเฉลิมพระเกียรติ 80 พรรษา · งวด 3/2569 · เฉพาะเงินที่แม่ข่ายจัดสรรให้โรงพยาบาลนี้ · ไม่รวม รพ.อื่น และไม่รวม รพ.สต.</p>
     </div>
     <div id="monthChips" class="flex gap-2 items-start flex-wrap"></div>
   </div>
 
   <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-    <div class="card p-3 border-t-4 border-sky-700">
+    <div class="card p-3 border-t-4" style="border-top-color:#8E3BA8">
       <div class="text-xs text-slate-500">จัดสรรรวมที่รู้แล้ว</div>
-      <div id="kTotal" class="text-2xl font-bold text-sky-800 mono">—</div>
+      <div id="kTotal" class="text-2xl font-bold mono" style="color:#7A2F92">—</div>
       <div id="kTotalSub" class="text-xs text-slate-400">บาท</div>
     </div>
     <div class="card p-3 border-t-4 border-emerald-600">
       <div class="text-xs text-slate-500">OPD</div>
       <div id="kOpd" class="text-2xl font-bold text-emerald-700 mono">—</div>
-      <div id="kOpdSub" class="text-xs text-slate-400">ครั้ง × อัตรา M2</div>
+      <div id="kOpdSub" class="text-xs text-slate-400">ครั้ง × อัตรา</div>
     </div>
     <div class="card p-3 border-t-4 border-amber-500">
       <div class="text-xs text-slate-500">IPD</div>
@@ -50,7 +50,7 @@ tr.total td{background:#F8FAFC;font-weight:700}
     <div class="card p-3 border-t-4 border-slate-400">
       <div class="text-xs text-slate-500">แม่ข่ายที่ยังไม่มีไฟล์</div>
       <div id="kWait" class="text-2xl font-bold text-slate-600">1</div>
-      <div class="text-xs text-slate-400">รพ.ปากช่องนานา</div>
+      <div id="kWaitSub" class="text-xs text-slate-400">รพ.ปากช่องนานา</div>
     </div>
   </div>
 
@@ -64,9 +64,24 @@ tr.total td{background:#F8FAFC;font-weight:700}
     </div>
     <div class="card p-4 md:col-span-3">
       <div class="font-semibold mb-1">แยก OPD / IPD</div>
-      <p class="text-xs text-slate-500 mb-2">บาท · อัตราเดือนนี้ OPD ระดับ M2 = 250 · IPD 1 AdjRW = 6,900</p>
+      <p class="text-xs text-slate-500 mb-2">บาท · อัตรา OPD ตามระดับที่แต่ละแม่ข่ายใช้ · IPD 1 AdjRW = 6,900</p>
       <div class="h-56"><canvas id="cSplit"></canvas></div>
     </div>
+  </div>
+
+  <div class="card p-4 mb-4">
+    <div class="mb-3">
+      <div class="font-semibold">ปิดงวด 3/2569 — แม่ข่ายมหาราช (ลำดับ 29 รพ.พระทองคำ)</div>
+      <p class="text-xs text-slate-500">จากรายงานจัดสรรเงินประกันสังคม งวด 3/2569 ประจำเดือน เม.ย.–มิ.ย. 2569 · บันทึกขออนุมัติจ่าย 25 ก.ย. 2569 (จัดสรรในเดือนกันยายน 2569)</p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3" id="closeCards"></div>
+    <div class="overflow-x-auto">
+      <table>
+        <thead><tr><th>รายการ</th><th>OPD</th><th>IPD</th><th>รวม</th></tr></thead>
+        <tbody id="closeRows"></tbody>
+      </table>
+    </div>
+    <p class="text-xs text-slate-500 mt-2">IPD ทั้งงวดคิดจาก Weight: AdjRW ≤ 2 รวม 12.2287 (× 6,900 = 84,378.03) และ AdjRW &gt; 2 = 0.1899 รวมเป็น 98,740.76 บาท · ยอดปิดงวด = ทั้งงวด − ที่จัดสรรแล้ว เม.ย.+พ.ค.</p>
   </div>
 
   <div class="card p-4 mb-4">
@@ -98,8 +113,10 @@ tr.total td{background:#F8FAFC;font-weight:700}
   <div class="card p-4 mb-4">
     <div class="font-semibold mb-2">วิธีอ่านงวดนี้</div>
     <ul class="text-sm text-slate-600 space-y-1.5 list-disc pl-5">
-      <li>เดือนบริการคือ <b>เมษายน 2569</b> อยู่ในงวดรายรับ <b>3/2569</b> (เม.ย.–มิ.ย.) หนังสือมหาราชลงวันที่ 6 ก.ค. 2569 ขออนุมัติจ่ายในเดือนกรกฎาคม — ตัวเลขนี้คือยอดจัดสรร ยังไม่ใช่ยอดเงินเข้าบัญชี</li>
-      <li>ทั้งสองแม่ข่ายจัด รพ.พระทองคำ เป็นระดับ <b>M2</b> อัตรา OPD 250 บาท/ครั้ง และ IPD 6,900 บาทต่อ 1 AdjRW</li>
+      <li>งวดรายรับ <b>3/2569</b> คือเดือนบริการ เม.ย.–มิ.ย. 2569 · เม.ย. และ พ.ค. จัดสรรรายเดือน ส่วน มิ.ย. เป็นยอด <b>ปิดงวด</b> (มหาราชขออนุมัติจ่ายเมื่อ 25 ก.ย. 2569) — ตัวเลขทั้งหมดคือยอดจัดสรร ยังไม่ใช่ยอดเงินเข้าบัญชี</li>
+      <li>ตารางของมหาราชจัด รพ.พระทองคำ (ลำดับ 29) อยู่กลุ่มอัตรา OPD 200 บาท/ครั้ง · เทพรัตน์จัดเป็น M2 อัตรา 250 บาท/ครั้ง · IPD 6,900 บาทต่อ 1 AdjRW ทั้งสองแห่ง</li>
+      <li>ยอด IPD เดือน มิ.ย. ของมหาราชเป็นยอดปิดงวดจาก Weight ทั้งงวด (รวม AdjRW &gt; 2) ไม่ใช่ AdjRW เดือน มิ.ย. × 6,900</li>
+      <li>เทพรัตน์: มีเฉพาะไฟล์เดือน เม.ย. 2569 · พ.ค. และ มิ.ย. ยังไม่มีไฟล์</li>
       <li>เทพรัตน์มีคอลัมน์ AdjRW ≥ 2 = 0.0712 อยู่ในก้อน 4.6541 ที่ใช้คูณแล้ว ไม่ได้บวกเงินซ้ำ (4.6541 × 6,900 = 32,113.29 พอดี)</li>
       <li>คอลัมน์ปฐมภูมิ 30% ของเทพรัตน์ในแถวนี้เป็นศูนย์ ไม่มีเงินส่วน CUP บวกให้โรงพยาบาลในเดือนนี้</li>
       <li>ตารางนี้ไม่รวมหน่วยบริการปฐมภูมิ/รพ.สต. ในเครือ และไม่รวมโรงพยาบาลอื่นในไฟล์จัดสรร</li>
@@ -112,22 +129,22 @@ const MONTHS = [
   {
     id: '2569-04',
     label: 'เม.ย. 2569',
-    period: 'งวด 3/2569 · เดือนบริการ เมษายน 2569 · จัดสรร/ขออนุมัติจ่าย กรกฎาคม 2569',
+    period: 'งวด 3/2569 · เดือนบริการ เมษายน 2569 · จัดสรรรายเดือน',
     hubs: [
       {
         id: 'mhr',
         name: 'รพ.มหาราชนครราชสีมา',
         short: 'มหาราช',
-        color: '#1D6FA4',
+        color: '#8E3BA8',
         status: 'ok',
-        level: 'M2',
-        opdVisits: 1083,
-        opdRate: 250,
-        adjRw: 14.7408,
+        level: 'F · 200',
+        opdVisits: 336,
+        opdRate: 200,
+        adjRw: 3.6218,
         ipdRate: 6900,
         primary30: 0,
-        seq: 10,
-        source: 'MHR จัดสรร เม.ย.69 · ลำดับ 10 ในตารางจัดสรร รพช.'
+        seq: 29,
+        source: 'MHR รายงานจัดสรร งวด 3/2569 · ลำดับ 29 รพ.พระทองคำ · จัดสรรแล้ว เม.ย.69'
       },
       {
         id: 'dprh',
@@ -154,6 +171,84 @@ const MONTHS = [
         source: 'ยังไม่มีไฟล์จัดสรร'
       }
     ]
+  },
+  {
+    id: '2569-05',
+    label: 'พ.ค. 2569',
+    period: 'งวด 3/2569 · เดือนบริการ พฤษภาคม 2569 · จัดสรรรายเดือน',
+    hubs: [
+      {
+        id: 'mhr',
+        name: 'รพ.มหาราชนครราชสีมา',
+        short: 'มหาราช',
+        color: '#8E3BA8',
+        status: 'ok',
+        level: 'F · 200',
+        opdVisits: 348,
+        opdRate: 200,
+        adjRw: 3.9015,
+        ipdRate: 6900,
+        primary30: 0,
+        seq: 29,
+        source: 'MHR รายงานจัดสรร งวด 3/2569 · ลำดับ 29 รพ.พระทองคำ · จัดสรรแล้ว พ.ค.69'
+      },
+      {
+        id: 'dprh',
+        name: 'รพ.เทพรัตน์นครราชสีมา',
+        short: 'เทพรัตน์',
+        color: '#0F6E56',
+        status: 'pending',
+        source: 'ยังไม่มีไฟล์จัดสรรเดือนนี้'
+      },
+      {
+        id: 'pck',
+        name: 'รพ.ปากช่องนานา',
+        short: 'ปากช่องนานา',
+        color: '#94A3B8',
+        status: 'pending',
+        source: 'ยังไม่มีไฟล์จัดสรร'
+      }
+    ]
+  },
+  {
+    id: '2569-06',
+    label: 'มิ.ย. 2569 (ปิดงวด)',
+    period: 'งวด 3/2569 · เดือนบริการ มิถุนายน 2569 · ยอดปิดงวด จัดสรรในเดือนกันยายน 2569',
+    hubs: [
+      {
+        id: 'mhr',
+        name: 'รพ.มหาราชนครราชสีมา',
+        short: 'มหาราช',
+        color: '#8E3BA8',
+        status: 'ok',
+        level: 'F · 200',
+        opdVisits: 356,
+        opdRate: 200,
+        adjRw: 4.7054,
+        ipdRate: 6900,
+        ipdAmount: 46829.99,
+        ipdNote: 'ยอดปิดงวด IPD (Weight ทั้งงวด − จัดสรรแล้ว)',
+        primary30: 0,
+        seq: 29,
+        source: 'MHR รายงานจัดสรร งวด 3/2569 · ลำดับ 29 รพ.พระทองคำ · คงเหลือจัดสรรปิดงวด มิ.ย.69'
+      },
+      {
+        id: 'dprh',
+        name: 'รพ.เทพรัตน์นครราชสีมา',
+        short: 'เทพรัตน์',
+        color: '#0F6E56',
+        status: 'pending',
+        source: 'ยังไม่มีไฟล์จัดสรรเดือนนี้'
+      },
+      {
+        id: 'pck',
+        name: 'รพ.ปากช่องนานา',
+        short: 'ปากช่องนานา',
+        color: '#94A3B8',
+        status: 'pending',
+        source: 'ยังไม่มีไฟล์จัดสรร'
+      }
+    ]
   }
 ];
 
@@ -161,13 +256,33 @@ const baht = new Intl.NumberFormat('th-TH', { minimumFractionDigits: 2, maximumF
 const num = new Intl.NumberFormat('th-TH', { maximumFractionDigits: 4 });
 function money(n){ return baht.format(n); }
 function opdOf(h){ return +(h.opdVisits * h.opdRate).toFixed(2); }
-function ipdOf(h){ return +((h.adjRw || 0) * h.ipdRate).toFixed(2); }
+function ipdOf(h){ return h.ipdAmount != null ? h.ipdAmount : +((h.adjRw || 0) * h.ipdRate).toFixed(2); }
 function totalOf(h){
   if (h.status !== 'ok') return 0;
   return +(opdOf(h) + ipdOf(h) + (h.primary30 || 0)).toFixed(2);
 }
 
-let shareChart, splitChart, active = MONTHS[0].id;
+const CLOSE_MHR = {
+  opdTotal: 208000, opdVisits: 1040, ipdTotal: 98740.76,
+  paid: [ { label: 'จัดสรรแล้ว เม.ย. 69', opd: 67200, ipd: 24990.42 }, { label: 'จัดสรรแล้ว พ.ค. 69', opd: 69600, ipd: 26920.35 } ],
+  closing: { opd: 71200, ipd: 46829.99 }
+};
+function renderClose(){
+  const c = CLOSE_MHR, full = c.opdTotal + c.ipdTotal;
+  const paid = c.paid.reduce((s,p) => s + p.opd + p.ipd, 0);
+  const card = (t,v,sub,col) => '<div class="card p-3 border-t-4" style="border-top-color:' + col + '"><div class="text-xs text-slate-500">' + t + '</div><div class="text-xl font-bold mono" style="color:' + col + '">' + money(v) + '</div><div class="text-xs text-slate-400">' + sub + '</div></div>';
+  document.getElementById('closeCards').innerHTML =
+      card('ทั้งงวด 3/2569', full, 'บาท · OPD ' + num.format(c.opdVisits) + ' ครั้ง × 200', '#7A2F92')
+    + card('จัดสรรแล้ว เม.ย.+พ.ค.', paid, 'บาท', '#64748B')
+    + card('ยอดปิดงวด (มิ.ย.)', c.closing.opd + c.closing.ipd, 'บาท · จัดสรร ก.ย. 2569', '#8E3BA8')
+    + card('IPD Weight ทั้งงวด', c.ipdTotal, 'บาท · AdjRW 12.2287 + 0.1899', '#D97706');
+  const row = (l,o,i,b) => '<tr' + (b ? ' class="total"' : '') + '><td>' + l + '</td><td class="text-right mono">' + money(o) + '</td><td class="text-right mono">' + money(i) + '</td><td class="text-right mono">' + money(o + i) + '</td></tr>';
+  document.getElementById('closeRows').innerHTML = row('ทั้งงวด (เม.ย.–มิ.ย.)', c.opdTotal, c.ipdTotal)
+    + c.paid.map(p => row(p.label, p.opd, p.ipd)).join('')
+    + row('คงเหลือจัดสรรปิดงวด มิ.ย. 69', c.closing.opd, c.closing.ipd, true);
+}
+
+let shareChart, splitChart, active = MONTHS[MONTHS.length - 1].id;
 
 function render(){
   const m = MONTHS.find(x => x.id === active);
@@ -186,6 +301,7 @@ function render(){
   document.getElementById('kIpd').textContent = money(ipd);
   document.getElementById('kIpdSub').textContent = 'AdjRW ' + num.format(known.reduce((s,h) => s + h.adjRw, 0));
   document.getElementById('kWait').textContent = m.hubs.filter(h => h.status !== 'ok').length;
+  document.getElementById('kWaitSub').textContent = m.hubs.filter(h => h.status !== 'ok').map(h => h.name).join(', ') || '—';
   document.getElementById('periodNote').textContent = m.period;
 
   document.getElementById('hubs').innerHTML = m.hubs.map(h => {
@@ -204,7 +320,7 @@ function render(){
       + '<div class="text-xs text-slate-400 mb-3">บาท · ' + share.toFixed(1) + '% ของที่ยืนยันแล้ว</div>'
       + '<div class="grid grid-cols-2 gap-2 text-sm">'
       + '<div><div class="text-slate-400 text-xs">OPD</div><div class="font-semibold mono">' + money(opdOf(h)) + '</div><div class="text-xs text-slate-400">' + num.format(h.opdVisits) + ' × ' + h.opdRate + '</div></div>'
-      + '<div><div class="text-slate-400 text-xs">IPD</div><div class="font-semibold mono">' + money(ipdOf(h)) + '</div><div class="text-xs text-slate-400">AdjRW ' + num.format(h.adjRw) + '</div></div>'
+      + '<div><div class="text-slate-400 text-xs">IPD</div><div class="font-semibold mono">' + money(ipdOf(h)) + '</div><div class="text-xs text-slate-400">' + (h.ipdNote ? 'ปิดงวด · AdjRW มิ.ย. ' : 'AdjRW ') + num.format(h.adjRw) + '</div></div>'
       + '</div>'
       + '<div class="text-xs text-slate-400 mt-3">' + h.source + '</div></div>';
   }).join('');
@@ -220,7 +336,7 @@ function render(){
       + '<td class="text-right mono">' + num.format(h.opdVisits) + '</td>'
       + '<td class="text-right mono">' + money(opdOf(h)) + '<div class="text-xs text-slate-400">' + num.format(h.opdVisits) + ' × ' + h.opdRate + '</div></td>'
       + '<td class="text-right mono">' + num.format(h.adjRw) + over + '</td>'
-      + '<td class="text-right mono">' + money(ipdOf(h)) + '<div class="text-xs text-slate-400">' + num.format(h.adjRw) + ' × ' + num.format(h.ipdRate) + '</div></td>'
+      + '<td class="text-right mono">' + money(ipdOf(h)) + '<div class="text-xs text-slate-400">' + (h.ipdNote || (num.format(h.adjRw) + ' × ' + num.format(h.ipdRate))) + '</div></td>'
       + '<td class="text-right mono">' + money(h.primary30 || 0) + '</td>'
       + '<td class="text-right mono font-bold">' + money(totalOf(h)) + '</td>'
       + '</tr>';
@@ -256,6 +372,7 @@ function render(){
   });
 }
 function setMonth(id){ active = id; render(); }
+renderClose();
 render();
 </script>
 <script src="credit.js"></script>
