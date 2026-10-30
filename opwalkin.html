@@ -936,6 +936,58 @@ function shortName(n, max) {
   return n.length > max ? n.slice(0, max-1) + "…" : n;
 }
 
+// Top-10 hospital-name labels. Space is reserved with layout.padding.left (not the y scale,
+// whose width iPad Safari did not honour); the y scale itself is collapsed to 0px and its
+// ticks hidden. Labels are drawn by this plugin right-aligned at chartArea.left - 6.
+function hospLabelSpace(chart){
+  const box = chart.canvas && chart.canvas.parentNode;
+  const w = (box && box.clientWidth) || chart.width || 0;
+  return Math.round(Math.max(110, Math.min(180, w*0.38)));
+}
+function fixYAxisWidth(a){ a.width = 0; }   // backup only; padding does the real work
+// HTML overlay labels (iPad Safari ignored canvas textAlign:right).
+function hospOverlay(chart){
+  const box = chart.canvas.parentNode;
+  if (getComputedStyle(box).position === "static") box.style.position = "relative";
+  let ov = box.querySelector(":scope > .hosp-lbls");
+  if (!ov){ ov = document.createElement("div"); ov.className = "hosp-lbls"; ov.style.cssText = "position:absolute;left:0;top:0;right:0;bottom:0;pointer-events:none;overflow:hidden"; box.appendChild(ov); }
+  return ov;
+}
+const HOSP_LABELS = {
+  id:"hospLabels",
+  beforeUpdate(chart){
+    const pad = hospLabelSpace(chart);
+    const lay = chart.options.layout || (chart.options.layout = {});
+    const cur = lay.padding;
+    if (!cur || typeof cur !== "object" || cur.left !== pad) lay.padding = {left:pad, right:8, top:0, bottom:0};
+  },
+  afterDraw(chart){
+    const y = chart.scales.y, area = chart.chartArea; if (!y || !area) return;
+    const ov = hospOverlay(chart), labels = chart.data.labels || [];
+    const offX = chart.canvas.offsetLeft, offY = chart.canvas.offsetTop;
+    const w = Math.max(20, area.left - 8);
+    while (ov.children.length > labels.length) ov.lastChild.remove();
+    labels.forEach((lab, i) => {
+      let d = ov.children[i];
+      if (!d){ d = document.createElement("div"); d.style.cssText = "position:absolute;height:16px;line-height:16px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:500 10.5px Sarabun,'IBM Plex Sans Thai',Tahoma,sans-serif;color:#475569"; ov.appendChild(d); }
+      const name = String(lab||"");
+      if (d.textContent !== name){ d.textContent = name; d.title = name; }
+      d.style.left = (offX + 2) + "px";
+      d.style.width = w + "px";
+      d.style.top = Math.round(offY + y.getPixelForTick(i) - 8) + "px";
+    });
+  },
+  afterDestroy(chart){
+    const box = chart.canvas && chart.canvas.parentNode;
+    const ov = box && box.querySelector(":scope > .hosp-lbls"); if (ov) ov.remove();
+  }
+};
+function refreshTopCharts(){ ["cTopRec","cTopPay"].forEach(k => { const c = charts[k]; if (c) { c.resize(); c.update("none"); } }); }
+window.addEventListener("resize", () => { clearTimeout(window._hlT); window._hlT = setTimeout(refreshTopCharts, 150); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(refreshTopCharts);
+window.addEventListener("orientationchange", () => setTimeout(refreshTopCharts, 250));
+window.addEventListener("load", () => setTimeout(refreshTopCharts, 300));
+
 function renderTopCharts(hosp) {
   const months = getAllMonthsForHosp(hosp);
 
@@ -959,6 +1011,7 @@ function renderTopCharts(hosp) {
     options:{
       indexAxis:"y",responsive:true,maintainAspectRatio:false,
       plugins:{
+        hospLabels:{},
         legend:{display:true,position:"top",labels:{font:FONT,boxWidth:12}},
         tooltip:{callbacks:{
           title:items=>items[0].label,
@@ -972,9 +1025,10 @@ function renderTopCharts(hosp) {
       },
       scales:{
         x:{stacked:true,ticks:{callback:v=>fmtK(v),font:FONT},grid:{color:"#E8EFF7"}},
-        y:{stacked:true,afterFit:a=>{a.width=Math.max(a.width,Math.min(170,a.chart.width*0.42));},ticks:{autoSkip:false,font:{...FONT,size:10},callback:function(v){return shortName(this.getLabelForValue(v));}},grid:{display:false}}
+        y:{stacked:true,afterFit:fixYAxisWidth,ticks:{display:false},grid:{display:false}}
       }
-    }
+    },
+    plugins:[HOSP_LABELS]
   });
 
   const payMap = {};
@@ -997,6 +1051,7 @@ function renderTopCharts(hosp) {
     options:{
       indexAxis:"y",responsive:true,maintainAspectRatio:false,
       plugins:{
+        hospLabels:{},
         legend:{display:true,position:"top",labels:{font:FONT,boxWidth:12}},
         tooltip:{callbacks:{
           title:items=>items[0].label,
@@ -1010,9 +1065,10 @@ function renderTopCharts(hosp) {
       },
       scales:{
         x:{stacked:true,ticks:{callback:v=>fmtK(v),font:FONT},grid:{color:"#E8EFF7"}},
-        y:{stacked:true,afterFit:a=>{a.width=Math.max(a.width,Math.min(170,a.chart.width*0.42));},ticks:{autoSkip:false,font:{...FONT,size:10},callback:function(v){return shortName(this.getLabelForValue(v));}},grid:{display:false}}
+        y:{stacked:true,afterFit:fixYAxisWidth,ticks:{display:false},grid:{display:false}}
       }
-    }
+    },
+    plugins:[HOSP_LABELS]
   });
 }
 
