@@ -290,7 +290,6 @@ body .kpi-row .kpi.kpi-prog.rec{background:linear-gradient(180deg,#F0FDF4 0,#fff
         <div class="ch lg"><canvas id="cTopPay"></canvas></div>
       </div>
     </div>
-    <div style="text-align:right;font-size:10px;color:#94A3B8;margin:-8px 2px 10px">build ipad-labels-v3</div>
 
     <div class="card">
       <div class="card-ttl"><div class="dot" style="background:var(--blue)"></div>สรุปรายเดือน</div>
@@ -983,7 +982,6 @@ const HOSP_LABELS = {
     const ov = box && box.querySelector(":scope > .hosp-lbls"); if (ov) ov.remove();
   }
 };
-console.log("opwalkin build ipad-labels-v3");
 function refreshTopCharts(){ ["cTopRec","cTopPay"].forEach(k => { const c = charts[k]; if (c) { c.resize(); c.update("none"); } }); }
 window.addEventListener("resize", () => { clearTimeout(window._hlT); window._hlT = setTimeout(refreshTopCharts, 150); });
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(refreshTopCharts);
