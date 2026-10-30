@@ -71,7 +71,8 @@ main{max-width:1440px;margin:0 auto;padding:18px 16px 40px}
 .kpi-sub{font-size:.72rem;color:var(--muted);margin-top:3px}
 
 /* CHARTS */
-.cg2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.cg2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-bottom:14px}
+.cg2>*,.kpi-row>*{min-width:0}
 .cg1{margin-bottom:14px}
 .card{background:var(--card);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow)}
 .card-ttl{font-size:.85rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:7px}
@@ -874,6 +875,7 @@ function renderOverviewChart(months) {
       plugins:{
         legend:{labels:{font:FONT,boxWidth:12}},
         tooltip:{callbacks:{
+          title:items=>items[0].label,
           afterBody:function(items){
             const i=items[0].dataIndex;
             const s=settled[i];
@@ -927,6 +929,13 @@ function counterpartSettled(name, kind) {
   return { total, settled, remain: Math.max(0, total - settled) };
 }
 
+// Shorten long hospital names on chart axes; full name stays in the tooltip title.
+function shortName(n, max) {
+  max = max || 24;
+  n = String(n||"");
+  return n.length > max ? n.slice(0, max-1) + "…" : n;
+}
+
 function renderTopCharts(hosp) {
   const months = getAllMonthsForHosp(hosp);
 
@@ -952,6 +961,7 @@ function renderTopCharts(hosp) {
       plugins:{
         legend:{display:true,position:"top",labels:{font:FONT,boxWidth:12}},
         tooltip:{callbacks:{
+          title:items=>items[0].label,
           afterBody:function(items){
             const i=items[0].dataIndex;
             const s=recSettled[i];
@@ -962,7 +972,7 @@ function renderTopCharts(hosp) {
       },
       scales:{
         x:{stacked:true,ticks:{callback:v=>fmtK(v),font:FONT},grid:{color:"#E8EFF7"}},
-        y:{stacked:true,ticks:{font:{...FONT,size:10}},grid:{display:false}}
+        y:{stacked:true,afterFit:a=>{a.width=Math.max(a.width,Math.min(170,a.chart.width*0.42));},ticks:{autoSkip:false,font:{...FONT,size:10},callback:function(v){return shortName(this.getLabelForValue(v));}},grid:{display:false}}
       }
     }
   });
@@ -989,6 +999,7 @@ function renderTopCharts(hosp) {
       plugins:{
         legend:{display:true,position:"top",labels:{font:FONT,boxWidth:12}},
         tooltip:{callbacks:{
+          title:items=>items[0].label,
           afterBody:function(items){
             const i=items[0].dataIndex;
             const s=paySettled[i];
@@ -999,7 +1010,7 @@ function renderTopCharts(hosp) {
       },
       scales:{
         x:{stacked:true,ticks:{callback:v=>fmtK(v),font:FONT},grid:{color:"#E8EFF7"}},
-        y:{stacked:true,ticks:{font:{...FONT,size:10}},grid:{display:false}}
+        y:{stacked:true,afterFit:a=>{a.width=Math.max(a.width,Math.min(170,a.chart.width*0.42));},ticks:{autoSkip:false,font:{...FONT,size:10},callback:function(v){return shortName(this.getLabelForValue(v));}},grid:{display:false}}
       }
     }
   });
