@@ -936,34 +936,48 @@ function shortName(n, max) {
   return n.length > max ? n.slice(0, max-1) + "…" : n;
 }
 
-// Top-10 y-axis: fixed pixel width (not measured from text, which Safari can get wrong
-// before the Thai webfont loads) and labels drawn by our own plugin, unclipped.
-function fixYAxisWidth(a){
-  const box = a.chart.canvas.parentNode, w = (box && box.clientWidth) || a.chart.width;
-  a.width = Math.round(Math.max(110, Math.min(180, w*0.38)));
+// Top-10 hospital-name labels. Space is reserved with layout.padding.left (not the y scale,
+// whose width iPad Safari did not honour); the y scale itself is collapsed to 0px and its
+// ticks hidden. Labels are drawn by this plugin right-aligned at chartArea.left - 6.
+const HOSP_LABEL_FONT = "500 10.5px Sarabun, 'IBM Plex Sans Thai', Tahoma, sans-serif";
+function hospLabelSpace(chart){
+  const box = chart.canvas && chart.canvas.parentNode;
+  const w = (box && box.clientWidth) || chart.width || 0;
+  return Math.round(Math.max(110, Math.min(180, w*0.38)));
 }
+function fixYAxisWidth(a){ a.width = 0; }   // backup only; padding does the real work
 function fitText(ctx, t, w){
   t = String(t||"");
   if (ctx.measureText(t).width <= w) return t;
-  // never cut below 8 chars, in case a browser mis-measures Thai text
-  while (t.length > 8 && ctx.measureText(t + "…").width > w) t = t.slice(0, -1);
+  while (t.length > 1 && ctx.measureText(t + "…").width > w) t = t.slice(0, -1);
   return t + "…";
 }
 const HOSP_LABELS = {
   id:"hospLabels",
+  beforeUpdate(chart){
+    const pad = hospLabelSpace(chart);
+    const lay = chart.options.layout || (chart.options.layout = {});
+    const cur = lay.padding;
+    if (!cur || typeof cur !== "object" || cur.left !== pad) lay.padding = {left:pad, right:8, top:0, bottom:0};
+  },
   afterDraw(chart){
-    const y = chart.scales.y; if (!y) return;
-    const ctx = chart.ctx, maxW = y.width - 8;
+    const y = chart.scales.y, area = chart.chartArea; if (!y || !area) return;
+    const ctx = chart.ctx, x = area.left - 6, maxW = Math.max(20, area.left - 10);
+    let widest = 0;
     ctx.save();
-    ctx.font = "500 10.5px Sarabun, 'IBM Plex Sans Thai', Tahoma, sans-serif";
-    ctx.fillStyle = "#475569"; ctx.textAlign = "right"; ctx.textBaseline = "middle";
+    ctx.font = HOSP_LABEL_FONT;
+    ctx.fillStyle = "#475569"; ctx.textAlign = "right"; ctx.textBaseline = "middle"; ctx.direction = "ltr";
     chart.data.labels.forEach((lab, i) => {
-      ctx.fillText(fitText(ctx, shortName(lab, 26), maxW), y.right - 6, y.getPixelForTick(i));
+      const t = fitText(ctx, lab, maxW);
+      widest = Math.max(widest, ctx.measureText(t).width);
+      ctx.fillText(t, x, y.getPixelForTick(i));
     });
     ctx.restore();
+    chart.$hospLabelWidest = widest;
   }
 };
 function refreshTopCharts(){ ["cTopRec","cTopPay"].forEach(k => { const c = charts[k]; if (c) { c.resize(); c.update("none"); } }); }
+window.addEventListener("resize", () => { clearTimeout(window._hlT); window._hlT = setTimeout(refreshTopCharts, 150); });
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(refreshTopCharts);
 window.addEventListener("orientationchange", () => setTimeout(refreshTopCharts, 250));
 window.addEventListener("load", () => setTimeout(refreshTopCharts, 300));
