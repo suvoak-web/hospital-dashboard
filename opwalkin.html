@@ -936,6 +936,38 @@ function shortName(n, max) {
   return n.length > max ? n.slice(0, max-1) + "…" : n;
 }
 
+// Top-10 y-axis: fixed pixel width (not measured from text, which Safari can get wrong
+// before the Thai webfont loads) and labels drawn by our own plugin, unclipped.
+function fixYAxisWidth(a){
+  const box = a.chart.canvas.parentNode, w = (box && box.clientWidth) || a.chart.width;
+  a.width = Math.round(Math.max(110, Math.min(180, w*0.38)));
+}
+function fitText(ctx, t, w){
+  t = String(t||"");
+  if (ctx.measureText(t).width <= w) return t;
+  // never cut below 8 chars, in case a browser mis-measures Thai text
+  while (t.length > 8 && ctx.measureText(t + "…").width > w) t = t.slice(0, -1);
+  return t + "…";
+}
+const HOSP_LABELS = {
+  id:"hospLabels",
+  afterDraw(chart){
+    const y = chart.scales.y; if (!y) return;
+    const ctx = chart.ctx, maxW = y.width - 8;
+    ctx.save();
+    ctx.font = "500 10.5px Sarabun, 'IBM Plex Sans Thai', Tahoma, sans-serif";
+    ctx.fillStyle = "#475569"; ctx.textAlign = "right"; ctx.textBaseline = "middle";
+    chart.data.labels.forEach((lab, i) => {
+      ctx.fillText(fitText(ctx, shortName(lab, 26), maxW), y.right - 6, y.getPixelForTick(i));
+    });
+    ctx.restore();
+  }
+};
+function refreshTopCharts(){ ["cTopRec","cTopPay"].forEach(k => { const c = charts[k]; if (c) { c.resize(); c.update("none"); } }); }
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(refreshTopCharts);
+window.addEventListener("orientationchange", () => setTimeout(refreshTopCharts, 250));
+window.addEventListener("load", () => setTimeout(refreshTopCharts, 300));
+
 function renderTopCharts(hosp) {
   const months = getAllMonthsForHosp(hosp);
 
@@ -959,6 +991,7 @@ function renderTopCharts(hosp) {
     options:{
       indexAxis:"y",responsive:true,maintainAspectRatio:false,
       plugins:{
+        hospLabels:{},
         legend:{display:true,position:"top",labels:{font:FONT,boxWidth:12}},
         tooltip:{callbacks:{
           title:items=>items[0].label,
@@ -972,9 +1005,10 @@ function renderTopCharts(hosp) {
       },
       scales:{
         x:{stacked:true,ticks:{callback:v=>fmtK(v),font:FONT},grid:{color:"#E8EFF7"}},
-        y:{stacked:true,afterFit:a=>{a.width=Math.max(a.width,Math.min(170,a.chart.width*0.42));},ticks:{autoSkip:false,font:{...FONT,size:10},callback:function(v){return shortName(this.getLabelForValue(v));}},grid:{display:false}}
+        y:{stacked:true,afterFit:fixYAxisWidth,ticks:{display:false},grid:{display:false}}
       }
-    }
+    },
+    plugins:[HOSP_LABELS]
   });
 
   const payMap = {};
@@ -997,6 +1031,7 @@ function renderTopCharts(hosp) {
     options:{
       indexAxis:"y",responsive:true,maintainAspectRatio:false,
       plugins:{
+        hospLabels:{},
         legend:{display:true,position:"top",labels:{font:FONT,boxWidth:12}},
         tooltip:{callbacks:{
           title:items=>items[0].label,
@@ -1010,9 +1045,10 @@ function renderTopCharts(hosp) {
       },
       scales:{
         x:{stacked:true,ticks:{callback:v=>fmtK(v),font:FONT},grid:{color:"#E8EFF7"}},
-        y:{stacked:true,afterFit:a=>{a.width=Math.max(a.width,Math.min(170,a.chart.width*0.42));},ticks:{autoSkip:false,font:{...FONT,size:10},callback:function(v){return shortName(this.getLabelForValue(v));}},grid:{display:false}}
+        y:{stacked:true,afterFit:fixYAxisWidth,ticks:{display:false},grid:{display:false}}
       }
-    }
+    },
+    plugins:[HOSP_LABELS]
   });
 }
 
