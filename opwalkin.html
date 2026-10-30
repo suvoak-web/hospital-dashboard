@@ -290,6 +290,7 @@ body .kpi-row .kpi.kpi-prog.rec{background:linear-gradient(180deg,#F0FDF4 0,#fff
         <div class="ch lg"><canvas id="cTopPay"></canvas></div>
       </div>
     </div>
+    <div style="text-align:right;font-size:10px;color:#94A3B8;margin:-8px 2px 10px">build ipad-labels-v3</div>
 
     <div class="card">
       <div class="card-ttl"><div class="dot" style="background:var(--blue)"></div>สรุปรายเดือน</div>
@@ -939,18 +940,19 @@ function shortName(n, max) {
 // Top-10 hospital-name labels. Space is reserved with layout.padding.left (not the y scale,
 // whose width iPad Safari did not honour); the y scale itself is collapsed to 0px and its
 // ticks hidden. Labels are drawn by this plugin right-aligned at chartArea.left - 6.
-const HOSP_LABEL_FONT = "500 10.5px Sarabun, 'IBM Plex Sans Thai', Tahoma, sans-serif";
 function hospLabelSpace(chart){
   const box = chart.canvas && chart.canvas.parentNode;
   const w = (box && box.clientWidth) || chart.width || 0;
   return Math.round(Math.max(110, Math.min(180, w*0.38)));
 }
 function fixYAxisWidth(a){ a.width = 0; }   // backup only; padding does the real work
-function fitText(ctx, t, w){
-  t = String(t||"");
-  if (ctx.measureText(t).width <= w) return t;
-  while (t.length > 1 && ctx.measureText(t + "…").width > w) t = t.slice(0, -1);
-  return t + "…";
+// HTML overlay labels (iPad Safari ignored canvas textAlign:right).
+function hospOverlay(chart){
+  const box = chart.canvas.parentNode;
+  if (getComputedStyle(box).position === "static") box.style.position = "relative";
+  let ov = box.querySelector(":scope > .hosp-lbls");
+  if (!ov){ ov = document.createElement("div"); ov.className = "hosp-lbls"; ov.style.cssText = "position:absolute;left:0;top:0;right:0;bottom:0;pointer-events:none;overflow:hidden"; box.appendChild(ov); }
+  return ov;
 }
 const HOSP_LABELS = {
   id:"hospLabels",
@@ -962,20 +964,26 @@ const HOSP_LABELS = {
   },
   afterDraw(chart){
     const y = chart.scales.y, area = chart.chartArea; if (!y || !area) return;
-    const ctx = chart.ctx, x = area.left - 6, maxW = Math.max(20, area.left - 10);
-    let widest = 0;
-    ctx.save();
-    ctx.font = HOSP_LABEL_FONT;
-    ctx.fillStyle = "#475569"; ctx.textAlign = "right"; ctx.textBaseline = "middle"; ctx.direction = "ltr";
-    chart.data.labels.forEach((lab, i) => {
-      const t = fitText(ctx, lab, maxW);
-      widest = Math.max(widest, ctx.measureText(t).width);
-      ctx.fillText(t, x, y.getPixelForTick(i));
+    const ov = hospOverlay(chart), labels = chart.data.labels || [];
+    const offX = chart.canvas.offsetLeft, offY = chart.canvas.offsetTop;
+    const w = Math.max(20, area.left - 8);
+    while (ov.children.length > labels.length) ov.lastChild.remove();
+    labels.forEach((lab, i) => {
+      let d = ov.children[i];
+      if (!d){ d = document.createElement("div"); d.style.cssText = "position:absolute;height:16px;line-height:16px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font:500 10.5px Sarabun,'IBM Plex Sans Thai',Tahoma,sans-serif;color:#475569"; ov.appendChild(d); }
+      const name = String(lab||"");
+      if (d.textContent !== name){ d.textContent = name; d.title = name; }
+      d.style.left = (offX + 2) + "px";
+      d.style.width = w + "px";
+      d.style.top = Math.round(offY + y.getPixelForTick(i) - 8) + "px";
     });
-    ctx.restore();
-    chart.$hospLabelWidest = widest;
+  },
+  afterDestroy(chart){
+    const box = chart.canvas && chart.canvas.parentNode;
+    const ov = box && box.querySelector(":scope > .hosp-lbls"); if (ov) ov.remove();
   }
 };
+console.log("opwalkin build ipad-labels-v3");
 function refreshTopCharts(){ ["cTopRec","cTopPay"].forEach(k => { const c = charts[k]; if (c) { c.resize(); c.update("none"); } }); }
 window.addEventListener("resize", () => { clearTimeout(window._hlT); window._hlT = setTimeout(refreshTopCharts, 150); });
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(refreshTopCharts);
