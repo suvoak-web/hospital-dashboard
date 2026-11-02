@@ -300,7 +300,8 @@ def main():
         if hourly_part and (rec.get("pv_kwh") or 0) < (hourly_part["pv_kwh"] or 0):
             continue  # รายงานรายชั่วโมงของวันนี้ใหม่กว่าแถวในรายงานรายเดือน
         # แถวของวันนี้ในรายงานรายเดือน (export ระหว่างวัน) ยังไม่ครบวัน
-        partial = d == today_bkk or (hourly_part is not None and not hourly_part["complete"])
+        # แถวของวันนี้: ถ้าแปลงไฟล์หลัง 19:00 น. โซลาร์หยุดผลิตแล้ว ถือว่ายอดผลิตครบ
+        partial = (d == today_bkk and datetime.now(BKK).hour < 19) or (hourly_part is not None and not hourly_part["complete"] and d == today_bkk)
         base = {"last_hour": None if partial else "23:00", "complete": not partial}
         base.update(rec)
         if base.get("self_kwh") is None and base.get("pv_kwh") is not None and base.get("export_kwh") is not None:
@@ -396,6 +397,7 @@ def main():
                                      if k in ("pv_kwh", "use_kwh", "self_kwh", "export_kwh", "import_kwh", "peak_kw", "complete", "inverter_only", "last_hour")})
                   for d in dates[-400:]],
         "monthly": monthly,
+        "inverters_date": (latest if latest in inv_day else (max(inv_day) if inv_day else None)),
         "inverters": [{"name": x["name"], "day_kwh": r2(x["kwh"]), "total_kwh": r2(x["total_kwh"]),
                        "peak_kw": r2(x["peak_kw"]), "hours": r2(x["hours"])} for x in inv_latest],
         "inverter_monthly": [{"m": k, "items": [{"name": x["name"], "kwh": r2(x["kwh"]), "peak_kw": r2(x["peak_kw"]),
