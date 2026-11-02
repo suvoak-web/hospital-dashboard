@@ -159,6 +159,32 @@ def parse_ami(rows):
     return info, out if "Metering" in head or out else None
 
 
+def parse_ami_daily(rows):
+    """AMI "Monthly kWh Report" (แถวละ 1 วัน) → {date: (kwh, peak_kwh)}"""
+    i, keys = find_header(rows, ["date", "ratea", "total"], limit=60)
+    if i is None:
+        return None
+    info = {"meter": None, "tariff": None}
+    for r in rows[:i]:
+        cells = [str(c).strip() if c is not None else "" for c in r]
+        for j, c in enumerate(cells):
+            nxt = next((x for x in cells[j + 1:] if x), None)
+            if c.startswith("Meter No") and nxt:
+                info["meter"] = nxt
+            if c.startswith("Tariff") and nxt:
+                info["tariff"] = nxt
+    c_d, c_a, c_tot = col(keys, "date"), col(keys, "ratea"), col(keys, "total")
+    out = {}
+    for r in rows[i + 1:]:
+        mt = re.match(r"(\d{2})/(\d{2})/(\d{4})$", str(r[c_d] or "").strip())
+        v = num(r[c_tot]) if mt and c_tot < len(r) else None
+        if v is None:
+            continue
+        d, mo, y = map(int, mt.groups())
+        out[f"{y:04d}-{mo:02d}-{d:02d}"] = (v, num(r[c_a]) or 0.0)
+    return info, out
+
+
 def period_from_name(name):
     """('day', 'YYYY-MM-DD') หรือ ('month', 'YYYY-MM') จากชื่อไฟล์"""
     m = re.search(r"(?<!\d)(\d{1,2})-(\d{1,2})-(\d{4})(?!\d)", name)
@@ -189,7 +215,7 @@ def day_from_hours(hs):
     }
 
 
-def build_grid(ami, info, solar_daily):
+def build_grid(ami, info, solar_daily, ami_days=None):
     """สรุปมิเตอร์หลักของ รพ. รวมกับไฟโซลาร์ → ไฟทั้งโรงพยาบาล"""
     first_pv = min(solar_daily) if solar_daily else "0000"
     days = defaultdict(lambda: {"kwh": 0.0, "peak_kwh": 0.0, "n": 0, "max15": 0.0, "max_at": None, "hours": [0.0] * 24})
@@ -202,14 +228,18 @@ def build_grid(ami, info, solar_daily):
         x["hours"][int(hm[:2])] += v
         if v > x["max15"]:
             x["max15"], x["max_at"] = v, hm
+    # วันที่มีแค่ยอดรวมรายวัน (Monthly kWh Report) หรือข้อมูล 15 นาทีไม่ครบ: ใช้ยอดรายวันแทน ไม่มีรายชั่วโมง/กำลังสูงสุด
+    for d, (v, pk) in (ami_days or {}).items():
+        if d not in days or days[d]["n"] < 96:
+            days[d] = {"kwh": v, "peak_kwh": pk, "n": 96, "max15": None, "max_at": None, "hours": None}
     daily = []
     for d in sorted(days):
         x = days[d]
         sd = solar_daily.get(d, {})
         complete = x["n"] >= 96
         rec = {"d": d, "kwh": r2(x["kwh"]), "peak_kwh": r2(x["peak_kwh"]), "off_kwh": r2(x["kwh"] - x["peak_kwh"]),
-               "max_kw": r2(x["max15"] * 4), "max_at": x["max_at"], "workday": x["peak_kwh"] > 0, "complete": complete,
-               "pv_kwh": r2(sd.get("pv_kwh")) if sd.get("complete") else None, "hours": [r2(h) for h in x["hours"]]}
+               "max_kw": r2(x["max15"] * 4) if x["max15"] else None, "max_at": x["max_at"], "workday": x["peak_kwh"] > 0, "complete": complete,
+               "pv_kwh": r2(sd.get("pv_kwh")) if sd.get("complete") else None, "hours": [r2(h) for h in x["hours"]] if x["hours"] else None}
         rec["total_kwh"] = r2(x["kwh"] + rec["pv_kwh"]) if complete and rec["pv_kwh"] is not None else None
         daily.append(rec)
     months = []
@@ -220,20 +250,20 @@ def build_grid(ami, info, solar_daily):
         months.append({
             "m": m, "days": sum(1 for x in ds if x["complete"]),
             "kwh": r2(sum(x["kwh"] for x in ds)), "peak_kwh": r2(sum(x["peak_kwh"] for x in ds)),
-            "off_kwh": r2(sum(x["off_kwh"] for x in ds)), "max_kw": mx["max_kw"], "max_at": f"{mx['d']} {mx['max_at']}",
+            "off_kwh": r2(sum(x["off_kwh"] for x in ds)), "max_kw": mx["max_kw"], "max_at": f"{mx['d']} {mx['max_at']}" if mx["max_at"] else None,
             "both_days": len(both), "both_grid_kwh": r2(sum(x["kwh"] for x in both)), "both_pv_kwh": r2(sum(x["pv_kwh"] for x in both)),
         })
     def profile(sel):
-        ds = [x for x in daily if x["complete"] and sel(x)]
+        ds = [x for x in daily if x["complete"] and x["hours"] and sel(x)]
         return [r2(sum(x["hours"][h] for x in ds) / len(ds)) for h in range(24)] if ds else None
-    lowest = min(((x["d"], h, x["hours"][h]) for x in daily if x["complete"] for h in range(9, 16)), key=lambda t: t[2], default=None)
+    lowest = min(((x["d"], h, x["hours"][h]) for x in daily if x["complete"] and x["hours"] for h in range(9, 16)), key=lambda t: t[2], default=None)
     return {
         "meter": info.get("meter"), "tariff": info.get("tariff"),
         "first_date": daily[0]["d"], "last_date": daily[-1]["d"],
         "daily": daily[-400:], "monthly": months,
         "profile_workday": profile(lambda x: x["workday"]), "profile_holiday": profile(lambda x: not x["workday"]),
         "min_midday_kwh_per_h": r2(lowest[2]) if lowest else None,
-        "min_15min_kwh": r2(min(v for v, _ in ami.values())),
+        "min_15min_kwh": r2(min((v for v, _ in ami.values()), default=None)),
         # ช่วง 15 นาทีกลางวันที่มิเตอร์หลักแทบเป็นศูนย์ = โซลาร์มากกว่าไฟที่ทั้ง รพ. ใช้ อาจมีไฟไหลออกไปการไฟฟ้า
         "zero_intervals": sum(1 for (d, hm), (v, _) in ami.items() if v <= 0.5 and 8 <= int(hm[:2]) < 17 and d >= first_pv),
         "zero_days": len({d for (d, hm), (v, _) in ami.items() if v <= 0.5 and 8 <= int(hm[:2]) < 17 and d >= first_pv}),
@@ -251,6 +281,7 @@ def main():
     inv_month = {}              # YYYY-MM -> [..]
     ami = {}                    # (date, HH:MM) -> (kwh, is_peak)
     ami_info = {}
+    ami_days = {}               # date -> (kwh, peak_kwh) จากรายงานรายวันของ AMI
     skipped = []
     for f in files:
         try:
@@ -270,6 +301,11 @@ def main():
         if a and a[1]:
             ami_info.update({k: v for k, v in a[0].items() if v})
             ami.update(a[1])
+            continue
+        a = parse_ami_daily(rows)
+        if a and a[1]:
+            ami_info.update({k: v for k, v in a[0].items() if v})
+            ami_days.update(a[1])
             continue
         inv = parse_inverters(rows)
         if inv:
@@ -404,7 +440,7 @@ def main():
                                                 "hours": r2(x["hours"])} for x in v]} for k, v in sorted(inv_month.items())],
         "errors": skipped,
     }
-    out["grid"] = build_grid(ami, ami_info, daily) if ami else None
+    out["grid"] = build_grid(ami, ami_info, daily, ami_days) if (ami or ami_days) else None
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     have = [x["m"] for x in monthly if x["pv_kwh"] is not None]
     print(f"wrote {OUT}: {len(dates)} วัน, เดือนที่มีข้อมูล {', '.join(have)}, ล่าสุด {latest}")

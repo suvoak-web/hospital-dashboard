@@ -451,8 +451,8 @@ function renderGrid(d){
   $('gShareSub').textContent = 'โซลาร์ ' + fmt(bPv / 1000, 1) + ' จาก ' + fmt((bGrid + bPv) / 1000, 1) + ' MWh ที่ รพ. ใช้ (' + both.length + ' วัน)';
   var top = g.monthly.reduce(function(a, b){ return (b.max_kw || 0) > (a.max_kw || 0) ? b : a; });
   $('gMax').textContent = fmt(top.max_kw);
-  var ma = top.max_at.split(' ');
-  $('gMaxSub').textContent = thDate(ma[0]) + ' ช่วง ' + ma[1] + ' น. (เฉลี่ย 15 นาที)';
+  var ma = (top.max_at || '').split(' ');
+  $('gMaxSub').textContent = top.max_at ? thDate(ma[0]) + ' ช่วง ' + ma[1] + ' น. (เฉลี่ย 15 นาที)' : 'ต้องใช้ข้อมูล AMI ราย 15 นาที';
 
   var months = g.monthly.map(function(m){ return m.m; });
   var chips = $('gChips'), chart = null;
@@ -516,7 +516,7 @@ function renderAdvice(d){
   sumParts.push('โอกาสประหยัดเพิ่มอยู่ที่<b>การจัดเวลาการใช้ไฟ</b> มากกว่าการแก้ที่ตัวระบบ');
   $('advSum').innerHTML = sumParts.filter(Boolean).join(' &nbsp;');
 
-  if (g && g.profile_workday) {
+  if (g && g.profile_workday && g.monthly.some(function(x){ return x.max_at; })) {
     var w = g.profile_workday, top = g.monthly.reduce(function(a, b){ return (b.max_kw || 0) > (a.max_kw || 0) ? b : a; });
     var ph = 0; for (var h = 6; h < 18; h++) if (w[h] > w[ph]) ph = h;
     var before = w[ph - 2] || w[ph - 1];
