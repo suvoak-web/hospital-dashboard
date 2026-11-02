@@ -422,7 +422,7 @@ function render(d){
 
   // ----- อินเวอร์เตอร์วันล่าสุด -----
   var inv = d.inverters || [];
-  if (d.report_date) $('invTitle').textContent = 'วันที่ ' + thDate(d.report_date);
+  var invDate = d.inverters_date || d.report_date; if (invDate) $('invTitle').textContent = 'วันที่ ' + thDate(invDate);
   var box = $('invList'); box.innerHTML = '';
   if (!inv.length) box.innerHTML = '<p class="note">ไม่มีข้อมูล</p>';
   inv.forEach(function(x){
