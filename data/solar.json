@@ -4,8 +4,8 @@
  "plant": "รพ.พระทองคำ",
  "first_date": "2026-01-24",
  "report_date": "2026-11-02",
- "report_complete": true,
- "report_last_hour": "23:00",
+ "report_complete": false,
+ "report_last_hour": null,
  "updated": "2026-11-02T23:39+07:00",
  "peak_kw": 65.95,
  "realtime": {
@@ -3110,8 +3110,8 @@
   },
   {
    "d": "2026-10-16",
-   "last_hour": "23:00",
-   "complete": true,
+   "last_hour": null,
+   "complete": false,
    "pv_kwh": 267.77,
    "export_kwh": 40.68,
    "import_kwh": 286.82,
@@ -3154,8 +3154,8 @@
   },
   {
    "d": "2026-10-20",
-   "last_hour": "23:00",
-   "complete": true,
+   "last_hour": null,
+   "complete": false,
    "pv_kwh": 389.48,
    "export_kwh": 48.88,
    "import_kwh": 260.38,
@@ -3297,8 +3297,8 @@
   },
   {
    "d": "2026-11-02",
-   "last_hour": "23:00",
-   "complete": true,
+   "last_hour": null,
+   "complete": false,
    "pv_kwh": 365.02,
    "export_kwh": 54.8,
    "import_kwh": 242.99,
@@ -3441,7 +3441,6 @@
    "peak_kw": 66.0
   }
  ],
- "inverters_date": "2026-10-20",
  "inverters": [
   {
    "name": "Inverter(COM2-13)",
@@ -14607,7 +14606,7 @@
     "max_at": "09:15",
     "workday": true,
     "complete": false,
-    "pv_kwh": 267.77,
+    "pv_kwh": null,
     "hours": [
      53.39,
      52.65,
