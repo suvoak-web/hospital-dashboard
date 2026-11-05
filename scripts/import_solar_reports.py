@@ -45,6 +45,49 @@ def norm(h):
     return re.sub(r"[^a-z0-9]", "", str(h or "").lower())
 
 
+SENSITIVE = ("contact account", "customer name", "meter no", "ct ratio", "vt ratio", "print by", "print date", "address",
+             "ngam wong wan", "contact :")
+
+
+def strip_ami_headers(path, rows):
+    """ตัดข้อมูลระบุตัวตนออกจากรายงาน AMI ของการไฟฟ้าก่อนเก็บใน repo สาธารณะ
+    (เลขผู้ใช้ไฟ, เลขมิเตอร์, ชื่อผู้ใช้ไฟ, ชื่อผู้พิมพ์ ฯลฯ) เหลือเฉพาะเดือน อัตรา และตารางหน่วยไฟ
+    คืน rows ชุดใหม่ ถ้าไม่ใช่รายงาน AMI หรือสะอาดอยู่แล้ว คืน rows เดิม"""
+    hi = next((i for i, r in enumerate(rows[:60])
+               if [norm(c) for c in r[:5]][:2] in (["time", "ratea"], ["date", "ratea"])), None)
+    if hi is None:
+        return rows
+    def bad(r):
+        return any(any(k in str(c).lower() for k in SENSITIVE) for c in r if c is not None)
+    if not any(bad(r) for r in rows):
+        return rows
+    month = next((str(c).strip() for r in rows[:hi] for c in r if c and re.match(r"month\s*:", str(c).strip().lower())), None)
+    tariff = None
+    for r in rows[:hi]:
+        cells = [str(c).strip() if c is not None else "" for c in r]
+        for j, c in enumerate(cells):
+            if c.lower().startswith("tariff"):
+                tariff = next((x for x in cells[j + 1:] if x), None)
+    title = next((str(c).strip() for r in rows[:hi] for c in r if c and "kwh report" in str(c).lower()), "kWh Report")
+    keep = [["Provincial Electricity Authority AMI — " + title]]
+    if month:
+        keep.append([month])
+    if tariff:
+        keep.append(["Tariff : ", tariff])
+    keep.append([])
+    for r in rows[hi:]:
+        if bad(r):
+            continue
+        keep.append([c for c in r])
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Report"
+    for r in keep:
+        ws.append(r)
+    wb.save(path)
+    return rows_of(path)
+
+
 def rows_of(path):
     ws = openpyxl.load_workbook(path, data_only=True, read_only=True).worksheets[0]
     return [list(r) for r in ws.iter_rows(values_only=True)]
@@ -297,6 +340,7 @@ def main():
                     hourly_days[d] = hs
             daily_rows.update(days)
             continue
+        rows = strip_ami_headers(f, rows)
         a = parse_ami(rows)
         if a and a[1]:
             ami_info.update({k: v for k, v in a[0].items() if v})
