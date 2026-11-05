@@ -235,7 +235,7 @@ a{color:var(--accent);text-underline-offset:3px}
     <ul>
       <li><b>ไฟที่อาคาร ER ใช้</b> = ผลิตได้ − ส่งไปอาคารอื่น + ซื้อเพิ่ม (มิเตอร์ของอาคารอุบัติเหตุและฉุกเฉิน ไม่ใช่ไฟทั้งโรงพยาบาล)</li>
       <li><b>ไฟทั้งโรงพยาบาล</b> = ซื้อจากการไฟฟ้า (มิเตอร์ AMI ทุก 15 นาที) + ไฟจากโซลาร์</li>
-      <li><b>ประหยัด</b> = ไฟโซลาร์ × <span id="fTariff"></span> บาท/kWh เพราะไฟที่อาคาร ER ใช้ไม่หมดไหลไปอาคารอื่นใน รพ. ยกเว้นช่วงที่มิเตอร์หลักเป็นศูนย์ (เที่ยงวันหยุดหน้าหนาว) ซึ่งอาจไหลออกไปการไฟฟ้า จึงหักออกแบบระมัดระวัง <span id="fOut"></span></li>
+      <li><b>ประหยัด</b> = ไฟโซลาร์ × ค่าไฟที่ไม่ต้องซื้อตามอัตรา TOU ของบิล รพ. (รวม Ft และ VAT): <span id="fTariff"></span> บาท/kWh ช่วง Off-Peak · ไฟที่ผลิตก่อน 09:00 น. วันเสาร์–อาทิตย์และวันหยุดราชการคิดเป็น Off-Peak · ยังไม่รวมค่า Demand Charge ที่อาจลดลง · นับไฟโซลาร์ทั้งหมด เพราะไฟที่อาคาร ER ใช้ไม่หมดไหลไปอาคารอื่นใน รพ. ยกเว้นช่วงที่มิเตอร์หลักเป็นศูนย์ (เที่ยงวันหยุดหน้าหนาว) ซึ่งอาจไหลออกไปการไฟฟ้า จึงหักออกแบบระมัดระวัง <span id="fOut"></span></li>
       <li><b>CO₂</b> = ผลิตสะสม × <span id="fEf"></span> kgCO₂/kWh · ต้นไม้ 1 ต้นดูดซับ ~<span id="fTree"></span> kgCO₂/ปี</li>
     </ul>
   </details>
@@ -243,10 +243,17 @@ a{color:var(--accent);text-underline-offset:3px}
 
 <script>
 // ===== ปรับค่าตรงนี้ให้ตรงกับ รพ. =====
-var TARIFF = 4.2;      // บาท/kWh — ค่าไฟเฉลี่ยจากบิลการไฟฟ้าของ รพ.
+// อัตรา TOU กิจการขนาดกลาง 22–33 kV (PEA 3.2.2) ตามบิลค่าไฟของ รพ. — ไม่รวม VAT
+var RATE_PEAK = 4.1839; // บาท/kWh จ.–ศ. 09:00–22:00
+var RATE_OFF = 2.6037;  // บาท/kWh นอกเวลา Peak, เสาร์–อาทิตย์ และวันหยุดราชการ
+var FT = 0.1623;        // บาท/kWh ค่า Ft (ดูจากบิลล่าสุด เปลี่ยนทุก 4 เดือน)
+var VAT = 0.07;
 var EF = 0.4999;       // kgCO2/kWh — Grid Emission Factor ของไทย (อบก.)
 var TREE_KG = 9;       // kgCO2 ที่ต้นไม้ 1 ต้นดูดซับต่อปี (ค่าประมาณ)
 // =======================================
+var PEAK_BAHT = (RATE_PEAK + FT) * (1 + VAT), OFF_BAHT = (RATE_OFF + FT) * (1 + VAT);
+// ค่าไฟที่ไม่ต้องซื้อ: ไฟโซลาร์ช่วง Peak × อัตรา Peak + ช่วง Off-Peak × อัตรา Off-Peak (รวม Ft และ VAT)
+function saveOf(r){ if (!r || r.pv_kwh == null) return null; return r.pv_peak_kwh != null ? r.pv_peak_kwh * PEAK_BAHT + r.pv_off_kwh * OFF_BAHT : r.pv_kwh * OFF_BAHT; }
 
 var TH_M = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 var TH_MF = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
@@ -277,7 +284,7 @@ function pvDatasets(rows){ return [
   { type: 'line', label: 'ไฟที่ใช้', data: rows.map(function(m){ return m.use_kwh; }), borderColor: '#1D6FA4', backgroundColor: '#1D6FA4', borderWidth: 2.5, pointRadius: 2.5, tension: .25, order: 1, stack: 'use' }
 ]; }
 
-$('fTariff').textContent = TARIFF; $('fEf').textContent = EF; $('fTree').textContent = TREE_KG;
+$('fTariff').textContent = fmt(PEAK_BAHT, 2) + ' บาท/kWh ช่วง Peak และ ' + fmt(OFF_BAHT, 2); $('fEf').textContent = EF; $('fTree').textContent = TREE_KG;
 
 fetch('data/solar.json?v=' + Date.now()).then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); }).then(render).catch(function(e){
   console.error(e); $('health').className = 'pill bad'; $('health').innerHTML = '<i></i>โหลดข้อมูลไม่ได้';
@@ -317,11 +324,13 @@ function render(d){
   $('tPv').textContent = fmt(total / 1000, 1);
   $('tPvSub').textContent = 'ตามมิเตอร์อินเวอร์เตอร์ ณ ' + (d.report_date ? thDate(d.report_date) : '—');
   var selfRate = (sm.pv_meter_kwh || sm.pv_kwh) ? sm.self_kwh / (sm.pv_meter_kwh || sm.pv_kwh) : 0;
-  var knownSave = (sm.pv_kwh || 0) * TARIFF;
+  var knownSave = saveOf(sm) || 0;
+  var perKwh = sm.pv_kwh ? knownSave / sm.pv_kwh : OFF_BAHT;
   // ช่วงที่มิเตอร์หลักเป็นศูนย์ อาจมีไฟไหลออกไปการไฟฟ้า: หักแบบระมัดระวัง (กำลังสูงสุด 66 kW × 15 นาที ต่อช่วง)
   var outKwh = d.grid && d.grid.zero_intervals ? d.grid.zero_intervals * 66 * 0.25 : 0;
-  $('tSave').textContent = fmt((total - outKwh) * TARIFF);
-  $('tSaveSub').textContent = 'คิดที่ ' + TARIFF + ' บาท/kWh · ดูวิธีคำนวณท้ายหน้า';
+  var totalSave = total * perKwh - outKwh * OFF_BAHT;
+  $('tSave').textContent = fmt(totalSave);
+  $('tSaveSub').textContent = 'อัตรา TOU จริง เฉลี่ย ' + fmt(perKwh, 2) + ' บาท/kWh · Peak ' + fmt(sm.pv_peak_kwh / sm.pv_kwh * 100) + '% ของไฟที่ผลิต';
   if (outKwh) $('fOut').textContent = '(หักไม่เกิน ' + fmt(outKwh) + ' kWh)';
   var share = sm.use_kwh ? sm.self_kwh / sm.use_kwh * 100 : null;
   $('tShare').textContent = fmt(share);
@@ -345,7 +354,7 @@ function render(d){
     var sh = m.use_kwh ? m.self_kwh / m.use_kwh * 100 : null;
     [td(mLabel(m.m, true)), td(m.pv_kwh ? (m.days != null ? m.days + '/' + m.days_in_month : '—') : 'ไม่มีรายงาน'),
      td(fmt(m.pv_kwh)), td(fmt(m.use_kwh)), td(fmt(m.self_kwh)), td(fmt(m.export_kwh)), td(fmt(m.import_kwh)),
-     m.pv_kwh ? shareCell(sh) : td('—'), td(m.pv_kwh ? fmt(m.pv_kwh * TARIFF) : '—')].forEach(function(c){ tr.appendChild(c); });
+     m.pv_kwh ? shareCell(sh) : td('—'), td(m.pv_kwh ? fmt(saveOf(m)) : '—')].forEach(function(c){ tr.appendChild(c); });
     body.appendChild(tr);
   });
   var tr = document.createElement('tr'); tr.className = 'total';
@@ -388,7 +397,8 @@ function render(d){
     $('mixPv').textContent = 'โซลาร์ ' + fmt(self, 1) + ' kWh'; $('mixGrid').textContent = 'การไฟฟ้า ' + fmt(Math.max(0, use - self), 1) + ' kWh';
   } else { $('mixBox').hidden = true; $('mixNone').hidden = false; $('lgUse').hidden = true; }
   $('dPv').textContent = fmt(hpv, 1); $('dPeak').textContent = fmt(d.peak_kw, 1);
-  $('dExp').textContent = fmt(hexp, 1); $('dSave').textContent = fmt(hpv * TARIFF);
+  var hdRec = daily.find(function(x){ return x.d === d.hourly_date; });
+  $('dExp').textContent = fmt(hexp, 1); $('dSave').textContent = fmt(hdRec ? saveOf(hdRec) : hpv * perKwh);
   var lastH = hourly.length ? hourly[hourly.length - 1].h : null;
   $('hourNote').textContent = lastH && lastH < '19:00' ? 'รายงานวันนี้ export ระหว่างวัน มีข้อมูลถึง ' + lastH + ' น. ควร export หลัง 19:00 น. จะได้ครบทั้งวัน' : '';
   new Chart($('cHour'), {
@@ -509,7 +519,7 @@ function renderAdvice(d){
   var outKwh = g && g.zero_intervals ? g.zero_intervals * 66 * 0.25 : 0;
   var both = g ? g.daily.filter(function(x){ return x.total_kwh != null; }) : [];
   var share = both.length ? sum(both, 'pv_kwh') / (sum(both, 'kwh') + sum(both, 'pv_kwh')) * 100 : null;
-  sumParts.push('ระบบโซลาร์อาคาร ER ผลิตไฟได้ <b class="pv">' + fmt(total / 1000, 1) + ' MWh</b> ช่วยประหยัดค่าไฟประมาณ <b>฿' + fmt((total - outKwh) * TARIFF) + '</b>' + (share != null ? ' คิดเป็น <b>' + fmt(share) + '%</b> ของไฟที่ทั้งโรงพยาบาลใช้' : ''));
+  sumParts.push('ระบบโซลาร์อาคาร ER ผลิตไฟได้ <b class="pv">' + fmt(total / 1000, 1) + ' MWh</b> ช่วยประหยัดค่าไฟประมาณ <b>฿' + fmt(total * (sm.pv_kwh ? saveOf(sm) / sm.pv_kwh : OFF_BAHT) - outKwh * OFF_BAHT) + '</b>' + (share != null ? ' คิดเป็น <b>' + fmt(share) + '%</b> ของไฟที่ทั้งโรงพยาบาลใช้' : ''));
   var im = d.inverter_monthly || [], maxDiff = 0;
   im.forEach(function(m){ var v = m.items.map(function(x){ return x.kwh || 0; }); if (v.length === 2 && Math.max(v[0], v[1])) maxDiff = Math.max(maxDiff, Math.abs(v[0] - v[1]) / Math.max(v[0], v[1]) * 100); });
   sumParts.push(im.length ? 'อุปกรณ์ทำงานสม่ำเสมอ (อินเวอร์เตอร์สองเครื่องผลิตต่างกันไม่เกิน ' + fmt(maxDiff, 1) + '%)' : '');
@@ -568,7 +578,7 @@ function renderAdvice(d){
   card('watch', 'ดูแลต่อเนื่อง', 'ติดตามผลทุกเดือน',
     'ข้อมูลยิ่งครบ คำแนะนำยิ่งแม่น และใช้ติดตามผลของมาตรการข้างต้นได้',
     ['ต้นเดือนอัปโหลด Plant Report, Inverter Report และรายงาน AMI ของเดือนก่อนเข้าโฟลเดอร์ data/solar/reports',
-     'ส่งบิลค่าไฟ 1–2 ใบ เพื่อปรับให้คิดค่าประหยัดตามอัตรา TOU และ Demand Charge จริง (ตอนนี้ใช้ค่าเฉลี่ย ' + TARIFF + ' บาท/kWh)',
+     'อัปเดตค่า Ft ในหน้านี้ทุกครั้งที่การไฟฟ้าประกาศใหม่ (ทุก 4 เดือน ดูจากบิล) ตอนนี้ใช้ ' + FT + ' บาท/kWh',
      'หลังเริ่มมาตรการลดไฟกระชาก ดูการ์ด "ความต้องการไฟสูงสุด" ว่าลดลงหรือไม่']);
 
   var rank = { now: 0, plan: 1, watch: 2 };

@@ -45,10 +45,10 @@ https://suvoak-web.github.io/hospital-dashboard/
 
 **ตัวเลขที่คำนวณ**
 - ไฟที่อาคารใช้ = PV Yield − Export + Import (รายชั่วโมงจาก Plant Report)
-- ค่าไฟที่ประหยัด = PV Yield ทั้งหมด × `TARIFF` (มิเตอร์หลักไม่เคยลดถึงศูนย์ ไฟที่อาคาร ER "Export" จึงถูกอาคารอื่นใน รพ. ใช้ต่อ ไม่ได้ขายคืนการไฟฟ้า)
+- ค่าไฟที่ประหยัด = ไฟโซลาร์ช่วง Peak × (`RATE_PEAK` + `FT`) + ช่วง Off-Peak × (`RATE_OFF` + `FT`) รวม VAT 7% ตามอัตรา TOU 22–33 kV ในบิล รพ. (Peak = จ.–ศ. 09:00–22:00; วันหยุดดูจากมิเตอร์ AMI) (มิเตอร์หลักไม่เคยลดถึงศูนย์ ไฟที่อาคาร ER "Export" จึงถูกอาคารอื่นใน รพ. ใช้ต่อ ไม่ได้ขายคืนการไฟฟ้า)
 - CO₂ = พลังงานสะสม (Total Yield ของอินเวอร์เตอร์) × `EF`
 
-แก้ `TARIFF` (บาท/kWh) และ `EF` ได้ที่ต้นสคริปต์ใน `solar_dashboard.html` (และ `TARIFF` ใน `index.html`)
+อัปเดต `FT` ทุกครั้งที่การไฟฟ้าประกาศค่า Ft ใหม่ (ดูจากบิล) ที่ต้นสคริปต์ใน `solar_dashboard.html` และในการ์ดโซลาร์ของ `index.html`
 
 **ทางเลือก: ดึงอัตโนมัติผ่าน API** — ถ้าผู้ดูแลระบบ FusionSolar สร้างบัญชี Northbound ให้ (System → Company Management → Northbound Management)
 ใส่ secrets `FUSIONSOLAR_USER` / `FUSIONSOLAR_SYSTEM_CODE` แล้ว `.github/workflows/solar.yml` จะดึงข้อมูลเองวันละครั้ง (19:35 น.) โดยไม่ต้องอัปโหลดไฟล์ ถ้ายังไม่ใส่ secrets workflow นี้จะข้ามไปเฉย ๆ

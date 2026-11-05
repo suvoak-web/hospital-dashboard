@@ -353,6 +353,24 @@ def main():
                         "last_hour": None, "complete": hrs >= 10 or d < datetime.now(BKK).strftime("%Y-%m-%d"),
                         "inverter_only": True}
     dates = sorted(daily)
+
+    # ---- แยกไฟโซลาร์เป็นช่วง Peak / Off-Peak ตามอัตรา TOU (Peak = จ.–ศ. 09:00–22:00 ไม่รวมวันหยุด) ----
+    peak_days = {d for (d, hm), (v, pk) in ami.items() if pk} | {d for d, (v, pk) in ami_days.items() if pk}
+    ami_known = {d for (d, hm) in ami} | set(ami_days)
+    def is_workday(d):
+        if d in ami_known:
+            return d in peak_days            # มิเตอร์การไฟฟ้าบอกเองว่าวันนั้นมีช่วง Peak หรือไม่ (วันหยุดราชการ = ไม่มี)
+        return datetime.strptime(d, "%Y-%m-%d").weekday() < 5
+    # สัดส่วนไฟโซลาร์ที่ผลิตหลัง 09:00 น. จากรายงานรายชั่วโมงที่ครบวัน
+    fr = [sum(v["pv_kwh"] or 0 for h, v in hs.items() if "09:00" <= h < "22:00") / tot
+          for hs in hourly_days.values() for tot in [sum(v["pv_kwh"] or 0 for v in hs.values())] if tot > 50]
+    peak_share = round(sum(fr) / len(fr), 4) if fr else 0.85
+    for d in dates:
+        pv = daily[d].get("pv_kwh") or 0
+        wd = is_workday(d)
+        daily[d]["workday"] = wd
+        daily[d]["pv_peak_kwh"] = pv * peak_share if wd else 0.0
+        daily[d]["pv_off_kwh"] = pv - daily[d]["pv_peak_kwh"]
     latest = max(dates + list(inv_day)) if (dates or inv_day) else None
 
     # รายเดือน: ต่อเนื่องตั้งแต่เดือนแรกถึงเดือนล่าสุด เดือนที่ไม่มีรายงานเป็น null
@@ -369,7 +387,8 @@ def main():
                 s = lambda k: r2(sum(x.get(k) or 0 for x in ds)) if any(x.get(k) is not None for x in ds) else None  # noqa: E731
                 rec.update({"pv_kwh": s("pv_kwh"), "use_kwh": s("use_kwh"), "self_kwh": s("self_kwh"),
                             "export_kwh": s("export_kwh"), "import_kwh": s("import_kwh"), "co2_t": s("co2_t"),
-                            "peak_kw": r2(max((x.get("peak_kw") or 0 for x in ds), default=0)) or None})
+                            "peak_kw": r2(max((x.get("peak_kw") or 0 for x in ds), default=0)) or None,
+                            "pv_peak_kwh": s("pv_peak_kwh"), "pv_off_kwh": s("pv_off_kwh")})
             elif key in inv_month:
                 rec.update({"pv_kwh": r2(sum(x["kwh"] or 0 for x in inv_month[key])), "days": None})
             else:
@@ -423,6 +442,9 @@ def main():
             **{k: r2(sum(daily[d].get(k) or 0 for d in dates))
                for k in ("pv_kwh", "use_kwh", "self_kwh", "export_kwh", "import_kwh")},
             "co2_t": r2(sum(daily[d].get("co2_t") or 0 for d in dates)),
+            "pv_peak_kwh": r2(sum(daily[d]["pv_peak_kwh"] for d in dates)),
+            "pv_off_kwh": r2(sum(daily[d]["pv_off_kwh"] for d in dates)),
+            "pv_peak_share_workday": peak_share,
             "pv_meter_kwh": r2(sum(daily[d].get("pv_kwh") or 0 for d in dates if daily[d].get("use_kwh") is not None)),
             "inverter_only_days": [d for d in dates if daily[d].get("inverter_only")],
             "missing_months": [x["m"] for x in monthly if not x.get("pv_kwh")],
@@ -430,7 +452,7 @@ def main():
         "hourly_date": hdate,
         "hourly": hourly,
         "daily": [dict({"d": d}, **{k: r2(v) if isinstance(v, float) else v for k, v in daily[d].items()
-                                     if k in ("pv_kwh", "use_kwh", "self_kwh", "export_kwh", "import_kwh", "peak_kw", "complete", "inverter_only", "last_hour")})
+                                     if k in ("pv_kwh", "use_kwh", "self_kwh", "export_kwh", "import_kwh", "peak_kw", "complete", "inverter_only", "last_hour", "workday", "pv_peak_kwh", "pv_off_kwh")})
                   for d in dates[-400:]],
         "monthly": monthly,
         "inverters_date": (latest if latest in inv_day else (max(inv_day) if inv_day else None)),

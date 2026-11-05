@@ -6,7 +6,7 @@
  "report_date": "2026-11-02",
  "report_complete": true,
  "report_last_hour": "23:00",
- "updated": "2026-11-03T00:03+07:00",
+ "updated": "2026-11-05T15:39+07:00",
  "peak_kw": 65.95,
  "realtime": {
   "day_kwh": 365.02,
@@ -24,6 +24,9 @@
   "export_kwh": 32803.51,
   "import_kwh": 61321.69,
   "co2_t": 48.2,
+  "pv_peak_kwh": 56232.88,
+  "pv_off_kwh": 45234.82,
+  "pv_peak_share_workday": 0.8415,
   "pv_meter_kwh": 101467.7,
   "inverter_only_days": [],
   "missing_months": []
@@ -202,7 +205,10 @@
    "import_kwh": 105.09,
    "use_kwh": 197.94,
    "self_kwh": 92.85,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 166.06
   },
   {
    "d": "2026-01-25",
@@ -213,7 +219,10 @@
    "import_kwh": 199.31,
    "use_kwh": 357.36,
    "self_kwh": 158.05,
-   "peak_kw": 59.44
+   "peak_kw": 59.44,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 217.89
   },
   {
    "d": "2026-01-26",
@@ -224,7 +233,10 @@
    "import_kwh": 149.19,
    "use_kwh": 306.36,
    "self_kwh": 157.17,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 242.14,
+   "pv_off_kwh": 45.61
   },
   {
    "d": "2026-01-27",
@@ -235,7 +247,10 @@
    "import_kwh": 142.82,
    "use_kwh": 303.67,
    "self_kwh": 160.85,
-   "peak_kw": 61.37
+   "peak_kw": 61.37,
+   "workday": true,
+   "pv_peak_kwh": 278.44,
+   "pv_off_kwh": 52.45
   },
   {
    "d": "2026-01-28",
@@ -246,7 +261,10 @@
    "import_kwh": 121.05,
    "use_kwh": 286.65,
    "self_kwh": 165.6,
-   "peak_kw": 64.44
+   "peak_kw": 64.44,
+   "workday": true,
+   "pv_peak_kwh": 334.24,
+   "pv_off_kwh": 62.95
   },
   {
    "d": "2026-01-29",
@@ -257,7 +275,10 @@
    "import_kwh": 100.92,
    "use_kwh": 262.9,
    "self_kwh": 161.98,
-   "peak_kw": 60.43
+   "peak_kw": 60.43,
+   "workday": true,
+   "pv_peak_kwh": 339.06,
+   "pv_off_kwh": 63.86
   },
   {
    "d": "2026-01-30",
@@ -268,7 +289,10 @@
    "import_kwh": 132.5,
    "use_kwh": 299.27,
    "self_kwh": 166.77,
-   "peak_kw": 58.93
+   "peak_kw": 58.93,
+   "workday": true,
+   "pv_peak_kwh": 319.72,
+   "pv_off_kwh": 60.22
   },
   {
    "d": "2026-01-31",
@@ -279,7 +303,10 @@
    "import_kwh": 111.64,
    "use_kwh": 230.63,
    "self_kwh": 118.99,
-   "peak_kw": 59.64
+   "peak_kw": 59.64,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 391.93
   },
   {
    "d": "2026-02-01",
@@ -290,7 +317,10 @@
    "import_kwh": 102.28,
    "use_kwh": 207.5,
    "self_kwh": 105.22,
-   "peak_kw": 60.17
+   "peak_kw": 60.17,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 387.36
   },
   {
    "d": "2026-02-02",
@@ -301,7 +331,10 @@
    "import_kwh": 123.38,
    "use_kwh": 286.71,
    "self_kwh": 163.33,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 317.78,
+   "pv_off_kwh": 59.86
   },
   {
    "d": "2026-02-03",
@@ -312,7 +345,10 @@
    "import_kwh": 129.83,
    "use_kwh": 308.17,
    "self_kwh": 178.34,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 298.82,
+   "pv_off_kwh": 56.28
   },
   {
    "d": "2026-02-04",
@@ -323,7 +359,10 @@
    "import_kwh": 132.21,
    "use_kwh": 302.08,
    "self_kwh": 169.87,
-   "peak_kw": 62.37
+   "peak_kw": 62.37,
+   "workday": true,
+   "pv_peak_kwh": 301.6,
+   "pv_off_kwh": 56.81
   },
   {
    "d": "2026-02-05",
@@ -334,7 +373,10 @@
    "import_kwh": 148.62,
    "use_kwh": 333.07,
    "self_kwh": 184.45,
-   "peak_kw": 64.32
+   "peak_kw": 64.32,
+   "workday": true,
+   "pv_peak_kwh": 294.58,
+   "pv_off_kwh": 55.48
   },
   {
    "d": "2026-02-06",
@@ -345,7 +387,10 @@
    "import_kwh": 150.41,
    "use_kwh": 352.24,
    "self_kwh": 201.83,
-   "peak_kw": 65.02
+   "peak_kw": 65.02,
+   "workday": true,
+   "pv_peak_kwh": 335.74,
+   "pv_off_kwh": 63.24
   },
   {
    "d": "2026-02-07",
@@ -356,7 +401,10 @@
    "import_kwh": 116.99,
    "use_kwh": 225.59,
    "self_kwh": 108.6,
-   "peak_kw": 59.69
+   "peak_kw": 59.69,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 352.08
   },
   {
    "d": "2026-02-08",
@@ -367,7 +415,10 @@
    "import_kwh": 143.97,
    "use_kwh": 251.78,
    "self_kwh": 107.81,
-   "peak_kw": 56.16
+   "peak_kw": 56.16,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 252.11
   },
   {
    "d": "2026-02-09",
@@ -378,7 +429,10 @@
    "import_kwh": 112.75,
    "use_kwh": 313.52,
    "self_kwh": 200.77,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 322.13,
+   "pv_off_kwh": 60.67
   },
   {
    "d": "2026-02-10",
@@ -389,7 +443,10 @@
    "import_kwh": 120.71,
    "use_kwh": 327.45,
    "self_kwh": 206.74,
-   "peak_kw": 60.14
+   "peak_kw": 60.14,
+   "workday": true,
+   "pv_peak_kwh": 343.32,
+   "pv_off_kwh": 64.66
   },
   {
    "d": "2026-02-11",
@@ -400,7 +457,10 @@
    "import_kwh": 154.5,
    "use_kwh": 368.92,
    "self_kwh": 214.42,
-   "peak_kw": 60.59
+   "peak_kw": 60.59,
+   "workday": true,
+   "pv_peak_kwh": 340.77,
+   "pv_off_kwh": 64.19
   },
   {
    "d": "2026-02-12",
@@ -411,7 +471,10 @@
    "import_kwh": 167.86,
    "use_kwh": 437.95,
    "self_kwh": 270.09,
-   "peak_kw": 59.87
+   "peak_kw": 59.87,
+   "workday": true,
+   "pv_peak_kwh": 338.27,
+   "pv_off_kwh": 63.72
   },
   {
    "d": "2026-02-13",
@@ -422,7 +485,10 @@
    "import_kwh": 125.8,
    "use_kwh": 323.21,
    "self_kwh": 197.41,
-   "peak_kw": 58.64
+   "peak_kw": 58.64,
+   "workday": true,
+   "pv_peak_kwh": 315.12,
+   "pv_off_kwh": 59.36
   },
   {
    "d": "2026-02-14",
@@ -433,7 +499,10 @@
    "import_kwh": 134.77,
    "use_kwh": 254.68,
    "self_kwh": 119.91,
-   "peak_kw": 59.19
+   "peak_kw": 59.19,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 376.49
   },
   {
    "d": "2026-02-15",
@@ -444,7 +513,10 @@
    "import_kwh": 129.13,
    "use_kwh": 244.32,
    "self_kwh": 115.19,
-   "peak_kw": 57.65
+   "peak_kw": 57.65,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 382.84
   },
   {
    "d": "2026-02-16",
@@ -455,7 +527,10 @@
    "import_kwh": 153.85,
    "use_kwh": 376.24,
    "self_kwh": 222.39,
-   "peak_kw": 57.4
+   "peak_kw": 57.4,
+   "workday": true,
+   "pv_peak_kwh": 320.15,
+   "pv_off_kwh": 60.3
   },
   {
    "d": "2026-02-17",
@@ -466,7 +541,10 @@
    "import_kwh": 146.84,
    "use_kwh": 373.72,
    "self_kwh": 226.88,
-   "peak_kw": 57.35
+   "peak_kw": 57.35,
+   "workday": true,
+   "pv_peak_kwh": 312.56,
+   "pv_off_kwh": 58.87
   },
   {
    "d": "2026-02-18",
@@ -477,7 +555,10 @@
    "import_kwh": 153.46,
    "use_kwh": 379.15,
    "self_kwh": 225.69,
-   "peak_kw": 65.6
+   "peak_kw": 65.6,
+   "workday": true,
+   "pv_peak_kwh": 299.73,
+   "pv_off_kwh": 56.46
   },
   {
    "d": "2026-02-19",
@@ -488,7 +569,10 @@
    "import_kwh": 169.79,
    "use_kwh": 402.42,
    "self_kwh": 232.63,
-   "peak_kw": 62.05
+   "peak_kw": 62.05,
+   "workday": true,
+   "pv_peak_kwh": 336.54,
+   "pv_off_kwh": 63.39
   },
   {
    "d": "2026-02-20",
@@ -499,7 +583,10 @@
    "import_kwh": 149.82,
    "use_kwh": 378.79,
    "self_kwh": 228.97,
-   "peak_kw": 61.66
+   "peak_kw": 61.66,
+   "workday": true,
+   "pv_peak_kwh": 346.38,
+   "pv_off_kwh": 65.24
   },
   {
    "d": "2026-02-21",
@@ -510,7 +597,10 @@
    "import_kwh": 142.85,
    "use_kwh": 266.77,
    "self_kwh": 123.92,
-   "peak_kw": 59.08
+   "peak_kw": 59.08,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 393.1
   },
   {
    "d": "2026-02-22",
@@ -521,7 +611,10 @@
    "import_kwh": 135.82,
    "use_kwh": 274.51,
    "self_kwh": 138.69,
-   "peak_kw": 64.29
+   "peak_kw": 64.29,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 366.01
   },
   {
    "d": "2026-02-23",
@@ -532,7 +625,10 @@
    "import_kwh": 211.69,
    "use_kwh": 467.78,
    "self_kwh": 256.09,
-   "peak_kw": 60.47
+   "peak_kw": 60.47,
+   "workday": true,
+   "pv_peak_kwh": 283.11,
+   "pv_off_kwh": 53.32
   },
   {
    "d": "2026-02-24",
@@ -543,7 +639,10 @@
    "import_kwh": 220.91,
    "use_kwh": 472.46,
    "self_kwh": 251.55,
-   "peak_kw": 65.25
+   "peak_kw": 65.25,
+   "workday": true,
+   "pv_peak_kwh": 251.01,
+   "pv_off_kwh": 47.28
   },
   {
    "d": "2026-02-25",
@@ -554,7 +653,10 @@
    "import_kwh": 152.39,
    "use_kwh": 376.89,
    "self_kwh": 224.5,
-   "peak_kw": 64.39
+   "peak_kw": 64.39,
+   "workday": true,
+   "pv_peak_kwh": 289.42,
+   "pv_off_kwh": 54.51
   },
   {
    "d": "2026-02-26",
@@ -565,7 +667,10 @@
    "import_kwh": 185.52,
    "use_kwh": 408.5,
    "self_kwh": 222.98,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 267.14,
+   "pv_off_kwh": 50.32
   },
   {
    "d": "2026-02-27",
@@ -576,7 +681,10 @@
    "import_kwh": 172.53,
    "use_kwh": 387.02,
    "self_kwh": 214.49,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 297.98,
+   "pv_off_kwh": 56.12
   },
   {
    "d": "2026-02-28",
@@ -587,7 +695,10 @@
    "import_kwh": 167.08,
    "use_kwh": 331.65,
    "self_kwh": 164.57,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 389.61
   },
   {
    "d": "2026-03-01",
@@ -598,7 +709,10 @@
    "import_kwh": 178.1,
    "use_kwh": 335.31,
    "self_kwh": 157.21,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 398.66
   },
   {
    "d": "2026-03-02",
@@ -609,7 +723,10 @@
    "import_kwh": 171.05,
    "use_kwh": 444.73,
    "self_kwh": 273.68,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": true,
+   "pv_peak_kwh": 351.41,
+   "pv_off_kwh": 66.19
   },
   {
    "d": "2026-03-03",
@@ -620,7 +737,10 @@
    "import_kwh": 158.76,
    "use_kwh": 330.31,
    "self_kwh": 171.55,
-   "peak_kw": 63.79
+   "peak_kw": 63.79,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 433.97
   },
   {
    "d": "2026-03-04",
@@ -631,7 +751,10 @@
    "import_kwh": 170.57,
    "use_kwh": 445.1,
    "self_kwh": 274.53,
-   "peak_kw": 61.24
+   "peak_kw": 61.24,
+   "workday": true,
+   "pv_peak_kwh": 348.98,
+   "pv_off_kwh": 65.73
   },
   {
    "d": "2026-03-05",
@@ -642,7 +765,10 @@
    "import_kwh": 191.56,
    "use_kwh": 457.23,
    "self_kwh": 265.67,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 321.84,
+   "pv_off_kwh": 60.62
   },
   {
    "d": "2026-03-06",
@@ -653,7 +779,10 @@
    "import_kwh": 172.8,
    "use_kwh": 403.31,
    "self_kwh": 230.51,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 306.46,
+   "pv_off_kwh": 57.72
   },
   {
    "d": "2026-03-07",
@@ -664,7 +793,10 @@
    "import_kwh": 152.55,
    "use_kwh": 273.91,
    "self_kwh": 121.36,
-   "peak_kw": 65.38
+   "peak_kw": 65.38,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 444.57
   },
   {
    "d": "2026-03-08",
@@ -675,7 +807,10 @@
    "import_kwh": 161.37,
    "use_kwh": 246.05,
    "self_kwh": 84.68,
-   "peak_kw": 63.63
+   "peak_kw": 63.63,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 334.01
   },
   {
    "d": "2026-03-09",
@@ -686,7 +821,10 @@
    "import_kwh": 149.87,
    "use_kwh": 408.9,
    "self_kwh": 259.03,
-   "peak_kw": 62.96
+   "peak_kw": 62.96,
+   "workday": true,
+   "pv_peak_kwh": 367.42,
+   "pv_off_kwh": 69.21
   },
   {
    "d": "2026-03-10",
@@ -697,7 +835,10 @@
    "import_kwh": 137.16,
    "use_kwh": 369.56,
    "self_kwh": 232.4,
-   "peak_kw": 65.69
+   "peak_kw": 65.69,
+   "workday": true,
+   "pv_peak_kwh": 376.47,
+   "pv_off_kwh": 70.91
   },
   {
    "d": "2026-03-11",
@@ -708,7 +849,10 @@
    "import_kwh": 135.27,
    "use_kwh": 347.18,
    "self_kwh": 211.91,
-   "peak_kw": 64.51
+   "peak_kw": 64.51,
+   "workday": true,
+   "pv_peak_kwh": 369.73,
+   "pv_off_kwh": 69.64
   },
   {
    "d": "2026-03-12",
@@ -719,7 +863,10 @@
    "import_kwh": 153.49,
    "use_kwh": 372.8,
    "self_kwh": 219.31,
-   "peak_kw": 61.83
+   "peak_kw": 61.83,
+   "workday": true,
+   "pv_peak_kwh": 353.71,
+   "pv_off_kwh": 66.62
   },
   {
    "d": "2026-03-13",
@@ -730,7 +877,10 @@
    "import_kwh": 139.33,
    "use_kwh": 335.29,
    "self_kwh": 195.96,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 331.7,
+   "pv_off_kwh": 62.48
   },
   {
    "d": "2026-03-14",
@@ -741,7 +891,10 @@
    "import_kwh": 115.92,
    "use_kwh": 234.25,
    "self_kwh": 118.33,
-   "peak_kw": 63.65
+   "peak_kw": 63.65,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 416.94
   },
   {
    "d": "2026-03-15",
@@ -752,7 +905,10 @@
    "import_kwh": 135.77,
    "use_kwh": 249.27,
    "self_kwh": 113.5,
-   "peak_kw": 63.84
+   "peak_kw": 63.84,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 436.02
   },
   {
    "d": "2026-03-16",
@@ -763,7 +919,10 @@
    "import_kwh": 157.58,
    "use_kwh": 419.41,
    "self_kwh": 261.83,
-   "peak_kw": 63.94
+   "peak_kw": 63.94,
+   "workday": true,
+   "pv_peak_kwh": 373.74,
+   "pv_off_kwh": 70.4
   },
   {
    "d": "2026-03-17",
@@ -774,7 +933,10 @@
    "import_kwh": 178.27,
    "use_kwh": 401.21,
    "self_kwh": 222.94,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 323.04,
+   "pv_off_kwh": 60.84
   },
   {
    "d": "2026-03-18",
@@ -785,7 +947,10 @@
    "import_kwh": 180.01,
    "use_kwh": 414.52,
    "self_kwh": 234.51,
-   "peak_kw": 65.98
+   "peak_kw": 65.98,
+   "workday": true,
+   "pv_peak_kwh": 297.24,
+   "pv_off_kwh": 55.99
   },
   {
    "d": "2026-03-19",
@@ -796,7 +961,10 @@
    "import_kwh": 170.11,
    "use_kwh": 384.91,
    "self_kwh": 214.8,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": true,
+   "pv_peak_kwh": 274.22,
+   "pv_off_kwh": 51.65
   },
   {
    "d": "2026-03-20",
@@ -807,7 +975,10 @@
    "import_kwh": 177.55,
    "use_kwh": 423.51,
    "self_kwh": 245.96,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 318.95,
+   "pv_off_kwh": 60.08
   },
   {
    "d": "2026-03-21",
@@ -818,7 +989,10 @@
    "import_kwh": 154.18,
    "use_kwh": 267.02,
    "self_kwh": 112.84,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 380.32
   },
   {
    "d": "2026-03-22",
@@ -829,7 +1003,10 @@
    "import_kwh": 177.53,
    "use_kwh": 320.0,
    "self_kwh": 142.47,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 362.71
   },
   {
    "d": "2026-03-23",
@@ -840,7 +1017,10 @@
    "import_kwh": 189.88,
    "use_kwh": 420.57,
    "self_kwh": 230.69,
-   "peak_kw": 65.96
+   "peak_kw": 65.96,
+   "workday": true,
+   "pv_peak_kwh": 286.29,
+   "pv_off_kwh": 53.92
   },
   {
    "d": "2026-03-24",
@@ -851,7 +1031,10 @@
    "import_kwh": 181.35,
    "use_kwh": 422.3,
    "self_kwh": 240.95,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 319.25,
+   "pv_off_kwh": 60.13
   },
   {
    "d": "2026-03-25",
@@ -862,7 +1045,10 @@
    "import_kwh": 219.53,
    "use_kwh": 447.42,
    "self_kwh": 227.89,
-   "peak_kw": 65.89
+   "peak_kw": 65.89,
+   "workday": true,
+   "pv_peak_kwh": 330.33,
+   "pv_off_kwh": 62.22
   },
   {
    "d": "2026-03-26",
@@ -873,7 +1059,10 @@
    "import_kwh": 207.89,
    "use_kwh": 508.33,
    "self_kwh": 300.44,
-   "peak_kw": 64.88
+   "peak_kw": 64.88,
+   "workday": true,
+   "pv_peak_kwh": 353.71,
+   "pv_off_kwh": 66.62
   },
   {
    "d": "2026-03-27",
@@ -884,7 +1073,10 @@
    "import_kwh": 235.6,
    "use_kwh": 527.54,
    "self_kwh": 291.94,
-   "peak_kw": 65.02
+   "peak_kw": 65.02,
+   "workday": true,
+   "pv_peak_kwh": 344.99,
+   "pv_off_kwh": 64.98
   },
   {
    "d": "2026-03-28",
@@ -895,7 +1087,10 @@
    "import_kwh": 188.85,
    "use_kwh": 352.84,
    "self_kwh": 163.99,
-   "peak_kw": 64.76
+   "peak_kw": 64.76,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 444.29
   },
   {
    "d": "2026-03-29",
@@ -906,7 +1101,10 @@
    "import_kwh": 188.65,
    "use_kwh": 348.37,
    "self_kwh": 159.72,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 414.48
   },
   {
    "d": "2026-03-30",
@@ -917,7 +1115,10 @@
    "import_kwh": 201.76,
    "use_kwh": 520.45,
    "self_kwh": 318.69,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 364.01,
+   "pv_off_kwh": 68.56
   },
   {
    "d": "2026-03-31",
@@ -928,7 +1129,10 @@
    "import_kwh": 191.04,
    "use_kwh": 519.7,
    "self_kwh": 328.66,
-   "peak_kw": 63.73
+   "peak_kw": 63.73,
+   "workday": true,
+   "pv_peak_kwh": 367.37,
+   "pv_off_kwh": 69.19
   },
   {
    "d": "2026-04-01",
@@ -939,7 +1143,10 @@
    "import_kwh": 192.31,
    "use_kwh": 517.11,
    "self_kwh": 324.8,
-   "peak_kw": 62.62
+   "peak_kw": 62.62,
+   "workday": true,
+   "pv_peak_kwh": 375.4,
+   "pv_off_kwh": 70.71
   },
   {
    "d": "2026-04-02",
@@ -950,7 +1157,10 @@
    "import_kwh": 233.85,
    "use_kwh": 559.19,
    "self_kwh": 325.34,
-   "peak_kw": 65.95
+   "peak_kw": 65.95,
+   "workday": true,
+   "pv_peak_kwh": 338.48,
+   "pv_off_kwh": 63.75
   },
   {
    "d": "2026-04-03",
@@ -961,7 +1171,10 @@
    "import_kwh": 191.19,
    "use_kwh": 522.39,
    "self_kwh": 331.2,
-   "peak_kw": 62.04
+   "peak_kw": 62.04,
+   "workday": true,
+   "pv_peak_kwh": 359.08,
+   "pv_off_kwh": 67.64
   },
   {
    "d": "2026-04-04",
@@ -972,7 +1185,10 @@
    "import_kwh": 214.24,
    "use_kwh": 402.81,
    "self_kwh": 188.57,
-   "peak_kw": 58.87
+   "peak_kw": 58.87,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 406.45
   },
   {
    "d": "2026-04-05",
@@ -983,7 +1199,10 @@
    "import_kwh": 190.17,
    "use_kwh": 394.94,
    "self_kwh": 204.77,
-   "peak_kw": 62.45
+   "peak_kw": 62.45,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 423.55
   },
   {
    "d": "2026-04-06",
@@ -994,7 +1213,10 @@
    "import_kwh": 185.52,
    "use_kwh": 389.82,
    "self_kwh": 204.3,
-   "peak_kw": 62.11
+   "peak_kw": 62.11,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 436.0
   },
   {
    "d": "2026-04-07",
@@ -1005,7 +1227,10 @@
    "import_kwh": 210.39,
    "use_kwh": 545.4,
    "self_kwh": 335.01,
-   "peak_kw": 65.91
+   "peak_kw": 65.91,
+   "workday": true,
+   "pv_peak_kwh": 346.63,
+   "pv_off_kwh": 65.29
   },
   {
    "d": "2026-04-08",
@@ -1016,7 +1241,10 @@
    "import_kwh": 206.85,
    "use_kwh": 536.04,
    "self_kwh": 329.19,
-   "peak_kw": 65.16
+   "peak_kw": 65.16,
+   "workday": true,
+   "pv_peak_kwh": 340.36,
+   "pv_off_kwh": 64.11
   },
   {
    "d": "2026-04-09",
@@ -1027,7 +1255,10 @@
    "import_kwh": 221.77,
    "use_kwh": 581.1,
    "self_kwh": 359.33,
-   "peak_kw": 64.21
+   "peak_kw": 64.21,
+   "workday": true,
+   "pv_peak_kwh": 377.93,
+   "pv_off_kwh": 71.19
   },
   {
    "d": "2026-04-10",
@@ -1038,7 +1269,10 @@
    "import_kwh": 233.6,
    "use_kwh": 555.02,
    "self_kwh": 321.42,
-   "peak_kw": 60.97
+   "peak_kw": 60.97,
+   "workday": true,
+   "pv_peak_kwh": 362.47,
+   "pv_off_kwh": 68.27
   },
   {
    "d": "2026-04-11",
@@ -1049,7 +1283,10 @@
    "import_kwh": 202.31,
    "use_kwh": 404.98,
    "self_kwh": 202.67,
-   "peak_kw": 60.53
+   "peak_kw": 60.53,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 432.75
   },
   {
    "d": "2026-04-12",
@@ -1060,7 +1297,10 @@
    "import_kwh": 169.33,
    "use_kwh": 366.27,
    "self_kwh": 196.94,
-   "peak_kw": 61.53
+   "peak_kw": 61.53,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 432.22
   },
   {
    "d": "2026-04-13",
@@ -1071,7 +1311,10 @@
    "import_kwh": 216.97,
    "use_kwh": 432.86,
    "self_kwh": 215.89,
-   "peak_kw": 63.75
+   "peak_kw": 63.75,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 432.27
   },
   {
    "d": "2026-04-14",
@@ -1082,7 +1325,10 @@
    "import_kwh": 164.92,
    "use_kwh": 387.59,
    "self_kwh": 222.67,
-   "peak_kw": 65.81
+   "peak_kw": 65.81,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 433.38
   },
   {
    "d": "2026-04-15",
@@ -1093,7 +1339,10 @@
    "import_kwh": 206.32,
    "use_kwh": 405.97,
    "self_kwh": 199.65,
-   "peak_kw": 63.78
+   "peak_kw": 63.78,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 416.63
   },
   {
    "d": "2026-04-16",
@@ -1104,7 +1353,10 @@
    "import_kwh": 256.16,
    "use_kwh": 608.72,
    "self_kwh": 352.56,
-   "peak_kw": 60.81
+   "peak_kw": 60.81,
+   "workday": true,
+   "pv_peak_kwh": 346.39,
+   "pv_off_kwh": 65.24
   },
   {
    "d": "2026-04-17",
@@ -1115,7 +1367,10 @@
    "import_kwh": 284.79,
    "use_kwh": 552.5,
    "self_kwh": 267.71,
-   "peak_kw": 65.95
+   "peak_kw": 65.95,
+   "workday": true,
+   "pv_peak_kwh": 267.24,
+   "pv_off_kwh": 50.33
   },
   {
    "d": "2026-04-18",
@@ -1126,7 +1381,10 @@
    "import_kwh": 211.4,
    "use_kwh": 406.7,
    "self_kwh": 195.3,
-   "peak_kw": 56.67
+   "peak_kw": 56.67,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 396.27
   },
   {
    "d": "2026-04-19",
@@ -1137,7 +1395,10 @@
    "import_kwh": 249.66,
    "use_kwh": 443.95,
    "self_kwh": 194.29,
-   "peak_kw": 57.91
+   "peak_kw": 57.91,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 350.96
   },
   {
    "d": "2026-04-20",
@@ -1148,7 +1409,10 @@
    "import_kwh": 244.23,
    "use_kwh": 551.24,
    "self_kwh": 307.01,
-   "peak_kw": 53.99
+   "peak_kw": 53.99,
+   "workday": true,
+   "pv_peak_kwh": 275.69,
+   "pv_off_kwh": 51.93
   },
   {
    "d": "2026-04-21",
@@ -1159,7 +1423,10 @@
    "import_kwh": 176.97,
    "use_kwh": 495.25,
    "self_kwh": 318.28,
-   "peak_kw": 59.77
+   "peak_kw": 59.77,
+   "workday": true,
+   "pv_peak_kwh": 346.08,
+   "pv_off_kwh": 65.18
   },
   {
    "d": "2026-04-22",
@@ -1170,7 +1437,10 @@
    "import_kwh": 235.91,
    "use_kwh": 559.72,
    "self_kwh": 323.81,
-   "peak_kw": 60.12
+   "peak_kw": 60.12,
+   "workday": true,
+   "pv_peak_kwh": 328.96,
+   "pv_off_kwh": 61.96
   },
   {
    "d": "2026-04-23",
@@ -1181,7 +1451,10 @@
    "import_kwh": 225.88,
    "use_kwh": 545.55,
    "self_kwh": 319.67,
-   "peak_kw": 62.53
+   "peak_kw": 62.53,
+   "workday": true,
+   "pv_peak_kwh": 318.32,
+   "pv_off_kwh": 59.96
   },
   {
    "d": "2026-04-24",
@@ -1192,7 +1465,10 @@
    "import_kwh": 260.59,
    "use_kwh": 549.01,
    "self_kwh": 288.42,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": true,
+   "pv_peak_kwh": 287.94,
+   "pv_off_kwh": 54.24
   },
   {
    "d": "2026-04-25",
@@ -1203,7 +1479,10 @@
    "import_kwh": 184.56,
    "use_kwh": 392.94,
    "self_kwh": 208.38,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 371.75
   },
   {
    "d": "2026-04-26",
@@ -1214,7 +1493,10 @@
    "import_kwh": 173.17,
    "use_kwh": 343.8,
    "self_kwh": 170.63,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 274.13
   },
   {
    "d": "2026-04-27",
@@ -1225,7 +1507,10 @@
    "import_kwh": 215.36,
    "use_kwh": 515.82,
    "self_kwh": 300.46,
-   "peak_kw": 64.52
+   "peak_kw": 64.52,
+   "workday": true,
+   "pv_peak_kwh": 334.2,
+   "pv_off_kwh": 62.95
   },
   {
    "d": "2026-04-28",
@@ -1236,7 +1521,10 @@
    "import_kwh": 202.14,
    "use_kwh": 512.74,
    "self_kwh": 310.6,
-   "peak_kw": 65.85
+   "peak_kw": 65.85,
+   "workday": true,
+   "pv_peak_kwh": 366.23,
+   "pv_off_kwh": 68.98
   },
   {
    "d": "2026-04-29",
@@ -1247,7 +1535,10 @@
    "import_kwh": 300.19,
    "use_kwh": 599.65,
    "self_kwh": 299.46,
-   "peak_kw": 63.61
+   "peak_kw": 63.61,
+   "workday": true,
+   "pv_peak_kwh": 320.53,
+   "pv_off_kwh": 60.37
   },
   {
    "d": "2026-04-30",
@@ -1258,7 +1549,10 @@
    "import_kwh": 281.42,
    "use_kwh": 602.21,
    "self_kwh": 320.79,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 344.96,
+   "pv_off_kwh": 64.98
   },
   {
    "d": "2026-05-01",
@@ -1269,7 +1563,10 @@
    "import_kwh": 196.58,
    "use_kwh": 486.01,
    "self_kwh": 289.43,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 392.37
   },
   {
    "d": "2026-05-02",
@@ -1280,7 +1577,10 @@
    "import_kwh": 194.17,
    "use_kwh": 352.46,
    "self_kwh": 158.29,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 359.92
   },
   {
    "d": "2026-05-03",
@@ -1291,7 +1591,10 @@
    "import_kwh": 200.61,
    "use_kwh": 363.32,
    "self_kwh": 162.71,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 435.28
   },
   {
    "d": "2026-05-04",
@@ -1302,7 +1605,10 @@
    "import_kwh": 163.52,
    "use_kwh": 333.47,
    "self_kwh": 169.95,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 371.81
   },
   {
    "d": "2026-05-05",
@@ -1313,7 +1619,10 @@
    "import_kwh": 217.03,
    "use_kwh": 518.53,
    "self_kwh": 301.5,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 274.18,
+   "pv_off_kwh": 51.64
   },
   {
    "d": "2026-05-06",
@@ -1324,7 +1633,10 @@
    "import_kwh": 225.49,
    "use_kwh": 555.25,
    "self_kwh": 329.76,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 338.49,
+   "pv_off_kwh": 63.76
   },
   {
    "d": "2026-05-07",
@@ -1335,7 +1647,10 @@
    "import_kwh": 231.06,
    "use_kwh": 574.95,
    "self_kwh": 343.89,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": true,
+   "pv_peak_kwh": 361.47,
+   "pv_off_kwh": 68.08
   },
   {
    "d": "2026-05-08",
@@ -1346,7 +1661,10 @@
    "import_kwh": 268.8,
    "use_kwh": 584.54,
    "self_kwh": 315.74,
-   "peak_kw": 65.01
+   "peak_kw": 65.01,
+   "workday": true,
+   "pv_peak_kwh": 309.82,
+   "pv_off_kwh": 58.35
   },
   {
    "d": "2026-05-09",
@@ -1357,7 +1675,10 @@
    "import_kwh": 206.27,
    "use_kwh": 366.96,
    "self_kwh": 160.69,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 362.5
   },
   {
    "d": "2026-05-10",
@@ -1368,7 +1689,10 @@
    "import_kwh": 212.21,
    "use_kwh": 405.14,
    "self_kwh": 192.93,
-   "peak_kw": 65.96
+   "peak_kw": 65.96,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 412.07
   },
   {
    "d": "2026-05-11",
@@ -1379,7 +1703,10 @@
    "import_kwh": 271.89,
    "use_kwh": 622.94,
    "self_kwh": 351.05,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 339.52,
+   "pv_off_kwh": 63.95
   },
   {
    "d": "2026-05-12",
@@ -1390,7 +1717,10 @@
    "import_kwh": 294.44,
    "use_kwh": 579.94,
    "self_kwh": 285.5,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 270.38,
+   "pv_off_kwh": 50.93
   },
   {
    "d": "2026-05-13",
@@ -1401,7 +1731,10 @@
    "import_kwh": 213.71,
    "use_kwh": 409.3,
    "self_kwh": 195.59,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 302.9,
+   "pv_off_kwh": 57.05
   },
   {
    "d": "2026-05-14",
@@ -1412,7 +1745,10 @@
    "import_kwh": 262.23,
    "use_kwh": 552.93,
    "self_kwh": 290.7,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 285.77,
+   "pv_off_kwh": 53.83
   },
   {
    "d": "2026-05-15",
@@ -1423,7 +1759,10 @@
    "import_kwh": 283.17,
    "use_kwh": 565.73,
    "self_kwh": 282.56,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 293.79,
+   "pv_off_kwh": 55.34
   },
   {
    "d": "2026-05-16",
@@ -1434,7 +1773,10 @@
    "import_kwh": 176.61,
    "use_kwh": 369.62,
    "self_kwh": 193.01,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 410.1
   },
   {
    "d": "2026-05-17",
@@ -1445,7 +1787,10 @@
    "import_kwh": 192.58,
    "use_kwh": 399.39,
    "self_kwh": 206.81,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 384.06
   },
   {
    "d": "2026-05-18",
@@ -1456,7 +1801,10 @@
    "import_kwh": 261.79,
    "use_kwh": 549.26,
    "self_kwh": 287.47,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 286.59,
+   "pv_off_kwh": 53.98
   },
   {
    "d": "2026-05-19",
@@ -1467,7 +1815,10 @@
    "import_kwh": 268.95,
    "use_kwh": 501.22,
    "self_kwh": 232.27,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 217.35,
+   "pv_off_kwh": 40.94
   },
   {
    "d": "2026-05-20",
@@ -1478,7 +1829,10 @@
    "import_kwh": 302.02,
    "use_kwh": 485.4,
    "self_kwh": 183.38,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 181.9,
+   "pv_off_kwh": 34.26
   },
   {
    "d": "2026-05-21",
@@ -1489,7 +1843,10 @@
    "import_kwh": 186.63,
    "use_kwh": 482.39,
    "self_kwh": 295.76,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 339.79,
+   "pv_off_kwh": 64.0
   },
   {
    "d": "2026-05-22",
@@ -1500,7 +1857,10 @@
    "import_kwh": 246.65,
    "use_kwh": 528.46,
    "self_kwh": 281.81,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 296.7,
+   "pv_off_kwh": 55.89
   },
   {
    "d": "2026-05-23",
@@ -1511,7 +1871,10 @@
    "import_kwh": 193.05,
    "use_kwh": 388.54,
    "self_kwh": 195.49,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 427.07
   },
   {
    "d": "2026-05-24",
@@ -1522,7 +1885,10 @@
    "import_kwh": 181.89,
    "use_kwh": 405.15,
    "self_kwh": 223.26,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 452.22
   },
   {
    "d": "2026-05-25",
@@ -1533,7 +1899,10 @@
    "import_kwh": 258.94,
    "use_kwh": 650.93,
    "self_kwh": 391.99,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 389.68,
+   "pv_off_kwh": 73.4
   },
   {
    "d": "2026-05-26",
@@ -1544,7 +1913,10 @@
    "import_kwh": 259.2,
    "use_kwh": 629.38,
    "self_kwh": 370.18,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 375.32,
+   "pv_off_kwh": 70.69
   },
   {
    "d": "2026-05-27",
@@ -1555,7 +1927,10 @@
    "import_kwh": 221.61,
    "use_kwh": 602.11,
    "self_kwh": 380.5,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": true,
+   "pv_peak_kwh": 400.59,
+   "pv_off_kwh": 75.45
   },
   {
    "d": "2026-05-28",
@@ -1566,7 +1941,10 @@
    "import_kwh": 229.21,
    "use_kwh": 584.38,
    "self_kwh": 355.17,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 378.86,
+   "pv_off_kwh": 71.36
   },
   {
    "d": "2026-05-29",
@@ -1577,7 +1955,10 @@
    "import_kwh": 259.05,
    "use_kwh": 553.44,
    "self_kwh": 294.39,
-   "peak_kw": 65.74
+   "peak_kw": 65.74,
+   "workday": true,
+   "pv_peak_kwh": 297.82,
+   "pv_off_kwh": 56.09
   },
   {
    "d": "2026-05-30",
@@ -1588,7 +1969,10 @@
    "import_kwh": 178.11,
    "use_kwh": 368.91,
    "self_kwh": 190.8,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 400.94
   },
   {
    "d": "2026-05-31",
@@ -1599,7 +1983,10 @@
    "import_kwh": 188.78,
    "use_kwh": 368.61,
    "self_kwh": 179.83,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 393.17
   },
   {
    "d": "2026-06-01",
@@ -1610,7 +1997,10 @@
    "import_kwh": 176.38,
    "use_kwh": 415.35,
    "self_kwh": 238.97,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 385.19,
+   "pv_off_kwh": 72.55
   },
   {
    "d": "2026-06-02",
@@ -1621,7 +2011,10 @@
    "import_kwh": 214.82,
    "use_kwh": 563.6,
    "self_kwh": 348.78,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": true,
+   "pv_peak_kwh": 366.29,
+   "pv_off_kwh": 68.99
   },
   {
    "d": "2026-06-03",
@@ -1632,7 +2025,10 @@
    "import_kwh": 190.76,
    "use_kwh": 395.67,
    "self_kwh": 204.91,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 404.35
   },
   {
    "d": "2026-06-04",
@@ -1643,7 +2039,10 @@
    "import_kwh": 303.67,
    "use_kwh": 611.07,
    "self_kwh": 307.4,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 288.95,
+   "pv_off_kwh": 54.42
   },
   {
    "d": "2026-06-05",
@@ -1654,7 +2053,10 @@
    "import_kwh": 319.57,
    "use_kwh": 542.86,
    "self_kwh": 223.29,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 207.56,
+   "pv_off_kwh": 39.1
   },
   {
    "d": "2026-06-06",
@@ -1665,7 +2067,10 @@
    "import_kwh": 197.13,
    "use_kwh": 420.28,
    "self_kwh": 223.15,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 379.34
   },
   {
    "d": "2026-06-07",
@@ -1676,7 +2081,10 @@
    "import_kwh": 209.63,
    "use_kwh": 445.72,
    "self_kwh": 236.09,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 336.73
   },
   {
    "d": "2026-06-08",
@@ -1687,7 +2095,10 @@
    "import_kwh": 291.43,
    "use_kwh": 596.66,
    "self_kwh": 305.23,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 285.06,
+   "pv_off_kwh": 53.69
   },
   {
    "d": "2026-06-09",
@@ -1698,7 +2109,10 @@
    "import_kwh": 289.99,
    "use_kwh": 611.41,
    "self_kwh": 321.42,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 321.15,
+   "pv_off_kwh": 60.49
   },
   {
    "d": "2026-06-10",
@@ -1709,7 +2123,10 @@
    "import_kwh": 347.27,
    "use_kwh": 575.18,
    "self_kwh": 227.91,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 217.25,
+   "pv_off_kwh": 40.92
   },
   {
    "d": "2026-06-11",
@@ -1720,7 +2137,10 @@
    "import_kwh": 256.07,
    "use_kwh": 566.36,
    "self_kwh": 310.29,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 303.2,
+   "pv_off_kwh": 57.11
   },
   {
    "d": "2026-06-12",
@@ -1731,7 +2151,10 @@
    "import_kwh": 303.89,
    "use_kwh": 631.89,
    "self_kwh": 328.0,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 299.11,
+   "pv_off_kwh": 56.34
   },
   {
    "d": "2026-06-13",
@@ -1742,7 +2165,10 @@
    "import_kwh": 184.25,
    "use_kwh": 349.67,
    "self_kwh": 165.42,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 402.03
   },
   {
    "d": "2026-06-14",
@@ -1753,7 +2179,10 @@
    "import_kwh": 184.04,
    "use_kwh": 379.92,
    "self_kwh": 195.88,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 439.62
   },
   {
    "d": "2026-06-15",
@@ -1764,7 +2193,10 @@
    "import_kwh": 206.08,
    "use_kwh": 548.07,
    "self_kwh": 341.99,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 358.55,
+   "pv_off_kwh": 67.54
   },
   {
    "d": "2026-06-16",
@@ -1775,7 +2207,10 @@
    "import_kwh": 270.6,
    "use_kwh": 594.3,
    "self_kwh": 323.7,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 350.13,
+   "pv_off_kwh": 65.95
   },
   {
    "d": "2026-06-17",
@@ -1786,7 +2221,10 @@
    "import_kwh": 238.09,
    "use_kwh": 576.66,
    "self_kwh": 338.57,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 376.16,
+   "pv_off_kwh": 70.85
   },
   {
    "d": "2026-06-18",
@@ -1797,7 +2235,10 @@
    "import_kwh": 268.3,
    "use_kwh": 567.36,
    "self_kwh": 299.06,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 304.63,
+   "pv_off_kwh": 57.38
   },
   {
    "d": "2026-06-19",
@@ -1808,7 +2249,10 @@
    "import_kwh": 275.99,
    "use_kwh": 548.0,
    "self_kwh": 272.01,
-   "peak_kw": 58.59
+   "peak_kw": 58.59,
+   "workday": true,
+   "pv_peak_kwh": 247.8,
+   "pv_off_kwh": 46.67
   },
   {
    "d": "2026-06-20",
@@ -1819,7 +2263,10 @@
    "import_kwh": 188.28,
    "use_kwh": 383.66,
    "self_kwh": 195.38,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 394.21
   },
   {
    "d": "2026-06-21",
@@ -1830,7 +2277,10 @@
    "import_kwh": 175.36,
    "use_kwh": 354.97,
    "self_kwh": 179.61,
-   "peak_kw": 65.96
+   "peak_kw": 65.96,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 423.01
   },
   {
    "d": "2026-06-22",
@@ -1841,7 +2291,10 @@
    "import_kwh": 207.43,
    "use_kwh": 543.44,
    "self_kwh": 336.01,
-   "peak_kw": 63.09
+   "peak_kw": 63.09,
+   "workday": true,
+   "pv_peak_kwh": 378.92,
+   "pv_off_kwh": 71.37
   },
   {
    "d": "2026-06-23",
@@ -1852,7 +2305,10 @@
    "import_kwh": 204.56,
    "use_kwh": 549.29,
    "self_kwh": 344.73,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 385.64,
+   "pv_off_kwh": 72.64
   },
   {
    "d": "2026-06-24",
@@ -1863,7 +2319,10 @@
    "import_kwh": 230.79,
    "use_kwh": 573.88,
    "self_kwh": 343.09,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 363.61,
+   "pv_off_kwh": 68.49
   },
   {
    "d": "2026-06-25",
@@ -1874,7 +2333,10 @@
    "import_kwh": 254.38,
    "use_kwh": 618.18,
    "self_kwh": 363.8,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 401.63,
+   "pv_off_kwh": 75.65
   },
   {
    "d": "2026-06-26",
@@ -1885,7 +2347,10 @@
    "import_kwh": 230.59,
    "use_kwh": 641.57,
    "self_kwh": 410.98,
-   "peak_kw": 65.44
+   "peak_kw": 65.44,
+   "workday": true,
+   "pv_peak_kwh": 390.41,
+   "pv_off_kwh": 73.53
   },
   {
    "d": "2026-06-27",
@@ -1896,7 +2361,10 @@
    "import_kwh": 235.74,
    "use_kwh": 519.57,
    "self_kwh": 283.83,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 425.06
   },
   {
    "d": "2026-06-28",
@@ -1907,7 +2375,10 @@
    "import_kwh": 220.22,
    "use_kwh": 464.67,
    "self_kwh": 244.45,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 421.83
   },
   {
    "d": "2026-06-29",
@@ -1918,7 +2389,10 @@
    "import_kwh": 285.96,
    "use_kwh": 620.97,
    "self_kwh": 335.01,
-   "peak_kw": 56.76
+   "peak_kw": 56.76,
+   "workday": true,
+   "pv_peak_kwh": 291.59,
+   "pv_off_kwh": 54.92
   },
   {
    "d": "2026-06-30",
@@ -1929,7 +2403,10 @@
    "import_kwh": 327.14,
    "use_kwh": 624.8,
    "self_kwh": 297.66,
-   "peak_kw": 60.7
+   "peak_kw": 60.7,
+   "workday": true,
+   "pv_peak_kwh": 257.26,
+   "pv_off_kwh": 48.46
   },
   {
    "d": "2026-07-01",
@@ -1940,7 +2417,10 @@
    "import_kwh": 330.16,
    "use_kwh": 621.41,
    "self_kwh": 291.25,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 270.5,
+   "pv_off_kwh": 50.95
   },
   {
    "d": "2026-07-02",
@@ -1951,7 +2431,10 @@
    "import_kwh": 300.16,
    "use_kwh": 613.58,
    "self_kwh": 313.42,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": true,
+   "pv_peak_kwh": 284.4,
+   "pv_off_kwh": 53.57
   },
   {
    "d": "2026-07-03",
@@ -1962,7 +2445,10 @@
    "import_kwh": 352.73,
    "use_kwh": 658.73,
    "self_kwh": 306.0,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 289.54,
+   "pv_off_kwh": 54.54
   },
   {
    "d": "2026-07-04",
@@ -1973,7 +2459,10 @@
    "import_kwh": 193.28,
    "use_kwh": 401.4,
    "self_kwh": 208.12,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 285.38
   },
   {
    "d": "2026-07-05",
@@ -1984,7 +2473,10 @@
    "import_kwh": 168.79,
    "use_kwh": 374.13,
    "self_kwh": 205.34,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 338.41
   },
   {
    "d": "2026-07-06",
@@ -1995,7 +2487,10 @@
    "import_kwh": 405.85,
    "use_kwh": 614.45,
    "self_kwh": 208.6,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 181.98,
+   "pv_off_kwh": 34.28
   },
   {
    "d": "2026-07-07",
@@ -2006,7 +2501,10 @@
    "import_kwh": 232.31,
    "use_kwh": 536.31,
    "self_kwh": 304.0,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": true,
+   "pv_peak_kwh": 279.05,
+   "pv_off_kwh": 52.56
   },
   {
    "d": "2026-07-08",
@@ -2017,7 +2515,10 @@
    "import_kwh": 307.6,
    "use_kwh": 558.18,
    "self_kwh": 250.58,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 230.5,
+   "pv_off_kwh": 43.42
   },
   {
    "d": "2026-07-09",
@@ -2028,7 +2529,10 @@
    "import_kwh": 266.15,
    "use_kwh": 532.86,
    "self_kwh": 266.71,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 258.31,
+   "pv_off_kwh": 48.65
   },
   {
    "d": "2026-07-10",
@@ -2039,7 +2543,10 @@
    "import_kwh": 258.62,
    "use_kwh": 547.0,
    "self_kwh": 288.38,
-   "peak_kw": 56.72
+   "peak_kw": 56.72,
+   "workday": true,
+   "pv_peak_kwh": 261.98,
+   "pv_off_kwh": 49.34
   },
   {
    "d": "2026-07-11",
@@ -2050,7 +2557,10 @@
    "import_kwh": 215.98,
    "use_kwh": 387.65,
    "self_kwh": 171.67,
-   "peak_kw": 65.98
+   "peak_kw": 65.98,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 269.93
   },
   {
    "d": "2026-07-12",
@@ -2061,7 +2571,10 @@
    "import_kwh": 167.62,
    "use_kwh": 355.28,
    "self_kwh": 187.66,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 402.87
   },
   {
    "d": "2026-07-13",
@@ -2072,7 +2585,10 @@
    "import_kwh": 221.58,
    "use_kwh": 592.66,
    "self_kwh": 371.08,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": true,
+   "pv_peak_kwh": 345.49,
+   "pv_off_kwh": 65.08
   },
   {
    "d": "2026-07-14",
@@ -2083,7 +2599,10 @@
    "import_kwh": 245.46,
    "use_kwh": 535.88,
    "self_kwh": 290.42,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 298.25,
+   "pv_off_kwh": 56.18
   },
   {
    "d": "2026-07-15",
@@ -2094,7 +2613,10 @@
    "import_kwh": 233.4,
    "use_kwh": 569.01,
    "self_kwh": 335.61,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": true,
+   "pv_peak_kwh": 326.48,
+   "pv_off_kwh": 61.49
   },
   {
    "d": "2026-07-16",
@@ -2105,7 +2627,10 @@
    "import_kwh": 238.98,
    "use_kwh": 545.01,
    "self_kwh": 306.03,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 296.24,
+   "pv_off_kwh": 55.8
   },
   {
    "d": "2026-07-17",
@@ -2116,7 +2641,10 @@
    "import_kwh": 263.92,
    "use_kwh": 587.73,
    "self_kwh": 323.81,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 305.76,
+   "pv_off_kwh": 57.59
   },
   {
    "d": "2026-07-18",
@@ -2127,7 +2655,10 @@
    "import_kwh": 184.41,
    "use_kwh": 384.97,
    "self_kwh": 200.56,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 444.03
   },
   {
    "d": "2026-07-19",
@@ -2138,7 +2669,10 @@
    "import_kwh": 170.19,
    "use_kwh": 350.19,
    "self_kwh": 180.0,
-   "peak_kw": 64.2
+   "peak_kw": 64.2,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 472.91
   },
   {
    "d": "2026-07-20",
@@ -2149,7 +2683,10 @@
    "import_kwh": 216.63,
    "use_kwh": 616.59,
    "self_kwh": 399.96,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 397.61,
+   "pv_off_kwh": 74.89
   },
   {
    "d": "2026-07-21",
@@ -2160,7 +2697,10 @@
    "import_kwh": 284.45,
    "use_kwh": 605.97,
    "self_kwh": 321.52,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": true,
+   "pv_peak_kwh": 295.8,
+   "pv_off_kwh": 55.72
   },
   {
    "d": "2026-07-22",
@@ -2171,7 +2711,10 @@
    "import_kwh": 309.68,
    "use_kwh": 618.38,
    "self_kwh": 308.7,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 274.77,
+   "pv_off_kwh": 51.75
   },
   {
    "d": "2026-07-23",
@@ -2182,7 +2725,10 @@
    "import_kwh": 290.1,
    "use_kwh": 606.73,
    "self_kwh": 316.63,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 293.09,
+   "pv_off_kwh": 55.21
   },
   {
    "d": "2026-07-24",
@@ -2193,7 +2739,10 @@
    "import_kwh": 257.65,
    "use_kwh": 624.99,
    "self_kwh": 367.34,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 378.28,
+   "pv_off_kwh": 71.25
   },
   {
    "d": "2026-07-25",
@@ -2204,7 +2753,10 @@
    "import_kwh": 203.31,
    "use_kwh": 391.14,
    "self_kwh": 187.83,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 422.77
   },
   {
    "d": "2026-07-26",
@@ -2215,7 +2767,10 @@
    "import_kwh": 191.05,
    "use_kwh": 401.09,
    "self_kwh": 210.04,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 374.63
   },
   {
    "d": "2026-07-27",
@@ -2226,7 +2781,10 @@
    "import_kwh": 245.45,
    "use_kwh": 585.11,
    "self_kwh": 339.66,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 333.54,
+   "pv_off_kwh": 62.82
   },
   {
    "d": "2026-07-28",
@@ -2237,7 +2795,10 @@
    "import_kwh": 213.24,
    "use_kwh": 397.23,
    "self_kwh": 183.99,
-   "peak_kw": 61.97
+   "peak_kw": 61.97,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 231.19
   },
   {
    "d": "2026-07-29",
@@ -2248,7 +2809,10 @@
    "import_kwh": 180.26,
    "use_kwh": 334.78,
    "self_kwh": 154.52,
-   "peak_kw": 57.56
+   "peak_kw": 57.56,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 255.6
   },
   {
    "d": "2026-07-30",
@@ -2259,7 +2823,10 @@
    "import_kwh": 164.76,
    "use_kwh": 346.71,
    "self_kwh": 181.95,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 326.54
   },
   {
    "d": "2026-07-31",
@@ -2270,7 +2837,10 @@
    "import_kwh": 255.55,
    "use_kwh": 539.46,
    "self_kwh": 283.91,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 265.64,
+   "pv_off_kwh": 50.03
   },
   {
    "d": "2026-08-01",
@@ -2281,7 +2851,10 @@
    "import_kwh": 171.21,
    "use_kwh": 328.24,
    "self_kwh": 157.03,
-   "peak_kw": 60.03
+   "peak_kw": 60.03,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 260.21
   },
   {
    "d": "2026-08-02",
@@ -2292,7 +2865,10 @@
    "import_kwh": 194.2,
    "use_kwh": 383.69,
    "self_kwh": 189.49,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 347.3
   },
   {
    "d": "2026-08-03",
@@ -2303,7 +2879,10 @@
    "import_kwh": 260.18,
    "use_kwh": 621.84,
    "self_kwh": 361.66,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 351.11,
+   "pv_off_kwh": 66.13
   },
   {
    "d": "2026-08-04",
@@ -2314,7 +2893,10 @@
    "import_kwh": 291.53,
    "use_kwh": 546.44,
    "self_kwh": 254.91,
-   "peak_kw": 54.48
+   "peak_kw": 54.48,
+   "workday": true,
+   "pv_peak_kwh": 225.41,
+   "pv_off_kwh": 42.46
   },
   {
    "d": "2026-08-05",
@@ -2325,7 +2907,10 @@
    "import_kwh": 287.04,
    "use_kwh": 554.51,
    "self_kwh": 267.47,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 260.7,
+   "pv_off_kwh": 49.1
   },
   {
    "d": "2026-08-06",
@@ -2336,7 +2921,10 @@
    "import_kwh": 256.6,
    "use_kwh": 522.66,
    "self_kwh": 266.06,
-   "peak_kw": 65.28
+   "peak_kw": 65.28,
+   "workday": true,
+   "pv_peak_kwh": 253.22,
+   "pv_off_kwh": 47.7
   },
   {
    "d": "2026-08-07",
@@ -2347,7 +2935,10 @@
    "import_kwh": 218.82,
    "use_kwh": 495.67,
    "self_kwh": 276.85,
-   "peak_kw": 64.83
+   "peak_kw": 64.83,
+   "workday": true,
+   "pv_peak_kwh": 242.9,
+   "pv_off_kwh": 45.75
   },
   {
    "d": "2026-08-08",
@@ -2358,7 +2949,10 @@
    "import_kwh": 181.78,
    "use_kwh": 326.7,
    "self_kwh": 144.92,
-   "peak_kw": 36.02
+   "peak_kw": 36.02,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 199.03
   },
   {
    "d": "2026-08-09",
@@ -2369,7 +2963,10 @@
    "import_kwh": 176.07,
    "use_kwh": 343.48,
    "self_kwh": 167.41,
-   "peak_kw": 51.67
+   "peak_kw": 51.67,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 243.92
   },
   {
    "d": "2026-08-10",
@@ -2380,7 +2977,10 @@
    "import_kwh": 281.87,
    "use_kwh": 576.16,
    "self_kwh": 294.29,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 263.96,
+   "pv_off_kwh": 49.72
   },
   {
    "d": "2026-08-11",
@@ -2391,7 +2991,10 @@
    "import_kwh": 296.05,
    "use_kwh": 566.71,
    "self_kwh": 270.66,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 232.31,
+   "pv_off_kwh": 43.76
   },
   {
    "d": "2026-08-12",
@@ -2402,7 +3005,10 @@
    "import_kwh": 189.59,
    "use_kwh": 388.43,
    "self_kwh": 198.84,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 376.97
   },
   {
    "d": "2026-08-13",
@@ -2413,7 +3019,10 @@
    "import_kwh": 258.88,
    "use_kwh": 574.85,
    "self_kwh": 315.97,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 294.49,
+   "pv_off_kwh": 55.47
   },
   {
    "d": "2026-08-14",
@@ -2424,7 +3033,10 @@
    "import_kwh": 301.71,
    "use_kwh": 558.77,
    "self_kwh": 257.06,
-   "peak_kw": 54.06
+   "peak_kw": 54.06,
+   "workday": true,
+   "pv_peak_kwh": 219.77,
+   "pv_off_kwh": 41.4
   },
   {
    "d": "2026-08-15",
@@ -2435,7 +3047,10 @@
    "import_kwh": 189.09,
    "use_kwh": 401.22,
    "self_kwh": 212.13,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 322.46
   },
   {
    "d": "2026-08-16",
@@ -2446,7 +3061,10 @@
    "import_kwh": 174.91,
    "use_kwh": 339.85,
    "self_kwh": 164.94,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 337.03
   },
   {
    "d": "2026-08-17",
@@ -2457,7 +3075,10 @@
    "import_kwh": 295.89,
    "use_kwh": 568.93,
    "self_kwh": 273.04,
-   "peak_kw": 62.67
+   "peak_kw": 62.67,
+   "workday": true,
+   "pv_peak_kwh": 238.19,
+   "pv_off_kwh": 44.87
   },
   {
    "d": "2026-08-18",
@@ -2468,7 +3089,10 @@
    "import_kwh": 244.22,
    "use_kwh": 585.56,
    "self_kwh": 341.34,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 341.61,
+   "pv_off_kwh": 64.34
   },
   {
    "d": "2026-08-19",
@@ -2479,7 +3103,10 @@
    "import_kwh": 346.51,
    "use_kwh": 489.74,
    "self_kwh": 143.23,
-   "peak_kw": 21.94
+   "peak_kw": 21.94,
+   "workday": true,
+   "pv_peak_kwh": 121.11,
+   "pv_off_kwh": 22.81
   },
   {
    "d": "2026-08-20",
@@ -2490,7 +3117,10 @@
    "import_kwh": 281.39,
    "use_kwh": 451.29,
    "self_kwh": 169.9,
-   "peak_kw": 35.44
+   "peak_kw": 35.44,
+   "workday": true,
+   "pv_peak_kwh": 148.05,
+   "pv_off_kwh": 27.89
   },
   {
    "d": "2026-08-21",
@@ -2501,7 +3131,10 @@
    "import_kwh": 202.29,
    "use_kwh": 471.87,
    "self_kwh": 269.58,
-   "peak_kw": 49.9
+   "peak_kw": 49.9,
+   "workday": true,
+   "pv_peak_kwh": 248.08,
+   "pv_off_kwh": 46.73
   },
   {
    "d": "2026-08-22",
@@ -2512,7 +3145,10 @@
    "import_kwh": 178.02,
    "use_kwh": 324.13,
    "self_kwh": 146.11,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 318.47
   },
   {
    "d": "2026-08-23",
@@ -2523,7 +3159,10 @@
    "import_kwh": 163.56,
    "use_kwh": 323.33,
    "self_kwh": 159.77,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 281.22
   },
   {
    "d": "2026-08-24",
@@ -2534,7 +3173,10 @@
    "import_kwh": 267.52,
    "use_kwh": 523.23,
    "self_kwh": 255.71,
-   "peak_kw": 60.55
+   "peak_kw": 60.55,
+   "workday": true,
+   "pv_peak_kwh": 225.13,
+   "pv_off_kwh": 42.4
   },
   {
    "d": "2026-08-25",
@@ -2545,7 +3187,10 @@
    "import_kwh": 309.74,
    "use_kwh": 492.69,
    "self_kwh": 182.95,
-   "peak_kw": 32.62
+   "peak_kw": 32.62,
+   "workday": true,
+   "pv_peak_kwh": 154.39,
+   "pv_off_kwh": 29.08
   },
   {
    "d": "2026-08-26",
@@ -2556,7 +3201,10 @@
    "import_kwh": 246.85,
    "use_kwh": 534.95,
    "self_kwh": 288.1,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 303.21,
+   "pv_off_kwh": 57.11
   },
   {
    "d": "2026-08-27",
@@ -2567,7 +3215,10 @@
    "import_kwh": 245.31,
    "use_kwh": 548.94,
    "self_kwh": 303.63,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 288.5,
+   "pv_off_kwh": 54.34
   },
   {
    "d": "2026-08-28",
@@ -2578,7 +3229,10 @@
    "import_kwh": 286.02,
    "use_kwh": 556.97,
    "self_kwh": 270.95,
-   "peak_kw": 54.81
+   "peak_kw": 54.81,
+   "workday": true,
+   "pv_peak_kwh": 232.76,
+   "pv_off_kwh": 43.84
   },
   {
    "d": "2026-08-29",
@@ -2589,7 +3243,10 @@
    "import_kwh": 178.74,
    "use_kwh": 361.76,
    "self_kwh": 183.02,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 381.41
   },
   {
    "d": "2026-08-30",
@@ -2600,7 +3257,10 @@
    "import_kwh": 194.76,
    "use_kwh": 366.73,
    "self_kwh": 171.97,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 299.82
   },
   {
    "d": "2026-08-31",
@@ -2611,7 +3271,10 @@
    "import_kwh": 245.65,
    "use_kwh": 522.37,
    "self_kwh": 276.72,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 262.99,
+   "pv_off_kwh": 49.53
   },
   {
    "d": "2026-09-01",
@@ -2622,7 +3285,10 @@
    "import_kwh": 249.87,
    "use_kwh": 514.82,
    "self_kwh": 264.95,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 247.38,
+   "pv_off_kwh": 46.59
   },
   {
    "d": "2026-09-02",
@@ -2633,7 +3299,10 @@
    "import_kwh": 230.52,
    "use_kwh": 551.91,
    "self_kwh": 321.39,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 347.62,
+   "pv_off_kwh": 65.48
   },
   {
    "d": "2026-09-03",
@@ -2644,7 +3313,10 @@
    "import_kwh": 218.2,
    "use_kwh": 545.74,
    "self_kwh": 327.54,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 351.17,
+   "pv_off_kwh": 66.15
   },
   {
    "d": "2026-09-04",
@@ -2655,7 +3327,10 @@
    "import_kwh": 248.36,
    "use_kwh": 571.79,
    "self_kwh": 323.43,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 322.23,
+   "pv_off_kwh": 60.69
   },
   {
    "d": "2026-09-05",
@@ -2666,7 +3341,10 @@
    "import_kwh": 187.28,
    "use_kwh": 364.6,
    "self_kwh": 177.32,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 405.62
   },
   {
    "d": "2026-09-06",
@@ -2677,7 +3355,10 @@
    "import_kwh": 201.28,
    "use_kwh": 413.6,
    "self_kwh": 212.32,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 322.77
   },
   {
    "d": "2026-09-07",
@@ -2688,7 +3369,10 @@
    "import_kwh": 261.46,
    "use_kwh": 563.12,
    "self_kwh": 301.66,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 284.5,
+   "pv_off_kwh": 53.59
   },
   {
    "d": "2026-09-08",
@@ -2699,7 +3383,10 @@
    "import_kwh": 287.08,
    "use_kwh": 598.43,
    "self_kwh": 311.35,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 298.56,
+   "pv_off_kwh": 56.24
   },
   {
    "d": "2026-09-09",
@@ -2710,7 +3397,10 @@
    "import_kwh": 284.27,
    "use_kwh": 592.55,
    "self_kwh": 308.28,
-   "peak_kw": 56.79
+   "peak_kw": 56.79,
+   "workday": true,
+   "pv_peak_kwh": 271.51,
+   "pv_off_kwh": 51.14
   },
   {
    "d": "2026-09-10",
@@ -2721,7 +3411,10 @@
    "import_kwh": 369.51,
    "use_kwh": 480.77,
    "self_kwh": 111.26,
-   "peak_kw": 55.0
+   "peak_kw": 55.0,
+   "workday": true,
+   "pv_peak_kwh": 103.18,
+   "pv_off_kwh": 19.44
   },
   {
    "d": "2026-09-11",
@@ -2732,7 +3425,10 @@
    "import_kwh": 214.89,
    "use_kwh": 513.4,
    "self_kwh": 298.51,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 324.92,
+   "pv_off_kwh": 61.2
   },
   {
    "d": "2026-09-12",
@@ -2743,7 +3439,10 @@
    "import_kwh": 174.5,
    "use_kwh": 349.75,
    "self_kwh": 175.25,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 388.08
   },
   {
    "d": "2026-09-13",
@@ -2754,7 +3453,10 @@
    "import_kwh": 176.13,
    "use_kwh": 346.4,
    "self_kwh": 170.27,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 310.77
   },
   {
    "d": "2026-09-14",
@@ -2765,7 +3467,10 @@
    "import_kwh": 291.3,
    "use_kwh": 496.03,
    "self_kwh": 204.73,
-   "peak_kw": 60.22
+   "peak_kw": 60.22,
+   "workday": true,
+   "pv_peak_kwh": 182.21,
+   "pv_off_kwh": 34.32
   },
   {
    "d": "2026-09-15",
@@ -2776,7 +3481,10 @@
    "import_kwh": 288.42,
    "use_kwh": 482.24,
    "self_kwh": 193.82,
-   "peak_kw": 47.19
+   "peak_kw": 47.19,
+   "workday": true,
+   "pv_peak_kwh": 174.23,
+   "pv_off_kwh": 32.82
   },
   {
    "d": "2026-09-16",
@@ -2787,7 +3495,10 @@
    "import_kwh": 219.48,
    "use_kwh": 513.96,
    "self_kwh": 294.48,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 317.79,
+   "pv_off_kwh": 59.86
   },
   {
    "d": "2026-09-17",
@@ -2798,7 +3509,10 @@
    "import_kwh": 219.74,
    "use_kwh": 492.82,
    "self_kwh": 273.08,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 293.39,
+   "pv_off_kwh": 55.26
   },
   {
    "d": "2026-09-18",
@@ -2809,7 +3523,10 @@
    "import_kwh": 223.9,
    "use_kwh": 513.57,
    "self_kwh": 289.67,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 294.0,
+   "pv_off_kwh": 55.38
   },
   {
    "d": "2026-09-19",
@@ -2820,7 +3537,10 @@
    "import_kwh": 189.57,
    "use_kwh": 379.37,
    "self_kwh": 189.8,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 285.09
   },
   {
    "d": "2026-09-20",
@@ -2831,7 +3551,10 @@
    "import_kwh": 182.66,
    "use_kwh": 319.0,
    "self_kwh": 136.34,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 208.87
   },
   {
    "d": "2026-09-21",
@@ -2842,7 +3565,10 @@
    "import_kwh": 271.28,
    "use_kwh": 533.6,
    "self_kwh": 262.32,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 263.06,
+   "pv_off_kwh": 49.55
   },
   {
    "d": "2026-09-22",
@@ -2853,7 +3579,10 @@
    "import_kwh": 246.34,
    "use_kwh": 517.63,
    "self_kwh": 271.29,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 320.56,
+   "pv_off_kwh": 60.38
   },
   {
    "d": "2026-09-23",
@@ -2864,7 +3593,10 @@
    "import_kwh": 229.75,
    "use_kwh": 516.49,
    "self_kwh": 286.74,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 292.66,
+   "pv_off_kwh": 55.12
   },
   {
    "d": "2026-09-24",
@@ -2875,7 +3607,10 @@
    "import_kwh": 263.15,
    "use_kwh": 454.17,
    "self_kwh": 191.02,
-   "peak_kw": 62.82
+   "peak_kw": 62.82,
+   "workday": true,
+   "pv_peak_kwh": 165.5,
+   "pv_off_kwh": 31.17
   },
   {
    "d": "2026-09-25",
@@ -2886,7 +3621,10 @@
    "import_kwh": 292.62,
    "use_kwh": 426.8,
    "self_kwh": 134.18,
-   "peak_kw": 56.96
+   "peak_kw": 56.96,
+   "workday": true,
+   "pv_peak_kwh": 123.21,
+   "pv_off_kwh": 23.21
   },
   {
    "d": "2026-09-26",
@@ -2897,7 +3635,10 @@
    "import_kwh": 128.05,
    "use_kwh": 264.0,
    "self_kwh": 135.95,
-   "peak_kw": 40.85
+   "peak_kw": 40.85,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 211.61
   },
   {
    "d": "2026-09-27",
@@ -2908,7 +3649,10 @@
    "import_kwh": 165.88,
    "use_kwh": 274.77,
    "self_kwh": 108.89,
-   "peak_kw": 57.24
+   "peak_kw": 57.24,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 190.4
   },
   {
    "d": "2026-09-28",
@@ -2919,7 +3663,10 @@
    "import_kwh": 231.91,
    "use_kwh": 431.69,
    "self_kwh": 199.78,
-   "peak_kw": 52.62
+   "peak_kw": 52.62,
+   "workday": true,
+   "pv_peak_kwh": 180.54,
+   "pv_off_kwh": 34.01
   },
   {
    "d": "2026-09-29",
@@ -2930,7 +3677,10 @@
    "import_kwh": 203.84,
    "use_kwh": 500.08,
    "self_kwh": 296.24,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 336.47,
+   "pv_off_kwh": 63.37
   },
   {
    "d": "2026-09-30",
@@ -2941,7 +3691,10 @@
    "import_kwh": 225.14,
    "use_kwh": 534.83,
    "self_kwh": 309.69,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 334.38,
+   "pv_off_kwh": 62.98
   },
   {
    "d": "2026-10-01",
@@ -2952,7 +3705,10 @@
    "import_kwh": 241.17,
    "use_kwh": 570.98,
    "self_kwh": 329.81,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 342.34,
+   "pv_off_kwh": 64.48
   },
   {
    "d": "2026-10-02",
@@ -2963,7 +3719,10 @@
    "import_kwh": 267.07,
    "use_kwh": 581.33,
    "self_kwh": 314.26,
-   "peak_kw": 65.47
+   "peak_kw": 65.47,
+   "workday": true,
+   "pv_peak_kwh": 313.3,
+   "pv_off_kwh": 59.01
   },
   {
    "d": "2026-10-03",
@@ -2974,7 +3733,10 @@
    "import_kwh": 196.06,
    "use_kwh": 405.41,
    "self_kwh": 209.35,
-   "peak_kw": 56.29
+   "peak_kw": 56.29,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 358.6
   },
   {
    "d": "2026-10-04",
@@ -2985,7 +3747,10 @@
    "import_kwh": 184.66,
    "use_kwh": 357.11,
    "self_kwh": 172.45,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 359.15
   },
   {
    "d": "2026-10-05",
@@ -2996,7 +3761,10 @@
    "import_kwh": 286.46,
    "use_kwh": 562.12,
    "self_kwh": 275.66,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 258.55,
+   "pv_off_kwh": 48.7
   },
   {
    "d": "2026-10-06",
@@ -3007,7 +3775,10 @@
    "import_kwh": 259.66,
    "use_kwh": 524.76,
    "self_kwh": 265.1,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 266.28,
+   "pv_off_kwh": 50.15
   },
   {
    "d": "2026-10-07",
@@ -3018,7 +3789,10 @@
    "import_kwh": 206.11,
    "use_kwh": 518.58,
    "self_kwh": 312.47,
-   "peak_kw": 65.37
+   "peak_kw": 65.37,
+   "workday": true,
+   "pv_peak_kwh": 357.5,
+   "pv_off_kwh": 67.34
   },
   {
    "d": "2026-10-08",
@@ -3029,7 +3803,10 @@
    "import_kwh": 208.74,
    "use_kwh": 501.97,
    "self_kwh": 293.23,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 289.54,
+   "pv_off_kwh": 54.54
   },
   {
    "d": "2026-10-09",
@@ -3040,7 +3817,10 @@
    "import_kwh": 245.38,
    "use_kwh": 533.98,
    "self_kwh": 288.6,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 305.49,
+   "pv_off_kwh": 57.54
   },
   {
    "d": "2026-10-10",
@@ -3051,7 +3831,10 @@
    "import_kwh": 211.32,
    "use_kwh": 393.9,
    "self_kwh": 182.58,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 266.55
   },
   {
    "d": "2026-10-11",
@@ -3062,7 +3845,10 @@
    "import_kwh": 186.73,
    "use_kwh": 331.9,
    "self_kwh": 145.17,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 350.05
   },
   {
    "d": "2026-10-12",
@@ -3073,7 +3859,10 @@
    "import_kwh": 207.84,
    "use_kwh": 558.52,
    "self_kwh": 350.68,
-   "peak_kw": 61.72
+   "peak_kw": 61.72,
+   "workday": true,
+   "pv_peak_kwh": 358.55,
+   "pv_off_kwh": 67.53
   },
   {
    "d": "2026-10-13",
@@ -3084,7 +3873,10 @@
    "import_kwh": 199.09,
    "use_kwh": 361.23,
    "self_kwh": 162.14,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 271.19
   },
   {
    "d": "2026-10-14",
@@ -3095,7 +3887,10 @@
    "import_kwh": 307.24,
    "use_kwh": 498.26,
    "self_kwh": 191.02,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 195.98,
+   "pv_off_kwh": 36.91
   },
   {
    "d": "2026-10-15",
@@ -3106,7 +3901,10 @@
    "import_kwh": 246.56,
    "use_kwh": 525.08,
    "self_kwh": 278.52,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 279.77,
+   "pv_off_kwh": 52.69
   },
   {
    "d": "2026-10-16",
@@ -3117,7 +3915,10 @@
    "import_kwh": 286.82,
    "use_kwh": 513.91,
    "self_kwh": 227.09,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 225.33,
+   "pv_off_kwh": 42.44
   },
   {
    "d": "2026-10-17",
@@ -3128,7 +3929,10 @@
    "self_kwh": 155.48,
    "last_hour": "23:00",
    "complete": true,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 381.2
   },
   {
    "d": "2026-10-18",
@@ -3139,7 +3943,10 @@
    "self_kwh": 166.46,
    "last_hour": "23:00",
    "complete": true,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 337.92
   },
   {
    "d": "2026-10-19",
@@ -3150,7 +3957,10 @@
    "self_kwh": 297.15,
    "last_hour": "23:00",
    "complete": true,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 296.81,
+   "pv_off_kwh": 55.91
   },
   {
    "d": "2026-10-20",
@@ -3161,7 +3971,10 @@
    "import_kwh": 260.38,
    "use_kwh": 600.98,
    "self_kwh": 340.6,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 327.75,
+   "pv_off_kwh": 61.73
   },
   {
    "d": "2026-10-21",
@@ -3172,7 +3985,10 @@
    "import_kwh": 283.66,
    "use_kwh": 584.24,
    "self_kwh": 300.58,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 291.13,
+   "pv_off_kwh": 54.83
   },
   {
    "d": "2026-10-22",
@@ -3183,7 +3999,10 @@
    "import_kwh": 306.71,
    "use_kwh": 597.7,
    "self_kwh": 290.99,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 290.76,
+   "pv_off_kwh": 54.77
   },
   {
    "d": "2026-10-23",
@@ -3194,7 +4013,10 @@
    "import_kwh": 224.46,
    "use_kwh": 423.16,
    "self_kwh": 198.7,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 381.25
   },
   {
    "d": "2026-10-24",
@@ -3205,7 +4027,10 @@
    "import_kwh": 225.0,
    "use_kwh": 459.43,
    "self_kwh": 234.43,
-   "peak_kw": 63.71
+   "peak_kw": 63.71,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 378.75
   },
   {
    "d": "2026-10-25",
@@ -3216,7 +4041,10 @@
    "import_kwh": 217.74,
    "use_kwh": 404.16,
    "self_kwh": 186.42,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 343.28
   },
   {
    "d": "2026-10-26",
@@ -3227,7 +4055,10 @@
    "import_kwh": 371.53,
    "use_kwh": 614.22,
    "self_kwh": 242.69,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 216.27,
+   "pv_off_kwh": 40.74
   },
   {
    "d": "2026-10-27",
@@ -3238,7 +4069,10 @@
    "import_kwh": 253.82,
    "use_kwh": 572.27,
    "self_kwh": 318.45,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 318.63,
+   "pv_off_kwh": 60.01
   },
   {
    "d": "2026-10-28",
@@ -3249,7 +4083,10 @@
    "import_kwh": 263.47,
    "use_kwh": 562.22,
    "self_kwh": 298.75,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 287.38,
+   "pv_off_kwh": 54.13
   },
   {
    "d": "2026-10-29",
@@ -3260,7 +4097,10 @@
    "import_kwh": 255.46,
    "use_kwh": 516.99,
    "self_kwh": 261.53,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": true,
+   "pv_peak_kwh": 259.7,
+   "pv_off_kwh": 48.91
   },
   {
    "d": "2026-10-30",
@@ -3271,7 +4111,10 @@
    "import_kwh": 240.94,
    "use_kwh": 533.08,
    "self_kwh": 292.14,
-   "peak_kw": 65.99
+   "peak_kw": 65.99,
+   "workday": true,
+   "pv_peak_kwh": 275.98,
+   "pv_off_kwh": 51.98
   },
   {
    "d": "2026-10-31",
@@ -3282,7 +4125,10 @@
    "import_kwh": 172.47,
    "use_kwh": 338.19,
    "self_kwh": 165.72,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 349.49
   },
   {
    "d": "2026-11-01",
@@ -3293,7 +4139,10 @@
    "import_kwh": 182.96,
    "use_kwh": 340.47,
    "self_kwh": 157.51,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "workday": false,
+   "pv_peak_kwh": 0.0,
+   "pv_off_kwh": 374.88
   },
   {
    "d": "2026-11-02",
@@ -3304,7 +4153,10 @@
    "import_kwh": 242.99,
    "use_kwh": 553.21,
    "self_kwh": 310.22,
-   "peak_kw": 65.95
+   "peak_kw": 65.95,
+   "workday": true,
+   "pv_peak_kwh": 307.16,
+   "pv_off_kwh": 57.86
   }
  ],
  "monthly": [
@@ -3318,7 +4170,9 @@
    "export_kwh": 1392.31,
    "import_kwh": 1062.52,
    "co2_t": 1.22,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "pv_peak_kwh": 1513.6,
+   "pv_off_kwh": 1060.97
   },
   {
    "m": "2026-02",
@@ -3330,7 +4184,9 @@
    "export_kwh": 5004.5,
    "import_kwh": 4155.76,
    "co2_t": 4.88,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "pv_peak_kwh": 6212.15,
+   "pv_off_kwh": 4069.68
   },
   {
    "m": "2026-03",
@@ -3342,7 +4198,9 @@
    "export_kwh": 5852.58,
    "import_kwh": 5323.35,
    "co2_t": 5.93,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "pv_peak_kwh": 7080.85,
+   "pv_off_kwh": 5399.68
   },
   {
    "m": "2026-04",
@@ -3354,7 +4212,9 @@
    "export_kwh": 3841.21,
    "import_kwh": 6542.17,
    "co2_t": 5.69,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "pv_peak_kwh": 6036.9,
+   "pv_off_kwh": 5943.43
   },
   {
    "m": "2026-05",
@@ -3366,7 +4226,9 @@
    "export_kwh": 3769.01,
    "import_kwh": 7046.25,
    "co2_t": 5.64,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "pv_peak_kwh": 5940.91,
+   "pv_off_kwh": 5920.51
   },
   {
    "m": "2026-06",
@@ -3378,7 +4240,9 @@
    "export_kwh": 3136.71,
    "import_kwh": 7288.41,
    "co2_t": 5.55,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "pv_peak_kwh": 6780.09,
+   "pv_off_kwh": 4903.24
   },
   {
    "m": "2026-07",
@@ -3390,7 +4254,9 @@
    "export_kwh": 2531.3,
    "import_kwh": 7569.32,
    "co2_t": 5.13,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "pv_peak_kwh": 5867.22,
+   "pv_off_kwh": 4929.37
   },
   {
    "m": "2026-08",
@@ -3402,7 +4268,9 @@
    "export_kwh": 1964.45,
    "import_kwh": 7416.0,
    "co2_t": 4.37,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "pv_peak_kwh": 4907.9,
+   "pv_off_kwh": 4292.26
   },
   {
    "m": "2026-09",
@@ -3414,7 +4282,9 @@
    "export_kwh": 2168.68,
    "import_kwh": 6976.38,
    "co2_t": 4.39,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "pv_peak_kwh": 5829.09,
+   "pv_off_kwh": 3421.14
   },
   {
    "m": "2026-10",
@@ -3426,7 +4296,9 @@
    "export_kwh": 2870.59,
    "import_kwh": 7515.58,
    "co2_t": 5.04,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "pv_peak_kwh": 5757.02,
+   "pv_off_kwh": 4861.79
   },
   {
    "m": "2026-11",
@@ -3438,7 +4310,9 @@
    "export_kwh": 272.17,
    "import_kwh": 425.95,
    "co2_t": 0.35,
-   "peak_kw": 66.0
+   "peak_kw": 66.0,
+   "pv_peak_kwh": 307.16,
+   "pv_off_kwh": 432.74
   }
  ],
  "inverters_date": "2026-10-20",
