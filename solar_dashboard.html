@@ -449,7 +449,7 @@ function render(d){
 function renderGrid(d){
   var g = d.grid; if (!g || !g.daily || !g.daily.length) return;
   $('gridSec').hidden = false;
-  $('gMeter').textContent = (g.meter ? 'เลขที่ ' + g.meter : '') + (g.tariff ? ' · อัตรา ' + g.tariff : '');
+  $('gMeter').textContent = g.tariff ? '· อัตรา ' + g.tariff : '';
   var both = g.daily.filter(function(x){ return x.total_kwh != null; });
   var bGrid = sum(both, 'kwh'), bPv = sum(both, 'pv_kwh'), allBuy = sum(g.monthly, 'kwh'), allPeak = sum(g.monthly, 'peak_kwh');
   var span = mLabel(g.first_date.slice(0, 7)) + '–' + mLabel(g.last_date.slice(0, 7));
