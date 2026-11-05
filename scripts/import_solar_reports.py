@@ -258,7 +258,7 @@ def build_grid(ami, info, solar_daily, ami_days=None):
         return [r2(sum(x["hours"][h] for x in ds) / len(ds)) for h in range(24)] if ds else None
     lowest = min(((x["d"], h, x["hours"][h]) for x in daily if x["complete"] and x["hours"] for h in range(9, 16)), key=lambda t: t[2], default=None)
     return {
-        "meter": info.get("meter"), "tariff": info.get("tariff"),
+        "tariff": info.get("tariff"),  # ไม่ใส่เลขที่มิเตอร์ เพราะไฟล์นี้เปิดเป็นสาธารณะ
         "first_date": daily[0]["d"], "last_date": daily[-1]["d"],
         "daily": daily[-400:], "monthly": months,
         "profile_workday": profile(lambda x: x["workday"]), "profile_holiday": profile(lambda x: not x["workday"]),

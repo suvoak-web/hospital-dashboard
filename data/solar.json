@@ -6,7 +6,7 @@
  "report_date": "2026-11-02",
  "report_complete": true,
  "report_last_hour": "23:00",
- "updated": "2026-11-05T15:39+07:00",
+ "updated": "2026-11-05T15:48+07:00",
  "peak_kw": 65.95,
  "realtime": {
   "day_kwh": 365.02,
@@ -4523,7 +4523,6 @@
  ],
  "errors": [],
  "grid": {
-  "meter": "6500649540",
   "tariff": "TOU",
   "first_date": "2026-01-01",
   "last_date": "2026-11-01",
