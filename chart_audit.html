@@ -176,6 +176,15 @@ fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new
   Chart.defaults.font.family="'IBM Plex Sans Thai','Sarabun',sans-serif";
   var total=Number(d.total_charts||0);
   if(d.scope_label)$('scope').textContent=d.scope_label+(d.updated?' · อัปเดต '+d.updated:'');
+  if(Array.isArray(d.by_month)){
+    var done=d.by_month.filter(function(m){return Number(m.completed)>0;});
+    if(done.length){
+      $('scope').appendChild(document.createElement('br'));
+      $('scope').appendChild(document.createTextNode(done.map(function(m){
+        return m.month+' · '+m.completed+' ชาร์ต · AdjRW '+f4(m.adjrw_after_sum);
+      }).join('   ·   ')));
+    }
+  }
 
   /* ---- Stepper ---- */
   var F=$('flow');
@@ -202,7 +211,7 @@ fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new
   [['ก่อน',before,'#c3cee3'],['หลัง',after,'#1f3864']].forEach(function(a){var r=el('div','cmp');r.appendChild(el('span','',a[0]));
     var tr=el('div','track');var f=el('div','fill');f.style.width=(a[1]/mx*100)+'%';f.style.background=a[2];tr.appendChild(f);r.appendChild(tr);
     r.appendChild(el('span','val',f4(a[1])));B.appendChild(r)});
-  B.appendChild(el('div','foot-note','คิดเป็น '+(ba.charts||0)+' จาก '+total+' ชาร์ต ('+(total?((ba.charts||0)/total*100).toFixed(0):0)+'%) ที่ AdjRW เปลี่ยนหลัง audit'));
+  B.appendChild(el('div','foot-note','คิดเป็น '+(ba.charts||0)+' จาก '+total+' ชาร์ต ('+(total?((ba.charts||0)/total*100).toFixed(0):0)+'%) ที่มีข้อมูลเปรียบเทียบก่อน–หลัง ไม่ใช่ชาร์ตที่ AdjRW เปลี่ยน'));
 
   /* ---- Tags ---- */
   $('tagsHint').textContent='จากทั้งหมด '+total+' ชาร์ต';
