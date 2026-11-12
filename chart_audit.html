@@ -42,8 +42,30 @@ h1{font-size:28px;line-height:1.25;margin:0;color:var(--navy)}
 .kpi .l{font-size:14px;color:var(--muted);font-weight:500}
 .kpi .v{font-size:34px;font-weight:700;color:var(--navy);margin:4px 0 2px;font-variant-numeric:tabular-nums;line-height:1.2}
 .kpi .n{font-size:13px;color:var(--muted)}
+.kpi .n.emph,.foot-note.emph,.card .hint.emph{font-weight:700;color:var(--ink)}
 .kpi.good{border-top-color:var(--good);background:linear-gradient(180deg,var(--good-soft),#fff 70%)}
 .kpi.good .v{color:var(--good)}
+
+/* ---------- Months ---------- */
+.months{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.mcard{border-top:4px solid var(--navy);display:flex;flex-direction:column}
+.mcard.wait{border-top-color:var(--warn)}
+.mhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.mcard h3{font-size:18px;line-height:1.3}
+.myr{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.mv{font-size:28px;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums;line-height:1.15;margin-top:14px}
+.mcard.wait .mv{color:var(--warn)}
+.mn{font-size:12.5px;color:var(--muted);margin-top:2px}
+.madj{font-size:22px;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums;margin-top:14px;line-height:1.2}
+.madj.pend{color:var(--muted);font-weight:600;font-size:18px}
+.mmean{font-size:13px;color:var(--muted);margin-top:2px;min-height:1.2em}
+.mcard .track{margin-top:12px}
+.reasons{list-style:none;margin:14px 0 0;padding:0}
+.reasons li{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:12.5px;line-height:1.35;padding:7px 0;border-top:1px solid var(--line)}
+.reasons b{font-variant-numeric:tabular-nums;color:var(--navy);flex:none}
+.pill{display:inline-flex;align-items:center;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;white-space:nowrap;flex:none}
+.pill.ok{background:var(--navy-soft);color:var(--navy)}
+.pill.wait{background:var(--warn-soft);color:var(--warn)}
 
 /* ---------- Cards ---------- */
 .card{background:var(--card);border-radius:var(--r);padding:20px;box-shadow:0 1px 2px rgba(16,24,40,.05);min-width:0}
@@ -93,6 +115,7 @@ h1{font-size:28px;line-height:1.25;margin:0;color:var(--navy)}
 @media(max-width:1000px){
   .charts{grid-template-columns:1fr 1fr}
   .impact{grid-template-columns:1fr}
+  .months{grid-template-columns:1fr 1fr}
 }
 @media(max-width:760px){
   .sec{font-size:18px}
@@ -101,6 +124,8 @@ h1{font-size:28px;line-height:1.25;margin:0;color:var(--navy)}
   .kpis{grid-template-columns:1fr 1fr;gap:12px}
   .kpi .v{font-size:26px}
   .charts{grid-template-columns:1fr}
+  .months{grid-template-columns:1fr}
+  .mv{font-size:24px}
   .flow{flex-direction:column;gap:12px}
   .st:not(:last-child)::after{display:none}
 }
@@ -122,6 +147,9 @@ h1{font-size:28px;line-height:1.25;margin:0;color:var(--navy)}
 
   <div class="sec" style="margin-top:4px"><span class="ic">📊</span>ภาพรวม</div>
   <section class="kpis" id="kpis"></section>
+
+  <div class="sec" id="monthSec"><span class="ic">📅</span>รายเดือน</div>
+  <section class="months" id="months" aria-label="สรุปรายเดือน"></section>
 
   <div class="sec"><span class="ic">📈</span>ผลกระทบจากการ audit</div>
   <section class="impact">
@@ -176,15 +204,6 @@ fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new
   Chart.defaults.font.family="'IBM Plex Sans Thai','Sarabun',sans-serif";
   var total=Number(d.total_charts||0);
   if(d.scope_label)$('scope').textContent=d.scope_label+(d.updated?' · อัปเดต '+d.updated:'');
-  if(Array.isArray(d.by_month)){
-    var done=d.by_month.filter(function(m){return Number(m.completed)>0;});
-    if(done.length){
-      $('scope').appendChild(document.createElement('br'));
-      $('scope').appendChild(document.createTextNode(done.map(function(m){
-        return m.month+' · '+m.completed+' ชาร์ต · AdjRW '+f4(m.adjrw_after_sum);
-      }).join('   ·   ')));
-    }
-  }
 
   /* ---- Stepper ---- */
   var F=$('flow');
@@ -197,11 +216,66 @@ fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new
   var k=[['ชาร์ตที่ audit ครบ',String(total),'ชาร์ต',''],
     ['Sum AdjRW หลัง audit',f4(d.adjrw_after_sum),'รวมทุกชาร์ต',''],
     ['AdjRW เฉลี่ย',f4(d.adjrw_after_mean),'ต่อชาร์ต',''],
-    ['AdjRW เปลี่ยนแปลง',(diff>=0?'▲ +':'▼ ')+f4(diff),(ba.charts||0)+' ชาร์ตที่มีข้อมูลก่อน–หลัง',diff>=0?'good':'']];
-  k.forEach(function(a){var c=el('div','kpi '+a[3]);c.appendChild(el('div','l',a[0]));c.appendChild(el('div','v',a[1]));c.appendChild(el('div','n',a[2]));$('kpis').appendChild(c)});
+    ['AdjRW เปลี่ยนแปลง',(diff>=0?'▲ +':'▼ ')+f4(diff),(ba.charts||0)+' ชาร์ตที่มีข้อมูลก่อน–หลัง',diff>=0?'good':'','emph']];
+  k.forEach(function(a){var c=el('div','kpi '+a[3]);c.appendChild(el('div','l',a[0]));c.appendChild(el('div','v',a[1]));c.appendChild(el('div','n'+(a[4]?' '+a[4]:''),a[2]));$('kpis').appendChild(c)});
+
+  /* ---- Months ---- */
+  var THAI_MONTH=['','มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+  var REASON_TH={
+    no_tgrp_result:'ยังไม่มีผล TGrp',
+    tgrp_run_but_no_result_page:'รัน TGrp แล้วแต่ยังไม่มีหน้าผล',
+    tgrp_page_without_dbf:'มีหน้า TGrp แต่ไม่มีผลจากฐานข้อมูล',
+    held_sample:'ตัวอย่างที่กันไว้'
+  };
+  function reasonText(key){return Object.prototype.hasOwnProperty.call(REASON_TH,key)?REASON_TH[key]:'เหตุอื่น'}
+  function thaiMonth(key){
+    var m=String(key||'').match(/^(\d{4})-(\d{2})$/);
+    if(!m) return {name:'เดือน',year:''};
+    var i=Number(m[2]);
+    return {name:(i>=1&&i<=12)?THAI_MONTH[i]:'เดือน',year:m[1]};
+  }
+  var months=(Array.isArray(d.by_month)?d.by_month:[]).filter(function(m){return Number(m.completed)>0});
+  if(!months.length){$('monthSec').hidden=true;$('months').hidden=true}
+  months.forEach(function(m){
+    var doneN=Number(m.completed||0), uniq=Number(m.unique_summaries||0), pend=Number(m.pending||0);
+    var ready=pend===0 && doneN>0;
+    var card=el('article','card mcard '+(ready?'ok':'wait'));
+    var head=el('div','mhead');
+    var title=el('div');
+    var lab=thaiMonth(m.month);
+    title.appendChild(el('h3','',lab.name));
+    if(lab.year) title.appendChild(el('p','myr',lab.year));
+    head.appendChild(title);
+    head.appendChild(el('span','pill '+(ready?'ok':'wait'), ready?'ครบ':'รอดำเนินการ'));
+    card.appendChild(head);
+    card.appendChild(el('div','mv',doneN+' / '+uniq));
+    card.appendChild(el('div','mn','ชาร์ตที่ครบ / สรุปทั้งหมด'));
+    if(doneN>0){
+      card.appendChild(el('div','madj',f4(m.adjrw_after_sum)));
+      card.appendChild(el('div','mn','AdjRW หลัง audit'));
+      card.appendChild(el('div','mmean','เฉลี่ย '+(Number(m.adjrw_after_sum)/doneN).toFixed(4)));
+    }else{
+      card.appendChild(el('div','madj pend','—'));
+      card.appendChild(el('div','mn','ยังไม่มี AdjRW'));
+      card.appendChild(el('div','mmean',''));
+    }
+    var denom=uniq||(doneN+pend);
+    var tr=el('div','track'); tr.setAttribute('role','progressbar');
+    tr.setAttribute('aria-valuemin','0'); tr.setAttribute('aria-valuemax',String(denom)); tr.setAttribute('aria-valuenow',String(doneN));
+    var fill=el('div','fill'); fill.style.width=(denom?doneN/denom*100:0)+'%'; fill.style.background=doneN?'#1f3864':'transparent';
+    tr.appendChild(fill); card.appendChild(tr);
+    var reasons=m.pending_reasons||{}, list=el('ul','reasons'), any=false;
+    Object.keys(reasons).forEach(function(key){
+      var n=Number(reasons[key]||0); if(!n) return; any=true;
+      var li=el('li'); li.appendChild(el('span','',reasonText(key))); li.appendChild(el('b','',String(n))); list.appendChild(li);
+    });
+    if(any) card.appendChild(list);
+    $('months').appendChild(card);
+  });
 
   /* ---- Impact ---- */
   $('impactHint').textContent='เทียบเฉพาะ '+(ba.charts||0)+' ชาร์ตที่มีทั้งค่าก่อนและหลัง audit';
+  $('impactHint').classList.add('emph');
   var B=$('impactBody');var row=el('div','ba');
   function blk(cap,v,col){var w=el('div');w.appendChild(el('div','cap',cap));var n=el('div','num',f4(v));if(col)n.style.color=col;w.appendChild(n);return w}
   row.appendChild(blk('ก่อน audit',before,'#6b7280'));row.appendChild(el('div','to','→'));row.appendChild(blk('หลัง audit',after,'#1f3864'));
@@ -211,7 +285,7 @@ fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new
   [['ก่อน',before,'#c3cee3'],['หลัง',after,'#1f3864']].forEach(function(a){var r=el('div','cmp');r.appendChild(el('span','',a[0]));
     var tr=el('div','track');var f=el('div','fill');f.style.width=(a[1]/mx*100)+'%';f.style.background=a[2];tr.appendChild(f);r.appendChild(tr);
     r.appendChild(el('span','val',f4(a[1])));B.appendChild(r)});
-  B.appendChild(el('div','foot-note','คิดเป็น '+(ba.charts||0)+' จาก '+total+' ชาร์ต ('+(total?((ba.charts||0)/total*100).toFixed(0):0)+'%) ที่มีข้อมูลเปรียบเทียบก่อน–หลัง ไม่ใช่ชาร์ตที่ AdjRW เปลี่ยน'));
+  B.appendChild(el('div','foot-note emph','คิดเป็น '+(ba.charts||0)+' จาก '+total+' ชาร์ต ('+(total?((ba.charts||0)/total*100).toFixed(0):0)+'%) ที่มีข้อมูลเปรียบเทียบก่อน–หลัง ไม่ใช่ชาร์ตที่ AdjRW เปลี่ยน'));
 
   /* ---- Tags ---- */
   $('tagsHint').textContent='จากทั้งหมด '+total+' ชาร์ต';
