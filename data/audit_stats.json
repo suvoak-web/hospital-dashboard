@@ -1,227 +1,342 @@
 {
  "rules": "aggregate only - no AN/HN/name/DOB",
  "scope_label": "เริ่ม ตุลาคม 2569",
- "updated": "14 ต.ค. 2569",
+ "updated": "9 พ.ย. 2569",
  "skipped_summaries": 0,
- "total_charts": 19,
+ "total_charts": 45,
  "pdx_by_chapter": [
   {
-   "chapter": "X Respiratory",
-   "count": 4,
-   "pct": 21.1
-  },
-  {
    "chapter": "XIV Genitourinary",
-   "count": 4,
-   "pct": 21.1
+   "count": 10,
+   "pct": 22.2
   },
   {
-   "chapter": "IX Circulatory",
-   "count": 3,
-   "pct": 15.8
-  },
-  {
-   "chapter": "I Infectious & parasitic",
-   "count": 2,
-   "pct": 10.5
-  },
-  {
-   "chapter": "XVIII Symptoms & signs",
-   "count": 2,
-   "pct": 10.5
+   "chapter": "X Respiratory",
+   "count": 7,
+   "pct": 15.6
   },
   {
    "chapter": "IV Endocrine & metabolic",
-   "count": 1,
-   "pct": 5.3
+   "count": 6,
+   "pct": 13.3
+  },
+  {
+   "chapter": "IX Circulatory",
+   "count": 5,
+   "pct": 11.1
+  },
+  {
+   "chapter": "XIX Injury & poisoning",
+   "count": 4,
+   "pct": 8.9
+  },
+  {
+   "chapter": "I Infectious & parasitic",
+   "count": 3,
+   "pct": 6.7
+  },
+  {
+   "chapter": "XVIII Symptoms & signs",
+   "count": 3,
+   "pct": 6.7
   },
   {
    "chapter": "XI Digestive",
-   "count": 1,
-   "pct": 5.3
+   "count": 2,
+   "pct": 4.4
   },
   {
    "chapter": "VIII Ear & mastoid",
    "count": 1,
-   "pct": 5.3
+   "pct": 2.2
   },
   {
-   "chapter": "XIX Injury & poisoning",
+   "chapter": "VI Nervous system",
    "count": 1,
-   "pct": 5.3
-  }
- ],
- "pdx_by_block3": [
+   "pct": 2.2
+  },
   {
-   "block": "J15",
+   "chapter": "XII Skin",
    "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "J18",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "B34",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "E87",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "I63",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "N10",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "A09",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "J10",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "K35",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "R56",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "I50",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "N17",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "I48",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "N39",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "N73",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "J20",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "H81",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "S71",
-   "count": 1,
-   "pct": 5.3
-  },
-  {
-   "block": "R11",
-   "count": 1,
-   "pct": 5.3
-  }
- ],
- "sdx_total": 42,
- "sdx_by_chapter": [
-  {
-   "chapter": "IV Endocrine & metabolic",
-   "count": 14,
-   "pct": 33.3
-  },
-  {
-   "chapter": "IX Circulatory",
-   "count": 10,
-   "pct": 23.8
-  },
-  {
-   "chapter": "III Blood & immune",
-   "count": 3,
-   "pct": 7.1
-  },
-  {
-   "chapter": "XIV Genitourinary",
-   "count": 3,
-   "pct": 7.1
-  },
-  {
-   "chapter": "X Respiratory",
-   "count": 3,
-   "pct": 7.1
-  },
-  {
-   "chapter": "I Infectious & parasitic",
-   "count": 2,
-   "pct": 4.8
-  },
-  {
-   "chapter": "XIII Musculoskeletal",
-   "count": 2,
-   "pct": 4.8
-  },
-  {
-   "chapter": "XXII Special purposes",
-   "count": 1,
-   "pct": 2.4
-  },
-  {
-   "chapter": "V Mental & behavioural",
-   "count": 1,
-   "pct": 2.4
+   "pct": 2.2
   },
   {
    "chapter": "XXI Health status/contact",
    "count": 1,
-   "pct": 2.4
+   "pct": 2.2
+  },
+  {
+   "chapter": "V Mental & behavioural",
+   "count": 1,
+   "pct": 2.2
+  }
+ ],
+ "pdx_by_block3": [
+  {
+   "block": "E87",
+   "count": 5,
+   "pct": 11.1
+  },
+  {
+   "block": "J20",
+   "count": 4,
+   "pct": 8.9
+  },
+  {
+   "block": "N10",
+   "count": 3,
+   "pct": 6.7
+  },
+  {
+   "block": "N18",
+   "count": 3,
+   "pct": 6.7
+  },
+  {
+   "block": "A09",
+   "count": 2,
+   "pct": 4.4
+  },
+  {
+   "block": "N17",
+   "count": 2,
+   "pct": 4.4
+  },
+  {
+   "block": "I10",
+   "count": 2,
+   "pct": 4.4
+  },
+  {
+   "block": "J15",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "J18",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "B34",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "I63",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "J10",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "K35",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "R56",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "I50",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "I48",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "N39",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "N73",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "H81",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "S71",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "R11",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "G45",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "R42",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "T88",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "L03",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "Z48",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "T63",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "E11",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "F10",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "S06",
+   "count": 1,
+   "pct": 2.2
+  },
+  {
+   "block": "K29",
+   "count": 1,
+   "pct": 2.2
+  }
+ ],
+ "sdx_total": 111,
+ "sdx_by_chapter": [
+  {
+   "chapter": "IV Endocrine & metabolic",
+   "count": 42,
+   "pct": 37.8
+  },
+  {
+   "chapter": "IX Circulatory",
+   "count": 22,
+   "pct": 19.8
+  },
+  {
+   "chapter": "XIV Genitourinary",
+   "count": 8,
+   "pct": 7.2
+  },
+  {
+   "chapter": "X Respiratory",
+   "count": 5,
+   "pct": 4.5
+  },
+  {
+   "chapter": "XVIII Symptoms & signs",
+   "count": 5,
+   "pct": 4.5
+  },
+  {
+   "chapter": "III Blood & immune",
+   "count": 4,
+   "pct": 3.6
+  },
+  {
+   "chapter": "XIII Musculoskeletal",
+   "count": 4,
+   "pct": 3.6
+  },
+  {
+   "chapter": "XXI Health status/contact",
+   "count": 4,
+   "pct": 3.6
   },
   {
    "chapter": "XX External causes",
+   "count": 4,
+   "pct": 3.6
+  },
+  {
+   "chapter": "I Infectious & parasitic",
+   "count": 3,
+   "pct": 2.7
+  },
+  {
+   "chapter": "V Mental & behavioural",
+   "count": 2,
+   "pct": 1.8
+  },
+  {
+   "chapter": "XI Digestive",
+   "count": 2,
+   "pct": 1.8
+  },
+  {
+   "chapter": "VI Nervous system",
+   "count": 2,
+   "pct": 1.8
+  },
+  {
+   "chapter": "XIX Injury & poisoning",
+   "count": 2,
+   "pct": 1.8
+  },
+  {
+   "chapter": "XXII Special purposes",
    "count": 1,
-   "pct": 2.4
+   "pct": 0.9
   },
   {
    "chapter": "XVII Congenital",
    "count": 1,
-   "pct": 2.4
+   "pct": 0.9
   }
  ],
- "proc_total": 10,
+ "proc_total": 22,
  "top_icd9": [
   {
    "code": "57.94",
-   "count": 2,
+   "count": 6,
    "name": "Insert indwelling cath"
+  },
+  {
+   "code": "96.04",
+   "count": 3,
+   "name": "Insert endotracheal tube"
+  },
+  {
+   "code": "96.07",
+   "count": 3,
+   "name": "Insert gastric tube NEC"
   },
   {
    "code": "93.94",
    "count": 2,
    "name": "Nebulizer therapy"
+  },
+  {
+   "code": "99.04",
+   "count": 2,
+   "name": "Packed cell transfusion"
   },
   {
    "code": "87.44",
@@ -239,55 +354,54 @@
    "name": "Assisting exercise"
   },
   {
-   "code": "96.04",
+   "code": "93.57",
    "count": 1,
-   "name": "Insert endotracheal tube"
+   "name": "Dressing of wound NEC"
   },
   {
-   "code": "96.07",
+   "code": "96.33",
    "count": 1,
-   "name": "Insert gastric tube NEC"
-  },
-  {
-   "code": "99.04",
-   "count": 1,
-   "name": "Packed cell transfusion"
+   "name": "Gastric lavage"
   }
  ],
- "adjrw_after_sum": 15.4006,
- "adjrw_after_mean": 0.8106,
- "rw_after_sum": 16.5627,
+ "adjrw_after_sum": 31.1879,
+ "adjrw_after_mean": 0.6931,
+ "rw_after_sum": 32.6012,
  "before_after": {
-  "charts": 4,
-  "sum_before": 3.395,
-  "sum_after": 3.4654,
-  "diff": 0.0704,
-  "drg_changed": 2
+  "charts": 11,
+  "sum_before": 7.2849,
+  "sum_after": 7.004,
+  "diff": -0.2809,
+  "drg_changed": 4
  },
- "after_only_charts": 15,
+ "after_only_charts": 34,
  "audit_note_charts": 3,
  "audit_note_unknown": 0,
  "discht_dist": {
-  "1": 16,
-  "4": 3
+  "1": 37,
+  "4": 7,
+  "9": 1
  },
- "tgrp_code_adjustments": 5,
- "charts_with_code_adjustment": 5,
+ "tgrp_code_adjustments": 7,
+ "charts_with_code_adjustment": 7,
  "final_warn_err": {
   "warn": 0,
   "err": 0
  },
  "mdc_dist": {
-  "04": 4,
+  "04": 7,
   "18": 1,
-  "10": 1,
-  "01": 2,
-  "11": 3,
-  "06": 3,
-  "05": 2,
+  "10": 6,
+  "01": 4,
+  "11": 9,
+  "06": 5,
+  "05": 4,
   "13": 1,
-  "03": 1,
-  "21": 1
+  "03": 2,
+  "21": 3,
+  "09": 1,
+  "23": 1,
+  "20": 1
  },
  "missing_json": 1,
  "flow": [
