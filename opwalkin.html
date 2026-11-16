@@ -81,7 +81,24 @@ main{max-width:1440px;margin:0 auto;padding:18px 16px 40px}
 .ch.lg{height:300px}
 
 /* TABLES */
-.tbl-wrap{overflow-x:auto}
+/* overflow-x:auto already makes .tbl-wrap a scroll container, so position:sticky
+   cannot attach to the page. Scroll inside the wrap instead (max-height) and stick
+   thead to top:0. border-collapse:separate is required for sticky th in Safari. */
+.tbl-wrap{
+  overflow:auto;
+  max-height:min(70vh, calc(100vh - 220px));
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+}
+.tbl-wrap table{border-collapse:separate;border-spacing:0}
+.tbl-wrap td{border-bottom:1px solid #EEF2F6}
+.tbl-wrap thead th{
+  position:sticky;
+  top:0;
+  z-index:2;
+  background:#F8FAFC;
+  box-shadow:0 1px 0 var(--border), 0 2px 4px rgba(15,23,42,.06);
+}
 .tc{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
 .srch{padding:7px 11px;border:1.5px solid var(--border);border-radius:8px;font-family:'Sarabun',sans-serif;font-size:.85rem;color:var(--text);outline:none;width:210px;transition:border-color .2s}
 .srch:focus{border-color:var(--blue-lt)}
