@@ -1679,9 +1679,10 @@ function selectCounterpart(h, mData, scroll=true) {
   const orderedKeys = months.map(m => m.key||m.month);
 
   const labels=[], recArr=[], payArr=[], netArr=[];
-  orderedKeys.forEach(k => {
-    const md = mData[k] || {rec:0, pay:0, month:k};
-    labels.push(md.month||k);
+  orderedKeys.forEach((k, idx) => {
+    const md = mData[k] || {rec:0, pay:0};
+    const label = (months[idx] && months[idx].month) || md.month || k;
+    labels.push(label);
     recArr.push(md.rec||0);
     payArr.push(md.pay||0);
     netArr.push((md.rec||0)-(md.pay||0));
