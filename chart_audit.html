@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>สรุปผล Audit ชาร์ต</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
@@ -165,10 +164,10 @@ h1{font-size:28px;line-height:1.25;margin:0;color:var(--navy)}
     </div>
   </section>
 
-  <div class="sec"><span class="ic">🩺</span>การกระจายรหัส</div>
+  <div class="sec"><span class="ic">🩺</span>การกระจายรหัส · พฤศจิกายน 2569</div>
   <section class="charts">
-    <div class="card"><h3>PDx ตามหมวด ICD-10</h3><p class="hint" id="pdxH">หลัง audit</p><div class="cv" id="pdxBox"><canvas id="pdx"></canvas></div></div>
-    <div class="card"><h3>SDx ตามหมวด ICD-10</h3><p class="hint" id="sdxH"></p><div class="cv" id="sdxBox"><canvas id="sdx"></canvas></div></div>
+    <div class="card"><h3>PDx ที่พบบ่อย</h3><p class="hint" id="pdxH"></p><ul class="plist" id="pdx"></ul></div>
+    <div class="card"><h3>SDx ที่พบบ่อย</h3><p class="hint" id="sdxH"></p><ul class="plist" id="sdx"></ul></div>
     <div class="card"><h3>หัตถการ ICD-9-CM</h3><p class="hint" id="procH"></p><ul class="plist" id="proc"></ul></div>
   </section>
 
@@ -183,25 +182,7 @@ function $(id){return document.getElementById(id)}
 /* ชื่อหมวด ICD-10 ภาษาอังกฤษ: "X Respiratory" -> "X · Respiratory" */
 function chap(s){var m=String(s||'').match(/^([IVXL]+)\s+(.*)$/);return m?m[1]+' · '+m[2]:String(s)}
 
-/* plugin วาดตัวเลขที่ปลายแท่ง */
-var valueLabels={id:'valueLabels',afterDatasetsDraw:function(ch){
-  var ctx=ch.ctx;ctx.save();ctx.font="600 12px 'IBM Plex Sans Thai',sans-serif";ctx.fillStyle='#374151';ctx.textBaseline='middle';
-  ch.getDatasetMeta(0).data.forEach(function(b,i){ctx.fillText(ch.data.datasets[0].data[i],b.x+6,b.y)});ctx.restore()}};
-
-function hbar(id,boxId,labels,vals,tips){
-  $(boxId).style.height=Math.max(160,labels.length*30+20)+'px';
-  var max=Math.max.apply(null,vals.concat([1]));
-  var colors=vals.map(function(v){return v===max?'#1f3864':'#8fa6cf'});
-  new Chart($(id),{type:'bar',plugins:[valueLabels],
-    data:{labels:labels,datasets:[{data:vals,backgroundColor:colors,borderRadius:5,barThickness:16}]},
-    options:{indexAxis:'y',maintainAspectRatio:false,layout:{padding:{right:28}},
-      plugins:{legend:{display:false},tooltip:{callbacks:{title:function(c){return tips[c[0].dataIndex].t},label:function(c){return tips[c.dataIndex].l}}}},
-      scales:{x:{display:false,beginAtZero:true,suggestedMax:max*1.1},
-              y:{grid:{display:false},border:{display:false},ticks:{font:{size:12},color:'#374151'}}}}});
-}
-
 fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()}).then(function(d){
-  Chart.defaults.font.family="'IBM Plex Sans Thai','Sarabun',sans-serif";
   var total=Number(d.total_charts||0);
   if(d.scope_label)$('scope').textContent=d.scope_label+(d.updated?' · อัปเดต '+d.updated:'');
 
@@ -274,7 +255,8 @@ fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new
   });
 
   /* ---- Impact ---- */
-  $('impactHint').textContent='เทียบเฉพาะ '+(ba.charts||0)+' ชาร์ตที่มีทั้งค่าก่อนและหลัง audit';
+  var baNote=ba.as_of?' · ตัวเลข ณ '+ba.as_of+' ยังไม่คำนวณใหม่สำหรับยอดพฤศจิกายน 48 ชาร์ต':'';
+  $('impactHint').textContent='เทียบเฉพาะ '+(ba.charts||0)+' ชาร์ตที่มีทั้งค่าก่อนและหลัง audit'+baNote;
   $('impactHint').classList.add('emph');
   var B=$('impactBody');var row=el('div','ba');
   function blk(cap,v,col){var w=el('div');w.appendChild(el('div','cap',cap));var n=el('div','num',f4(v));if(col)n.style.color=col;w.appendChild(n);return w}
@@ -288,27 +270,31 @@ fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new
   B.appendChild(el('div','foot-note emph','คิดเป็น '+(ba.charts||0)+' จาก '+total+' ชาร์ต ('+(total?((ba.charts||0)/total*100).toFixed(0):0)+'%) ที่มีข้อมูลเปรียบเทียบก่อน–หลัง ไม่ใช่ชาร์ตที่ AdjRW เปลี่ยน'));
 
   /* ---- Tags ---- */
-  $('tagsHint').textContent='จากทั้งหมด '+total+' ชาร์ต';
-  function tag(cls,n,t,s){var w=el('div','tag '+cls);w.appendChild(el('div','big',String(n||0)));var x=el('div');x.appendChild(el('b','',t));x.appendChild(el('small','',s));w.appendChild(x);$('tags').appendChild(w)}
-  tag('warn',d.audit_note_charts,'Audit note','DISCHT conflict — ต้องตรวจสอบสถานะจำหน่าย');
-  tag('info',d.charts_with_code_adjustment,'ปรับรหัส','Code adjust เพื่อให้ TGrp ผ่าน');
+  /* audit_note_charts / charts_with_code_adjustment were not in the new Nov handoff; do not show the 12 Nov counts as current */
+  $('tagsHint').textContent='ยังไม่มีตัวเลขชุดใหม่ของ audit note และการปรับรหัส (ยอดที่ได้รับครั้งนี้เป็นยอดรวมเดือน พ.ย. 2569)';
 
-  /* ---- PDx / SDx ---- */
-  var p=(d.pdx_by_chapter||[]).slice().sort(function(a,b){return b.count-a.count});
-  $('pdxH').textContent='หลัง audit · '+total+' ชาร์ต';
-  hbar('pdx','pdxBox',p.map(function(x){return chap(x.chapter)}),p.map(function(x){return x.count}),
-    p.map(function(x){return {t:chap(x.chapter),l:x.count+' ชาร์ต ('+x.pct+'%)'}}));
-  var s=(d.sdx_by_chapter||[]).slice().sort(function(a,b){return b.count-a.count});
-  $('sdxH').textContent='รวม '+(d.sdx_total||0)+' รหัส';
-  hbar('sdx','sdxBox',s.map(function(x){return chap(x.chapter)}),s.map(function(x){return x.count}),
-    s.map(function(x){return {t:chap(x.chapter),l:x.count+' รหัส ('+x.pct+'%)'}}));
-
-  /* ---- Procedures list ---- */
-  var t=(d.top_icd9||[]).slice().sort(function(a,b){return b.count-a.count});
-  $('procH').textContent='รวม '+(d.proc_total||0)+' หัตถการ';
-  var mxp=t.length?t[0].count:0;
-  t.forEach(function(x,i){var li=el('li',x.count===mxp?'top':'');li.appendChild(el('span','rk',String(i+1)));li.appendChild(el('code','',x.code));
-    var nm=el('span','nm',x.name);nm.title=x.name;li.appendChild(nm);li.appendChild(el('span','ct','×'+x.count));$('proc').appendChild(li)});
+  /* ---- PDx / SDx / procedures: November tops only (combined Oct+Nov distribution was not provided) ---- */
+  var nov=(months.filter(function(m){return m.month==='2569-11'})[0])||{};
+  var novN=Number(nov.completed||0);
+  function fillCodes(listId,hintId,hint,items){
+    $(hintId).textContent=hint;
+    var arr=(items||[]).slice().sort(function(a,b){return b.count-a.count});
+    var mx=arr.length?arr[0].count:0;
+    arr.forEach(function(x,i){
+      var li=el('li',x.count===mx?'top':'');
+      li.appendChild(el('span','rk',String(i+1)));
+      li.appendChild(el('code','',x.code));
+      var label=x.name||(x.pct!=null?Number(x.pct).toFixed(1)+'%':'');
+      var nm=el('span','nm',label); if(label)nm.title=label; li.appendChild(nm);
+      li.appendChild(el('span','ct','×'+x.count));
+      $(listId).appendChild(li);
+    });
+  }
+  var lead=nov.pdx_leading_chapter||{};
+  var leadTxt=lead.count!=null?(' · หมวดที่พบบ่อยสุด '+chap(lead.chapter)+' '+lead.count+'/'+novN+' ('+lead.pct+'%)'):'';
+  fillCodes('pdx','pdxH','พฤศจิกายน 2569 · '+novN+' ชาร์ต'+leadTxt,nov.pdx_top_codes);
+  fillCodes('sdx','sdxH','พฤศจิกายน 2569 · สัดส่วนคิดจากจำนวนครั้งที่พบรหัส SDx',nov.sdx_top_codes);
+  fillCodes('proc','procH','พฤศจิกายน 2569',nov.top_icd9);
 }).catch(function(e){$('kpis').appendChild(el('p','err','โหลดข้อมูลไม่สำเร็จ: '+e.message))});
 </script>
 <script src="credit.js"></script>
