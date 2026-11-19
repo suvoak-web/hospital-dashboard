@@ -36,7 +36,7 @@ h1{font-size:28px;line-height:1.25;margin:0;color:var(--navy)}
 .st small{display:block;font-size:12px;color:var(--muted);white-space:nowrap}
 
 /* ---------- KPI ---------- */
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
 .kpi{background:var(--card);border-radius:var(--r);padding:18px 20px;border-top:4px solid var(--navy);box-shadow:0 1px 2px rgba(16,24,40,.05)}
 .kpi .l{font-size:14px;color:var(--muted);font-weight:500}
 .kpi .v{font-size:34px;font-weight:700;color:var(--navy);margin:4px 0 2px;font-variant-numeric:tabular-nums;line-height:1.2}
@@ -87,6 +87,12 @@ h1{font-size:28px;line-height:1.25;margin:0;color:var(--navy)}
 .track{height:12px;background:#f1f3f7;border-radius:6px;overflow:hidden}
 .fill{height:100%;border-radius:6px}
 .cmp .val{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.cmpc{display:grid;grid-template-columns:132px 1fr auto;gap:10px;align-items:center;font-size:13px;margin:10px 0}
+.cmpc .lab b{display:block;font-size:14px;color:var(--navy)}
+.cmpc .lab .sub{display:block;font-size:12px;color:var(--muted);font-weight:500}
+.cmpc .nums{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.cmpc .nums b{display:block;color:var(--navy);font-size:14px;font-weight:700}
+.cmpc .nums span{display:block;color:var(--muted);font-size:12px;margin-top:1px}
 .foot-note{font-size:12.5px;color:var(--muted);margin-top:12px}
 .tags{display:grid;gap:12px}
 .tag{display:flex;gap:14px;align-items:center;padding:14px 16px;border-radius:12px}
@@ -150,10 +156,10 @@ h1{font-size:28px;line-height:1.25;margin:0;color:var(--navy)}
   <div class="sec" id="monthSec"><span class="ic">📅</span>รายเดือน</div>
   <section class="months" id="months" aria-label="สรุปรายเดือน"></section>
 
-  <div class="sec"><span class="ic">📈</span>ผลกระทบจากการ audit</div>
+  <div class="sec"><span class="ic">📈</span>AdjRW / CMI และรายการที่พบ</div>
   <section class="impact">
     <div class="card" id="impactCard">
-      <h3>AdjRW ก่อน → หลัง audit</h3>
+      <h3>AdjRW / CMI ของชาร์ตที่ audit</h3>
       <p class="hint" id="impactHint"></p>
       <div id="impactBody"></div>
     </div>
@@ -192,12 +198,11 @@ fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new
     var t=el('div');t.appendChild(el('b','',s.title));t.appendChild(el('small','',s.sub));w.appendChild(t);F.appendChild(w)});
 
   /* ---- KPI ---- */
-  var ba=d.before_after||{};var diff=Number(ba.diff||0);var before=Number(ba.sum_before||0),after=Number(ba.sum_after||0);
-  var pct=before?diff/before*100:0;
+  var adjSum=Number(d.adjrw_after_sum||0);
+  var cmi=total?adjSum/total:0;
   var k=[['ชาร์ตที่ audit ครบ',String(total),'ชาร์ต',''],
-    ['Sum AdjRW หลัง audit',f4(d.adjrw_after_sum),'รวมทุกชาร์ต',''],
-    ['AdjRW เฉลี่ย',f4(d.adjrw_after_mean),'ต่อชาร์ต',''],
-    ['AdjRW เปลี่ยนแปลง',(diff>=0?'▲ +':'▼ ')+f4(diff),(ba.of_charts?((ba.charts||0)+' จาก '+ba.of_charts+' ชาร์ต พ.ย. ที่มีข้อมูลก่อน–หลัง'):((ba.charts||0)+' ชาร์ตที่มีข้อมูลก่อน–หลัง')),diff>=0?'good':'','emph']];
+    ['AdjRW รวม',f4(adjSum),'รวมทุกชาร์ตที่ audit',''],
+    ['CMI',f4(cmi),'AdjRW รวม ÷ จำนวนชาร์ตที่ audit','','emph']];
   k.forEach(function(a){var c=el('div','kpi '+a[3]);c.appendChild(el('div','l',a[0]));c.appendChild(el('div','v',a[1]));c.appendChild(el('div','n'+(a[4]?' '+a[4]:''),a[2]));$('kpis').appendChild(c)});
 
   /* ---- Months ---- */
@@ -233,8 +238,8 @@ fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new
     card.appendChild(el('div','mn','ชาร์ตที่ครบ / สรุปทั้งหมด'));
     if(doneN>0){
       card.appendChild(el('div','madj',f4(m.adjrw_after_sum)));
-      card.appendChild(el('div','mn','AdjRW หลัง audit'));
-      card.appendChild(el('div','mmean','เฉลี่ย '+(Number(m.adjrw_after_sum)/doneN).toFixed(4)));
+      card.appendChild(el('div','mn','AdjRW รวม'));
+      card.appendChild(el('div','mmean','CMI '+(Number(m.adjrw_after_sum)/doneN).toFixed(4)));
     }else{
       card.appendChild(el('div','madj pend','—'));
       card.appendChild(el('div','mn','ยังไม่มี AdjRW'));
@@ -254,41 +259,36 @@ fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new
     $('months').appendChild(card);
   });
 
-  /* ---- Impact ---- */
-  var baOf=Number(ba.of_charts||0);
-  var baHint='เทียบเฉพาะ '+(ba.charts||0)+' ชาร์ตที่มีทั้งค่าก่อนและหลัง audit';
-  if(ba.month==='2569-11' && baOf){
-    baHint='เทียบเฉพาะ '+(ba.charts||0)+' จาก '+baOf+' ชาร์ตเดือนพฤศจิกายน 2569';
-    if(ba.no_before_value) baHint+=' เพราะอีก '+ba.no_before_value+' ชาร์ตไม่มีค่าก่อน audit';
-  }
-  $('impactHint').textContent=baHint;
-  $('impactHint').classList.add('emph');
-  var B=$('impactBody');var row=el('div','ba');
-  function blk(cap,v,col){var w=el('div');w.appendChild(el('div','cap',cap));var n=el('div','num',f4(v));if(col)n.style.color=col;w.appendChild(n);return w}
-  row.appendChild(blk('ก่อน audit',before,'#6b7280'));row.appendChild(el('div','to','→'));row.appendChild(blk('หลัง audit',after,'#1f3864'));
-  row.appendChild(el('span','chip '+(diff>=0?'up':'down'),(diff>=0?'+':'')+f4(diff)+'  ('+(diff>=0?'+':'')+pct.toFixed(2)+'%)'));
-  B.appendChild(row);
-  var mx=Math.max(before,after)||1;
-  [['ก่อน',before,'#c3cee3'],['หลัง',after,'#1f3864']].forEach(function(a){var r=el('div','cmp');r.appendChild(el('span','',a[0]));
-    var tr=el('div','track');var f=el('div','fill');f.style.width=(a[1]/mx*100)+'%';f.style.background=a[2];tr.appendChild(f);r.appendChild(tr);
-    r.appendChild(el('span','val',f4(a[1])));B.appendChild(r)});
-  var baDenom=baOf||total;
-  var denomLabel=(ba.month==='2569-11')?'ชาร์ตพฤศจิกายน':'ชาร์ต';
-  var foot='คิดเป็น '+(ba.charts||0)+' จาก '+baDenom+' '+denomLabel+' ('+(baDenom?((ba.charts||0)/baDenom*100).toFixed(0):0)+'%) ที่มีข้อมูลเปรียบเทียบก่อน–หลัง ไม่ใช่ชาร์ตที่ AdjRW เปลี่ยน';
-  B.appendChild(el('div','foot-note emph',foot));
-  if(ba.adjrw_changed!=null || ba.drg_changed!=null){
-    B.appendChild(el('div','foot-note emph','AdjRW เปลี่ยน '+(ba.adjrw_changed||0)+' ชาร์ต, DRG เปลี่ยน '+(ba.drg_changed||0)+' ชาร์ต'));
-  }
+  /* ---- AdjRW / CMI ---- */
+  $('impactHint').textContent='CMI = AdjRW รวม ÷ จำนวนชาร์ตที่ audit';
+  var B=$('impactBody');
+  var sumRow=el('div','ba');
+  function blk(cap,v){var w=el('div');w.appendChild(el('div','cap',cap));w.appendChild(el('div','num',v));return w}
+  sumRow.appendChild(blk('ชาร์ตที่ audit',String(total)));
+  sumRow.appendChild(blk('AdjRW รวม',f4(adjSum)));
+  sumRow.appendChild(blk('CMI',f4(cmi)));
+  B.appendChild(sumRow);
+  var monthRows=months.map(function(m){
+    var n=Number(m.completed||0), adj=Number(m.adjrw_after_sum||0), lab=thaiMonth(m.month);
+    return {label:lab.name+(lab.year?' '+lab.year:''), n:n, adj:adj, cmi:n?adj/n:0};
+  });
+  var mxCmi=Math.max.apply(null, monthRows.map(function(r){return r.cmi}).concat([cmi]))||1;
+  monthRows.forEach(function(r){
+    var row=el('div','cmpc');
+    var lab=el('div','lab'); lab.appendChild(el('b','',r.label)); lab.appendChild(el('span','sub',r.n+' ชาร์ต')); row.appendChild(lab);
+    var tr=el('div','track'); var f=el('div','fill'); f.style.width=(r.cmi/mxCmi*100)+'%'; f.style.background='#1f3864'; tr.appendChild(f); row.appendChild(tr);
+    var nums=el('div','nums'); nums.appendChild(el('b','','CMI '+f4(r.cmi))); nums.appendChild(el('span','','AdjRW '+f4(r.adj))); row.appendChild(nums);
+    B.appendChild(row);
+  });
 
   /* ---- Tags ---- */
   var notes=d.audit_notes||{};
   var cadj=d.code_adjustments||{};
   var notesN=Number(notes.of_charts||0);
-  $('tagsHint').textContent=(notes.month==='2569-11'?'พฤศจิกายน 2569':'')+(notesN?' · '+notesN+' ชาร์ต':'')+' · ยอดปรับรหัสมาจากคนละแหล่ง ห้ามบวกกัน';
+  $('tagsHint').textContent=(notes.month==='2569-11'?'พฤศจิกายน 2569':'')+(notesN?' · '+notesN+' ชาร์ต':'');
   function tag(cls,n,t,s){var w=el('div','tag '+cls);w.appendChild(el('div','big',String(n)));var x=el('div');x.appendChild(el('b','',t));x.appendChild(el('small','',s));w.appendChild(x);$('tags').appendChild(w)}
   tag('info',(notes.official_section||0)+'/'+notesN,'มีหัวข้อ «หมายเหตุ audit»','อีก '+(notes.older_format||0)+' ชาร์ตรูปแบบเก่า ไม่มีหัวข้อนี้');
-  tag('info',(cadj.dbf_changed||0)+'/'+(cadj.dbf_comparable||0),'ปรับรหัส (ไฟล์ DBF)','เทียบรหัสก่อน–หลังได้เพียง '+(cadj.dbf_comparable||0)+' ชาร์ต');
-  tag('info',(cadj.notes_code_change||0)+'/'+(cadj.notes_official_section||0),'ปรับรหัส (หมายเหตุ audit)','นับจากข้อความในหัวข้อหมายเหตุ audit ไม่รวมกับยอดจากไฟล์ DBF');
+  tag('info',(cadj.notes_code_change||0)+'/'+(cadj.notes_official_section||0),'ปรับรหัส (หมายเหตุ audit)','นับจากข้อความในหัวข้อหมายเหตุ audit');
 
   /* ---- PDx / SDx / procedures: November tops only (combined Oct+Nov distribution was not provided) ---- */
   var nov=(months.filter(function(m){return m.month==='2569-11'})[0])||{};
