@@ -90,7 +90,7 @@ h1{font-size:28px;line-height:1.25;margin:0;color:var(--navy)}
 .foot-note{font-size:12.5px;color:var(--muted);margin-top:12px}
 .tags{display:grid;gap:12px}
 .tag{display:flex;gap:14px;align-items:center;padding:14px 16px;border-radius:12px}
-.tag .big{font-size:28px;font-weight:700;min-width:44px;text-align:center}
+.tag .big{font-size:22px;font-weight:700;min-width:64px;text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap}
 .tag b{display:block;font-size:14px}
 .tag small{font-size:12.5px;opacity:.85}
 .tag.warn{background:var(--warn-soft);color:var(--warn)}
@@ -197,7 +197,7 @@ fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new
   var k=[['ชาร์ตที่ audit ครบ',String(total),'ชาร์ต',''],
     ['Sum AdjRW หลัง audit',f4(d.adjrw_after_sum),'รวมทุกชาร์ต',''],
     ['AdjRW เฉลี่ย',f4(d.adjrw_after_mean),'ต่อชาร์ต',''],
-    ['AdjRW เปลี่ยนแปลง',(diff>=0?'▲ +':'▼ ')+f4(diff),(ba.charts||0)+' ชาร์ตที่มีข้อมูลก่อน–หลัง',diff>=0?'good':'','emph']];
+    ['AdjRW เปลี่ยนแปลง',(diff>=0?'▲ +':'▼ ')+f4(diff),(ba.of_charts?((ba.charts||0)+' จาก '+ba.of_charts+' ชาร์ต พ.ย. ที่มีข้อมูลก่อน–หลัง'):((ba.charts||0)+' ชาร์ตที่มีข้อมูลก่อน–หลัง')),diff>=0?'good':'','emph']];
   k.forEach(function(a){var c=el('div','kpi '+a[3]);c.appendChild(el('div','l',a[0]));c.appendChild(el('div','v',a[1]));c.appendChild(el('div','n'+(a[4]?' '+a[4]:''),a[2]));$('kpis').appendChild(c)});
 
   /* ---- Months ---- */
@@ -255,8 +255,13 @@ fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new
   });
 
   /* ---- Impact ---- */
-  var baNote=ba.as_of?' · ตัวเลข ณ '+ba.as_of+' ยังไม่คำนวณใหม่สำหรับยอดพฤศจิกายน 48 ชาร์ต':'';
-  $('impactHint').textContent='เทียบเฉพาะ '+(ba.charts||0)+' ชาร์ตที่มีทั้งค่าก่อนและหลัง audit'+baNote;
+  var baOf=Number(ba.of_charts||0);
+  var baHint='เทียบเฉพาะ '+(ba.charts||0)+' ชาร์ตที่มีทั้งค่าก่อนและหลัง audit';
+  if(ba.month==='2569-11' && baOf){
+    baHint='เทียบเฉพาะ '+(ba.charts||0)+' จาก '+baOf+' ชาร์ตเดือนพฤศจิกายน 2569';
+    if(ba.no_before_value) baHint+=' เพราะอีก '+ba.no_before_value+' ชาร์ตไม่มีค่าก่อน audit';
+  }
+  $('impactHint').textContent=baHint;
   $('impactHint').classList.add('emph');
   var B=$('impactBody');var row=el('div','ba');
   function blk(cap,v,col){var w=el('div');w.appendChild(el('div','cap',cap));var n=el('div','num',f4(v));if(col)n.style.color=col;w.appendChild(n);return w}
@@ -267,11 +272,23 @@ fetch('data/audit_stats.json?v='+Date.now()).then(function(r){if(!r.ok)throw new
   [['ก่อน',before,'#c3cee3'],['หลัง',after,'#1f3864']].forEach(function(a){var r=el('div','cmp');r.appendChild(el('span','',a[0]));
     var tr=el('div','track');var f=el('div','fill');f.style.width=(a[1]/mx*100)+'%';f.style.background=a[2];tr.appendChild(f);r.appendChild(tr);
     r.appendChild(el('span','val',f4(a[1])));B.appendChild(r)});
-  B.appendChild(el('div','foot-note emph','คิดเป็น '+(ba.charts||0)+' จาก '+total+' ชาร์ต ('+(total?((ba.charts||0)/total*100).toFixed(0):0)+'%) ที่มีข้อมูลเปรียบเทียบก่อน–หลัง ไม่ใช่ชาร์ตที่ AdjRW เปลี่ยน'));
+  var baDenom=baOf||total;
+  var denomLabel=(ba.month==='2569-11')?'ชาร์ตพฤศจิกายน':'ชาร์ต';
+  var foot='คิดเป็น '+(ba.charts||0)+' จาก '+baDenom+' '+denomLabel+' ('+(baDenom?((ba.charts||0)/baDenom*100).toFixed(0):0)+'%) ที่มีข้อมูลเปรียบเทียบก่อน–หลัง ไม่ใช่ชาร์ตที่ AdjRW เปลี่ยน';
+  B.appendChild(el('div','foot-note emph',foot));
+  if(ba.adjrw_changed!=null || ba.drg_changed!=null){
+    B.appendChild(el('div','foot-note emph','AdjRW เปลี่ยน '+(ba.adjrw_changed||0)+' ชาร์ต, DRG เปลี่ยน '+(ba.drg_changed||0)+' ชาร์ต'));
+  }
 
   /* ---- Tags ---- */
-  /* audit_note_charts / charts_with_code_adjustment were not in the new Nov handoff; do not show the 12 Nov counts as current */
-  $('tagsHint').textContent='ยังไม่มีตัวเลขชุดใหม่ของ audit note และการปรับรหัส (ยอดที่ได้รับครั้งนี้เป็นยอดรวมเดือน พ.ย. 2569)';
+  var notes=d.audit_notes||{};
+  var cadj=d.code_adjustments||{};
+  var notesN=Number(notes.of_charts||0);
+  $('tagsHint').textContent=(notes.month==='2569-11'?'พฤศจิกายน 2569':'')+(notesN?' · '+notesN+' ชาร์ต':'')+' · ยอดปรับรหัสมาจากคนละแหล่ง ห้ามบวกกัน';
+  function tag(cls,n,t,s){var w=el('div','tag '+cls);w.appendChild(el('div','big',String(n)));var x=el('div');x.appendChild(el('b','',t));x.appendChild(el('small','',s));w.appendChild(x);$('tags').appendChild(w)}
+  tag('info',(notes.official_section||0)+'/'+notesN,'มีหัวข้อ «หมายเหตุ audit»','อีก '+(notes.older_format||0)+' ชาร์ตรูปแบบเก่า ไม่มีหัวข้อนี้');
+  tag('info',(cadj.dbf_changed||0)+'/'+(cadj.dbf_comparable||0),'ปรับรหัส (ไฟล์ DBF)','เทียบรหัสก่อน–หลังได้เพียง '+(cadj.dbf_comparable||0)+' ชาร์ต');
+  tag('info',(cadj.notes_code_change||0)+'/'+(cadj.notes_official_section||0),'ปรับรหัส (หมายเหตุ audit)','นับจากข้อความในหัวข้อหมายเหตุ audit ไม่รวมกับยอดจากไฟล์ DBF');
 
   /* ---- PDx / SDx / procedures: November tops only (combined Oct+Nov distribution was not provided) ---- */
   var nov=(months.filter(function(m){return m.month==='2569-11'})[0])||{};
