@@ -409,13 +409,34 @@
   "adjrw_after_mean": 0.8610,
   "rw_after_sum": 59.4581,
   "before_after": {
-    "charts": 13,
-    "sum_before": 8.2448,
-    "sum_after": 7.9639,
-    "diff": -0.2809,
-    "drg_changed": 4,
-    "as_of": "12 พ.ย. 2569",
-    "note": "Deferred by the user: not recomputed for the new 48-chart November set. Figures remain from the 12 Nov 2569 export (which used the earlier 42-chart November file)."
+    "charts": 2,
+    "sum_before": 1.0933,
+    "sum_after": 1.5363,
+    "diff": 0.4430,
+    "adjrw_changed": 1,
+    "drg_changed": 1,
+    "no_before_value": 46,
+    "of_charts": 48,
+    "month": "2569-11",
+    "as_of": "19 พ.ย. 2569",
+    "note": "November 2569 only. Comparison covers 2 of 48 charts because the other 46 have no pre-audit grouping in Chart 4 DBF files (Chart Audit read existing DBF rows; TGrp was not rerun). The previous 13-chart figure (8.2448 → 7.9639 as of 12 พ.ย. 2569) mixed October with the earlier 42-chart November export, so it is not kept as an October line."
+  },
+  "audit_notes": {
+    "month": "2569-11",
+    "of_charts": 48,
+    "official_section": 46,
+    "older_format": 2,
+    "as_of": "19 พ.ย. 2569",
+    "note": "46 of 48 charts have the official «หมายเหตุ audit» section with body text. The other 2 have audit commentary in an older format without that heading."
+  },
+  "code_adjustments": {
+    "month": "2569-11",
+    "dbf_changed": 1,
+    "dbf_comparable": 2,
+    "notes_code_change": 10,
+    "notes_official_section": 46,
+    "as_of": "19 พ.ย. 2569",
+    "note": "Two different sources — do not add together. DBF pre/post comparison: 1 of 2 comparable charts changed. Separately, 10 of the 46 official audit-note sections record a specific code change."
   },
   "after_only_charts": 48,
   "audit_note_charts": 3,
