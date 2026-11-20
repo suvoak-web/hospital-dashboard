@@ -215,7 +215,12 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
 .pt #tb-raw td,.pt #tb-raw th{white-space:nowrap}
 .pt #tb-raw td.txt{white-space:normal;min-width:12rem}
 .pt #mis-raw-wrap{max-height:60vh;overflow:auto}
-.pt #ch-mis{min-height:0}
+.pt #ch-mis{min-height:0;margin-top:4px}
+.pt #ch-mis-y{min-height:0;margin-top:14px;border-top:1px solid var(--pt-line);padding-top:10px}
+.pt #mis-metric{margin:0 0 6px}
+.pt #mis-raw{margin-top:12px;font-size:.875rem}
+.pt #mis-raw summary{cursor:pointer;color:var(--pt-jade);font-weight:600}
+.pt #ch-mis text.v{font-size:11px;fill:var(--pt-mute)}
 
 .pt .callout{background:none;border:0;border-top:1px solid var(--pt-line);border-radius:0;padding:10px 0 0;color:var(--pt-mute);font-size:.8125rem;max-width:75ch}
 .pt nav button{background:color-mix(in srgb,var(--pt-ink) 4%,var(--pt-panel));border:1px solid var(--pt-line);border-bottom:0;border-radius:7px 7px 0 0}
@@ -373,9 +378,11 @@ font-family:var(--pt-sans);color:var(--pt-ink);max-width:1180px;margin-inline:au
   <div class="tbl" id="mis-list"><table id="tb-menu" data-source="mis_menu" data-row-key="key"><thead><tr><th data-field="name">รายงาน</th><th data-field="in_tab">สถานะ</th></tr></thead><tbody></tbody></table></div></div>
  <div class="panel" id="mis-view"><h3 id="mis-title">เลือกรายงานจากรายการด้านซ้าย</h3><p class="meta" id="mis-meta"></p>
   <div class="seg" id="mis-years" role="group" aria-label="ปีงบ"></div>
+  <div class="pills" id="mis-metric" role="group" aria-label="ตัวเลขที่แสดง"></div>
   <div class="chart" id="ch-mis" data-source="mis_all"></div>
-  <div class="tbl" id="mis-raw-wrap"><table id="tb-raw" data-source="mis_all" data-row-key="key"><thead><tr id="raw-head"></tr></thead><tbody></tbody></table></div>
-  <p class="note" id="mis-note"></p></div>
+  <div class="chart" id="ch-mis-y" data-source="mis_all"></div>
+  <p class="note" id="mis-note"></p>
+  <details id="mis-raw"><summary>ดูตัวเลขเป็นตาราง</summary><div class="tbl" id="mis-raw-wrap"><table id="tb-raw" data-source="mis_all" data-row-key="key"><thead><tr id="raw-head"></tr></thead><tbody></tbody></table></div></details></div>
 </div>
 </section>
 
@@ -748,7 +755,7 @@ dash.calc('mis_cov',{inputs:['mis_menu'],title:'ความครอบคล�
 </script>
 <script>
 (function(){
-const COLS={"MONTH_SEND": "เดือนที่ส่ง", "MONTH_SERV": "เดือนที่รับบริการ", "MONTH": "เดือน", "YEAR": "ปี", "YEARSEND": "ปีที่ส่ง", "YEARSERVE": "ปีที่รับบริการ", "YEARTH": "ปีงบ", "YEAR_TRF": "ปีที่โอน", "NUM_VISIT": "จำนวนครั้ง", "NUMVISIT": "จำนวนครั้ง", "SUMVISIT": "จำนวนราย", "SUM_VISIT": "จำนวนครั้ง", "VISIT": "จำนวนครั้ง", "NUM_VISIT_ONE": "จำนวนครั้ง", "NUM_VISIT_OP": "ครั้ง OP", "NUM_VISIT_IP": "ครั้ง IP", "SEND_VISIT": "ครั้งที่ส่ง", "ACT_AMT": "ชดเชย (บาท)", "ACTAMT": "ชดเชย (บาท)", "SUMACTAMT": "ชดเชย (บาท)", "SUM_ACT_AMT": "ชดเชย (บาท)", "ACT_AMT_ALL": "ชดเชยรวม (บาท)", "ACT_ALL": "ชดเชยรวม (บาท)", "AMT": "จำนวนเงิน (บาท)", "SUM_AMT": "จำนวนเงิน (บาท)", "ACT_AMT_OP": "ชดเชย OP (บาท)", "ACT_AMT_IP": "ชดเชย IP (บาท)", "ACT_AMT_ALL_OP": "ชดเชย OP (บาท)", "ACT_AMT_ALL_IP": "ชดเชย IP (บาท)", "ACT_AMT_STM": "ได้รับตาม STM (บาท)", "SEND_AMT": "ยอดส่ง (บาท)", "NUMPT_OP": "ราย OP", "NUMPT_IP": "ราย IP", "NUMPT_IN": "รายในเขต", "NUMPT_OUT": "รายนอกเขต", "ACTAMT_IN": "ชดเชยในเขต (บาท)", "ACTAMT_OUT": "ชดเชยนอกเขต (บาท)", "NUMPT_STROKE": "ราย Stroke", "ACTAMT_STROKE": "ชดเชย Stroke (บาท)", "NUMPT_STEMI": "ราย STEMI", "ACTAMT_STEMI": "ชดเชย STEMI (บาท)", "HNAME": "หน่วยบริการ", "HMAIN": "รหัสหน่วยบริการ", "HCODE": "รหัสหน่วยบริการ", "HCODE_SEND": "รหัสหน่วยที่ส่ง", "HMAIN_NAME": "หน่วยบริการหลัก", "HNAME_REP": "หน่วยบริการ", "PERCENT": "ร้อยละ", "RATE": "อัตรา", "NUMALL": "ทั้งหมด", "NUMPASS": "ผ่าน", "ผ่าน": "ผ่าน", "ไม่ผ่าน": "ไม่ผ่าน", "NOTPASS": "ไม่ผ่าน", "C_NOTPASS": "ติด C", "CODE": "รหัส", "DETAIL": "รายละเอียด", "DESCRIPTION": "รายการ", "ERROR": "ข้อผิดพลาด", "NUM": "จำนวน", "NUM_EDIT": "แก้แล้ว", "NOEDIT": "ยังไม่แก้", "BUDGET": "จำนวนเงิน", "BUDGET_UC": "เงินโอน UC (ล้านบาท)", "SUB_FUND": "กองทุนย่อย", "FUND_AF": "กองทุน", "M_FUND_CD": "รหัสกองทุนหลัก", "M_FUND_DESC": "กองทุนหลัก", "S_FUND_CD": "รหัสกองทุนย่อย", "S_FUND_DESC": "กองทุนย่อย", "SUMADJRW": "Sum AdjRW", "ADJRW": "AdjRW", "ADJRW_SUM": "Sum AdjRW", "CMI": "CMI", "DAY_AVG": "วันเฉลี่ย", "DAY_SUM": "รวม (ราย)", "DAY30": "ส่งใน 30 วัน", "DAY60": "31–60 วัน", "DAY90": "61–90 วัน", "DAY91": "เกิน 90 วัน", "DAY30_ADJRW": "AdjRW ใน 30 วัน", "DAY60_ADJRW": "AdjRW 31–60 วัน", "DAY90_ADJRW": "AdjRW 61–90 วัน", "DAY91_ADJRW": "AdjRW เกิน 90 วัน", "ANC": "ฝากครรภ์ (ครั้ง)", "ANC_AMT": "ฝากครรภ์ (บาท)", "LAB": "แล็บ (ครั้ง)", "LAB_AMT": "แล็บ (บาท)", "LAB2": "แล็บครั้งที่ 2 (ครั้ง)", "LAB2_AMT": "แล็บครั้งที่ 2 (บาท)", "LAB_VISIT": "แล็บ (ครั้ง)", "ULTRA": "อัลตราซาวด์ (ครั้ง)", "ULTRA_AMT": "อัลตราซาวด์ (บาท)", "DENT_NUM": "ทันตกรรม (ครั้ง)", "DENT_CLEAN": "ขัดฟัน (ครั้ง)", "DENT_CLEAN_AMT": "ขัดฟัน (บาท)", "HPV_VISIT": "HPV (ครั้ง)", "HPV_AMT": "HPV (บาท)", "WALKIN": "ค่าบริการ Walk-in (บาท)", "WALKIN_DRUG_OTHER": "ยาและอื่น ๆ (บาท)", "WALKIN_ALL": "Walk-in รวม (บาท)", "NUM_OPIOID": "ยา Opioid (ครั้ง)", "ACT_OPIOID": "ยา Opioid (บาท)", "SUM_QTY": "จำนวนชิ้น", "SUM_QTY_OP": "ชิ้น OP", "SUM_AMT_OP": "บาท OP", "SUM_QTY_IP": "ชิ้น IP", "SUM_AMT_IP": "บาท IP", "SUM_HMAIN": "หน่วยบริการ", "SUM_NHSO": "สปสช.", "PDX": "รหัสโรค", "PDX_NAME": "ชื่อโรค"};
+const COLS={"MONTH_SEND": "เดือนที่ส่ง", "MONTH_SERV": "เดือนที่รับบริการ", "MONTH": "เดือน", "YEAR": "ปี", "YEARSEND": "ปีที่ส่ง", "YEARSERVE": "ปีที่รับบริการ", "YEARTH": "ปีงบ", "YEAR_TRF": "ปีที่โอน", "NUM_VISIT": "จำนวนครั้ง", "NUMVISIT": "จำนวนครั้ง", "SUMVISIT": "จำนวนราย", "SUM_VISIT": "จำนวนครั้ง", "VISIT": "จำนวนครั้ง", "NUM_VISIT_ONE": "จำนวนครั้ง", "NUM_VISIT_OP": "ครั้ง OP", "NUM_VISIT_IP": "ครั้ง IP", "SEND_VISIT": "ครั้งที่ส่ง", "ACT_AMT": "ชดเชย (บาท)", "ACTAMT": "ชดเชย (บาท)", "SUMACTAMT": "ชดเชย (บาท)", "SUM_ACT_AMT": "ชดเชย (บาท)", "ACT_AMT_ALL": "ชดเชยรวม (บาท)", "ACT_ALL": "รวม (บาท)", "AMT": "จำนวนเงิน (บาท)", "SUM_AMT": "จำนวนเงิน (บาท)", "ACT_AMT_OP": "ชดเชย OP (บาท)", "ACT_AMT_IP": "ชดเชย IP (บาท)", "ACT_AMT_ALL_OP": "ชดเชย OP (บาท)", "ACT_AMT_ALL_IP": "ชดเชย IP (บาท)", "ACT_AMT_STM": "ได้รับตาม STM (บาท)", "SEND_AMT": "ยอดส่ง (บาท)", "NUMPT_OP": "ราย OP", "NUMPT_IP": "ราย IP", "NUMPT_IN": "รายในเขต", "NUMPT_OUT": "รายนอกเขต", "ACTAMT_IN": "ชดเชยในเขต (บาท)", "ACTAMT_OUT": "ชดเชยนอกเขต (บาท)", "NUMPT_STROKE": "ราย Stroke", "ACTAMT_STROKE": "ชดเชย Stroke (บาท)", "NUMPT_STEMI": "ราย STEMI", "ACTAMT_STEMI": "ชดเชย STEMI (บาท)", "HNAME": "หน่วยบริการ", "HMAIN": "รหัสหน่วยบริการ", "HCODE": "รหัสหน่วยบริการ", "HCODE_SEND": "รหัสหน่วยที่ส่ง", "HMAIN_NAME": "หน่วยบริการหลัก", "HNAME_REP": "หน่วยบริการ", "PERCENT": "ร้อยละ", "RATE": "อัตรา", "NUMALL": "ทั้งหมด", "NUMPASS": "ผ่าน", "ผ่าน": "ผ่าน", "ไม่ผ่าน": "ไม่ผ่าน", "NOTPASS": "ไม่ผ่าน", "C_NOTPASS": "ติด C", "CODE": "รหัส", "DETAIL": "รายละเอียด", "DESCRIPTION": "รายการ", "ERROR": "ข้อผิดพลาด", "NUM": "จำนวน", "NUM_EDIT": "แก้แล้ว", "NOEDIT": "ยังไม่แก้", "BUDGET": "จำนวนเงิน", "BUDGET_UC": "เงินโอน UC (ล้านบาท)", "SUB_FUND": "กองทุนย่อย", "FUND_AF": "กองทุน", "M_FUND_CD": "รหัสกองทุนหลัก", "M_FUND_DESC": "กองทุนหลัก", "S_FUND_CD": "รหัสกองทุนย่อย", "S_FUND_DESC": "กองทุนย่อย", "SUMADJRW": "Sum AdjRW", "ADJRW": "AdjRW", "ADJRW_SUM": "Sum AdjRW", "CMI": "CMI", "DAY_AVG": "วันเฉลี่ย", "DAY_SUM": "รวม (ราย)", "DAY30": "ส่งใน 30 วัน", "DAY60": "31–60 วัน", "DAY90": "61–90 วัน", "DAY91": "เกิน 90 วัน", "DAY30_ADJRW": "AdjRW ใน 30 วัน", "DAY60_ADJRW": "AdjRW 31–60 วัน", "DAY90_ADJRW": "AdjRW 61–90 วัน", "DAY91_ADJRW": "AdjRW เกิน 90 วัน", "ANC": "ฝากครรภ์ (ครั้ง)", "ANC_AMT": "ฝากครรภ์ (บาท)", "LAB": "แล็บ (ครั้ง)", "LAB_AMT": "แล็บ (บาท)", "LAB2": "แล็บครั้งที่ 2 (ครั้ง)", "LAB2_AMT": "แล็บครั้งที่ 2 (บาท)", "LAB_VISIT": "แล็บ (ครั้ง)", "ULTRA": "อัลตราซาวด์ (ครั้ง)", "ULTRA_AMT": "อัลตราซาวด์ (บาท)", "DENT_NUM": "จำนวนครั้ง", "DENT_CLEAN": "ขัดฟัน (ครั้ง)", "DENT_CLEAN_AMT": "ขัดฟัน (บาท)", "HPV_VISIT": "HPV (ครั้ง)", "HPV_AMT": "HPV (บาท)", "WALKIN": "ค่าบริการ Walk-in (บาท)", "WALKIN_DRUG_OTHER": "ยาและอื่น ๆ (บาท)", "WALKIN_ALL": "Walk-in รวม (บาท)", "NUM_OPIOID": "ยา Opioid (ครั้ง)", "ACT_OPIOID": "ยา Opioid (บาท)", "SUM_QTY": "จำนวนชิ้น", "SUM_QTY_OP": "ชิ้น OP", "SUM_AMT_OP": "บาท OP", "SUM_QTY_IP": "ชิ้น IP", "SUM_AMT_IP": "บาท IP", "SUM_HMAIN": "หน่วยบริการจ่าย (บาท)", "SUM_NHSO": "สปสช. จ่าย (บาท)", "PDX": "รหัสโรค", "PDX_NAME": "ชื่อโรค"};
 const $=s=>document.querySelector(s);const nf=d3.format(',');const tip=document.getElementById('tip');
 const S={rid:null,menu:null,fy:null,filter:'data'};
 const AMT=['ACT_AMT_ALL','ACT_AMT','SUM_ACT_AMT','SUMACTAMT','ACTAMT','AMT','SUM_AMT','ACT_ALL','WALKIN_ALL','BUDGET'];
@@ -777,36 +784,83 @@ function drawMenu(){
 }
 function drawView(){
  const M=dash.data('mis_menu'),A=dash.data('mis_all');
- const head=$('#raw-head'),tb=$('#tb-raw tbody'),ys=$('#mis-years'),ch=$('#ch-mis');
- if(M.status!=='ok'||!S.rid){head.replaceChildren();tb.replaceChildren();ys.replaceChildren();ch.replaceChildren();return}
+ const head=$('#raw-head'),tb=$('#tb-raw tbody'),ys=$('#mis-years'),ch=$('#ch-mis'),chy=$('#ch-mis-y'),mp=$('#mis-metric'),note=$('#mis-note');
+ const clear=()=>{[head,tb,ys,ch,chy,mp].forEach(e=>e.replaceChildren())};
+ if(M.status!=='ok'||!S.rid){clear();return}
  const r=M.data.find(x=>x.rid===S.rid&&x.menu===S.menu)||M.data.find(x=>x.rid===S.rid);
  $('#mis-title').textContent=r.name;
  $('#mis-meta').textContent=r.group+' › '+r.menu+' · ID '+r.rid.replace('php:','')+(r.in_tab?' · อยู่ในแท็บ '+r.in_tab:'');
- const note=$('#mis-note');
- if(r.status!=='data'){ys.replaceChildren();ch.replaceChildren();head.replaceChildren();tb.replaceChildren();note.textContent=r.status==='error'?'ระบบ MIS แสดงข้อผิดพลาดของฐานข้อมูล (เช่น ORA-00942) ทุกปี ไม่ใช่ข้อมูลของ รพ. หาย':'MIS ไม่มีข้อมูลของ รพ.พระทองคำฯ ในรายงานนี้';return}
- if(A.status!=='ok'){fail(tb,A.status);return}
- const fyl=r.fy_list.split(',').map(Number).sort((a,b)=>b-a);if(!S.fy||!fyl.includes(S.fy))S.fy=fyl[0];
+ if(r.status!=='data'){clear();$('#mis-raw').hidden=true;note.textContent=r.status==='error'?'ระบบ MIS แสดงข้อผิดพลาดของฐานข้อมูล (เช่น ORA-00942) ทุกปี ไม่ใช่ข้อมูลของ รพ. หาย':'MIS ไม่มีข้อมูลของ รพ.พระทองคำฯ ในรายงานนี้';return}
+ $('#mis-raw').hidden=false;
+ if(A.status!=='ok'){fail(ch,A.status);return}
+ const fyl=r.fy_list.split(',').map(Number).sort((a,b)=>b-a);if(!S.fy||!fyl.includes(S.fy))S.fy=(fyl[0]===2570&&fyl.includes(2569))?2569:fyl[0];
  ys.replaceChildren();if(!r.multi&&fyl.length>1)fyl.forEach(y=>{const b=document.createElement('button');b.textContent=y===2570?'2570*':String(y);b.setAttribute('aria-pressed',String(y===S.fy));b.addEventListener('click',()=>{S.fy=y;drawView()});ys.appendChild(b)});
  ys.hidden=!!r.multi||fyl.length<2;
- const rows=A.data.filter(x=>x.rid===S.rid&&x.fy===S.fy).sort((a,b)=>a.i-b.i);
- const cols=[];rows.forEach(x=>Object.keys(x).forEach(k=>{if(!['key','rid','fy','i'].includes(k)&&!cols.includes(k))cols.push(k)}));
- head.replaceChildren();cols.forEach(c=>{const th=document.createElement('th');th.dataset.field=c;th.textContent=COLS[c]||c;th.title=c;const nm=rows.some(x=>isNum(x[c]))&&!TXTCOL.test(c);if(nm)th.className='n';head.appendChild(th)});
- tb.replaceChildren();rows.forEach(x=>{const tr=document.createElement('tr');tr.dataset.key=x.key;cols.forEach(c=>{const td=document.createElement('td');const v=x[c];const nm=isNum(v)&&!TXTCOL.test(c);td.className=nm?'n':(String(v||'').length>28?'txt':'');td.textContent=fmt(c,v);tr.appendChild(td)});tb.appendChild(tr)});
- note.textContent=r.multi?'รายงานนี้แสดงทุกปีในตารางเดียว (MIS ให้ข้อมูลชุดเดียวกันไม่ว่าเลือกปีใด)':(S.fy===2570?'* ปีงบ 2570 มีเฉพาะข้อมูลที่ส่ง ต.ค.–พ.ย. 2569':'ข้อมูลจาก MIS ตามที่รายงานส่งมา ไม่ได้ปรับแก้');
- // yearly totals of the main amount column
- ch.replaceChildren();const ac=AMT.find(c=>cols.includes(c));
- if(r.multi||!ac||fyl.length<2)return;
- const all=A.data.filter(x=>x.rid===S.rid);const tot=fyl.slice().reverse().map(y=>({y,v:d3.sum(all.filter(x=>x.fy===y),x=>+x[ac]||0)}));
- const W=Math.max(300,ch.clientWidth),H=150,m={t:16,r:8,b:22,l:52};
- const svg=d3.select(ch).append('svg').attr('width','100%').attr('viewBox',`0 0 ${W} ${H}`);
- const x=d3.scaleBand(tot.map(d=>d.y),[m.l,W-m.r]).padding(.3),y=d3.scaleLinear([0,d3.max(tot,d=>d.v)||1],[H-m.b,m.t]).nice();
- svg.append('g').selectAll('line').data(y.ticks(3)).join('line').attr('x1',m.l).attr('x2',W-m.r).attr('y1',y).attr('y2',y).style('stroke','var(--pt-grid)');
- svg.append('g').selectAll('text').data(y.ticks(3)).join('text').attr('x',m.l-6).attr('y',d=>y(d)+4).attr('text-anchor','end').style('font-size','12px').style('fill','var(--pt-mute)').text(d3.format('~s'));
- svg.append('g').selectAll('text').data(tot).join('text').attr('x',d=>x(d.y)+x.bandwidth()/2).attr('y',H-6).attr('text-anchor','middle').style('font-size','12px').style('fill','var(--pt-mute)').text(d=>(d.y===2570?'70*':String(d.y).slice(2)));
- svg.append('g').selectAll('rect').data(tot).join('rect').attr('x',d=>x(d.y)).attr('width',x.bandwidth()).attr('y',d=>y(d.v)).attr('height',d=>y(0)-y(d.v)).attr('rx',3)
-  .style('fill',d=>d.y===S.fy?'var(--pt-jade)':'color-mix(in srgb,var(--pt-jade) 30%,var(--pt-panel))').style('cursor','pointer')
-  .on('click',(e,d)=>{S.fy=d.y;drawView()}).on('mousemove',(e,d)=>{tip.replaceChildren();const a=document.createElement('div');a.className='t';a.textContent='ปีงบ '+d.y;const b=document.createElement('div');b.textContent=(COLS[ac]||ac)+' '+nf(Math.round(d.v));tip.append(a,b);tip.style.display='block';const pr=document.querySelector('.pt').getBoundingClientRect();tip.style.left=(e.clientX-pr.left+12)+'px';tip.style.top=(e.clientY-pr.top+12)+'px'}).on('mouseleave',()=>{tip.style.display='none'});
- svg.append('text').attr('x',m.l).attr('y',11).style('font-size','12px').style('fill','var(--pt-mute)').text('รวมรายปี: '+(COLS[ac]||ac));
+ const all=A.data.filter(x=>x.rid===S.rid);
+ const rows=all.filter(x=>x.fy===S.fy).sort((a,b)=>a.i-b.i);
+ const has=(c,R)=>R.some(x=>x[c]!=null&&String(x[c]).trim()!=='');
+ const cols=[];rows.forEach(x=>Object.keys(x).forEach(k=>{if(!['key','rid','fy','i'].includes(k)&&!cols.includes(k)&&has(k,rows))cols.push(k)}));
+ const nums=cols.filter(c=>!TXTCOL.test(c)&&rows.every(x=>x[c]==null||String(x[c]).trim()===''||isNum(x[c])));
+ const LAB=['MONTH_SEND','MONTH_SERV','MONTH','YEARSEND','YEARSERVE','YEARTH','YEAR','YEAR_TRF','HNAME','HNAME_REP','HMAIN_NAME','S_FUND_DESC','DESCRIPTION','DETAIL','PDX_NAME','SUB_FUND','CODE','ERROR','M_FUND_DESC','FUND_AF'];
+ const lc=LAB.find(c=>cols.includes(c))||cols.find(c=>!nums.includes(c));
+ const timeLike=/^(MONTH|YEAR)/.test(lc||'');
+ if(!S.metric||S.metricFor!==S.rid||!nums.includes(S.metric)){S.metric=AMT.find(c=>nums.includes(c))||nums.find(c=>!/^(PERCENT|RATE)$/.test(c))||nums[0];S.metricFor=S.rid}
+ mp.replaceChildren();if(nums.length>1)nums.forEach(c=>{const b=document.createElement('button');b.textContent=COLS[c]||c;b.setAttribute('aria-pressed',String(c===S.metric));b.addEventListener('click',()=>{S.metric=c;drawView()});mp.appendChild(b)});
+ const mc=S.metric,pct=/PERCENT|RATE|CMI|DAY_AVG/.test(mc||'');
+ const mine=x=>/พระทองคำ/.test(x.HNAME||x.HNAME_REP||'')||[x.HMAIN,x.HCODE_SEND].includes('22456');
+ const lbl=x=>{let s=String(x[lc]??'').trim();if(lc==='CODE'&&x.DETAIL)s=s+' '+String(x.DETAIL).trim();return s};
+ const fv=v=>pct?d3.format(',.2~f')(v):(Math.abs(v)>=1e6?d3.format(',.2~f')(v/1e6)+' ล.':d3.format(',.0f')(v));
+ ch.replaceChildren();chy.replaceChildren();
+ const T=s=>s.style('font-size','12px').style('fill','var(--pt-mute)');
+ const showTip=(e,lines)=>{tip.replaceChildren();lines.forEach((l,i)=>{const d=document.createElement('div');if(!i)d.className='t';d.textContent=l;tip.appendChild(d)});tip.style.display='block';const pr=document.querySelector('.pt').getBoundingClientRect();tip.style.left=(e.clientX-pr.left+12)+'px';tip.style.top=(e.clientY-pr.top+12)+'px'};
+ const hide=()=>{tip.style.display='none'};
+ const split=!lc&&rows.length===1&&nums.length>1;if(split)mp.replaceChildren();
+ if(mc&&(lc||split)){
+  let data=split?nums.map(c=>({k:COLS[c]||c,v:+rows[0][c]||0,me:false})):rows.map(x=>({k:lbl(x),v:+x[mc]||0,me:mine(x)})).filter(d=>d.k!=='');
+  const sum=d3.sum(data,d=>d.v);
+  const W=Math.max(300,ch.clientWidth);
+  if(timeLike){
+   const H=230,m={t:22,r:10,b:30,l:56};const svg=d3.select(ch).append('svg').attr('width','100%').attr('viewBox',`0 0 ${W} ${H}`);
+   const x=d3.scaleBand(data.map(d=>d.k),[m.l,W-m.r]).padding(.28);const y=d3.scaleLinear([Math.min(0,d3.min(data,d=>d.v)),(d3.max(data,d=>d.v)||1)*1.12],[H-m.b,m.t]).nice();
+   svg.append('g').selectAll('line').data(y.ticks(4)).join('line').attr('x1',m.l).attr('x2',W-m.r).attr('y1',y).attr('y2',y).style('stroke','var(--pt-grid)');
+   T(svg.append('g').selectAll('text').data(y.ticks(4)).join('text').attr('x',m.l-6).attr('y',d=>y(d)+4).attr('text-anchor','end').text(d=>pct?d3.format('~f')(d):d3.format('~s')(d)));
+   const step=Math.ceil(data.length/(W<500?6:12));
+   T(svg.append('g').selectAll('text').data(data.filter((d,i)=>i%step===0)).join('text').attr('x',d=>x(d.k)+x.bandwidth()/2).attr('y',H-10).attr('text-anchor','middle').text(d=>d.k));
+   if(pct){svg.append('path').datum(data).attr('fill','none').style('stroke','var(--pt-jade)').attr('stroke-width',2).attr('stroke-linejoin','round').attr('d',d3.line(d=>x(d.k)+x.bandwidth()/2,d=>y(d.v)));
+    svg.append('g').selectAll('circle').data(data).join('circle').attr('cx',d=>x(d.k)+x.bandwidth()/2).attr('cy',d=>y(d.v)).attr('r',3.5).style('fill','var(--pt-jade)');}
+   else svg.append('g').selectAll('rect').data(data).join('rect').attr('x',d=>x(d.k)).attr('width',x.bandwidth()).attr('y',d=>y(Math.max(0,d.v))).attr('height',d=>Math.abs(y(d.v)-y(0))).attr('rx',3).style('fill','var(--pt-jade)');
+   if(data.length<=14)svg.append('g').selectAll('text').data(data).join('text').attr('class','v').attr('x',d=>x(d.k)+x.bandwidth()/2).attr('y',d=>y(Math.max(0,d.v))-5).attr('text-anchor','middle').text(d=>fv(d.v));
+   svg.append('g').selectAll('rect').data(data).join('rect').attr('x',d=>x(d.k)-x.step()*x.paddingInner()/2).attr('width',x.step()).attr('y',0).attr('height',H).attr('fill','transparent').on('mousemove',(e,d)=>showTip(e,[d.k,(COLS[mc]||mc)+' '+d3.format(',.2~f')(d.v)])).on('mouseleave',hide);
+  }else{
+   data.sort((a,b)=>b.v-a.v);const more=data.length-25;if(more>0){const meRow=data.slice(25).filter(d=>d.me);data=data.slice(0,25).concat(meRow)}
+   const bh=18,gp=6,H=8+data.length*(bh+gp)+8;const svg=d3.select(ch).append('svg').attr('width','100%').attr('viewBox',`0 0 ${W} ${H}`);
+   const short=s=>s.length>38?s.slice(0,37)+'…':s;const tw=s=>{const t=svg.append('text').style('font-size','12px').text(s);const w=t.node().getComputedTextLength();t.remove();return w};
+   const lw=Math.min(W*0.46,Math.max(...data.map(d=>tw(short(d.k))))+10),vw=Math.max(...data.map(d=>tw(fv(d.v)+(split?' (100.0%)':''))))+10;
+   const x=d3.scaleLinear([0,d3.max(data,d=>d.v)||1],[lw,W-vw]);
+   data.forEach((d,i)=>{const y=8+i*(bh+gp);
+    svg.append('text').attr('x',lw-6).attr('y',y+bh-5).attr('text-anchor','end').style('font-size','12px').style('fill',d.me?'var(--pt-ink)':'var(--pt-mute)').style('font-weight',d.me?600:400).text(short(d.k));
+    svg.append('rect').attr('x',lw).attr('y',y).attr('height',bh).attr('rx',3).attr('width',Math.max(1,x(Math.max(0,d.v))-lw)).style('fill',d.me?'var(--pt-jade)':'color-mix(in srgb,var(--pt-jade) 35%,var(--pt-panel))').on('mousemove',e=>showTip(e,[d.k,(COLS[mc]||mc)+' '+d3.format(',.2~f')(d.v)])).on('mouseleave',hide);
+    svg.append('text').attr('x',x(Math.max(0,d.v))+4).attr('y',y+bh-5).style('font-size','11px').style('fill','var(--pt-mute)').text(fv(d.v)+(split&&sum?' ('+d3.format('.1%')(d.v/sum)+')':''))});
+   if(more>0){const p=document.createElement('p');p.className='note';p.textContent='แสดง 25 อันดับแรกจาก '+(more+25)+' รายการ';ch.appendChild(p)}
+  }
+ }
+ // yearly totals of the chosen metric
+ if(!r.multi&&mc&&!pct&&fyl.length>1){
+  const tot=fyl.slice().reverse().map(y=>({y,v:d3.sum(all.filter(x=>x.fy===y),x=>+x[mc]||0)}));
+  const W=Math.max(300,chy.clientWidth),H=130,m={t:18,r:8,b:20,l:52};
+  const svg=d3.select(chy).append('svg').attr('width','100%').attr('viewBox',`0 0 ${W} ${H}`);
+  const x=d3.scaleBand(tot.map(d=>d.y),[m.l,W-m.r]).padding(.3),y=d3.scaleLinear([0,d3.max(tot,d=>d.v)||1],[H-m.b,m.t]).nice();
+  T(svg.append('g').selectAll('text').data(y.ticks(2)).join('text').attr('x',m.l-6).attr('y',d=>y(d)+4).attr('text-anchor','end').text(d3.format('~s')));
+  T(svg.append('g').selectAll('text').data(tot).join('text').attr('x',d=>x(d.y)+x.bandwidth()/2).attr('y',H-5).attr('text-anchor','middle').text(d=>(d.y===2570?'70*':String(d.y).slice(2))));
+  svg.append('g').selectAll('rect').data(tot).join('rect').attr('x',d=>x(d.y)).attr('width',x.bandwidth()).attr('y',d=>y(d.v)).attr('height',d=>y(0)-y(d.v)).attr('rx',3)
+   .style('fill',d=>d.y===S.fy?'var(--pt-jade)':'color-mix(in srgb,var(--pt-jade) 30%,var(--pt-panel))').style('cursor','pointer')
+   .on('click',(e,d)=>{S.fy=d.y;drawView()}).on('mousemove',(e,d)=>showTip(e,['ปีงบ '+d.y,(COLS[mc]||mc)+' '+nf(Math.round(d.v))])).on('mouseleave',hide);
+  T(svg.append('text').attr('x',m.l).attr('y',11).text('รวมทั้งปีงบ (คลิกแท่งเพื่อเลือกปี): '+(COLS[mc]||mc)));
+ }
+ note.textContent=(r.multi?'รายงานนี้แสดงทุกปีในชุดเดียว (MIS ให้ข้อมูลเดียวกันไม่ว่าเลือกปีใด) · ':'')+(S.fy===2570&&!r.multi?'* ปีงบ 2570 มีเฉพาะข้อมูลที่ส่ง ต.ค.–พ.ย. 2569 · ':'')+'ตัวเลขจาก MIS ตามที่รายงานส่งมา';
+ // table (collapsed)
+ head.replaceChildren();cols.forEach(c=>{const th=document.createElement('th');th.dataset.field=c;th.textContent=COLS[c]||c;th.title=c;if(nums.includes(c))th.className='n';head.appendChild(th)});
+ tb.replaceChildren();rows.forEach(x=>{const tr=document.createElement('tr');tr.dataset.key=x.key;cols.forEach(c=>{const td=document.createElement('td');const v=x[c];td.className=nums.includes(c)?'n':(String(v||'').length>28?'txt':'');td.textContent=fmt(c,v);tr.appendChild(td)});tb.appendChild(tr)});
 }
 function drawCov(){const c=dash.data('mis_cov');const r=c.status==='ok'&&c.data[0];[['m-all','total'],['m-in','in_tab'],['m-here','here'],['m-none','none']].forEach(([id,f])=>{document.getElementById(id).textContent=r?nf(r[f]):'—'})}
 const all=()=>{drawCov();if(document.getElementById('mis').hidden)return;drawMenu();drawView()};
