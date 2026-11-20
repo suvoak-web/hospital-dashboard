@@ -453,10 +453,10 @@ function fail(el){el.replaceChildren();const d=document.createElement('div');d.c
 
 function bars(el,rows,xk,yk,opt={}){el.replaceChildren();const W=el.clientWidth;if(!W||!rows.length)return;const H=opt.h||250,m={t:12,r:8,b:30,l:opt.l||46};
  const svg=d3.select(el).append('svg').attr('width','100%').attr('viewBox',`0 0 ${W} ${H}`);
- const x=d3.scaleBand(rows.map(r=>r[xk]),[m.l,W-m.r]).padding(.32);const y=d3.scaleLinear([0,d3.max(rows,r=>opt.stack?r[yk]+r[opt.stack]:r[yk])*1.1],[H-m.b,m.t]).nice();
+ const isT=v=>/^\d{4}(-\d{2})?$/.test(String(v));const desc=(arr)=>arr.every(isT)?arr.slice().sort((p,q)=>String(q).localeCompare(String(p))):arr.slice().reverse();const xd=desc(rows.map(r=>r[xk]));const x=d3.scaleBand(xd,[m.l,W-m.r]).padding(.32);const y=d3.scaleLinear([0,d3.max(rows,r=>opt.stack?r[yk]+r[opt.stack]:r[yk])*1.1],[H-m.b,m.t]).nice();
  grid(svg,y,m.l,W-m.r);
  svg.append('g').attr('transform',`translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(0).tickPadding(8).tickFormat(opt.yf||d3.format('~s'))).call(axis).call(g=>g.select('.domain').remove());
- const xt=opt.xTicks?rows.map(r=>r[xk]).filter((d,i)=>i%opt.xTicks===0):(W<480&&rows.length>6?rows.map(r=>r[xk]).filter((d,i)=>(rows.length-1-i)%2===0):null);
+ const xt=opt.xTicks?xd.filter((d,i)=>i%opt.xTicks===0):(W<480&&xd.length>6?xd.filter((d,i)=>i%2===0):null);
  svg.append('g').attr('transform',`translate(0,${H-m.b})`).call(d3.axisBottom(x).tickValues(xt).tickSize(0).tickPadding(10)).call(axis).call(g=>g.select('.domain').remove());
  const bw=Math.min(30,x.bandwidth()),off=(x.bandwidth()-bw)/2;
  svg.append('g').selectAll('rect').data(rows).join('rect').attr('x',r=>x(r[xk])+off).attr('width',bw).attr('y',r=>y(r[yk])).attr('height',r=>y(0)-y(r[yk])).attr('rx',Math.min(6,bw/2)).style('fill',r=>opt.color?opt.color(r):'var(--pt-jade)');
@@ -468,12 +468,12 @@ function bars(el,rows,xk,yk,opt={}){el.replaceChildren();const W=el.clientWidth;
 
 function lines(el,rows,xk,series,opt={}){el.replaceChildren();const W=el.clientWidth;if(!W||!rows.length)return;const H=opt.h||250,m={t:14,r:14,b:30,l:opt.l||44};
  const svg=d3.select(el).append('svg').attr('width','100%').attr('viewBox',`0 0 ${W} ${H}`);
- const xs=rows.map(r=>r[xk]);const x=d3.scalePoint(xs,[m.l,W-m.r]).padding(.3);
+ const isT=v=>/^\d{4}(-\d{2})?$/.test(String(v));const desc=(arr)=>arr.every(isT)?arr.slice().sort((p,q)=>String(q).localeCompare(String(p))):arr.slice().reverse();const xs=desc(rows.map(r=>r[xk]));const x=d3.scalePoint(xs,[m.l,W-m.r]).padding(.3);
  const vals=series.flatMap(s=>rows.map(r=>r[s.k]).filter(v=>v!=null&&!isNaN(v)));
  const y=d3.scaleLinear([opt.y0??Math.min(0,d3.min(vals)),d3.max(vals)*1.05],[H-m.b,m.t]).nice();
  grid(svg,y,m.l,W-m.r);
  svg.append('g').attr('transform',`translate(${m.l},0)`).call(d3.axisLeft(y).ticks(4).tickSize(0).tickPadding(8).tickFormat(opt.yf||d3.format('~s'))).call(axis).call(g=>g.select('.domain').remove());
- const xt=opt.xTicks?xs.filter((d,i)=>i%opt.xTicks===0):(W<480&&xs.length>6?xs.filter((d,i)=>(xs.length-1-i)%2===0):null);
+ const xt=opt.xTicks?xs.filter((d,i)=>i%opt.xTicks===0):(W<480&&xs.length>6?xs.filter((d,i)=>i%2===0):null);
  svg.append('g').attr('transform',`translate(0,${H-m.b})`).call(d3.axisBottom(x).tickValues(xt).tickSize(0).tickPadding(10)).call(axis).call(g=>g.select('.domain').remove());
  const rule=svg.append('line').attr('y1',m.t).attr('y2',H-m.b).style('stroke','var(--pt-line)').style('opacity',0);
  series.forEach((s,i)=>{const pts=rows.filter(r=>r[s.k]!=null&&!isNaN(r[s.k]));const c=s.c||PAL[i%PAL.length];
@@ -588,7 +588,7 @@ function trend(){const el=$('#ch-subtrend');const all=rows();if(!all.length)retu
  el.replaceChildren();const W=el.clientWidth;if(!W)return;const H=250,m={t:20,r:8,b:30,l:52};
  const data=YRS.map(y=>({y,v:x[unit+'_'+y],have:HAVE.has(y)}));
  const svg=d3.select(el).append('svg').attr('width','100%').attr('viewBox',`0 0 ${W} ${H}`);
- const xs=d3.scaleBand(YRS,[m.l,W-m.r]).padding(.32);const mx=d3.max(data,d=>d.v||0)||1;const ys=d3.scaleLinear([0,mx*1.15],[H-m.b,m.t]).nice();
+ const xs=d3.scaleBand([...YRS].reverse(),[m.l,W-m.r]).padding(.32);const mx=d3.max(data,d=>d.v||0)||1;const ys=d3.scaleLinear([0,mx*1.15],[H-m.b,m.t]).nice();
  svg.append('g').selectAll('line').data(ys.ticks(4)).join('line').attr('x1',m.l).attr('x2',W-m.r).attr('y1',ys).attr('y2',ys).style('stroke','var(--pt-grid)');
  const ga=svg.append('g').attr('transform',`translate(${m.l},0)`).call(d3.axisLeft(ys).ticks(4).tickSize(0).tickPadding(8).tickFormat(d3.format('~s')));
  const gb=svg.append('g').attr('transform',`translate(0,${H-m.b})`).call(d3.axisBottom(xs).tickSize(0).tickPadding(10));
@@ -678,7 +678,7 @@ function drawSvc(){
  const yA=d3.scaleLinear([0,(d3.max(okr,r=>r.amount)||1)*1.1],[H-28,12]).nice();
  const yV=d3.scaleLinear([0,(d3.max(okr,r=>r.visits)||1)*1.1],[H-28,12]).nice();
  const lw=Math.max(...yA.ticks(4).map(v=>tw(svg,fmtAxis(v))))+10,rw=Math.max(...yV.ticks(4).map(v=>tw(svg,nf(v))))+10;
- const x=d3.scaleBand(FYS,[lw,W-rw]).padding(0.3);
+ const x=d3.scaleBand([...FYS].reverse(),[lw,W-rw]).padding(0.3);
  const T=s=>s.style('fill','var(--pt-mute)').style('font-size','13px');
  svg.append('g').selectAll('line').data(yA.ticks(4)).join('line').attr('x1',lw).attr('x2',W-rw).attr('y1',yA).attr('y2',yA).style('stroke','var(--pt-grid)');
  T(svg.append('g').selectAll('text').data(yA.ticks(4)).join('text').attr('x',lw-6).attr('y',d=>yA(d)+4).attr('text-anchor','end').text(fmtAxis));
@@ -817,6 +817,7 @@ function drawView(){
  const split=!lc&&rows.length===1&&nums.length>1;if(split)mp.replaceChildren();
  if(mc&&(lc||split)){
   let data=split?nums.map(c=>({k:COLS[c]||c,v:+rows[0][c]||0,me:false})):rows.map(x=>({k:lbl(x),v:+x[mc]||0,me:mine(x)})).filter(d=>d.k!=='');
+  if(timeLike)data=data.every(d=>/^\d{4}/.test(d.k))?data.sort((p,q)=>String(q.k).localeCompare(String(p.k))):data.reverse();
   const sum=d3.sum(data,d=>d.v);
   const W=Math.max(300,ch.clientWidth);
   if(timeLike){
@@ -846,7 +847,7 @@ function drawView(){
  }
  // yearly totals of the chosen metric
  if(!r.multi&&mc&&!pct&&fyl.length>1){
-  const tot=fyl.slice().reverse().map(y=>({y,v:d3.sum(all.filter(x=>x.fy===y),x=>+x[mc]||0)}));
+  const tot=fyl.map(y=>({y,v:d3.sum(all.filter(x=>x.fy===y),x=>+x[mc]||0)}));
   const W=Math.max(300,chy.clientWidth),H=130,m={t:18,r:8,b:20,l:52};
   const svg=d3.select(chy).append('svg').attr('width','100%').attr('viewBox',`0 0 ${W} ${H}`);
   const x=d3.scaleBand(tot.map(d=>d.y),[m.l,W-m.r]).padding(.3),y=d3.scaleLinear([0,d3.max(tot,d=>d.v)||1],[H-m.b,m.t]).nice();
