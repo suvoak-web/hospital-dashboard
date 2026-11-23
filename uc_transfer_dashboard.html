@@ -59,7 +59,7 @@ tr.fund-row.on td{background:#dbeafe}
         <p class="text-xs text-slate-500 mt-1" id="y70Source">ตัวเลขเผยแพร่จาก statement ถึง 26 ต.ค. · อัปไฟล์ด้านขวาจะอัปเฉพาะเครื่องนี้</p>
       </div>
       <div class="text-right">
-        <div class="text-2xl font-bold text-sky-800" id="y70CashBig">9.36</div>
+        <div class="text-2xl font-bold text-sky-800" id="y70CashBig">10.44</div>
         <div class="text-xs text-slate-400">ล้านบาท เข้าบัญชี</div>
       </div>
     </div>
@@ -71,10 +71,10 @@ tr.fund-row.on td{background:#dbeafe}
       <span class="text-xs text-slate-500">อัปจากหน้านี้เห็นทันทีบนเบราว์เซอร์นี้</span>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-      <div class="card p-3"><div class="text-xs text-slate-500">จัดสรร</div><div class="text-xl font-bold" id="y70Claim">9.42</div></div>
+      <div class="card p-3"><div class="text-xs text-slate-500">จัดสรร</div><div class="text-xl font-bold" id="y70Claim">10.50</div></div>
       <div class="card p-3"><div class="text-xs text-slate-500">หัก / ชะลอ</div><div class="text-xl font-bold" id="y70Deduct">0.059</div></div>
-      <div class="card p-3"><div class="text-xs text-slate-500">เข้าบัญชี</div><div class="text-xl font-bold text-sky-800" id="y70Cash">9.36</div></div>
-      <div class="card p-3"><div class="text-xs text-slate-500">เทียบ Q1 ปี 69</div><div class="text-xl font-bold" id="y70Pace">44%</div><div class="text-xs text-slate-400">ของ Q1/69 ที่เข้า 21.21</div></div>
+      <div class="card p-3"><div class="text-xs text-slate-500">เข้าบัญชี</div><div class="text-xl font-bold text-sky-800" id="y70Cash">10.44</div></div>
+      <div class="card p-3"><div class="text-xs text-slate-500">เทียบ Q1 ปี 69</div><div class="text-xl font-bold" id="y70Pace">49%</div><div class="text-xs text-slate-400">ของ Q1/69 ที่เข้า 21.21</div></div>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div class="overflow-x-auto">
@@ -163,68 +163,21 @@ tr.fund-row.on td{background:#dbeafe}
 <script>
 
 const y70Published={
-  asof:'23 พ.ย. 2569', source:'published',
-  months:[8.183,1.175,0,0,0,0],
+  asof:'23 พ.ย. 2569 (ฉบับมี IP งวดใหม่)', source:'published',
+  months:[8.183,2.255,0,0,0,0],
   funds:[
     {name:'OP ไปพลางก่อน 25%', claim:5.931, deduct:0.012, cash:5.920, note:'ก้อนหลัก หัก OP REFER 0.012'},
-    {name:'PP', claim:1.643, deduct:0, cash:1.643, note:'ปล่อยชะลอ + งวด 6910'},
-    {name:'IP', claim:0.589, deduct:0, cash:0.589, note:'ปรับ DRGs 0.289 + จัดสรร IP 69 0.300'},
-    {name:'สวัสดิการท้องถิ่น', claim:0.458, deduct:0, cash:0.458, note:'ก้อนใหญ่ 20 พ.ย. 0.327'},
-    {name:'Central', claim:0.317, deduct:0.043, cash:0.275, note:'ปล่อยชะลอ 20 พ.ย. เหลือหักอุทธรณ์'},
+    {name:'IP', claim:1.645, deduct:0, cash:1.645, note:'DRGs 0.289 + จัดสรร 0.300 + 6909/6910 อีก 1.056'},
+    {name:'PP', claim:1.643, deduct:0, cash:1.643, note:'ไปพลางก่อน + งวด 6910'},
+    {name:'สวัสดิการท้องถิ่น', claim:0.458, deduct:0, cash:0.458, note:'ก้อนใหญ่ 20 พ.ย.'},
+    {name:'Central', claim:0.342, deduct:0.043, cash:0.299, note:'ปล่อยชะลอ + ติดมากับ IP'},
     {name:'ปฐมภูมิ', claim:0.183, deduct:0, cash:0.183, note:'PCC ปี 69 + งวด 6910'},
-    {name:'ฟื้นฟู', claim:0.142, deduct:0, cash:0.142, note:'DDSA 16 พ.ย. 0.136'},
+    {name:'ฟื้นฟู', claim:0.142, deduct:0, cash:0.142, note:'DDSA 16 พ.ย.'},
     {name:'แพทย์แผนไทย', claim:0.081, deduct:0.005, cash:0.076, note:'ชะลอเหลือ 0.005'},
     {name:'เอดส์', claim:0.042, deduct:0, cash:0.042, note:'DNAP'},
     {name:'NCD / DM', claim:0.031, deduct:0, cash:0.031, note:'DM Remission + DMOR'}
   ]
 }
-let c70chart;
-function renderY70(pack){
-  const funds=pack.funds||[];
-  const claim=funds.reduce((s,r)=>s+r.claim,0);
-  const deduct=funds.reduce((s,r)=>s+r.deduct,0);
-  const cash=funds.reduce((s,r)=>s+r.cash,0);
-  document.getElementById('y70Title').textContent='ปี 2570 แยกติดตาม — ถึง '+(pack.asof||'วันนี้');
-  document.getElementById('y70CashBig').textContent=cash.toFixed(2);
-  document.getElementById('y70Claim').textContent=claim.toFixed(2);
-  document.getElementById('y70Deduct').textContent=deduct.toFixed(3);
-  document.getElementById('y70Cash').textContent=cash.toFixed(2);
-  document.getElementById('y70Pace').textContent=Math.round(cash/21.21*100)+'%';
-  document.getElementById('y70Source').textContent=pack.source==='browser'
-    ? 'ข้อมูลจากไฟล์ที่อัปในเบราว์เซอร์นี้'
-    : 'ตัวเลขเผยแพร่จาก statement ถึง '+(pack.asof||'')+' · อัปไฟล์ด้านบนจะอัปเฉพาะเครื่องนี้';
-  document.getElementById('y70Body').innerHTML=funds.map(function(r){
-    return '<tr class="border-t"><td class="p-2 font-semibold">'+r.name+'</td><td class="text-right p-2">'+(r.claim?r.claim.toFixed(3):'—')+'</td><td class="text-right p-2">'+(r.deduct?r.deduct.toFixed(3):'—')+'</td><td class="text-right p-2 font-semibold">'+(r.cash?r.cash.toFixed(3):'—')+'</td><td class="p-2 text-slate-500">'+r.note+'</td></tr>';
-  }).join('')+'<tr class="border-t bg-sky-50 font-semibold"><td class="p-2">รวมถึงวันนี้</td><td class="text-right p-2">'+claim.toFixed(3)+'</td><td class="text-right p-2">'+deduct.toFixed(3)+'</td><td class="text-right p-2">'+cash.toFixed(3)+'</td><td class="p-2">'+(pack.asof||'')+'</td></tr>';
-  if(c70chart) c70chart.destroy();
-  c70chart=new Chart(document.getElementById('c70'),{
-    type:'bar',
-    data:{labels:['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.'],datasets:[{label:'เข้าบัญชี',data:(pack.months||[cash,0,0,0,0,0]),backgroundColor:'#0369A1'}]},
-    options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}
-  });
-}
-function fam70(fund, sub, period){
-  const t=((fund||'')+' '+(sub||'')+' '+(period||'')).toUpperCase();
-  if(t.includes('DRG')) return 'IP ปรับ DRGs';
-  if(t.includes('ผู้ป่วยนอก')) return 'OP';
-  if(t.includes('ผู้ป่วยใน')) return 'IP';
-  if(t.includes('สร้างเสริม') || t.includes('P&P')) return 'PP';
-  if(t.includes('แผนไทย')) return 'แพทย์แผนไทย';
-  if(t.includes('ปฐมภูมิ') || t.includes('PCC')) return 'ปฐมภูมิ';
-  if(t.includes('ฟื้นฟู')) return 'ฟื้นฟู';
-  if(t.includes('ท้องถิ่น')) return 'สวัสดิการท้องถิ่น';
-  if(t.includes('CENTRAL') || t.includes('กำไรสะสม')) return 'Central / อุทธรณ์';
-  return fund || 'อื่น ๆ';
-}
-function parseStatement(buf){
-  const wb=XLSX.read(buf,{type:'array'});
-  const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:''});
-  let hi=rows.findIndex(r=>String(r[0]).trim()==='ลำดับ');
-  if(hi<0) throw new Error('ไม่พบหัวตาราง statement');
-  const head=rows[hi].map(x=>String(x));
-  const ix=name=>head.findIndex(h=>h.includes(name));
-  const iFund=ix('กองทุน'), iSub=ix('กองทุนย่อย'), iPer=ix('งวด'), iClaim=ix('จำนวนเงิน'), iDelay=ix('ชะลอ'), iDed=ix('รายการหัก'), iCash=ix('เงินโอนเข้าบัญชี'), iDate=ix('วันที่โอน');
-  const agg={};
   let lastDate='';
   rows.slice(hi+1).forEach(function(r){
     if(String(r[0]).trim()==='รวม' || !r[iFund] && !r[iClaim]) return;
