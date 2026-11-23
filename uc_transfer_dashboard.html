@@ -163,7 +163,7 @@ tr.fund-row.on td{background:#dbeafe}
 <script>
 
 const y70Published={
-  asof:'23 พ.ย. 2569 (ฉบับมี IP งวดใหม่)', source:'published',
+  asof:'23 พ.ย. 2569', source:'published',
   months:[8.183,2.255,0,0,0,0],
   funds:[
     {name:'OP ไปพลางก่อน 25%', claim:5.931, deduct:0.012, cash:5.920, note:'ก้อนหลัก หัก OP REFER 0.012'},
@@ -177,7 +177,55 @@ const y70Published={
     {name:'เอดส์', claim:0.042, deduct:0, cash:0.042, note:'DNAP'},
     {name:'NCD / DM', claim:0.031, deduct:0, cash:0.031, note:'DM Remission + DMOR'}
   ]
+};
+let c70chart;
+function renderY70(pack){
+  const funds=pack.funds||[];
+  const claim=funds.reduce((s,r)=>s+r.claim,0);
+  const deduct=funds.reduce((s,r)=>s+r.deduct,0);
+  const cash=funds.reduce((s,r)=>s+r.cash,0);
+  document.getElementById('y70Title').textContent='ปี 2570 แยกติดตาม — ถึง '+(pack.asof||'วันนี้');
+  document.getElementById('y70CashBig').textContent=cash.toFixed(2);
+  document.getElementById('y70Claim').textContent=claim.toFixed(2);
+  document.getElementById('y70Deduct').textContent=deduct.toFixed(3);
+  document.getElementById('y70Cash').textContent=cash.toFixed(2);
+  document.getElementById('y70Pace').textContent=Math.round(cash/21.21*100)+'%';
+  document.getElementById('y70Source').textContent=pack.source==='browser'
+    ? 'ข้อมูลจากไฟล์ที่อัปในเบราว์เซอร์นี้'
+    : 'ตัวเลขเผยแพร่จาก statement ถึง '+(pack.asof||'')+' · อัปไฟล์ด้านบนจะอัปเฉพาะเครื่องนี้';
+  document.getElementById('y70Body').innerHTML=funds.map(function(r){
+    return '<tr class="border-t"><td class="p-2 font-semibold">'+r.name+'</td><td class="text-right p-2">'+(r.claim?r.claim.toFixed(3):'—')+'</td><td class="text-right p-2">'+(r.deduct?r.deduct.toFixed(3):'—')+'</td><td class="text-right p-2 font-semibold">'+(r.cash?r.cash.toFixed(3):'—')+'</td><td class="p-2 text-slate-500">'+r.note+'</td></tr>';
+  }).join('')+'<tr class="border-t bg-sky-50 font-semibold"><td class="p-2">รวมถึงวันนี้</td><td class="text-right p-2">'+claim.toFixed(3)+'</td><td class="text-right p-2">'+deduct.toFixed(3)+'</td><td class="text-right p-2">'+cash.toFixed(3)+'</td><td class="p-2">'+(pack.asof||'')+'</td></tr>';
+  if(c70chart) c70chart.destroy();
+  c70chart=new Chart(document.getElementById('c70'),{
+    type:'bar',
+    data:{labels:['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.'],datasets:[{label:'เข้าบัญชี',data:(pack.months||[cash,0,0,0,0,0]),backgroundColor:'#0369A1'}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}
+  });
 }
+function fam70(fund, sub, period){
+  const t=((fund||'')+' '+(sub||'')+' '+(period||'')).toUpperCase();
+  if(t.includes('DRG')) return 'IP';
+  if(t.includes('ผู้ป่วยนอก')) return 'OP';
+  if(t.includes('ผู้ป่วยใน')) return 'IP';
+  if(t.includes('สร้างเสริม') || t.includes('P&P')) return 'PP';
+  if(t.includes('แผนไทย')) return 'แพทย์แผนไทย';
+  if(t.includes('ปฐมภูมิ') || t.includes('PCC')) return 'ปฐมภูมิ';
+  if(t.includes('ฟื้นฟู')) return 'ฟื้นฟู';
+  if(t.includes('ท้องถิ่น')) return 'สวัสดิการท้องถิ่น';
+  if(t.includes('CENTRAL') || t.includes('กำไรสะสม') || t.includes('กรณีเฉพาะ')) return 'Central';
+  if(t.includes('เอดส์') || t.includes('DNAP')) return 'เอดส์';
+  return fund || 'อื่น ๆ';
+}
+function parseStatement(buf){
+  const wb=XLSX.read(buf,{type:'array'});
+  const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:''});
+  let hi=rows.findIndex(r=>String(r[0]).trim()==='ลำดับ');
+  if(hi<0) throw new Error('ไม่พบหัวตาราง statement');
+  const head=rows[hi].map(x=>String(x));
+  const ix=name=>head.findIndex(h=>h.includes(name));
+  const iFund=ix('กองทุน'), iSub=ix('กองทุนย่อย'), iPer=ix('งวด'), iClaim=ix('จำนวนเงิน'), iDelay=ix('ชะลอ'), iDed=ix('รายการหัก'), iCash=ix('เงินโอนเข้าบัญชี'), iDate=ix('วันที่โอน');
+  const agg={};
   let lastDate='';
   rows.slice(hi+1).forEach(function(r){
     if(String(r[0]).trim()==='รวม' || !r[iFund] && !r[iClaim]) return;
