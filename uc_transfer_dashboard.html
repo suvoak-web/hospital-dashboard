@@ -54,12 +54,12 @@ tr.fund-row.on td{background:#dbeafe}
   <div id="y70Block" class="card p-4 mb-5 border-t-4 border-sky-700">
     <div class="flex flex-wrap justify-between gap-2 mb-3">
       <div>
-        <h3 class="font-semibold" id="y70Title">ปี 2570 แยกติดตาม — ถึง 5 พ.ย. 2569</h3>
+        <h3 class="font-semibold" id="y70Title">ปี 2570 แยกติดตาม — ถึง 23 พ.ย. 2569</h3>
         <p class="text-xs text-slate-500">ปีงบใหม่ 1 ต.ค. 69 – 30 ก.ย. 70 · ยังไม่ครบเดือน ห้ามเทียบกับทั้งปี 66–69</p>
         <p class="text-xs text-slate-500 mt-1" id="y70Source">ตัวเลขเผยแพร่จาก statement ถึง 26 ต.ค. · อัปไฟล์ด้านขวาจะอัปเฉพาะเครื่องนี้</p>
       </div>
       <div class="text-right">
-        <div class="text-2xl font-bold text-sky-800" id="y70CashBig">8.27</div>
+        <div class="text-2xl font-bold text-sky-800" id="y70CashBig">9.36</div>
         <div class="text-xs text-slate-400">ล้านบาท เข้าบัญชี</div>
       </div>
     </div>
@@ -71,10 +71,10 @@ tr.fund-row.on td{background:#dbeafe}
       <span class="text-xs text-slate-500">อัปจากหน้านี้เห็นทันทีบนเบราว์เซอร์นี้</span>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-      <div class="card p-3"><div class="text-xs text-slate-500">จัดสรร</div><div class="text-xl font-bold" id="y70Claim">8.53</div></div>
-      <div class="card p-3"><div class="text-xs text-slate-500">หัก / ชะลอ</div><div class="text-xl font-bold" id="y70Deduct">0.264</div></div>
-      <div class="card p-3"><div class="text-xs text-slate-500">เข้าบัญชี</div><div class="text-xl font-bold text-sky-800" id="y70Cash">8.27</div></div>
-      <div class="card p-3"><div class="text-xs text-slate-500">เทียบ Q1 ปี 69</div><div class="text-xl font-bold" id="y70Pace">39%</div><div class="text-xs text-slate-400">ของ Q1/69 ที่เข้า 21.21</div></div>
+      <div class="card p-3"><div class="text-xs text-slate-500">จัดสรร</div><div class="text-xl font-bold" id="y70Claim">9.42</div></div>
+      <div class="card p-3"><div class="text-xs text-slate-500">หัก / ชะลอ</div><div class="text-xl font-bold" id="y70Deduct">0.059</div></div>
+      <div class="card p-3"><div class="text-xs text-slate-500">เข้าบัญชี</div><div class="text-xl font-bold text-sky-800" id="y70Cash">9.36</div></div>
+      <div class="card p-3"><div class="text-xs text-slate-500">เทียบ Q1 ปี 69</div><div class="text-xl font-bold" id="y70Pace">44%</div><div class="text-xs text-slate-400">ของ Q1/69 ที่เข้า 21.21</div></div>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div class="overflow-x-auto">
@@ -163,20 +163,21 @@ tr.fund-row.on td{background:#dbeafe}
 <script>
 
 const y70Published={
-  asof:'5 พ.ย. 2569', source:'published',
-  months:[8.183,0.086,0,0,0,0],
+  asof:'23 พ.ย. 2569', source:'published',
+  months:[8.183,1.175,0,0,0,0],
   funds:[
-    {name:'OP ไปพลางก่อน 25%', claim:5.931, deduct:0, cash:5.931, note:'8 ต.ค. ก้อนหลักปี 70'},
-    {name:'PP', claim:1.459, deduct:0.014, cash:1.444, note:'ไปพลางก่อน 1.245 + DKTP 0.068 วันที่ 4 พ.ย.'},
-    {name:'IP', claim:0.589, deduct:0, cash:0.589, note:'ปรับ DRGs 0.289 + จัดสรร IP 69 อีก 0.300'},
-    {name:'ปฐมภูมิ', claim:0.137, deduct:0, cash:0.137, note:'PCC ปี 69 + งวด 6909'},
-    {name:'สวัสดิการท้องถิ่น', claim:0.130, deduct:0, cash:0.130, note:'จ่ายตรง'},
-    {name:'แพทย์แผนไทย', claim:0.044, deduct:0.003, cash:0.041, note:'ปล่อยชะลอเดิมแล้ว เหลือหักอุทธรณ์'},
-    {name:'NCD / DM', claim:0.030, deduct:0, cash:0.030, note:'DM Remission 0.012 + DMOR 0.018 วันที่ 5 พ.ย.'},
-    {name:'ฟื้นฟู', claim:0.005, deduct:0, cash:0.005, note:'งวดปี 70'},
-    {name:'Central / อุทธรณ์', claim:0.208, deduct:0.247, cash:0, note:'ชะลอ 0.204 และหักอุทธรณ์ 0.043 ยังไม่เป็นเงินสด'}
+    {name:'OP ไปพลางก่อน 25%', claim:5.931, deduct:0.012, cash:5.920, note:'ก้อนหลัก หัก OP REFER 0.012'},
+    {name:'PP', claim:1.643, deduct:0, cash:1.643, note:'ปล่อยชะลอ + งวด 6910'},
+    {name:'IP', claim:0.589, deduct:0, cash:0.589, note:'ปรับ DRGs 0.289 + จัดสรร IP 69 0.300'},
+    {name:'สวัสดิการท้องถิ่น', claim:0.458, deduct:0, cash:0.458, note:'ก้อนใหญ่ 20 พ.ย. 0.327'},
+    {name:'Central', claim:0.317, deduct:0.043, cash:0.275, note:'ปล่อยชะลอ 20 พ.ย. เหลือหักอุทธรณ์'},
+    {name:'ปฐมภูมิ', claim:0.183, deduct:0, cash:0.183, note:'PCC ปี 69 + งวด 6910'},
+    {name:'ฟื้นฟู', claim:0.142, deduct:0, cash:0.142, note:'DDSA 16 พ.ย. 0.136'},
+    {name:'แพทย์แผนไทย', claim:0.081, deduct:0.005, cash:0.076, note:'ชะลอเหลือ 0.005'},
+    {name:'เอดส์', claim:0.042, deduct:0, cash:0.042, note:'DNAP'},
+    {name:'NCD / DM', claim:0.031, deduct:0, cash:0.031, note:'DM Remission + DMOR'}
   ]
-};
+}
 let c70chart;
 function renderY70(pack){
   const funds=pack.funds||[];
