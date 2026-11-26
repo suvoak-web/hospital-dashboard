@@ -88,12 +88,16 @@ tr.fund-row.on td{background:#dbeafe}
         <canvas id="c70" height="160"></canvas>
       </div>
     </div>
+    <div class="mt-4">
+      <p class="text-xs text-slate-400 mb-1">สัดส่วนกองทุนปี 2570 — เงินเข้าบัญชี (ล้านบาท)</p>
+      <canvas id="c70funds" height="110"></canvas>
+    </div>
   </div>
 
   <div id="yearBlock" class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
     <div class="card p-4">
-      <h3 class="font-semibold">รายรับทั้งปี 4 ปี</h3>
-      <p class="text-xs text-slate-400 mb-2">แท่งเขียว = UC ดำเนินงาน · เทา = เงินเข้าทั้งก้อน</p>
+      <h3 class="font-semibold">รายรับทั้งปี และยอดปี 2570 ถึงวันนี้</h3>
+      <p class="text-xs text-slate-400 mb-2">แท่งเขียว = UC ดำเนินงาน · เทา = เงินเข้าทั้งก้อน · 2570* เป็นยอดถึง 26 พ.ย. ยังไม่ครบปี</p>
       <canvas id="cYearAll" height="160"></canvas>
     </div>
     <div class="card p-4 overflow-x-auto">
@@ -201,6 +205,13 @@ function renderY70(pack){
     type:'bar',
     data:{labels:['ต.ค.','พ.ย.','ธ.ค.','ม.ค.','ก.พ.','มี.ค.'],datasets:[{label:'เข้าบัญชี',data:(pack.months||[cash,0,0,0,0,0]),backgroundColor:'#0369A1'}]},
     options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}
+  });
+  if(window.c70fund) window.c70fund.destroy();
+  const fundRows=(funds||[]).filter(function(r){ return r.cash>0; });
+  window.c70fund=new Chart(document.getElementById('c70funds'),{
+    type:'bar',
+    data:{labels:fundRows.map(function(r){return r.name;}),datasets:[{label:'เข้าบัญชี',data:fundRows.map(function(r){return Number(r.cash.toFixed(3));}),backgroundColor:'#0369A1'}]},
+    options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true}}}
   });
 }
 function fam70(fund, sub, period){
@@ -321,10 +332,10 @@ Object.keys(funds).forEach(id=>{
 });
 new Chart(document.getElementById('cYearAll'),{
   type:'bar',
-  data:{labels:years,datasets:[
-    {label:'เงินเข้าทั้งก้อน',data:[54.78,56.80,50.00,52.13],backgroundColor:'#94A3B8'},
-    {label:'UC ดำเนินงานทั้งปี',data:[48.64,49.64,44.36,49.45],backgroundColor:'#0F6E56'},
-    {label:'งบลงทุน',data:[1.51,5.10,3.87,1.98],backgroundColor:'#C05621'}
+  data:{labels:['2566','2567','2568','2569','2570*'],datasets:[
+    {label:'เงินเข้าทั้งก้อน',data:[54.78,56.80,50.00,52.13,10.44],backgroundColor:'#94A3B8'},
+    {label:'UC ดำเนินงาน / ยอดถึงวันนี้',data:[48.64,49.64,44.36,49.45,10.44],backgroundColor:'#0F6E56'},
+    {label:'งบลงทุน',data:[1.51,5.10,3.87,1.98,0],backgroundColor:'#C05621'}
   ]},
   options:{responsive:true,plugins:{legend:{position:'bottom',labels:{boxWidth:10}}},scales:{y:{beginAtZero:true}}}
 });
