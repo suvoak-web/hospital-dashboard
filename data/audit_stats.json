@@ -1,9 +1,9 @@
 {
   "rules": "aggregate only - no AN/HN/name/DOB",
   "scope_label": "เริ่ม ตุลาคม 2569",
-  "updated": "19 พ.ย. 2569",
+  "updated": "27 พ.ย. 2569",
   "skipped_summaries": 0,
-  "total_charts": 67,
+  "total_charts": 187,
   "pending_before_scope_start": 38,
   "pdx_by_chapter": [
     {
@@ -405,38 +405,34 @@
       "name": "Electrocardiogram"
     }
   ],
-  "adjrw_after_sum": 57.6898,
-  "adjrw_after_mean": 0.8610,
-  "rw_after_sum": 59.4581,
+  "adjrw_after_sum": 134.6398,
+  "adjrw_after_mean": 0.7200,
+  "rw_after_sum": 137.2281,
   "before_after": {
-    "charts": 2,
-    "sum_before": 1.0933,
-    "sum_after": 1.5363,
-    "diff": 0.4430,
-    "adjrw_changed": 1,
-    "drg_changed": 1,
-    "no_before_value": 46,
-    "of_charts": 48,
+    "charts": 11,
+    "sum_before": 5.9431,
+    "sum_after": 6.0348,
+    "diff": 0.0917,
+    "adjrw_changed": 3,
+    "drg_changed": 3,
+    "no_before_value": 157,
+    "of_charts": 168,
     "month": "2569-11",
-    "as_of": "19 พ.ย. 2569",
-    "note": "November 2569 only. Comparison covers 2 of 48 charts because the other 46 have no pre-audit grouping in Chart 4 DBF files (Chart Audit read existing DBF rows; TGrp was not rerun). The previous 13-chart figure (8.2448 → 7.9639 as of 12 พ.ย. 2569) mixed October with the earlier 42-chart November export, so it is not kept as an October line."
+    "as_of": "27 พ.ย. 2569",
+    "note": "November 2569 only, 168 unique charts (four lots, one duplicate file removed; held chart excluded). Comparison covers 11 of 168 charts that have a pre-audit grouping on the TGrp page (9 from the 12 Nov 42-chart lot and 2 from the 19 Nov 48-chart lot). The other 157 have no before-audit value. August and September stay unpublished."
   },
   "audit_notes": {
     "month": "2569-11",
-    "of_charts": 48,
-    "official_section": 46,
-    "older_format": 2,
-    "as_of": "19 พ.ย. 2569",
-    "note": "46 of 48 charts have the official «หมายเหตุ audit» section with body text. The other 2 have audit commentary in an older format without that heading."
+    "of_charts": 168,
+    "official_section": 124,
+    "older_format": 44,
+    "as_of": "27 พ.ย. 2569",
+    "note": "124 of 168 unique charts have the official «หมายเหตุ audit» section with body text. The other 44 have audit commentary in an older format without that heading (42 from the first November lot plus 2 already counted on 19 Nov)."
   },
   "code_adjustments": {
     "month": "2569-11",
-    "dbf_changed": 1,
-    "dbf_comparable": 2,
-    "notes_code_change": 10,
-    "notes_official_section": 46,
-    "as_of": "19 พ.ย. 2569",
-    "note": "Two different sources — do not add together. DBF pre/post comparison: 1 of 2 comparable charts changed. Separately, 10 of the 46 official audit-note sections record a specific code change."
+    "as_of": "27 พ.ย. 2569",
+    "note": "The 19 Nov 2569 code-adjustment breakdown (DBF 1 of 2 comparable; 10 of 46 official audit-note sections) was for the 48-chart lot only and was not recomputed for the 168 unique charts. The page does not present these figures as current."
   },
   "after_only_charts": 48,
   "audit_note_charts": 3,
@@ -492,7 +488,7 @@
       "sub": "รายงานผล audit"
     }
   ],
-  "as_of": "2026-11-19+07:00",
+  "as_of": "2026-11-27+07:00",
   "data_source": "TGrp6305 (DBF after/before rows; DRG/AdjRW cross-checked against the appended TGrp6305 page in each summary PDF). No AI estimates.",
   "icd9_name_source": "TGrp6305 procedure table c63proc.dbf (DESC field); Thai names not available in a real local source",
   "by_month": [
@@ -529,95 +525,96 @@
     },
     {
       "month": "2569-11",
-      "unique_summaries": 48,
-      "completed": 48,
+      "unique_summaries": 168,
+      "completed": 168,
       "pending": 0,
       "pending_reasons": {},
-      "adjrw_after_sum": 42.2892,
-      "adjrw_after_mean": 0.8810,
-      "rw_after_sum": 42.8954,
-      "tgrp_coverage": "48/48",
+      "adjrw_after_sum": 119.2392,
+      "adjrw_after_mean": 0.7098,
+      "rw_after_sum": 120.6654,
+      "tgrp_coverage": "168/168",
       "final_warn_err": {
         "warn": 0,
         "err": 0
       },
       "pdx_top_codes": [
         {
+          "code": "N17.9",
+          "count": 7,
+          "pct": 4.2
+        },
+        {
           "code": "A09.9",
-          "count": 3,
-          "pct": 6.2
+          "count": 7,
+          "pct": 4.2
+        },
+        {
+          "code": "N10",
+          "count": 6,
+          "pct": 3.6
+        },
+        {
+          "code": "J20.9",
+          "count": 6,
+          "pct": 3.6
         },
         {
           "code": "J10.1",
-          "count": 3,
-          "pct": 6.2
-        },
-        {
-          "code": "N18.3",
-          "count": 2,
-          "pct": 4.2
-        },
-        {
-          "code": "S09.9",
-          "count": 2,
-          "pct": 4.2
-        },
-        {
-          "code": "J69.0",
-          "count": 2,
-          "pct": 4.2
+          "count": 5,
+          "pct": 3.0
         }
       ],
       "pdx_leading_chapter": {
         "chapter": "X Respiratory",
-        "count": 13,
-        "pct": 27.1
+        "count": 34,
+        "pct": 20.2
       },
       "sdx_top_codes": [
         {
           "code": "I10",
-          "count": 28,
-          "pct": 15.0
-        },
-        {
-          "code": "E78.9",
-          "count": 17,
-          "pct": 9.1
+          "count": 70,
+          "pct": 12.7
         },
         {
           "code": "E11.9",
-          "count": 15,
+          "count": 44,
           "pct": 8.0
+        },
+        {
+          "code": "E87.6",
+          "count": 41,
+          "pct": 7.4
         }
       ],
-      "sdx_top_codes_basis": "pct is of SDx mentions; SDx mention total was not provided",
+      "sdx_top_codes_basis": "pct is of SDx mentions; SDx mention total is 552",
       "top_icd9": [
         {
           "code": "57.94",
-          "count": 9,
+          "count": 24,
           "name": "Insert indwelling cath"
         },
         {
-          "code": "99.04",
-          "count": 6,
-          "name": "Packed cell transfusion"
-        },
-        {
           "code": "88.76",
-          "count": 4,
+          "count": 20,
           "name": "Dx ultrasound-abdomen"
         },
         {
+          "code": "99.04",
+          "count": 13,
+          "name": "Packed cell transfusion"
+        },
+        {
           "code": "93.57",
-          "count": 4
+          "count": 13,
+          "name": "Dressing of wound NEC"
         },
         {
           "code": "96.07",
-          "count": 3,
+          "count": 5,
           "name": "Insert gastric tube NEC"
         }
       ],
-      "top_icd9_name_note": "Names filled only when already present from TGrp6305 c63proc.dbf in this repo; 93.57 had no name in that set so it is left blank. Procedure total was not provided."
+      "top_icd9_name_note": "Names filled from TGrp6305 procedure table c63proc.dbf (DESC field). Procedure mention total is 117."
     }
   ],
   "pipeline_queue_not_summarized": {},
@@ -787,9 +784,9 @@
     "backup_copies_in_subfolders": 5,
     "completed_tgrp_page_count_not_1": 1
   },
-  "rw_after_sum_note": "Overall RW = Oct 16.5627 (Oct-only published snapshot; Oct AdjRW still 15.4006) + Nov 42.8954 (19 Nov 2569 handoff). Not displayed on the page.",
+  "rw_after_sum_note": "Overall RW = Oct 16.5627 (Oct-only published snapshot; Oct AdjRW still 15.4006) + Nov 120.6654 (27 Nov 2569 handoff, 168 unique charts). Not displayed on the page.",
   "unrecomputed_from_12_nov_export": {
-    "note": "These overall fields were not in the 19 Nov 2569 November handoff and were not recomputed. The page does not present them as current. August and September stay unpublished.",
+    "note": "These overall (not month-card) fields were not in the 27 Nov 2569 November handoff and were not recomputed. They still reflect an earlier mixed export. The page does not present them as current. August and September stay unpublished. November PDx/SDx/ICD-9 tops on the month card were recomputed from the 168 unique charts.",
     "fields": [
       "pdx_by_chapter",
       "pdx_by_block3",
